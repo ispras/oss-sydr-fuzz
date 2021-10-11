@@ -18,7 +18,7 @@
 
 # build the target.
 ./autogen.sh
-./configure CFLAGS="-fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero" CC=clang CXX=clang++
+./configure CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero" CC=clang CXX=clang++
 make -j$(nproc) all
 
 CC=clang
@@ -27,8 +27,8 @@ CXX=clang++
 mkdir /lcms_fuzz
 OUT=/lcms_fuzz
 FUZZERS="cmsIT8_load_fuzzer cms_transform_fuzzer cms_overwrite_transform_fuzzer"
-CFLAGS="-fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-CXXFLAGS="-fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 for F in $FUZZERS; do
     $CC $CFLAGS -c -Iinclude \
         ./$F.c -o ./$F.o
@@ -39,8 +39,8 @@ done
 
 # build the target for Sydr
 make clean
-CFLAGS=""
-CXXFLAGS=""
+CFLAGS="-g"
+CXXFLAGS="-g"
 ./configure
 make -j$(nproc) all
 
