@@ -1,0 +1,6 @@
+sydr/
+sydr.zip
+sydr-work/
+fuzz-*.log
+sydr-fuzz.log
+corpus/
