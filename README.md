@@ -26,3 +26,4 @@ external repositories.
 ## Supported Open Source Projects
 
 * lcms
+* sqlite3
