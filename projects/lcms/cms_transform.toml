@@ -25,4 +25,4 @@ cache = true
 
 [libfuzzer]
 path = "/lcms_fuzz/cms_transform_fuzzer"
-args = "-dict=icc.dict -jobs=2 /fuzz/corpus"
+args = "-dict=icc.dict -jobs=2 -reduce_inputs=0 /fuzz/corpus"
