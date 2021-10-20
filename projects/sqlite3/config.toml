@@ -25,4 +25,4 @@ cache = true
 
 [libfuzzer]
 path = "/sqlite3/ossfuzz"
-args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 /fuzz/corpus"
+args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 -reduce_inputs=0 /fuzz/corpus"
