@@ -27,3 +27,4 @@ external repositories.
 
 * lcms
 * sqlite3
+* postgresql
