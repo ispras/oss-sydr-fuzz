@@ -25,4 +25,4 @@ cache = true
 
 [libfuzzer]
 path = "/out/simple_query_fuzzer"
-args = "-jobs=4 -reduce_inputs=0 /fuzz/corpus -artifact_prefix=/fuzz/"
+args = "-jobs=4 -dict=sql.dict -reduce_inputs=0 /fuzz/corpus -artifact_prefix=/fuzz/"
