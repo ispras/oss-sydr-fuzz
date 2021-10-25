@@ -14,15 +14,11 @@
 #
 ################################################################################
 
-sync = "/fuzz/corpus"
-
 [sydr]
 args = "-l debug -j 4 --invert-n 1024 --app-timeout 180 --optimistic"
 target = "/lcms_sydr/cms_transform_sydr @@"
-work-dir = "/fuzz/sydr-work"
 jobs = 3
-cache = true
 
 [libfuzzer]
 path = "/lcms_fuzz/cms_transform_fuzzer"
-args = "-dict=icc.dict -jobs=2 -reduce_inputs=0 /fuzz/corpus"
+args = "-dict=icc.dict -jobs=2 /fuzz/corpus"

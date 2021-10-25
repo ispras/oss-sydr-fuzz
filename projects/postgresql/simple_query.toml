@@ -14,15 +14,11 @@
 #
 ################################################################################
 
-sync = "/fuzz/corpus"
-
 [sydr]
 args = "--strategy direct -l debug -j 2 --app-timeout 300 --solving-timeout 30 --optimistic"
 target = "/out/simple_query_sydr @@"
-work-dir = "/fuzz/sydr-work"
 jobs = 2
-cache = true
 
 [libfuzzer]
 path = "/out/simple_query_fuzzer"
-args = "-jobs=4 -dict=sql.dict -reduce_inputs=0 /fuzz/corpus -artifact_prefix=/fuzz/"
+args = "-jobs=4 -dict=sql.dict /fuzz/corpus -artifact_prefix=/fuzz/"
