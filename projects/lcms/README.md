@@ -15,7 +15,7 @@ Unzip Sydr (`sydr.zip`) in `projects/lcms` directory:
 
 Run docker:
 
-    $ sudo docker run --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-lcms /bin/bash
+    $ sudo docker run --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-lcms /bin/bash
 
 Copy initial seed corpus to `/fuzz` directory:
 
