@@ -14,15 +14,11 @@
 #
 ################################################################################
 
-sync = "/fuzz/corpus"
-
 [sydr]
 args = "-l debug -j 2 --app-timeout 300 --optimistic"
 target = "/out/json_parser_sydr @@"
-work-dir = "/fuzz/sydr-work"
 jobs = 4
-cache = true
 
 [libfuzzer]
 path = "/out/json_parser_fuzzer"
-args = "-jobs=2 -reduce_inputs=0 /fuzz/corpus -artifact_prefix=/fuzz/"
+args = "-jobs=2 /fuzz/corpus -artifact_prefix=/fuzz/"

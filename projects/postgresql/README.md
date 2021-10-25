@@ -28,7 +28,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c simple_query.toml run -l debug --log-file sydr-fuzz.log
+    # sydr-fuzz -c simple_query.toml run -l debug
 
 ## Cleanup Temporary Databases During Fuzzing
 
@@ -49,8 +49,8 @@ PostgreSQL project has 2 fuzz targets.
 
 ### simple_query
 
-    # sydr-fuzz -c simple_query.toml run -l debug --log-file sydr-fuzz.log
+    # sydr-fuzz -c simple_query.toml run -l debug
 
 ### json_parser
 
-    # sydr-fuzz -c json_parser.toml run -l debug --log-file sydr-fuzz.log
+    # sydr-fuzz -c json_parser.toml run -l debug

@@ -14,15 +14,11 @@
 #
 ################################################################################
 
-sync = "/fuzz/corpus"
-
 [sydr]
 args = "-l debug -j 4 --optimistic --invert-n 1024 --app-timeout 60"
 target = "/sqlite3/sydrfuzz @@"
-work-dir = "/fuzz/sydr-work"
 jobs = 2
-cache = true
 
 [libfuzzer]
 path = "/sqlite3/ossfuzz"
-args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 -reduce_inputs=0 /fuzz/corpus"
+args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 /fuzz/corpus"
