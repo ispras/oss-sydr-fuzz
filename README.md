@@ -26,5 +26,7 @@ external repositories.
 ## Supported Open Source Projects
 
 * lcms
-* sqlite3
+* poco
 * postgresql
+* rapidjson
+* sqlite3
