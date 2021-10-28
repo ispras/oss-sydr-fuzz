@@ -42,9 +42,6 @@ RUN ../build.sh
 
 WORKDIR /
 
-# Copy dict.
-COPY json.dict /
-
 # Prepare json seed corpus.
 RUN mkdir corpus_json && find  ./poco -name "*.json" -exec cp {} /corpus_json \;
 
