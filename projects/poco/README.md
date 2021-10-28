@@ -34,6 +34,13 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c json_parser.toml run -l debug
 
+Collect coverage:
+
+    # mkdir /fuzz/coverage_json && cd /fuzz/coverage_json
+    # for filename in /fuzz/corpus_json/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /json_parser_cov "$filename"; done
+    # llvm-profdata merge  *.profraw -o cov.profdata
+    # llvm-cov report /json_parser_cov -instr-profile=cov.profdata
+
 ### XML fuzzing
 
 Copy initial seed corpus to `/fuzz` directory:
@@ -47,3 +54,10 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz -c xml_parser.toml run -l debug
+
+Collect coverage:
+
+    # mkdir /fuzz/coverage_xml && cd /fuzz/coverage_xml
+    # for filename in /fuzz/corpus_xml/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /xml_parser_cov "$filename"; done
+    # llvm-profdata merge  *.profraw -o cov.profdata
+    # llvm-cov report /xml_parser_cov -instr-profile=cov.profdata
