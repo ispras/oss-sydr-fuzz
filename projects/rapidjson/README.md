@@ -8,7 +8,7 @@ A fast JSON parser/generator for C++ with both SAX/DOM style API
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/sqlite3` directory:
+Unzip Sydr (`sydr.zip`) in `projects/rapidjson` directory:
 
     $ unzip sydr.zip
 
