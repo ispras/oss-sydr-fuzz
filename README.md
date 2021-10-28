@@ -29,4 +29,5 @@ external repositories.
 * poco
 * postgresql
 * rapidjson
+* re2
 * sqlite3
