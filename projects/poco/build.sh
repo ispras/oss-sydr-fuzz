@@ -23,11 +23,11 @@ cd cmake-build
 cmake -DBUILD_SHARED_LIBS=OFF \
       -DENABLE_TESTS=OFF \
       -DCMAKE_CXX_COMPILER=clang++ \
-      -DCMAKE_CXX_FLAGS=-fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero \
+      -DCMAKE_CXX_FLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
       ..
 make -j$(nproc)
 CXX="clang++"
-CXXFLAGS="-fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 # Building JSON fuzztarget for Poco
 $CXX $CXXFLAGS -DPOCO_ENABLE_CPP11 -DPOCO_ENABLE_CPP14 \
