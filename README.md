@@ -25,6 +25,7 @@ external repositories.
 
 ## Supported Open Source Projects
 
+* freeimage
 * lcms
 * poco
 * postgresql
