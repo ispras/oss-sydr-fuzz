@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-FROM xcoldhandsx/dev-test
+FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 # Set author of this docker container.
 MAINTAINER Andrey Fedotov
