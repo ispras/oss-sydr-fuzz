@@ -17,7 +17,7 @@
 ################################################################################
 
 CXX="clang++"
-CXXFLAGS="-DASAN -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address "
+CXXFLAGS="-g -DASAN -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address "
 $CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp -o /rapidjson-fuzzer/rapidjson-fuzzer
 
 CFLAGS="-g"
