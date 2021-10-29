@@ -18,7 +18,7 @@ Unzip Sydr (`sydr.zip`) in `projects/poco` directory:
 
 Run docker:
 
-    $ sudo docker run --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-poco /bin/bash
+    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-poco /bin/bash
 
 ### JSON fuzzing
 
