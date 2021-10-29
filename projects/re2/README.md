@@ -14,7 +14,7 @@ Unzip Sydr (`sydr.zip`) in `projects/re2` directory:
 
 Run docker:
 
-    $ sudo docker run --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-re2 /bin/bash
+    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-re2 /bin/bash
 
 Create corpus directory:
 
