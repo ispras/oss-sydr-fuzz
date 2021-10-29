@@ -26,4 +26,4 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run -l debug -s file-info
+    # sydr-fuzz run -l debug
