@@ -37,6 +37,7 @@ COPY build.sh fuzz_init_path.c fuzz_init_path_sydr.c ./
 RUN ./build.sh
 
 # Prepare seed corpus.
-RUN mkdir /corpus && cp test/* /corpus
+RUN mkdir /corpus && cp test/* /corpus && \
+    rm /corpus/*.am /corpus/*.c /corpus/*.sh /corpus/*.txt /corpus/*.testcases
 
 WORKDIR ..
