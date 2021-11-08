@@ -29,6 +29,7 @@ external repositories.
 * freeimage
 * lcms
 * libcbor
+* libjpeg-turbo
 * poco
 * postgresql
 * rapidjson
