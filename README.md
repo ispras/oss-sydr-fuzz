@@ -25,6 +25,7 @@ external repositories.
 
 ## Supported Open Source Projects
 
+* cjson
 * freeimage
 * lcms
 * libcbor
