@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "--strategy direct -l debug -j 2 --app-timeout 300 --solving-timeout 30 --optimistic"
+args = "--strategy direct --no-update-cache -l debug -j 2 --app-timeout 300 --solving-timeout 30 --optimistic"
 target = "/out/simple_query_sydr @@"
 jobs = 2
 
