@@ -5,4 +5,6 @@ fuzz-*.log
 sydr-fuzz.log
 corpus*/
 crash-*
+oom-*
+slow-*
 *.swp

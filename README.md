@@ -30,6 +30,7 @@ external repositories.
 * lcms
 * libcbor
 * libjpeg-turbo
+* openssl
 * poco
 * postgresql
 * rapidjson
