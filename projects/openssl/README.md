@@ -33,7 +33,7 @@ Run hybrid fuzzing:
 
 ## Alternative Fuzz Targets
 
-OpenSSL project has 12 fuzz targets.
+OpenSSL project has 11 fuzz targets.
 
 ### asn1
 
@@ -94,12 +94,6 @@ OpenSSL project has 12 fuzz targets.
     # cp -r /openssl/fuzz/corpora/ct /fuzz/corpus_ct
     # cd /fuzz
     # sydr-fuzz -c ct.toml run -l debug
-
-### server
-
-    # cp -r /openssl/fuzz/corpora/server /fuzz/corpus_server
-    # cd /fuzz
-    # sydr-fuzz -c server.toml run -l debug
 
 ### x509
 
