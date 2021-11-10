@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 --app-timeout 300 --optimistic"
+args = "-l debug -j 2 --app-timeout 300"
 target = "/out/json_parser_sydr @@"
 jobs = 4
 
