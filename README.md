@@ -37,3 +37,4 @@ external repositories.
 * rapidjson
 * re2
 * sqlite3
+* tarantool
