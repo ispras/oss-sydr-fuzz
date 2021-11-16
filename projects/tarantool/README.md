@@ -33,7 +33,7 @@ Run hybrid fuzzing:
 
 ## Alternative Fuzz Targets
 
-Tarantool project has 3 fuzz targets.
+Tarantool project has 5 fuzz targets.
 
 ### csv
 
@@ -52,3 +52,13 @@ Tarantool project has 3 fuzz targets.
     # cp -r /corpus_uri /fuzz/corpus_uri
     # cd /fuzz
     # sydr-fuzz -c uri.toml run -l debug
+
+### swim_proto_member
+
+    # cd /fuzz
+    # sydr-fuzz -c swim_proto_member.toml run -l debug
+
+### swim_proto_meta
+
+    # cd /fuzz
+    # sydr-fuzz -c swim_proto_meta.toml run -l debug

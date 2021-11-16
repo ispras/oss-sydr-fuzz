@@ -16,6 +16,8 @@
 #
 ################################################################################
 
+git apply --ignore-space-change --ignore-whitespace test/fuzz/disable_logging.diff
+
 export CC=clang
 export CXX=clang++
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
@@ -30,6 +32,7 @@ cmake_args=(
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UB_SANITIZER=ON
+    -DCMAKE_BUILD_TYPE=Release
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -70,6 +73,7 @@ cmake_args=(
     # Specific to Tarantool
     -DENABLE_FUZZER=ON
     -DOSS_FUZZ=ON
+    -DCMAKE_BUILD_TYPE=Release
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"

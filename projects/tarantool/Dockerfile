@@ -37,7 +37,7 @@ RUN git checkout 03bdb5fff9db1dd4460110ad38da4d4a21d2fe81
 RUN git submodule update --init --recursive
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh main.c test/fuzz/
+COPY build.sh CMakeLists.txt disable_logging.diff main.c *_fuzzer.c test/fuzz/
 
 # Build fuzz targets.
 RUN test/fuzz/build.sh
