@@ -43,19 +43,7 @@ RUN git checkout 69e686ac5d4b0a4aadecf9c689e58519b96cd75d
 # Copy build script.
 COPY build.sh /
 
-COPY sydr_script_bmp.rs \
-    sydr_script_exr.rs \
-    sydr_script_gif.rs \
-    sydr_script_guess.rs \
-    sydr_script_hdr.rs \
-    sydr_script_ico.rs \
-    sydr_script_jpeg.rs \
-    sydr_script_png.rs \
-    sydr_script_pnm.rs \
-    sydr_script_tga.rs \
-    sydr_script_tiff.rs \
-    sydr_script_webp.rs \
-    fuzz/fuzzers/
+COPY sydr_script_*.rs fuzz/fuzzers/
 
 COPY Cargo.toml fuzz
 

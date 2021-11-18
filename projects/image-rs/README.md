@@ -9,7 +9,7 @@ to and from various image formats.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/openssl` directory:
+Unzip Sydr (`sydr.zip`) in `projects/image-rs` directory:
 
     $ unzip sydr.zip
 
@@ -17,12 +17,14 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-image-rs /bin/bash
 
-### Prepare initial corpus
+### Prepare Initial Corpus
 
 You could find initial seeds in image repo and copy them to `/fuzz/corpus`
 directory. Example for tiff parser:
 
     # mkdir /fuzz/corpus && find /image -name "*.tiff" -exec cp {} /fuzz/corpus \;
+
+### Run Fuzzing
 
 Change directory to `/fuzz`:
 
