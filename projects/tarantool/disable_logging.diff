@@ -1,14 +1,14 @@
 diff --git a/src/lib/core/diag.h b/src/lib/core/diag.h
-index fa85326ad..3026eb07e 100644
+index 0522d9e5a..b81ed883f 100644
 --- a/src/lib/core/diag.h
 +++ b/src/lib/core/diag.h
-@@ -358,8 +358,7 @@ BuildSocketError(const char *file, unsigned line, const char *socketname,
- 	errno = save_errno;                                             \
- } while (0)
+@@ -458,8 +458,7 @@ BuildSocketError(const char *file, unsigned line, const char *socketname,
+ 	e;								\
+ })
  
 -#define diag_set(...)							\
 -	diag_set_detailed(__FILE__, __LINE__, __VA_ARGS__)
 +#define diag_set(...)
  
- #define diag_add(class, ...) do {					\
+ #define diag_add(class, ...) ({						\
  	int save_errno = errno;						\
