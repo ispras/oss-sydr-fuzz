@@ -28,6 +28,7 @@ external repositories.
 * capstone
 * cjson
 * freeimage
+* image-rs
 * lcms
 * libcbor
 * libjpeg-turbo
