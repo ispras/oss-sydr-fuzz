@@ -18,10 +18,10 @@
 
 git apply --ignore-space-change --ignore-whitespace test/fuzz/disable_logging.diff
 
-export CC=clang
-export CXX=clang++
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+CC=clang
+CXX=clang++
+CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 : ${LD:="${CXX}"}
 : ${LDFLAGS:="${CXXFLAGS}"}  # to make sure we link with sanitizer runtime
@@ -66,14 +66,17 @@ do
 done
 
 # Build the project for Sydr.
-export CFLAGS="-g"
-export CXXFLAGS="-g"
-: ${LDFLAGS:="${CXXFLAGS}"}
+CFLAGS="-g"
+CXXFLAGS="-g"
+LDFLAGS=""
+
 cmake_args=(
     # Specific to Tarantool
     -DENABLE_FUZZER=ON
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Release
+    -DENABLE_ASAN=OFF
+    -DENABLE_UB_SANITIZER=OFF
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
