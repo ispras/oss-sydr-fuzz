@@ -38,3 +38,24 @@ cd /
 $CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_sydr
+
+cd -
+make clean
+CXX="clang++" CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" make -j$(nproc)
+
+cd /
+CXX="clang++"
+CXXFLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero -g"
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/ \
+  transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /transform_combined_jpeg_fuzzer
+
+cd -
+make clean
+CXX="clang++" CXXFLAGS="-g" make  -j$(nproc)
+
+cd /
+$CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/ \
+	transform_combined_jpeg_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+	-o /transform_combined_jpeg_sydr
