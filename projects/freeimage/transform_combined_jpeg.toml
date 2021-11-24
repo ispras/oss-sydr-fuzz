@@ -1,12 +1,9 @@
 [sydr]
-path="/fuzz/sydr/sydr"
-args = "--invert-n 2048 -l debug -j 1 --app-timeout 300 --solving-timeout 30 --optimistic"
-target = "/test_jpeg_sydr @@"
-work-dir = "/fuzz/sydr-work"
-cache = true
+args = "--invert-n 2048 -l debug --app-timeout 300 --solving-timeout 30"
+target = "/transform_combined_jpeg_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/test_jpeg_fuzzer"
-args = "-artifact_prefix=/fuzz/crashes/ -rss_limit_mb=16384 -jobs=10 -workers=2 /fuzz/corpus"
+path = "/transform_combined_jpeg_fuzzer"
+args = "-rss_limit_mb=16384 -jobs=10 -workers=2 /fuzz/corpus"
 

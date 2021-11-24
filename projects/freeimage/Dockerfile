@@ -30,8 +30,7 @@ WORKDIR /freeimage-svn/FreeImage/trunk/
 
 # Copy targets and build script.
 COPY build.sh ./
-COPY load_from_memory_sydr.cc load_from_memory_fuzzer.cc /
-COPY transform_combined_jpeg_sydr.cc transform_combined_jpeg_fuzzer.cc /
+COPY *_fuzzer.cc *_sydr.cc /
 
 # Run build script.
 RUN ./build.sh
