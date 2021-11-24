@@ -24,13 +24,13 @@ MAINTAINER Andrey Fedotov
 RUN apt-get update && apt-get install -y subversion  autoconf automake libtool wget
 
 # Checkout FreeImage.
-RUN svn checkout https://svn.code.sf.net/p/freeimage/svn/ freeimage-svn
+RUN svn checkout -r 1900 https://svn.code.sf.net/p/freeimage/svn/ freeimage-svn
 
 WORKDIR /freeimage-svn/FreeImage/trunk/
 
 # Copy targets and build script.
 COPY build.sh ./
-COPY load_from_memory_sydr.cc load_from_memory_fuzzer.cc /
+COPY *_fuzzer.cc *_sydr.cc /
 
 # Run build script.
 RUN ./build.sh
