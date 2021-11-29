@@ -21,4 +21,4 @@ jobs = 1
 
 [libfuzzer]
 path = "/load_fuzzer"
-args = "-rss_limit_mb=8192 -jobs=2 /corpus"
+args = "-rss_limit_mb=8192 -jobs=2 /fuzz/corpus"
