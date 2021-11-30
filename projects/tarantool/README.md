@@ -55,10 +55,12 @@ Tarantool project has 5 fuzz targets.
 
 ### swim_proto_member
 
+    # cp -r /corpus_swim_proto_member /fuzz/corpus_swim_proto_member
     # cd /fuzz
     # sydr-fuzz -c swim_proto_member.toml run -l debug
 
 ### swim_proto_meta
 
+    # cp -r /corpus_swim_proto_meta /fuzz/corpus_swim_proto_meta
     # cd /fuzz
     # sydr-fuzz -c swim_proto_meta.toml run -l debug
