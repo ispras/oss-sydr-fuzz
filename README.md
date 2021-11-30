@@ -59,6 +59,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://sourceforge.net/p/freeimage/bugs/345/>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
+    * <https://github.com/tarantool/tarantool/pull/6662>
 * xlnt:
     * <https://github.com/tfussell/xlnt/issues/592>
     * <https://github.com/tfussell/xlnt/issues/593>
