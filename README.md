@@ -67,6 +67,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/tfussell/xlnt/issues/595>
     * <https://github.com/tfussell/xlnt/issues/596>
     * <https://github.com/tfussell/xlnt/issues/597>
+    * <https://github.com/tfussell/xlnt/issues/598>
 
 ## Cite Us
 
