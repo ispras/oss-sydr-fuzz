@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --invert-n 1024 --app-timeout 180 --optimistic"
+args = "-l debug --invert-n 1024 --app-timeout 180"
 target = "/rapidjson-sydr/rapidjson-sydr @@"
 
 [libfuzzer]
