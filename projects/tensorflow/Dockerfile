@@ -1,4 +1,5 @@
 # Copyright 2018 Google Inc.
+# Modifications copyright (C) 2021 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,6 +63,7 @@ RUN install_java.sh || true
 WORKDIR /
 RUN git clone --depth 1 https://github.com/tensorflow/tensorflow tensorflow
 WORKDIR /tensorflow
+RUN git reset --hard b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
 COPY build_fuzz.sh /
 
 RUN bash /build_fuzz.sh
@@ -70,6 +72,7 @@ RUN rm -rf tensorflow
 
 RUN git clone --depth 1 https://github.com/tensorflow/tensorflow tensorflow
 WORKDIR /tensorflow
+RUN git reset --hard b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
 COPY build_sydr.sh /
 
 RUN bash /build_sydr.sh

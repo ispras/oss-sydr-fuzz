@@ -14,7 +14,7 @@ Unzip Sydr (`sydr.zip`) in `projects/tensorflow` directory:
 
 Run Docker:
 
-	$ docker run --rm -it -v `pwd`:/fuzz oss-sydr-fuzz-tensorflow /bin/bash
+        $ sudo docker run -v /etc/localtime:/etc/localtime:ro --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-tensorflow /bin/bash
 
 Change the directory to `/fuzz`:
 
@@ -28,47 +28,47 @@ Run hybrid fuzzing
 
 TensorFlow project has 11 fuzz targets.
 
-### arg\_def\_case\_fuzz
+### arg_def_case_fuzz
 
 	# sydr-fuzz -c arg_def_case_fuzz.toml run -l debug
 
-### base64\_fuzz
+### base64_fuzz
 
 	# sydr-fuzz -c base64_fuzz.toml run -l debug
 
-### cleanpath\_fuzz
+### cleanpath_fuzz
 
 	# sydr-fuzz -c cleanpath_fuzz.toml run -l debug
 
-### consume\_leading\_digits\_fuzz
+### consume_leading_digits_fuzz
 
 	# sydr-fuzz -c consume_leading_digits_fuzz.toml run -l debug
 
-### joinpath\_fuzz
+### joinpath_fuzz
 
 	# sydr-fuzz -c joinpath_fuzz.toml run -l debug
 
-### parseURI\_fuzz
+### parseURI_fuzz
 
 	# sydr-fuzz -c parseURI_fuzz.toml run -l debug
 
-### status\_fuzz
+### status_fuzz
 
 	# sydr-fuzz -c status_fuzz.toml run -l debug
 
-### status\_group\_fuzz
+### status_group_fuzz
 
 	# sydr-fuzz -c status_group_fuzz.toml run -l debug
 
-### string\_replace\_fuzz
+### string_replace_fuzz
 
 	# sydr-fuzz -c string_replace_fuzz.toml run -l debug
 
-### stringprintf\_fuzz
+### stringprintf_fuzz
 
 	# sydr-fuzz -c stringprintf_fuzz.toml run -l debug
 
-### tstring\_fuzz
+### tstring_fuzz
 
 	# sydr-fuzz -c tstring_fuzz.toml run -l debug
 

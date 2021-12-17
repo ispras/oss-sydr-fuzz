@@ -17,9 +17,9 @@
 [sydr]
 args = "-l debug --invert-n 1024 --app-timeout 60"
 target = "/sydr/cleanpath_fuzz @@"
-jobs = 16
+jobs = 4
 
 [libfuzzer]
 path = "/fuzzer/cleanpath_fuzz"
 args = "-rss_limit_mb=8192 /fuzz/corpus"
-jobs = 8
+jobs = 4

@@ -39,6 +39,7 @@ external repositories.
 * re2
 * sqlite3
 * tarantool
+* tensorflow
 * xlnt
 
 ## Contributing

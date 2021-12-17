@@ -1,5 +1,6 @@
 #!/bin/bash -eu
 # Copyright 2018 Google Inc.
+# Modifications copyright (C) 2021 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +61,6 @@ done
 # Ugly hack to get LIB_FUZZING_ENGINE only for fuzz targets
 # and not for other binaries such as protoc
 sed -i -e 's/linkstatic/linkopts = \["-fsanitize=fuzzer,address,undefined,integer,null,float-divide-by-zero,bounds"\],\nlinkstatic/' tensorflow/security/fuzzing/tf_fuzzing.bzl
-#sed -i -e 's/linkstatic/linkopts = \["-fsanitize=fuzzer"\],\nlinkstatic/' tensorflow/security/fuzzing/tf_fuzzing.bzl
 # Determine all fuzz targets. To control what gets fuzzed with OSSFuzz, all
 # supported fuzzers are in `//tensorflow/security/fuzzing`.
 # Ignore fuzzers tagged with `no_oss` in opensource.
@@ -116,7 +116,3 @@ fi
 
 # Finally, make sure we don't accidentally run with stuff from the bazel cache.
 rm -f bazel-*
-#rm -rf ~/.cache
-
-#bazel clean --expunge
-#git clean -dfx
