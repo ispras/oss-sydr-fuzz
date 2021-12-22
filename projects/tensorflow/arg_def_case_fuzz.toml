@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --invert-n 1024 --app-timeout 60"
+args = "-l debug --invert-n 1024 --app-timeout 60 --symbolize-address"
 target = "/sydr/arg_def_case_fuzz @@"
 
 [libfuzzer]
