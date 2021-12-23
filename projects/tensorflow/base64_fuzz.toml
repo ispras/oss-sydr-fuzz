@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "--invert-n 1024 -l debug --app-timeout 60"
+args = "-n 1024 -l debug --app-timeout 60"
 target = "/sydr/base64_fuzz @@"
 
 [libfuzzer]

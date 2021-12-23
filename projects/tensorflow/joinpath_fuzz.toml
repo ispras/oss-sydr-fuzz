@@ -16,7 +16,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --invert-n 1024 --app-timeout 60"
+args = "-l debug -n 1024 --app-timeout 60"
 target = "/sydr/joinpath_fuzz @@"
 
 [libfuzzer]

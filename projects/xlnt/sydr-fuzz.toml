@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j2 --invert-n 1024 --app-timeout 180"
+args = "-l debug -j2 -n 1024 --app-timeout 180"
 target = "/load_sydr @@"
 jobs = 1
 

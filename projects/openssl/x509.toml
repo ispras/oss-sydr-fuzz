@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --no-update-cache -j 2 --invert-n 1024 --app-timeout 300"
+args = "-l debug --no-update-cache -j 2 -n 1024 --app-timeout 300"
 target = "/out/x509_sydr @@"
 jobs = 2
 

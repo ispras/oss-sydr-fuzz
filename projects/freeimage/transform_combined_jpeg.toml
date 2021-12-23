@@ -1,5 +1,5 @@
 [sydr]
-args = "--invert-n 2048 -l debug --app-timeout 300 --solving-timeout 30"
+args = "-n 2048 -l debug --app-timeout 300 --solving-timeout 30"
 target = "/transform_combined_jpeg_sydr @@"
 jobs = 2
 
