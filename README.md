@@ -41,6 +41,7 @@ external repositories.
 * sqlite3
 * tarantool
 * tensorflow
+* unbound
 * xlnt
 
 ## Contributing
