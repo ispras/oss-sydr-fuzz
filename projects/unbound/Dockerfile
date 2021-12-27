@@ -16,7 +16,7 @@
 ################################################################################
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-MAINTAINER Alexey Vishnyakov
+MAINTAINER Andrey Fedotov
 
 # Install build dependencies.
 RUN apt-get update
@@ -26,6 +26,9 @@ RUN apt-get install -y make libtool libssl-dev libexpat-dev wget
 RUN git clone --depth=1 https://github.com/NLnetLabs/unbound unbound
 
 WORKDIR unbound
+
+# Checkout commit.
+RUN git checkout 4e492725e1764c579ef3bef2bbcddffc5159629f
 
 COPY parse_packet_fuzzer.c .
 
@@ -37,7 +40,6 @@ COPY main.c .
 COPY build.sh ./
 
 RUN ./build.sh
-
 
 WORKDIR /
 RUN wget  --directory-prefix / https://github.com/jsha/unbound/raw/fuzzing-corpora/testdata/parse_packet_fuzzer_seed_corpus.zip && \

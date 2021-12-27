@@ -9,7 +9,7 @@ fast and lean and incorporates modern features based on open standards.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/poco` directory:
+Unzip Sydr (`sydr.zip`) in `projects/unbound` directory:
 
     $ unzip sydr.zip
 
@@ -79,7 +79,6 @@ Collect coverage:
     # for filename in /fuzz/corpus_fuzz_3/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /unbound_cov/fuzz_3_cov "$filename"; done
     # llvm-profdata merge  *.profraw -o cov.profdata
     # llvm-cov report /unbound_cov/fuzz_3_cov -instr-profile=cov.profdata
-
 
 ### Fuzz_4 fuzzing
 

@@ -22,7 +22,7 @@ CC=clang
 CXX=clang++
 CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero -DVALGRIND=1"
 CC=$CC CFLAGS=$CFLAGS ./configure --disable-flto
-make -j6 all
+make -j$(nproc) all
 
 $CC $CFLAGS -I. -DSRCDIR=. -c -o parse_packet_fuzzer.o parse_packet_fuzzer.c
 $CC $CFLAGS -I. -DSRCDIR=. -c -o fuzz_1.o fuzz_1.c
@@ -99,7 +99,7 @@ make clean
 CFLAGS="-g"
 CXXFLAGS="-g"
 CC=$CC CFLAGS=$CFLAGS ./configure --disable-flto
-make -j6 all
+make -j$(nproc) all
 
 LIB_FUZZING_ENGINE="main.o"
 $CC $CFLAGS -c main.c -o $LIB_FUZZING_ENGINE
@@ -156,7 +156,7 @@ make clean
 CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 CC=$CC CFLAGS=$CFLAGS ./configure --disable-flto
-make -j6 all
+make -j$(nproc) all
 
 LIB_FUZZING_ENGINE="main.o"
 $CC $CFLAGS -c main.c -o $LIB_FUZZING_ENGINE
@@ -205,9 +205,3 @@ $CXX $CXXFLAGS -std=c++11 \
   fuzz_4.o \
   $OBJECTS_TO_LINK \
   $LIBOBJS
-#OUT=/
-#wget --directory-prefix $OUT https://github.com/jsha/unbound/raw/fuzzing-corpora/testdata/parse_packet_fuzzer_seed_corpus.zip
-#wget --directory-prefix $OUT https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_1_fuzzer_seed_corpus.zip
-#wget --directory-prefix $OUT https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_2_fuzzer_seed_corpus.zip
-#wget --directory-prefix $OUT https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_3_fuzzer_seed_corpus.zip
-#wget --directory-prefix $OUT https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_4_fuzzer_seed_corpus.zip
