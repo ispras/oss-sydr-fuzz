@@ -17,9 +17,13 @@ RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
     cmake ../llvm -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
                   -DCMAKE_C_COMPILER=clang-11 -DCMAKE_CXX_COMPILER=clang++-11 \
                   -DCMAKE_BUILD_TYPE=Release \
+                  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
                   -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt" \
                   -GNinja && \
-    CMAKE_BUILD_PARALLEL_LEVEL=15 cmake --build . && cmake --build . && \
+    CMAKE_BUILD_PARALLEL_LEVEL=200 cmake --build . && cmake --build . && \
     cmake --install . && cd ../.. && rm -rf llvm-project
+
+RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
+    ldconfig
 
 ENV PATH=$PATH:/fuzz/sydr
