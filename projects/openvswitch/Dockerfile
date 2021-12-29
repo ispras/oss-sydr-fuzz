@@ -15,7 +15,6 @@
 #
 ################################################################################
 
-#FROM gcr.io/oss-fuzz-base/base-builder
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov

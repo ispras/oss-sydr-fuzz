@@ -32,7 +32,6 @@ export CXXFLAGS="-g -fsanitize=undefined,address"
 make oss-fuzz-targets
 
 SRC=/
-cp $SRC/openvswitch/tests/oss-fuzz/config/*.options $OUT/
 cp $SRC/openvswitch/tests/oss-fuzz/config/*.dict $OUT/
 wget -O $OUT/json.dict https://raw.githubusercontent.com/rc0r/afl-fuzz/master/dictionaries/json.dict
 
@@ -43,7 +42,6 @@ do
        corp_name=$(basename $file _target)
        corp_dir=$SRC/ovs-fuzzing-corpus/${corp_name}_seed_corpus
        if [ -d ${corp_dir} ]; then
-       #    zip -rq $OUT/${name}_seed_corpus ${corp_dir}
            cp -r ${corp_dir} $OUT/corpus_${corp_name}
        fi
 done
