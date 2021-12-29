@@ -34,6 +34,7 @@ external repositories.
 * libcbor
 * libjpeg-turbo
 * openssl
+* openvswitch
 * poco
 * postgresql
 * rapidjson
