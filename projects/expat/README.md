@@ -26,7 +26,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c xml_parse_fuzzer_UTF-8.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-8.toml run
 
 ## Alternative Fuzz Targets
 
@@ -34,48 +34,48 @@ Expat project has 12 fuzz targets.
 
 ### xml_parsebuffer_fuzzer_ISO-8859-1
 
-    # sydr-fuzz -c xml_parsebuffer_fuzzer_ISO-8859-1.toml run -l debug
+    # sydr-fuzz -c xml_parsebuffer_fuzzer_ISO-8859-1.toml run
 
 ### xml_parsebuffer_fuzzer_US-ASCII
 
-    # sydr-fuzz -c xml_parsebuffer_fuzzer_US-ASCII.toml run -l debug
+    # sydr-fuzz -c xml_parsebuffer_fuzzer_US-ASCII.toml run
 
 ### xml_parsebuffer_fuzzer_UTF-16BE
 
-    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-16BE.toml run -l debug
+    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-16BE.toml run
 
 ### xml_parsebuffer_fuzzer_UTF-16LE
 
-    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-16LE.toml run -l debug
+    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-16LE.toml run
 
 ### xml_parsebuffer_fuzzer_UTF-16
 
-    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-16.toml run -l debug
+    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-16.toml run
 
 ### xml_parsebuffer_fuzzer_UTF-8
 
-    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-8.toml run -l debug
+    # sydr-fuzz -c xml_parsebuffer_fuzzer_UTF-8.toml run
 
 ### xml_parse_fuzzer_ISO-8859-1
 
-    # sydr-fuzz -c xml_parse_fuzzer_ISO-8859-1.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_ISO-8859-1.toml run
 
 ### xml_parse_fuzzer_US-ASCII
 
-    # sydr-fuzz -c xml_parse_fuzzer_US-ASCII.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_US-ASCII.toml run
 
 ### xml_parse_fuzzer_UTF-16BE
 
-    # sydr-fuzz -c xml_parse_fuzzer_UTF-16BE.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-16BE.toml run
 
 ### xml_parse_fuzzer_UTF-16LE
 
-    # sydr-fuzz -c xml_parse_fuzzer_UTF-16LE.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-16LE.toml run
 
 ### xml_parse_fuzzer_UTF-16
 
-    # sydr-fuzz -c xml_parse_fuzzer_UTF-16.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-16.toml run
 
 ### xml_parse_fuzzer_UTF-8
 
-    # sydr-fuzz -c xml_parse_fuzzer_UTF-8.toml run -l debug
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-8.toml run

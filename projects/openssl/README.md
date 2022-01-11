@@ -29,7 +29,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c x509.toml run -l debug
+    # sydr-fuzz -c x509.toml run
 
 ## Alternative Fuzz Targets
 
@@ -39,64 +39,64 @@ OpenSSL project has 11 fuzz targets.
 
     # cp -r /openssl/fuzz/corpora/asn1 /fuzz/corpus_asn1
     # cd /fuzz
-    # sydr-fuzz -c asn1.toml run -l debug
+    # sydr-fuzz -c asn1.toml run
 
 ### asn1parse
 
     # cp -r /openssl/fuzz/corpora/asn1parse /fuzz/corpus_asn1parse
     # cd /fuzz
-    # sydr-fuzz -c asn1parse.toml run -l debug
+    # sydr-fuzz -c asn1parse.toml run
 
 ### bignum
 
     # cp -r /openssl/fuzz/corpora/bignum /fuzz/corpus_bignum
     # cd /fuzz
-    # sydr-fuzz -c bignum.toml run -l debug
+    # sydr-fuzz -c bignum.toml run
 
 ### bndiv
 
     # cp -r /openssl/fuzz/corpora/bndiv /fuzz/corpus_bndiv
     # cd /fuzz
-    # sydr-fuzz -c bndiv.toml run -l debug
+    # sydr-fuzz -c bndiv.toml run
 
 ### client
 
     # cp -r /openssl/fuzz/corpora/client /fuzz/corpus_client
     # cd /fuzz
-    # sydr-fuzz -c client.toml run -l debug
+    # sydr-fuzz -c client.toml run
 
 ### cmp
 
     # cp -r /openssl/fuzz/corpora/cmp /fuzz/corpus_cmp
     # cd /fuzz
-    # sydr-fuzz -c cmp.toml run -l debug
+    # sydr-fuzz -c cmp.toml run
 
 ### cms
 
     # cp -r /openssl/fuzz/corpora/cms /fuzz/corpus_cms
     # cd /fuzz
-    # sydr-fuzz -c cms.toml run -l debug
+    # sydr-fuzz -c cms.toml run
 
 ### conf
 
     # cp -r /openssl/fuzz/corpora/conf /fuzz/corpus_conf
     # cd /fuzz
-    # sydr-fuzz -c conf.toml run -l debug
+    # sydr-fuzz -c conf.toml run
 
 ### crl
 
     # cp -r /openssl/fuzz/corpora/crl /fuzz/corpus_crl
     # cd /fuzz
-    # sydr-fuzz -c crl.toml run -l debug
+    # sydr-fuzz -c crl.toml run
 
 ### ct
 
     # cp -r /openssl/fuzz/corpora/ct /fuzz/corpus_ct
     # cd /fuzz
-    # sydr-fuzz -c ct.toml run -l debug
+    # sydr-fuzz -c ct.toml run
 
 ### x509
 
     # cp -r /openssl/fuzz/corpora/x509 /fuzz/corpus_x509
     # cd /fuzz
-    # sydr-fuzz -c x509.toml run -l debug
+    # sydr-fuzz -c x509.toml run

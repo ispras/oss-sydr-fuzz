@@ -33,7 +33,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c decompress.toml run -l debug
+    # sydr-fuzz -c decompress.toml run
 
 ## Alternative Fuzz Targets
 
@@ -44,16 +44,16 @@ libjpeg-turbo project has 3 fuzz targets.
     # export ASAN_OPTIONS=allocator_may_return_null=1
     # cp -r /corpus_compress /fuzz/corpus_compress
     # cd /fuzz
-    # sydr-fuzz -c compress.toml run -l debug
+    # sydr-fuzz -c compress.toml run
 
 ### decompress
 
     # cp -r /corpus_decompress /fuzz/corpus_decompress
     # cd /fuzz
-    # sydr-fuzz -c decompress.toml run -l debug
+    # sydr-fuzz -c decompress.toml run
 
 ### transform
 
     # cp -r /corpus_decompress /fuzz/corpus_transform
     # cd /fuzz
-    # sydr-fuzz -c transform.toml run -l debug
+    # sydr-fuzz -c transform.toml run

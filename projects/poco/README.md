@@ -32,7 +32,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c json_parser.toml run -l debug
+    # sydr-fuzz -c json_parser.toml run
 
 Collect coverage:
 
@@ -53,7 +53,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c xml_parser.toml run -l debug
+    # sydr-fuzz -c xml_parser.toml run
 
 Collect coverage:
 

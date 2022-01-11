@@ -27,7 +27,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c cmsIT8_load.toml run -l debug
+    # sydr-fuzz -c cmsIT8_load.toml run
 
 ## Alternative Fuzz Targets
 
@@ -35,12 +35,12 @@ Little CMS project has 3 fuzz targets.
 
 ### cmsIT8_load
 
-    # sydr-fuzz -c cmsIT8_load.toml run -l debug
+    # sydr-fuzz -c cmsIT8_load.toml run
 
 ### cms_overwrite_transform
 
-    # sydr-fuzz -c cms_overwrite_transform.toml run -l debug
+    # sydr-fuzz -c cms_overwrite_transform.toml run
 
 ### cms_transform
 
-    # sydr-fuzz -c cms_transform.toml run -l debug
+    # sydr-fuzz -c cms_transform.toml run

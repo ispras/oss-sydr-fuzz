@@ -24,7 +24,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c load_from_memory.toml run -l debug
+    # sydr-fuzz -c load_from_memory.toml run
 
 ## Alternative Fuzz Targets
 
@@ -32,8 +32,8 @@ FreeImage project has 2 fuzz targets.
 
 ### load_from_memory
 
-    # sydr-fuzz -c load_from_memory.toml run -l debug
+    # sydr-fuzz -c load_from_memory.toml run
 
 ### transform_combined_jpeg
 
-    # sydr-fuzz -c transform_combined_jpeg.toml run -l debug
+    # sydr-fuzz -c transform_combined_jpeg.toml run
