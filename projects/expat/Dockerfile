@@ -21,12 +21,6 @@ MAINTAINER Alexey Vishnyakov
 
 # Install build dependencies.
 RUN apt-get update && apt-get install -y make autoconf automake libtool docbook2x curl
-RUN apt-get -y remove cmake
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
-    mkdir /cmake && \
-    bash cmake-3.22.1-linux-x86_64.sh --prefix=/cmake --exclude-subdir --skip-license && \
-    ln -s /cmake/bin/cmake /bin/cmake && \
-    rm cmake-3.22.1-linux-x86_64.sh
 
 # Clone target from GitHub.
 RUN git clone https://github.com/libexpat/libexpat expat

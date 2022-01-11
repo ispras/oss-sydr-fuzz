@@ -25,12 +25,6 @@ RUN apt-get update && apt-get install -y \
 	autoconf automake libtool zlib1g-dev \
 	libreadline-dev libncurses5-dev libssl-dev \
 	libunwind-dev luajit wget curl
-RUN apt-get -y remove cmake
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
-    mkdir /cmake && \
-    bash cmake-3.22.1-linux-x86_64.sh --prefix=/cmake --exclude-subdir --skip-license && \
-    ln -s /cmake/bin/cmake /bin/cmake && \
-    rm cmake-3.22.1-linux-x86_64.sh
 
 RUN wget https://github.com/unicode-org/icu/archive/refs/tags/cldr/2021-08-25.tar.gz && \
     tar xzvf ./2021-08-25.tar.gz && \

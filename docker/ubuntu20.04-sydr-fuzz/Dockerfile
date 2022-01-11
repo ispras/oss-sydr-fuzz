@@ -5,8 +5,14 @@ MAINTAINER Alexey Vishnyakov
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get -y install build-essential cmake gcc-multilib g++-multilib git \
-                       wget unzip clang-11 vim lsb-release gdb
+    apt-get -y install build-essential gcc-multilib g++-multilib git \
+                       wget curl unzip clang-11 vim lsb-release gdb
+
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
+    mkdir /cmake && \
+    bash cmake-3.22.1-linux-x86_64.sh --prefix=/cmake --exclude-subdir --skip-license && \
+    ln -s /cmake/bin/cmake /bin/cmake && \
+    rm cmake-3.22.1-linux-x86_64.sh
 
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip \
     && unzip ninja-linux.zip && mv ninja /usr/bin && rm ninja-linux.zip
