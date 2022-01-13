@@ -23,6 +23,7 @@ RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
     cmake ../llvm -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
                   -DCMAKE_C_COMPILER=clang-11 -DCMAKE_CXX_COMPILER=clang++-11 \
                   -DCMAKE_BUILD_TYPE=Release \
+                  -DLLVM_ENABLE_ZLIB=ON \
                   -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
                   -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt" \
                   -GNinja && \
