@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get -y install build-essential gcc-multilib g++-multilib git \
-                       wget curl unzip clang-11 vim lsb-release gdb
+                       wget curl unzip clang-11 vim lsb-release gdb zlib1g-dev
 
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
     mkdir /cmake && \
