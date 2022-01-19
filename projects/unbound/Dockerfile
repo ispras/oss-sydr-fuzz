@@ -23,7 +23,7 @@ RUN apt-get update
 
 RUN apt-get install -y make libtool libssl-dev libexpat-dev wget
 
-RUN git clone --depth=1 https://github.com/NLnetLabs/unbound unbound
+RUN git clone https://github.com/NLnetLabs/unbound unbound
 
 WORKDIR unbound
 

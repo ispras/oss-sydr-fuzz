@@ -23,7 +23,7 @@ MAINTAINER Alexey Vishnyakov
 RUN apt-get update && apt-get install -y make cmake python python-setuptools
 
 # Clone target from GitHub.
-RUN git clone --depth 1 --branch v4 https://github.com/aquynh/capstone.git capstonev4
+RUN git clone --branch v4 https://github.com/aquynh/capstone.git capstonev4
 RUN git clone --branch next https://github.com/aquynh/capstone.git capstonenext
 
 # Checkout specified commit. It could be updated later.

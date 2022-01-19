@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y make autoconf automake \
     libz-dev libssl-dev libssl1.1 wget
 RUN pip3 install six
 
-RUN git clone --depth 1 https://github.com/openvswitch/ovs.git openvswitch
+RUN git clone https://github.com/openvswitch/ovs.git openvswitch
 
 RUN git clone --depth 1 https://github.com/openvswitch/ovs-fuzzing-corpus.git \
     ovs-fuzzing-corpus
