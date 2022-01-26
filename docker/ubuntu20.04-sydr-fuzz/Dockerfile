@@ -33,4 +33,24 @@ RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
 RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
     ldconfig
 
+RUN apt-get -y install lcov cargo pkg-config libglib2.0-dev \
+    gcc-10 g++-10 gcc-10-plugin-dev gcc-10-multilib
+
+RUN cd / && git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
+    git checkout a790bf6cc2bb63f0659d8c96b46f5f4db2f9d4bc
+
+RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd /afl-cov && \
+    git checkout bb51de02c06dca2bfa2dfb494fa3b095950ec879 && \
+    make install && cd ..
+
+ENV LLVM_CONFIG=llvm-config
+ENV AFL_SKIP_CPUFREQ=1
+
+WORKDIR /AFLplusplus
+
+RUN export CC=gcc-10 && export CXX=g++-10 && make clean && \
+    make distrib && make install && make clean
+
 ENV PATH=$PATH:/fuzz/sydr
+
+WORKDIR /
