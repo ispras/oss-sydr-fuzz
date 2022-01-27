@@ -20,12 +20,6 @@ MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
 
-# Install Rust.
-RUN curl https://sh.rustup.rs -o rustup.sh && chmod +x rustup.sh && \
-    ./rustup.sh -y && rm rustup.sh
-
-ENV PATH="/root/.cargo/bin:${PATH}"
-
 # Install nightly
 RUN rustup install nightly
 
