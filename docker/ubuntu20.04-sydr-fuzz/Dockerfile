@@ -54,6 +54,8 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     export CC=gcc-10 && export CXX=g++-10 && make clean && \
     make distrib -j 200 && make install -j 200 && make clean && cd .. && rm -rf AFLplusplus
 
+RUN sysctl -w kernel.core_pattern=core
+
 ENV PATH=$PATH:/fuzz/sydr
 
 WORKDIR /
