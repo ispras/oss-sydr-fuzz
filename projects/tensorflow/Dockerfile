@@ -76,4 +76,14 @@ RUN git checkout b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
 COPY build_sydr.sh /
 
 RUN bash /build_sydr.sh
+WORKDIR /
+RUN rm -rf tensorflow
+
+RUN git clone https://github.com/tensorflow/tensorflow tensorflow
+WORKDIR /tensorflow
+RUN git checkout b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
+COPY build_cov.sh /
+
+RUN bash /build_cov.sh
+
 
