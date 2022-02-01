@@ -20,4 +20,3 @@ target = "/re2_sydr/re2_sydr @@"
 
 [libfuzzer]
 path = "/re2_fuzzer/re2_fuzzer"
-args = "/fuzz/corpus"

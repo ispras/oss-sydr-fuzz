@@ -21,4 +21,4 @@ target = "/sydr/joinpath_fuzz @@"
 
 [libfuzzer]
 path = "/fuzzer/joinpath_fuzz"
-args = "-rss_limit_mb=8192 /fuzz/corpus"
+args = "-rss_limit_mb=8192"

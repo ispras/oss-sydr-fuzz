@@ -20,4 +20,4 @@ target = "/sydr/status_group_fuzz @@"
 
 [libfuzzer]
 path = "/fuzzer/status_group_fuzz"
-args = "-rss_limit_mb=8192 /fuzz/corpus"
+args = "-rss_limit_mb=8192"

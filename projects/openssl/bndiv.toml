@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/bndiv"
-args = "/fuzz/corpus_bndiv"
+args = "/openssl/fuzz/corpora/bndiv"

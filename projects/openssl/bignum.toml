@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/bignum"
-args = "/fuzz/corpus_bignum"
+args = "/openssl/fuzz/corpora/bignum"

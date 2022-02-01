@@ -23,10 +23,6 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libjpeg-turbo /bin/bash
 
-Copy initial seed corpus to `/fuzz` directory:
-
-    # cp -r /corpus_decompress /fuzz/corpus_decompress
-
 Change directory to `/fuzz`:
 
     # cd /fuzz
@@ -42,18 +38,12 @@ libjpeg-turbo project has 3 fuzz targets.
 ### compress
 
     # export ASAN_OPTIONS=allocator_may_return_null=1
-    # cp -r /corpus_compress /fuzz/corpus_compress
-    # cd /fuzz
     # sydr-fuzz -c compress.toml run
 
 ### decompress
 
-    # cp -r /corpus_decompress /fuzz/corpus_decompress
-    # cd /fuzz
     # sydr-fuzz -c decompress.toml run
 
 ### transform
 
-    # cp -r /corpus_decompress /fuzz/corpus_transform
-    # cd /fuzz
     # sydr-fuzz -c transform.toml run

@@ -20,4 +20,4 @@ target = "/xml_parser_sydr @@"
 
 [libfuzzer]
 path = "/xml_parser_fuzzer"
-args = "/fuzz/corpus_xml"
+args = "/corpus_xml"

@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/crl"
-args = "/fuzz/corpus_crl"
+args = "/openssl/fuzz/corpora/crl"

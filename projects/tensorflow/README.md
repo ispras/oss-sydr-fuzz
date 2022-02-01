@@ -26,8 +26,8 @@ Run hybrid fuzzing:
 
 Collect coverage:
 
-    # mkdir /fuzz/cleanpath_fuzz && cd /fuzz/cleanpath_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/cleanpath_fuzz "$filename"; done
+    # mkdir /fuzz/cleanpath_fuzz-out/coverage && cd /fuzz/cleanpath_fuzz-out/coverage
+    # for filename in /fuzz/cleanpath_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/cleanpath_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/cleanpath_fuzz -instr-profile=cov.profdata
 
@@ -41,8 +41,8 @@ TensorFlow project has 11 fuzz targets.
 
 Collect coverage:
 
-    # mkdir /fuzz/arg_def_case_fuzz && cd /fuzz/arg_def_case_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/arg_def_case_fuzz "$filename"; done
+    # mkdir /fuzz/arg_def_case_fuzz-out/coverage && cd /fuzz/arg_def_case_fuzz-out/coverage
+    # for filename in /fuzz/arg_def_case_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/arg_def_case_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/arg_def_case_fuzz -instr-profile=cov.profdata
 
@@ -52,8 +52,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/base64_fuzz && cd /fuzz/base64_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/base64_fuzz "$filename"; done
+    # mkdir /fuzz/base64_fuzz-out/coverage && cd /fuzz/base64_fuzz-out/coverage
+    # for filename in /fuzz/base64_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/base64_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/base64_fuzz -instr-profile=cov.profdata
 
@@ -63,8 +63,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/cleanpath_fuzz && cd /fuzz/cleanpath_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/cleanpath_fuzz "$filename"; done
+    # mkdir /fuzz/cleanpath_fuzz-out/coverage && cd /fuzz/cleanpath_fuzz-out/coverage
+    # for filename in /fuzz/cleanpath_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/cleanpath_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/cleanpath_fuzz -instr-profile=cov.profdata
 
@@ -74,8 +74,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/consume_leading_digits_fuzz && cd /fuzz/consume_leading_digits_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/consume_leading_digits_fuzz "$filename"; done
+    # mkdir /fuzz/consume_leading_digits_fuzz-out/coverage && cd /fuzz/consume_leading_digits_fuzz-out/coverage
+    # for filename in /fuzz/consume_leading_digits_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/consume_leading_digits_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/consume_leading_digits_fuzz -instr-profile=cov.profdata
 
@@ -85,8 +85,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/joinpath_fuzz && cd /fuzz/joinpath_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/joinpath_fuzz "$filename"; done
+    # mkdir /fuzz/joinpath_fuzz-out/coverage && cd /fuzz/joinpath_fuzz-out/coverage
+    # for filename in /fuzz/joinpath_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/joinpath_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/joinpath_fuzz -instr-profile=cov.profdata
 
@@ -96,8 +96,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/parseURI_fuzz && cd /fuzz/parseURI_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/parseURI_fuzz "$filename"; done
+    # mkdir /fuzz/parseURI_fuzz-out/coverage && cd /fuzz/parseURI_fuzz-out/coverage
+    # for filename in /fuzz/parseURI_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/parseURI_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/parseURI_fuzz -instr-profile=cov.profdata
 
@@ -107,8 +107,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/status_fuzz && cd /fuzz/status_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/status_fuzz "$filename"; done
+    # mkdir /fuzz/status_fuzz-out/coverage && cd /fuzz/status_fuzz-out/coverage
+    # for filename in /fuzz/status_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/status_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/status_fuzz -instr-profile=cov.profdata
 
@@ -118,8 +118,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/status_group_fuzz && cd /fuzz/status_group_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/status_group_fuzz "$filename"; done
+    # mkdir /fuzz/status_group_fuzz-out/coverage && cd /fuzz/status_group_fuzz-out/coverage
+    # for filename in /fuzz/status_group_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/status_group_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/status_group_fuzz -instr-profile=cov.profdata
 
@@ -129,8 +129,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/string_replace_fuzz && cd /fuzz/string_replace_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/string_replace_fuzz "$filename"; done
+    # mkdir /fuzz/string_replace_fuzz-out/coverage && cd /fuzz/string_replace_fuzz-out/coverage
+    # for filename in /fuzz/string_replace_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/string_replace_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/string_replace_fuzz -instr-profile=cov.profdata
 
@@ -140,8 +140,8 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/stringprintf_fuzz && cd /fuzz/stringprintf_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/stringprintf_fuzz "$filename"; done
+    # mkdir /fuzz/stringprintf_fuzz-out/coverage && cd /fuzz/stringprintf_fuzz-out/coverage
+    # for filename in /fuzz/stringprintf_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/stringprintf_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/stringprintf_fuzz -instr-profile=cov.profdata
 
@@ -151,8 +151,7 @@ Collect coverage:
 
 Collect coverage:
 
-    # mkdir /fuzz/tstring_fuzz && cd /fuzz/tstring_fuzz
-    # for filename in /fuzz/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/tstring_fuzz "$filename"; done
+    # mkdir /fuzz/tstring_fuzz-out/coverage && cd /fuzz/tstring_fuzz-out/coverage
+    # for filename in /fuzz/tstring_fuzz-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /coverage/tstring_fuzz "$filename"; done
     # llvm-profdata merge *.profraw -o cov.profdata
     # llvm-cov report /coverage/tstring_fuzz -instr-profile=cov.profdata
-

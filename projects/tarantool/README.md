@@ -19,10 +19,6 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-tarantool /bin/bash
 
-Copy initial seed corpus to `/fuzz` directory:
-
-    # cp -r /corpus_uri /fuzz/corpus_uri
-
 Change directory to `/fuzz`:
 
     # cd /fuzz
@@ -37,30 +33,20 @@ Tarantool project has 5 fuzz targets.
 
 ### csv
 
-    # cp -r /corpus_csv /fuzz/corpus_csv
-    # cd /fuzz
     # sydr-fuzz -c csv.toml run
 
 ### http_parser
 
-    # cp -r /corpus_http_parser /fuzz/corpus_http_parser
-    # cd /fuzz
     # sydr-fuzz -c http_parser.toml run
 
 ### uri
 
-    # cp -r /corpus_uri /fuzz/corpus_uri
-    # cd /fuzz
     # sydr-fuzz -c uri.toml run
 
 ### swim_proto_member
 
-    # cp -r /corpus_swim_proto_member /fuzz/corpus_swim_proto_member
-    # cd /fuzz
     # sydr-fuzz -c swim_proto_member.toml run
 
 ### swim_proto_meta
 
-    # cp -r /corpus_swim_proto_meta /fuzz/corpus_swim_proto_meta
-    # cd /fuzz
     # sydr-fuzz -c swim_proto_meta.toml run

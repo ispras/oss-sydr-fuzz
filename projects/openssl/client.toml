@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/client"
-args = "/fuzz/corpus_client"
+args = "/openssl/fuzz/corpora/client"

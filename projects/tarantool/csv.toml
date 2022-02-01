@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/csv_fuzzer"
-args = "/fuzz/corpus_csv"
+args = "/corpus_csv"

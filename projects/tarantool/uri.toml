@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/uri_fuzzer"
-args = "/fuzz/corpus_uri"
+args = "/corpus_uri"

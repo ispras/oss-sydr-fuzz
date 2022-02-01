@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/swim_proto_meta_fuzzer"
-args = "/fuzz/corpus_swim_proto_meta"
+args = "/corpus_swim_proto_meta"

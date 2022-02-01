@@ -13,11 +13,13 @@
 # limitations under the License.
 #
 ################################################################################
+
 exit-on-time = 7200
+
 [sydr]
 args = "-l debug --invert-n 1024 --app-timeout 60"
 target = "/unbound_sydr/fuzz_4_sydr @@"
 
 [libfuzzer]
 path = "/unbound_fuzzers/fuzz_4_fuzzer"
-args = "-jobs=1000 -workers=1 -rss_limit_mb=16000  /fuzz/corpus_fuzz_4"
+args = "-jobs=1000 -workers=1 -rss_limit_mb=16000 /corpus_fuzz_4"

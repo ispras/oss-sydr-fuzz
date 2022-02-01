@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/cms"
-args = "/fuzz/corpus_cms"
+args = "/openssl/fuzz/corpora/cms"

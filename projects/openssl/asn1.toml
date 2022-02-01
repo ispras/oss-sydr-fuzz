@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/asn1"
-args = "-dict=/out/asn1.dict /fuzz/corpus_asn1"
+args = "-dict=/out/asn1.dict /openssl/fuzz/corpora/asn1"

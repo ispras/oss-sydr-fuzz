@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/decompress_fuzzer"
-args = "/fuzz/corpus_decompress"
+args = "/corpus_decompress"

@@ -13,11 +13,13 @@
 # limitations under the License.
 #
 ################################################################################
+
 exit-on-time = 7200
+
 [sydr]
 args = "-l debug --invert-n 1024 --app-timeout 60"
 target = "/openvswitch_sydr/flow_extract_target @@"
 
 [libfuzzer]
 path = "/openvswitch_fuzzers/flow_extract_target"
-args = "-dict=/openvswitch_fuzzers/ovs.dict /fuzz/corpus_flow_extract"
+args = "-dict=/openvswitch_fuzzers/ovs.dict /openvswitch_fuzzers/corpus_flow_extract"

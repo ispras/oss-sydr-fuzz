@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/sqlite3/ossfuzz"
-args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 /fuzz/corpus"
+args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 /corpus"
