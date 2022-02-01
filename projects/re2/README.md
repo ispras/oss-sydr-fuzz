@@ -16,10 +16,6 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-re2 /bin/bash
 
-Create corpus directory:
-
-    # mkdir /fuzz/corpus
-
 Change directory to `/fuzz`:
 
     # cd /fuzz

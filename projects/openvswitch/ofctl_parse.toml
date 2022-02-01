@@ -13,11 +13,13 @@
 # limitations under the License.
 #
 ################################################################################
+
 exit-on-time = 7200
+
 [sydr]
 args = "-l debug --invert-n 1024 --app-timeout 60"
 target = "/openvswitch_sydr/ofctl_parse_target @@"
 
 [libfuzzer]
 path = "/openvswitch_fuzzers/ofctl_parse_target"
-args = "-dict=/openvswitch_fuzzers/ofp-flow.dict /fuzz/corpus_ofctl_parse"
+args = "-dict=/openvswitch_fuzzers/ofp-flow.dict"

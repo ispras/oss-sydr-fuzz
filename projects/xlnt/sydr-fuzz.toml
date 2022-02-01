@@ -17,8 +17,8 @@
 [sydr]
 args = "-l debug -j2 -n 1024 --app-timeout 180"
 target = "/load_sydr @@"
-jobs = 1
+jobs = 2
 
 [libfuzzer]
 path = "/load_fuzzer"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=2 /fuzz/corpus"
+args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /corpus"

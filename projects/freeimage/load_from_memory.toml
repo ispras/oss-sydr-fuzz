@@ -20,4 +20,4 @@ target = "/load_from_memory_sydr @@"
 
 [libfuzzer]
 path = "/load_from_memory_fuzzer"
-args = "-rss_limit_mb=8192 /fuzz/corpus"
+args = "-rss_limit_mb=8192"

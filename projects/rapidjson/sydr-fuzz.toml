@@ -20,4 +20,4 @@ target = "/rapidjson-sydr/rapidjson-sydr @@"
 
 [libfuzzer]
 path = "/rapidjson-fuzzer/rapidjson-fuzzer"
-args = "-workers=1 -jobs=100000 -ignore_crashes=1 /fuzz/corpus"
+args = "-workers=1 -jobs=100000 -ignore_crashes=1 /corpus"

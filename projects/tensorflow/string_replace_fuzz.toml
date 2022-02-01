@@ -20,4 +20,4 @@ target = "/sydr/string_replace_fuzz @@"
 
 [libfuzzer]
 path = "/fuzzer/string_replace_fuzz"
-args = "-rss_limit_mb=8192 /fuzz/corpus"
+args = "-rss_limit_mb=8192"

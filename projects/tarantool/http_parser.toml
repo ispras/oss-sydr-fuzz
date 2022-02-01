@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/http_parser_fuzzer"
-args = "/fuzz/corpus_http_parser"
+args = "/corpus_http_parser"

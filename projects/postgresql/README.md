@@ -18,10 +18,6 @@ Run docker:
 
     $ sudo docker run --name oss-sydr-fuzz-postgresql --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-postgresql /bin/bash
 
-Copy initial seed corpus to `/fuzz` directory:
-
-    # cp -r /corpus /fuzz/corpus
-
 Change directory to `/fuzz`:
 
     # cd /fuzz

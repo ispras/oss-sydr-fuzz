@@ -20,15 +20,11 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-poco /bin/bash
 
-### JSON fuzzing
-
-Copy initial seed corpus to `/fuzz` directory:
-
-    # cp -r /corpus_json /fuzz/corpus_json
-
 Change directory to `/fuzz`:
 
     # cd /fuzz
+
+### JSON fuzzing
 
 Run hybrid fuzzing:
 
@@ -36,20 +32,12 @@ Run hybrid fuzzing:
 
 Collect coverage:
 
-    # mkdir /fuzz/coverage_json && cd /fuzz/coverage_json
-    # for filename in /fuzz/corpus_json/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /json_parser_cov "$filename"; done
+    # mkdir /fuzz/json_parser-out/coverage && cd /fuzz/json_parser-out/coverage
+    # for filename in /fuzz/json_parser-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /json_parser_cov "$filename"; done
     # llvm-profdata merge  *.profraw -o cov.profdata
     # llvm-cov report /json_parser_cov -instr-profile=cov.profdata
 
 ### XML fuzzing
-
-Copy initial seed corpus to `/fuzz` directory:
-
-    # cp -r /corpus_xml /fuzz/corpus_xml
-
-Change directory to `/fuzz`:
-
-    # cd /fuzz
 
 Run hybrid fuzzing:
 
@@ -57,7 +45,7 @@ Run hybrid fuzzing:
 
 Collect coverage:
 
-    # mkdir /fuzz/coverage_xml && cd /fuzz/coverage_xml
-    # for filename in /fuzz/corpus_xml/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /xml_parser_cov "$filename"; done
+    # mkdir /fuzz/xml_parser-out/coverage && cd /fuzz/xml_parser-out/coverage
+    # for filename in /fuzz/xml_parser-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /xml_parser_cov "$filename"; done
     # llvm-profdata merge  *.profraw -o cov.profdata
     # llvm-cov report /xml_parser_cov -instr-profile=cov.profdata

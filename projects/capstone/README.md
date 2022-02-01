@@ -17,10 +17,6 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-capstone /bin/bash
 
-Copy initial seed corpus to `/fuzz` directory:
-
-    # cp -r /corpusnext /fuzz/corpus
-
 Change directory to `/fuzz`:
 
     # cd /fuzz

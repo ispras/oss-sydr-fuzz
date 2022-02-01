@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/x509"
-args = "-dict=/out/x509.dict /fuzz/corpus_x509"
+args = "-dict=/out/x509.dict /openssl/fuzz/corpora/x509"

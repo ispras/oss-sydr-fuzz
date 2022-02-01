@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/cjson_read_fuzzer"
-args = "-dict=/cjson/fuzzing/json.dict /fuzz/corpus"
+args = "-dict=/cjson/fuzzing/json.dict /corpus"

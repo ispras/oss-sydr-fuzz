@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/out/simple_query_fuzzer"
-args = "-jobs=4 -dict=sql.dict /fuzz/corpus -artifact_prefix=/fuzz/"
+args = "-jobs=4 -dict=sql.dict /corpus"

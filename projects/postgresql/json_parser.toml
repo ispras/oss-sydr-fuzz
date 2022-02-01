@@ -21,4 +21,4 @@ jobs = 4
 
 [libfuzzer]
 path = "/out/json_parser_fuzzer"
-args = "-jobs=2 /fuzz/corpus -artifact_prefix=/fuzz/"
+args = "-jobs=2"

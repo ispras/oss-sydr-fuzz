@@ -13,11 +13,13 @@
 # limitations under the License.
 #
 ################################################################################
+
 exit-on-time = 7200
+
 [sydr]
 args = "-l debug --invert-n 1024 --app-timeout 60"
 target = "/openvswitch_sydr/json_parser_target @@"
 
 [libfuzzer]
 path = "/openvswitch_fuzzers/json_parser_target"
-args = "-dict=/openvswitch_fuzzers/json.dict /fuzz/corpus_json_parser"
+args = "-dict=/openvswitch_fuzzers/json.dict /openvswitch_fuzzers/corpus_json_parser"

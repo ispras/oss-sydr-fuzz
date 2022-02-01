@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/xml_parse_fuzzer_UTF-16BE"
-args = "-dict=/xml_parse_fuzzer_UTF-16BE.dict /fuzz/corpus"
+args = "-dict=/xml_parse_fuzzer_UTF-16BE.dict"
