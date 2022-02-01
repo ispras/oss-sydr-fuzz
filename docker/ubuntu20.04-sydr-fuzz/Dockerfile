@@ -47,14 +47,13 @@ RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd 
 
 ENV LLVM_CONFIG=llvm-config
 ENV AFL_SKIP_CPUFREQ=1
+ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
     git checkout a790bf6cc2bb63f0659d8c96b46f5f4db2f9d4bc && \
     export CC=gcc-10 && export CXX=g++-10 && make clean && \
     make distrib -j 200 && make install -j 200 && make clean && cd .. && rm -rf AFLplusplus
-
-RUN sysctl -w kernel.core_pattern=core
 
 ENV PATH=$PATH:/fuzz/sydr
 
