@@ -8,7 +8,9 @@ RUN apt-get update && \
     apt-get -y install build-essential gcc-multilib g++-multilib git \
                        wget curl unzip clang-11 vim lsb-release gdb zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
-                       gcc-10-plugin-dev gcc-10-multilib
+                       gcc-10-plugin-dev gcc-10-multilib python3 python3-pip
+
+RUN python3 -m pip install scipy numpy
 
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
     mkdir /cmake && \
