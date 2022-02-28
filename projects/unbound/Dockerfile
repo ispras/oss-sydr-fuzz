@@ -44,11 +44,3 @@ RUN ./build.sh
 WORKDIR /
 RUN wget  --directory-prefix / https://github.com/jsha/unbound/raw/fuzzing-corpora/testdata/parse_packet_fuzzer_seed_corpus.zip && \
 unzip parse_packet_fuzzer_seed_corpus.zip && mv testdata corpus_packet && rm parse_packet_fuzzer_seed_corpus.zip
-RUN wget  --directory-prefix / https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_1_fuzzer_seed_corpus.zip && \
-unzip fuzz_1_fuzzer_seed_corpus.zip && mv fuzz_1_fuzzer_seed_corpus corpus_fuzz_1 && rm fuzz_1_fuzzer_seed_corpus.zip
-RUN wget  --directory-prefix / https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_2_fuzzer_seed_corpus.zip && \
-unzip fuzz_2_fuzzer_seed_corpus.zip && mv fuzz_2_fuzzer_seed_corpus corpus_fuzz_2 && rm fuzz_2_fuzzer_seed_corpus.zip
-RUN wget  --directory-prefix / https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_3_fuzzer_seed_corpus.zip && \
-unzip fuzz_3_fuzzer_seed_corpus.zip && mv fuzz_3_fuzzer_seed_corpus corpus_fuzz_3 && rm fuzz_3_fuzzer_seed_corpus.zip
-RUN wget  --directory-prefix / https://github.com/luisx41/fuzzing-corpus/raw/master/projects/unbound/fuzz_4_fuzzer_seed_corpus.zip && \
-unzip fuzz_4_fuzzer_seed_corpus.zip && mv fuzz_4_fuzzer_seed_corpus corpus_fuzz_4 && rm fuzz_4_fuzzer_seed_corpus.zip
