@@ -28,7 +28,7 @@ RUN git clone https://github.com/NLnetLabs/unbound unbound
 WORKDIR unbound
 
 # Checkout commit.
-RUN git checkout 4e492725e1764c579ef3bef2bbcddffc5159629f
+RUN git checkout 7749d98a14359200d6d37028f27f07fd823623a1
 
 COPY parse_packet_fuzzer.c .
 
