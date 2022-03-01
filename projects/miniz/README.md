@@ -10,7 +10,7 @@ compressed data format specification standards.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/poco` directory:
+Unzip Sydr (`sydr.zip`) in `projects/miniz` directory:
 
     $ unzip sydr.zip
 
@@ -24,49 +24,33 @@ Change directory to `/fuzz`:
 
 ### Checksum fuzzing
 
-Run hybrid fuzzing:
-
     # sydr-fuzz -c checksum.toml run
 
 ### Compress fuzzing
-
-Run hybrid fuzzing:
 
     # sydr-fuzz -c compress.toml run
 
 ### Flush fuzzing
 
-Run hybrid fuzzing:
-
     # sydr-fuzz -c flush.toml run
 
 ### Large fuzzing
-
-Run hybrid fuzzing:
 
     # sydr-fuzz -c large.toml run
 
 ### Small fuzzing
 
-Run hybrid fuzzing:
-
     # sydr-fuzz -c small.toml run
 
 ### Uncompress2 fuzzing
-
-Run hybrid fuzzing:
 
     # sydr-fuzz -c uncompress2.toml run
 
 ### Uncompress fuzzing
 
-Run hybrid fuzzing:
-
     # sydr-fuzz -c uncompress.toml run
 
 
 ### Zip fuzzing
-
-Run hybrid fuzzing:
 
     # sydr-fuzz -c zip.toml run

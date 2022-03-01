@@ -19,13 +19,14 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 
-RUN apt-get update && \
-    apt-get install -y cmake
-
 RUN git clone https://github.com/richgel999/miniz.git
 
 WORKDIR miniz
+
+RUN git checkout 5a38f5564a092462817b97014f4477c8f0783f8f
+
 COPY build.sh ./
 
 RUN ./build.sh
 
+WORKDIR /

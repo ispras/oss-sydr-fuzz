@@ -26,15 +26,13 @@ cmake .. -DAMALGAMATE_SOURCES=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_FUZZERS=ON  \
 make -j$(nproc)
 cd ..
 
-CXX="clang++"
-CXXFLAGS="-g -fsanitize=fuzzer,address,undefined"
 CC="clang"
 CFLAGS="-g -fsanitize=fuzzer,address,undefined"
 
 for f in $(find . -name '*_fuzzer.c'); do
     b=$(basename -s .c $f)
     $CC $CFLAGS -Ibuild/amalgamation $f -c -o /tmp/$b.o
-    $CXX $CXXFLAGS -Ibuild/amalgamation /tmp/$b.o -o /fuzzers/$b  ./build/libminiz.a
+    $CC $CFLAGS -Ibuild/amalgamation /tmp/$b.o -o /fuzzers/$b  ./build/libminiz.a
     rm -f /tmp/$b.o
 done
 
@@ -45,7 +43,8 @@ mkdir /sydr
 rm -rf build && mkdir build
 cd build
 cmake .. -DAMALGAMATE_SOURCES=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_FUZZERS=ON  \
--DCMAKE_CXX_FLAGS="-std=c++11 -g"
+-DCMAKE_C_COMPILER=clang \
+-DCMAKE_C_FLAGS="-g"
 make -j$(nproc)
 
 for f in $(find ../bin -name '*_fuzzer'); do
