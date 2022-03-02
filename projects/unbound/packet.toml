@@ -23,3 +23,6 @@ target = "/unbound_sydr/parse_packet_sydr @@"
 [libfuzzer]
 path = "/unbound_fuzzers/parse_packet_fuzzer"
 args = "-jobs=1000 -workers=1 -rss_limit_mb=16000 /corpus_packet"
+
+[cov]
+target = "/unbound_cov/parse_packet_cov @@"

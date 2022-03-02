@@ -21,3 +21,6 @@ target = "/sydr/stringprintf_fuzz @@"
 [libfuzzer]
 path = "/fuzzer/stringprintf_fuzz"
 args = "-rss_limit_mb=8192"
+
+[cov]
+target = "/coverage/stringprintf_fuzz @@"

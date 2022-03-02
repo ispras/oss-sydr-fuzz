@@ -21,3 +21,6 @@ target = "/sydr/parseURI_fuzz @@"
 [libfuzzer]
 path = "/fuzzer/parseURI_fuzz"
 args = "-rss_limit_mb=8192"
+
+[cov]
+target = "/coverage/parseURI_fuzz @@"

@@ -23,3 +23,6 @@ target = "/openvswitch_sydr/odp_target @@"
 [libfuzzer]
 path = "/openvswitch_fuzzers/odp_target"
 args = "-dict=/openvswitch_fuzzers/odp.dict"
+
+[cov]
+target = "/openvswitch_cov/odp_target @@"

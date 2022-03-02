@@ -21,3 +21,6 @@ target = "/xml_parser_sydr @@"
 [libfuzzer]
 path = "/xml_parser_fuzzer"
 args = "/corpus_xml"
+
+[cov]
+target = "/xml_parser_cov @@"

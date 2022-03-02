@@ -21,3 +21,6 @@ target = "/sydr/arg_def_case_fuzz @@"
 [libfuzzer]
 path = "/fuzzer/arg_def_case_fuzz"
 args = "-rss_limit_mb=8192"
+
+[cov]
+target = "/coverage/arg_def_case_fuzz @@"

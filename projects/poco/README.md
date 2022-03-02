@@ -30,12 +30,9 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c json_parser.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/json_parser-out/coverage && cd /fuzz/json_parser-out/coverage
-    # for filename in /fuzz/json_parser-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /json_parser_cov "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /json_parser_cov -instr-profile=cov.profdata
+    # sydr-fuzz -c json_parser.toml cov-report
 
 ### XML fuzzing
 
@@ -43,9 +40,6 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c xml_parser.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/xml_parser-out/coverage && cd /fuzz/xml_parser-out/coverage
-    # for filename in /fuzz/xml_parser-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /xml_parser_cov "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /xml_parser_cov -instr-profile=cov.profdata
+    # sydr-fuzz -c xml_parser.toml cov-report
