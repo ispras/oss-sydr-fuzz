@@ -33,6 +33,7 @@ external repositories.
 * lcms
 * libcbor
 * libjpeg-turbo
+* miniz
 * openssl
 * openvswitch
 * poco
