@@ -65,6 +65,8 @@ Feel free to support new fuzz targets. The workflow is following:
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
+* unbound:
+    * <https://github.com/NLnetLabs/unbound/issues/637>
 * xlnt:
     * <https://github.com/tfussell/xlnt/issues/592>
     * <https://github.com/tfussell/xlnt/issues/593>
