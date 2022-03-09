@@ -28,6 +28,7 @@ external repositories.
 * capstone
 * cjson
 * expat
+* fmt
 * freeimage
 * image-rs
 * lcms

@@ -19,9 +19,6 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 
-# Install build dependencies.
-RUN apt-get update && apt-get install -y ninja-build
-
 RUN git clone  https://github.com/fmtlib/fmt.git
 
 WORKDIR fmt

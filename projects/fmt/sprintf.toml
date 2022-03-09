@@ -17,10 +17,10 @@ exit-on-time = 7200
 
 [sydr]
 args = "-l debug -s 90 --app-timeout 180 -m 8192"
-target = "/fmt/build/sydr/fuzzer_sprintf @@"
+target = "/fmt/sydr/fuzzer_sprintf @@"
 
 [libfuzzer]
-path = "/fmt/build/fuzzers/fuzzer_sprintf"
+path = "/fmt/fuzzers/fuzzer_sprintf"
 
 [cov]
-target = "/fmt/build/cov/fuzzer_sprintf @@"
+target = "/fmt/cov/fuzzer_sprintf @@"

@@ -22,9 +22,6 @@
 #done
 
 mkdir build
-mkdir fuzzers
-mkdir sydr
-mkdir cov
 cd build
 
 # use C++ 14 instead of 17, because even if clang is
@@ -45,9 +42,11 @@ cmake .. \
 -DFMT_FUZZ_LINKMAIN=Off \
 -DFMT_FUZZ_LDFLAGS="$(find /usr/lib/clang -name libclang_rt.fuzzer-x86_64.a)"
 
-cmake --build .
+CMAKE_BUILD_PARALLEL_LEVEL=6 cmake --build .
 
-cp -r bin ./fuzzers
+cp -r bin ../fuzzers
+
+cd .. && rm -rf ./build && mkdir build && cd ./build
 
 # Sydr
 cmake .. \
@@ -63,9 +62,11 @@ cmake .. \
 -DFMT_FUZZ=On \
 -DFMT_FUZZ_LINKMAIN=ON
 
-cmake --build .
+CMAKE_BUILD_PARALLEL_LEVEL=6 cmake --build .
 
-cp -r bin ./sydr
+cp -r bin ../sydr
+
+cd .. && rm -rf ./build && mkdir build && cd ./build
 
 # Coverage
 cmake .. \
@@ -81,6 +82,6 @@ cmake .. \
 -DFMT_FUZZ=On \
 -DFMT_FUZZ_LINKMAIN=ON
 
-cmake --build .
+CMAKE_BUILD_PARALLEL_LEVEL=6 cmake --build .
 
-cp -r bin ./cov
+cp -r bin ../cov

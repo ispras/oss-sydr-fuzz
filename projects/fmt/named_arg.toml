@@ -17,10 +17,10 @@ exit-on-time = 7200
 
 [sydr]
 args = "-l debug -s 90 --app-timeout 180 -m 8192"
-target = "/fmt/build/sydr/fuzzer_named_arg @@"
+target = "/fmt/sydr/fuzzer_named_arg @@"
 
 [libfuzzer]
-path = "/fmt/build/fuzzers/fuzzer_named_arg"
+path = "/fmt/fuzzers/fuzzer_named_arg"
 
 [cov]
-target = "/fmt/build/cov/fuzzer_named_arg @@"
+target = "/fmt/cov/fuzzer_named_arg @@"
