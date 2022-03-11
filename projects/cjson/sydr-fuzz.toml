@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --symbolize-address --solving-timeout 30 --no-update-cache -j 2 --app-timeout 300"
+args = "-l debug --symbolize-address --solving-timeout 30 -j 2 --app-timeout 300"
 target = "/cjson_read_sydr @@"
 jobs = 2
 
