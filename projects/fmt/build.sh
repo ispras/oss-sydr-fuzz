@@ -42,7 +42,7 @@ cmake .. \
 -DFMT_FUZZ_LINKMAIN=Off \
 -DFMT_FUZZ_LDFLAGS="$(find /usr/lib/clang -name libclang_rt.fuzzer-x86_64.a)"
 
-CMAKE_BUILD_PARALLEL_LEVEL=6 cmake --build .
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 cp -r bin ../fuzzers
 
@@ -62,7 +62,7 @@ cmake .. \
 -DFMT_FUZZ=On \
 -DFMT_FUZZ_LINKMAIN=ON
 
-CMAKE_BUILD_PARALLEL_LEVEL=6 cmake --build .
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 cp -r bin ../sydr
 
@@ -82,6 +82,6 @@ cmake .. \
 -DFMT_FUZZ=On \
 -DFMT_FUZZ_LINKMAIN=ON
 
-CMAKE_BUILD_PARALLEL_LEVEL=6 cmake --build .
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 cp -r bin ../cov
