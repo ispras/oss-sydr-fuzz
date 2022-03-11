@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --no-update-cache -j 2 -n 512 --app-timeout 180"
+args = "-l debug -j 2 -n 512 --app-timeout 180"
 target = "/transform_sydr @@"
 jobs = 2
 
