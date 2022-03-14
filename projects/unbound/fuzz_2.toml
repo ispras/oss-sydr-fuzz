@@ -23,3 +23,6 @@ target = "/unbound_sydr/fuzz_2_sydr @@"
 [libfuzzer]
 path = "/unbound_fuzzers/fuzz_2_fuzzer"
 args = "-jobs=1000 -workers=1 -rss_limit_mb=16000"
+
+[cov]
+target = "/unbound_cov/fuzz_2_cov @@"

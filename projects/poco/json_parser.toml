@@ -21,3 +21,6 @@ target = "/json_parser_sydr @@"
 [libfuzzer]
 path = "/json_parser_fuzzer"
 args = "-dict=json.dict /corpus_json"
+
+[cov]
+target = "/json_parser_cov @@"

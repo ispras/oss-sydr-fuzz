@@ -21,3 +21,6 @@ target = "/sydr/base64_fuzz @@"
 [libfuzzer]
 path = "/fuzzer/base64_fuzz"
 args = "-rss_limit_mb=16384"
+
+[cov]
+target = "/coverage/base64_fuzz @@"

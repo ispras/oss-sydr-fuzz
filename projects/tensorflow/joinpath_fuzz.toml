@@ -22,3 +22,6 @@ target = "/sydr/joinpath_fuzz @@"
 [libfuzzer]
 path = "/fuzzer/joinpath_fuzz"
 args = "-rss_limit_mb=8192"
+
+[cov]
+target = "/coverage/joinpath_fuzz @@"

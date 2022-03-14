@@ -27,12 +27,9 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c flow_extract.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/flow_extract-out/coverage && cd /fuzz/flow_extract-out/coverage
-    # for filename in /fuzz/flow_extract-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /openvswitch_cov/flow_extract_target "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /openvswitch_cov/flow_extract_target -instr-profile=cov.profdata
+    # sydr-fuzz -c flow_extract.toml cov-report
 
 ### Json_parser fuzzing
 
@@ -40,12 +37,9 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c json_parser.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/json_parser-out/coverage && cd /fuzz/json_parser-out/coverage
-    # for filename in /fuzz/json_parser-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /openvswitch_cov/json_parser_target "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /openvswitch_cov/json_parser_target -instr-profile=cov.profdata
+    # sydr-fuzz -c json_parser.toml cov-report
 
 ### Ofp_print fuzzing
 
@@ -53,12 +47,9 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c ofp_print.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/ofp_print-out/coverage && cd /fuzz/ofp_print-out/coverage
-    # for filename in /fuzz/ofp_print-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /openvswitch_cov/ofp_print_target "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /openvswitch_cov/ofp_print_target -instr-profile=cov.profdata
+    # sydr-fuzz -c ofp_print.toml cov-report
 
 ### Odp fuzzing
 
@@ -66,12 +57,9 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c odp.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/odp-out/coverage && cd /fuzz/odp-out/coverage
-    # for filename in /fuzz/odp-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /openvswitch_cov/odp_target "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /openvswitch_cov/odp_target -instr-profile=cov.profdata
+    # sydr-fuzz -c odp.toml cov-report
 
 ### Ofctl_parse fuzzing
 
@@ -79,12 +67,9 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c ofctl_parse.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/ofctl_parse-out/coverage && cd /fuzz/ofctl_parse-out/coverage
-    # for filename in /fuzz/ofctl_parse-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /openvswitch_cov/ofctl_parse_target "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /openvswitch_cov/ofctl_parse_target -instr-profile=cov.profdata
+    # sydr-fuzz -c ofctl_parse.toml cov-report
 
 ### Miniflow fuzzing
 
@@ -92,9 +77,6 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c miniflow.toml run
 
-Collect coverage:
+Collect and report coverage:
 
-    # mkdir /fuzz/miniflow-out/coverage && cd /fuzz/miniflow-out/coverage
-    # for filename in /fuzz/miniflow-out/corpus/*; do LLVM_PROFILE_FILE="cov_%p.profraw" /openvswitch_cov/miniflow_target "$filename"; done
-    # llvm-profdata merge  *.profraw -o cov.profdata
-    # llvm-cov report /openvswitch_cov/miniflow_target -instr-profile=cov.profdata
+    # sydr-fuzz -c miniflow.toml cov-report
