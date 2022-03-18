@@ -25,6 +25,6 @@ ADD miniz-2.0.8 /miniz
 
 WORKDIR miniz
 
-RUN make -j$(nproc) && ./build.sh
+RUN ./build.sh
 
 WORKDIR /
