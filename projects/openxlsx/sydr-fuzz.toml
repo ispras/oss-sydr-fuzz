@@ -20,4 +20,4 @@ target = "/sydr @@"
 
 [libfuzzer]
 path = "/fuzzer"
-args = "-jobs=1000 -workers=1 -detect_leaks=0 -dict=xlst.dict /fuzz/corpus"
+args = "-detect_leaks=0 -dict=xlst.dict"
