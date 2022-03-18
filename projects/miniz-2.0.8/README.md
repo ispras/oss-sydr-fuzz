@@ -10,7 +10,7 @@ compressed data format specification standards.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/miniz` directory:
+Unzip Sydr (`sydr.zip`) in `projects/miniz-2.0.8` directory:
 
     $ unzip sydr.zip
 
@@ -49,7 +49,6 @@ Change directory to `/fuzz`:
 ### Uncompress fuzzing
 
     # sydr-fuzz -c uncompress.toml run
-
 
 ### Zip fuzzing
 
