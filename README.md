@@ -35,6 +35,7 @@ external repositories.
 * libcbor
 * libjpeg-turbo
 * miniz
+* miniz-2.0.8
 * openssl
 * openvswitch
 * poco
