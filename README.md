@@ -38,6 +38,7 @@ external repositories.
 * miniz-2.0.8
 * openssl
 * openvswitch
+* openxlsx
 * poco
 * postgresql
 * rapidjson
