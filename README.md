@@ -79,6 +79,9 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/tfussell/xlnt/issues/597>
     * <https://github.com/tfussell/xlnt/issues/598>
     * <https://github.com/tfussell/xlnt/issues/616>
+* OpenXLSX:
+    * <https://github.com/troldal/OpenXLSX/issues/140>
+    * <https://github.com/troldal/OpenXLSX/issues/139>
 
 ## Cite Us
 
