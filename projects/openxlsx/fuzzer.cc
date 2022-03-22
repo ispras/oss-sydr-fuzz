@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 ISP RAS
+/* Copyright (C) 2022 ISP RAS
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -13,8 +13,8 @@ limitations under the License.
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
-#include<cstring>
-#include<unistd.h>
+#include <cstring>
+#include <unistd.h>
 
 #include <OpenXLSX.hpp>
 #include <zippy.hpp>
@@ -30,7 +30,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     write(fd, data, size);
     close(fd);
 
-    std::string fname(&name[0], strlen(name));
+    std::string fname(name, strlen(name));
     OpenXLSX::XLDocument doc;
     try
     {

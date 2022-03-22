@@ -1,4 +1,4 @@
-# Copyright (C) 2021 ISP RAS
+# Copyright (C) 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,11 @@ MAINTAINER Andrey Fedotov
 
 # Clone target from GitHub.
 RUN git clone  https://github.com/troldal/OpenXLSX.git openxlsx
+
 WORKDIR /openxlsx
+
+# Checkout commit
+RUN git checkout 3eb9c748e3ecd865203fb9946ea86d3c02b3f7d9
 
 # Copy build script and targets.
 COPY build.sh \
@@ -32,3 +36,4 @@ COPY build.sh \
 # Build fuzz targets.
 RUN ../build.sh
 
+WORKDIR /

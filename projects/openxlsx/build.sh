@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-# Copyright (C) 2021 ISP RAS
+# Copyright (C) 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ cd build
 cmake -DCMAKE_CXX_COMPILER=clang++ \
       -DCMAKE_CXX_FLAGS="-DNDEBUG -g -fsanitize=fuzzer-no-link,address" \
       ..
-cmake --build . --target OpenXLSX --config Release
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . --target OpenXLSX --config Release
 
 CXX="clang++"
 CXXFLAGS="-g -fsanitize=fuzzer,address"
@@ -41,7 +41,7 @@ cd .. && rm -rf build && mkdir build && cd build
 cmake -DCMAKE_CXX_COMPILER=clang++ \
       -DCMAKE_CXX_FLAGS=-g \
       ..
-cmake --build . --target OpenXLSX --config Release
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . --target OpenXLSX --config Release
 CXX="clang++"
 CXXFLAGS="-g"
 
