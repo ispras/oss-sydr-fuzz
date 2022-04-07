@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 # Copyright 2016 Google Inc.
-#
+# ISP RAS modifications copyright
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 ################################################################################
+
+# Build targets for libfuzzer
 
 export CC=clang
 export CXX=clang++
@@ -47,10 +49,10 @@ for f in $(find $SRC -name '*_fuzzer.c'); do
     rm -f /tmp/$b.o=
 done
 
+# Build targets for Sydr
+
 make clean
 
-export CC=clang
-export CXX=clang++
 export CFLAGS="-g -fPIC"
 export CXXFLAGS="-g -fPIC"
 
@@ -69,6 +71,33 @@ done
 
 for f in $(find $SRC -name '*_fuzzer.c'); do
     b=$(basename -s .c $f)_sydr
+    $CC $CFLAGS -I. $f -c -o /tmp/$b.o
+    $CXX $CXXFLAGS -o /$b /tmp/$b.o main.o ./libz.a
+    rm -f /tmp/$b.o=
+done
+
+# Build targets for llvm-cov
+
+make clean
+
+export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+
+./configure
+make -j$(nproc) clean
+make -j$(nproc) all
+
+SRC="."
+
+$CC $CFLAGS -I. main.c -c -o main.o
+
+for f in $(find $SRC -name '*_fuzzer.cc'); do
+    b=$(basename -s .cc $f)_cov
+    $CXX $CXXFLAGS -std=c++11 -I. $f -o /$b main.o ./libz.a
+done
+
+for f in $(find $SRC -name '*_fuzzer.c'); do
+    b=$(basename -s .c $f)_cov
     $CC $CFLAGS -I. $f -c -o /tmp/$b.o
     $CXX $CXXFLAGS -o /$b /tmp/$b.o main.o ./libz.a
     rm -f /tmp/$b.o=
