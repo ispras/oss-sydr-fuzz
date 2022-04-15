@@ -28,7 +28,7 @@ RUN git clone https://github.com/libjpeg-turbo/libjpeg-turbo
 WORKDIR libjpeg-turbo
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout d401d6251412a2985810ffaffb90b448a6ee12a9
+RUN git checkout df3c3dcb9b0b24d78f9e58e28c8b509a49967ba8
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
 COPY build.sh compress_sydr.cc decompress_sydr.cc transform_sydr.cc ./fuzz/
