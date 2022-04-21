@@ -23,3 +23,8 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz run
+
+Get LCOV HTML coverage report:
+
+    # sydr-fuzz cov-export -- -format=lcov > load.lcov
+    # genhtml -o load-html load.lcov

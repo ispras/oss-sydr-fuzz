@@ -48,3 +48,19 @@ CXXFLAGS="-g"
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o load_sydr.o -c ../load_sydr.cc
 
 $CXX $CXXFLAGS load_sydr.o ./source/libxlnt.a  -o /load_sydr
+
+# Build cov targets.
+cmake -DSTATIC=ON -D TESTS=OFF \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" \
+    ..
+
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
+
+CXX="clang++"
+CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+LDFLAGS="-fprofile-instr-generate"
+
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o load_cov.o -c ../load_sydr.cc
+
+$CXX $CXXFLAGS load_cov.o ./source/libxlnt.a  -o /load_cov

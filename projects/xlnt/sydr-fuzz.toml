@@ -22,3 +22,6 @@ jobs = 2
 [libfuzzer]
 path = "/load_fuzzer"
 args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /corpus"
+
+[cov]
+target = "/load_cov @@"
