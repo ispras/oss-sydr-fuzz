@@ -48,6 +48,7 @@ external repositories.
 * tensorflow
 * unbound
 * xlnt
+* zlib
 
 ## Contributing
 
