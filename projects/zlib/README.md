@@ -1,6 +1,6 @@
 # zlib
 
-zlib is a C library used for data compression.
+zlib (zeta-lib) is a C Library used for data compress.
 
 ## Build Docker
 
@@ -24,8 +24,13 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c checksum_fuzzer.toml run
+    # sydr-fuzz -c checksum.toml run
 
 Collect and report coverage:
 
-    # sydr-fuzz -c checksum_fuzzer.toml cov-report
+    # sydr-fuzz -c checksum.toml cov-report
+
+Get LCOV HTML coverage report:
+
+    # sydr-fuzz -c checksum.toml cov-export -- -format=lcov > checksum.lcov
+    # genhtml -o checksum-html checksum.lcov
