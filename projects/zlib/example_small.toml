@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 [sydr]
 args = "-l debug -n 1024 --app-timeout 180"
-target = "/example_small_fuzzer @@"
+target = "/example_small_fuzzer_sydr @@"
 
 [libfuzzer]
 path = "/example_small_fuzzer"

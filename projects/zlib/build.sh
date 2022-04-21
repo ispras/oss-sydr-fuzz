@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 # Copyright 2016 Google Inc.
-# ISP RAS modifications copyright
+# Modifications copyright (C) 2022 ISP RAS
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -26,8 +26,7 @@ export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefi
 make -j$(nproc) clean
 make -j$(nproc) all
 
-export CC="clang"
-export CXX="clang++"
+
 export CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
