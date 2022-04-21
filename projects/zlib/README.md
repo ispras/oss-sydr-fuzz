@@ -1,6 +1,6 @@
 # zlib
 
-zlib (zeta-lib) is a C library used for data compression.
+zlib is a C library used for data compression.
 
 ## Build Docker
 
