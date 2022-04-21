@@ -27,15 +27,6 @@ WORKDIR /zlib
 RUN git checkout 21767c654d31d2dccdde4330529775c6c5fd5389
 
 COPY *.c* build.sh \
-          main.c \
-          checksum_fuzzer.c \
-          compress_fuzzer.c \
-          example_dict_fuzzer.c \
-          example_flush_fuzzer.c \
-          example_large_fuzzer.c \
-          example_small_fuzzer.c \
-          minigzip_fuzzer.c \
-          zlib_uncompress_fuzzer.cc \
          ./
 
 RUN ./build.sh
