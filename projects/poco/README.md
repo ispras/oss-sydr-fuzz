@@ -34,6 +34,11 @@ Collect and report coverage:
 
     # sydr-fuzz -c json_parser.toml cov-report
 
+Get LCOV HTML coverage report:
+
+    # sydr-fuzz -c json_parser.toml cov-export -- -format=lcov > json_parser.lcov
+    # genhtml -o json_parser-html json_parser.lcov
+
 ### XML fuzzing
 
 Run hybrid fuzzing:
@@ -43,3 +48,8 @@ Run hybrid fuzzing:
 Collect and report coverage:
 
     # sydr-fuzz -c xml_parser.toml cov-report
+
+Get LCOV HTML coverage report:
+
+    # sydr-fuzz -c xml_parser.toml cov-export -- -format=lcov > xml_parser.lcov
+    # genhtml -o xml_parser-html xml_parser.lcov
