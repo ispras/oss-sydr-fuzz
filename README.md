@@ -4,7 +4,7 @@ This repository is a fork of [OSS-Fuzz](https://github.com/google/oss-fuzz)
 project. OSS-Sydr-Fuzz contains open source software targets for sydr-fuzz that
 combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html)) with
 the power of dynamic symbolic execution
-([Sydr](https://www.ispras.ru/en/technologies/sydr/)).
+([Sydr](https://arxiv.org/abs/2011.09269)).
 
 ## Project Structure
 
