@@ -14,11 +14,11 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     }
     catch (const xlnt::exception& e)
     {
-        return 1;
+        return 0;
     }
     catch (const xml::parsing& e)
     {
-        return 1;
+        return 0;
     }
     return 0;
 }
