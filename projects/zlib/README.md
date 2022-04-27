@@ -47,3 +47,4 @@ Fuzz tagrets:
   * example_small
   * minigzip
   * zlib_uncompress
+  * zlib_uncompress2
