@@ -443,8 +443,11 @@ int file_uncompress(char  *file)
 }
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {
-  char *inFileName = "/tmp/minigzip_fuzzer.out";
-  char *outFileName = "/tmp/minigzip_fuzzer.out.gz";
+  char buf_for_mktemp[] = "/tmp/minigzip_fuzzer-XXXXXX";
+  char *inFileName = mktemp(buf_for_mktemp);
+  char outFileName[sizeof(buf_for_mktemp)+4];
+  strncpy(outFileName, inFileName, sizeof(outFileName));
+  strcat(outFileName, ".gz");
   char outmode[20];
   FILE *in;
   char buf[BUFLEN];
@@ -455,7 +458,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {
   if (dataLen < 1 || dataLen > kMaxSize)
     return 0;
 
-  in = fopen(inFileName, "w");
+  in = fopen(inFileName, "w+");
   if (fwrite(data, 1, (unsigned)dataLen, in) != dataLen)
     error("failed fwrite");
   if (fclose(in))
@@ -489,10 +492,13 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {
   file_compress(inFileName, outmode);
   file_uncompress(outFileName);
 
+  unlink(outFileName);
+
   /* Check that the uncompressed file matches the input data. */
   in = fopen(inFileName, "rb");
   if (in == NULL) {
     perror(inFileName);
+    unlink(inFileName);
     return 1;
   }
 
@@ -501,6 +507,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {
     int len = (int)fread(buf, 1, sizeof(buf), in);
     if (ferror(in)) {
       perror("fread");
+      unlink(inFileName);
       return 1;
     }
     if (len == 0)
@@ -513,5 +520,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {
     error("failed fclose");
 
   /* This function must return 0. */
+  unlink(inFileName);
   return 0;
 }
