@@ -8,7 +8,7 @@ libpng (Portable Network Graphics library) is a C Library for handling PNG image
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/zlib` directory:
+Unzip Sydr (`sydr.zip`) in `projects/libpng` directory:
 
     $ unzip sydr.zip
 
