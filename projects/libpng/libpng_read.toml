@@ -20,7 +20,7 @@ target = "/libpng_read_sydr @@"
 
 [libfuzzer]
 path = "/libpng_read_fuzzer"
-args = "/corpus"
+args = "/corpus -dict=png.dict"
 
 [cov]
 target = "/libpng_read_cov @@"
