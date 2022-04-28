@@ -24,6 +24,14 @@
 # 3. Build zlib alongside libpng
 ################################################################################
 
+# Disable logging via library build configuration control.
+cat scripts/pnglibconf.dfa | \
+  sed -e "s/option STDIO/option STDIO disabled/" \
+      -e "s/option WARNING /option WARNING disabled/" \
+      -e "s/option WRITE enables WRITE_INT_FUNCTIONS/option WRITE disabled/" \
+> scripts/pnglibconf.dfa.temp
+mv scripts/pnglibconf.dfa.temp scripts/pnglibconf.dfa
+
 # Build targets for libfuzzer
 
 export CC=clang
@@ -31,6 +39,7 @@ export CXX=clang++
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
+autoreconf -f -i
 ./configure
 make -j$(nproc) clean
 make -j$(nproc) all
@@ -40,9 +49,12 @@ export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,floa
 
 mkdir /corpus
 
-cp *.* /corpus
-
 SRC="."
+
+# add seed corpus.
+find $SRC/libpng -name "*.png" | grep -v crashers | \
+     xargs -I {} cp {} /corpus
+
 
 # build libpng_read_fuzzer.
 $CXX $CXXFLAGS -std=c++11 -I. \
@@ -61,8 +73,6 @@ export CXXFLAGS="-g -fPIC"
 make -j$(nproc) clean
 make -j$(nproc) all
 
-SRC="."
-
 $CC $CFLAGS -I. main.c -c -o main.o
 
 $CXX $CXXFLAGS -std=c++11 -I. \
@@ -80,8 +90,6 @@ export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 ./configure
 make -j$(nproc) clean
 make -j$(nproc) all
-
-SRC="."
 
 $CC $CFLAGS -I. main.c -c -o main.o
 
