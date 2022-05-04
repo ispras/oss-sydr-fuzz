@@ -458,7 +458,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {
   if (dataLen < 1 || dataLen > kMaxSize)
     return 0;
 
-  in = fopen(inFileName, "w+");
+  in = fopen(inFileName, "w");
   if (fwrite(data, 1, (unsigned)dataLen, in) != dataLen)
     error("failed fwrite");
   if (fclose(in))
