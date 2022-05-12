@@ -1,5 +1,4 @@
 #!/bin/bash -eu
-#!/bin/bash -eu
 # Copyright 2018 Google Inc.
 # Modifications copyright (C) 2021 ISP RAS
 #
