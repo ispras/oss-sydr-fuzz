@@ -19,8 +19,8 @@ args = "-l debug -n 1024 --app-timeout 180"
 target = "/out/sydr/annot_fuzzer_sydr @@"
 
 [libfuzzer]
-path = "/out/libfuzzer/annot_fuzzer @@S"
-args = "/out/corpus/annot_fuzzer_seed_corpus -dict=out/dict/annot_fuzzer.dict"
+path = "/out/libfuzzer/annot_fuzzer @@"
+args = "/out/libfuzzer/poppler_seed_corpus -dict=/out/libfuzzer/poppler.dict"
 
 [cov]
 target = "/out/cov/annot_fuzzer_cov @@"
