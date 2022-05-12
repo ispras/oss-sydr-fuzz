@@ -14,11 +14,14 @@
 #
 ################################################################################
 
+exit-on-time = 3600
+
 [sydr]
 args = "-l debug -n 1024 --app-timeout 60"
 target = "/sydr/status_fuzz @@"
 
 [libfuzzer]
+set_cover_merge=true
 path = "/fuzzer/status_fuzz"
 args = "-rss_limit_mb=8192"
 

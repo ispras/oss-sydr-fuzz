@@ -1,4 +1,5 @@
 #!/bin/bash -eu
+#!/bin/bash -eu
 # Copyright 2018 Google Inc.
 # Modifications copyright (C) 2021 ISP RAS
 #
@@ -23,6 +24,8 @@
 
 export LIB_FUZZING_ENGINE="/main.o"
 clang -g -c /main.c -o $LIB_FUZZING_ENGINE
+export CC=clang
+export CXX=clang++
 export CFLAGS="-g"
 export CXXFLAGS="-g"
 SANITIZERS=""
@@ -46,7 +49,7 @@ yes "" | ${PYTHON} configure.py
 
 mkdir /sydr
 
-declare -r EXTRA_FLAGS="\
+declare EXTRA_FLAGS="\
 $(
 for f in ${CFLAGS}; do
   echo "--conlyopt=${f}" "--linkopt=${f}"
@@ -54,19 +57,13 @@ done
 for f in ${CXXFLAGS}; do
     echo "--cxxopt=${f}" "--linkopt=${f}"
 done
-for f in ${SANITIZERS}; do
-    if [ "${f}" = "undefined" ]
-    then
-    echo "--linkopt=$(find $(llvm-config --libdir) -name libclang_rt.ubsan_standalone_cxx-x86_64.a | head -1)"
-    fi
-done
 )"
 
 sed -i -e 's/linkstatic/linkopts = \["\/main.o -ldl"\],\nlinkstatic/' tensorflow/security/fuzzing/tf_fuzzing.bzl
 # Determine all fuzz targets. To control what gets fuzzed with OSSFuzz, all
 # supported fuzzers are in `//tensorflow/security/fuzzing`.
 # Ignore fuzzers tagged with `no_oss` in opensource.
-declare -r FUZZERS=$(bazel query 'kind(cc_.*, tests(//tensorflow/security/fuzzing/...)) - attr(tags, no_oss, kind(cc_.*, tests(//tensorflow/security/fuzzing/...)))' | grep -v checkpoint_reader_fuzz)
+declare FUZZERS=$(bazel query 'kind(cc_.*, tests(//tensorflow/security/fuzzing/...)) - attr(tags, no_oss, kind(cc_.*, tests(//tensorflow/security/fuzzing/...)))' | grep -v checkpoint_reader_fuzz)
 # checkpoint_reader_fuzz seems out of date with the API
 
 # Build the fuzzer targets.
@@ -75,6 +72,7 @@ declare -r FUZZERS=$(bazel query 'kind(cc_.*, tests(//tensorflow/security/fuzzin
 # Pass in `--strip=never` to ensure coverage support.
 # Since we have `assert` in fuzzers, make sure `NDEBUG` is not defined
 bazel build \
+  --jobs=$(nproc) \
   --config=libc++ \
   --subcommands \
   ${EXTRA_FLAGS} \
@@ -92,28 +90,63 @@ for bazel_target in ${FUZZERS}; do
   cp ${bazel_location} /sydr/$fuzz_name
 done
 
-# For coverage, we need to remap source files to correspond to the Bazel build
-# paths. We also need to resolve all symlinks that Bazel creates.
-if [ "$SANITIZER" = "coverage" ]
-then
-  declare -r RSYNC_CMD="rsync -aLkR"
-  declare -r REMAP_PATH=/proc/self/cwd/
-  mkdir -p ${REMAP_PATH}
+echo "  write_to_bazelrc('import %workspace%/tools/bazel.rc')" >> configure.py
+yes "" | ./configure
 
-  # Sync existing code.
-  ${RSYNC_CMD} tensorflow/ ${REMAP_PATH}
+declare EXTRA_FLAGS="\
+$(
+for f in ${CFLAGS}; do
+  echo "--conlyopt=${f}" "--linkopt=${f}"
+done
+for f in ${CXXFLAGS}; do
+    echo "--cxxopt=${f}" "--linkopt=${f}"
+done
+)"
 
-  # Sync generated proto files.
-  ${RSYNC_CMD} ./bazel-out/k8-opt/bin/tensorflow/core/protobuf ${REMAP_PATH}
+declare FUZZERS=$(grep '^tf_ops_fuzz_target' tensorflow/core/kernels/fuzzing/BUILD | cut -d'"' -f2 | grep -v decode_base64)
 
-  # Sync external dependencies. We don't need to include `bazel-tensorflow`.
-  # Also, remove `external/org_tensorflow` which is a copy of the entire source
-  # code that Bazel creates. Not removing this would cause `rsync` to expand a
-  # symlink that ends up pointing to itself!
-  pushd bazel-tensorflow
-  [[ -e external/org_tensorflow ]] && unlink external/org_tensorflow
-  ${RSYNC_CMD} external/ ${REMAP_PATH}
-  popd
-fi
+cat >> tensorflow/core/kernels/fuzzing/tf_ops_fuzz_target_lib.bzl << END
+
+def cc_tf(name):
+    native.cc_test(
+        name = name + "_fuzz",
+        deps = [
+            "//tensorflow/core/kernels/fuzzing:fuzz_session",
+            "//tensorflow/core/kernels/fuzzing:" + name + "_fuzz_lib",
+            "//tensorflow/cc:cc_ops",
+            "//tensorflow/cc:scope",
+            "//tensorflow/core:core_cpu",
+        ]
+    )
+END
+
+cat >> tensorflow/core/kernels/fuzzing/BUILD << END
+
+load("//tensorflow/core/kernels/fuzzing:tf_ops_fuzz_target_lib.bzl", "cc_tf")
+
+END
+
+for fuzzer in ${FUZZERS}; do
+    echo cc_tf\(\"${fuzzer}\"\) >> tensorflow/core/kernels/fuzzing/BUILD
+done
+
+bazel build \
+  -k \
+  --jobs=$(nproc) \
+  --config=monolithic \
+  --dynamic_mode=off \
+  --subcommands \
+  ${EXTRA_FLAGS} \
+  --verbose_failures \
+  --strip=never \
+  --copt='-UNDEBUG' \
+  --define=framework_shared_object=false \
+  -- //tensorflow/core/kernels/fuzzing:all || true
+
+for fuzzer in ${FUZZERS}; do
+  fuzz_path="bazel-bin/tensorflow/core/kernels/fuzzing/${fuzzer}_fuzz"
+  cp ${fuzz_path} /sydr/${fuzzer}_fuzz
+done
+
 # Finally, make sure we don't accidentally run with stuff from the bazel cache.
 rm -f bazel-*

@@ -21,6 +21,7 @@ COPY main.c /
 COPY install_java.sh /usr/local/bin/
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        python \
         curl \
         rsync \
 	gdb \
@@ -33,7 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN python3 -m pip install numpy
 
 # Install Bazel through Bazelisk, which automatically fetches the latest Bazel version.
-ENV BAZELISK_VERSION 1.9.0
+ENV BAZELISK_VERSION=1.9.0
 RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v$BAZELISK_VERSION/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 
@@ -48,22 +49,18 @@ RUN curl -Lo /usr/bin/bazel \
     chmod +x /usr/bin/bazel
 
 # Setup the environment.
-ENV CC "clang"
-ENV CXX "clang++"
-ENV CCC "clang++"
+ENV TF_CPP_MIN_LOG_LEVEL=3
 
-ENV CFLAGS "-O1 -fno-omit-frame-pointer -gline-tables-only -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
-ENV CXXFLAGS_EXTRA "-stdlib=libc++"
-ENV CXXFLAGS "$CFLAGS $CXXFLAGS_EXTRA"
-
-ENV JAVA_HOME /usr/lib/jvm/java-15-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-15-openjdk-amd64
 # it fails after installing java due to jazzer env variables missing
 RUN install_java.sh || true
+
+# Tensorflow version is release 2.8
 
 WORKDIR /
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow
 WORKDIR /tensorflow
-RUN git checkout b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
+RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
 COPY build_fuzz.sh /
 
 RUN bash /build_fuzz.sh
@@ -72,8 +69,9 @@ RUN rm -rf tensorflow
 
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow
 WORKDIR /tensorflow
-RUN git checkout b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
+RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
 COPY build_sydr.sh /
+COPY fuzz_session.h /tensorflow/tensorflow/core/kernels/fuzzing/
 
 RUN bash /build_sydr.sh
 WORKDIR /
@@ -81,9 +79,9 @@ RUN rm -rf tensorflow
 
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow
 WORKDIR /tensorflow
-RUN git checkout b56e6db5e7cccfffa824bbc1b5e018c6cc413c21
+RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
 COPY build_cov.sh /
 
 RUN bash /build_cov.sh
-
-
+RUN cp -r tensorflow/core/kernels/fuzzing/corpus /
+RUN cp -r tensorflow/core/kernels/fuzzing/dictionaries /
