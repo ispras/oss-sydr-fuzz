@@ -209,8 +209,8 @@ if [ "$SANITIZER" != "memory" ]; then
     make -j$(nproc) poppler-glib
 fi
 
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 PREDEPS_LDFLAGS="-Wl,-Bdynamic -ldl -lm -lc -lz -pthread -lrt -lpthread"
 DEPS="freetype2 lcms2 libopenjp2"
@@ -277,7 +277,7 @@ for f in $fuzzers; do
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -fPIC \
         -I$SRC/poppler/qt5/src -I$SRC/poppler/build/qt5/src \
         $BUILD_CFLAGS \
-        $f -o $OUT/$fuzzer_name main.o \
+        $f -o $OUT/$fuzzer_name \
         $PREDEPS_LDFLAGS \
         $SRC/poppler/build/qt5/src/libpoppler-qt5.a \
         $SRC/poppler/build/cpp/libpoppler-cpp.a \
@@ -298,15 +298,6 @@ if [ ! -f "${OUT}/poppler.dict" ]; then
     exit 1
 fi
 
-OUT="/out"
+unzip $OUT/poppler_seed_corpus.zip
 
-mkdir -p $OUT/corpus
-mkdir -p $OUT/dict
-
-fuzzers=$(find $OUT -name "*_fuzzer")
-for f in $fuzzers; do
-  fuzzer_name=$(basename $f)
-  ln -sf $OUT/poppler_seed_corpus.zip $OUT/corpus/${fuzzer_name}_seed_corpus.zip
-  unzip $OUT/corpus/${fuzzer_name}_seed_corpus.zip
-  ln -sf $OUT/poppler.dict $OUT/dict/${fuzzer_name}.dict
-done
+rm $OUT/poppler_seed_corpus.zip
