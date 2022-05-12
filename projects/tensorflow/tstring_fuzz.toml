@@ -14,11 +14,14 @@
 #
 ################################################################################
 
+exit-on-time = 3600
+
 [sydr]
 args = "-l debug -n 1024 --app-timeout 60 --symbolize-address"
 target = "/sydr/tstring_fuzz @@"
 
 [libfuzzer]
+set_cover_merge=true
 path = "/fuzzer/tstring_fuzz"
 args = "-rss_limit_mb=8192"
 
