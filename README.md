@@ -92,6 +92,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/pytorch/pytorch/issues/77563>
     * <https://github.com/pytorch/pytorch/issues/77573>
     * <https://github.com/pytorch/pytorch/issues/77575>
+    * <https://github.com/pytorch/pytorch/pull/77557>
 
 ## Cite Us
 
