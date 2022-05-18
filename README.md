@@ -48,6 +48,7 @@ external repositories.
 * sqlite3
 * tarantool
 * tensorflow
+* tinyxml2
 * unbound
 * xlnt
 * zlib
@@ -88,6 +89,12 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/troldal/OpenXLSX/issues/139>
 * miniz-2.0.8 (pytorch third\_party):
     * <https://github.com/pytorch/pytorch/issues/74798>
+* PyTorch:
+    * <https://github.com/pytorch/pytorch/issues/77561>
+    * <https://github.com/pytorch/pytorch/issues/77563>
+    * <https://github.com/pytorch/pytorch/issues/77573>
+    * <https://github.com/pytorch/pytorch/issues/77575>
+    * <https://github.com/pytorch/pytorch/pull/77557>
 
 ## Cite Us
 
