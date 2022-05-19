@@ -15,11 +15,12 @@
 # limitations under the License.
 #
 ################################################################################
-WORK="/poppler"
-SRC=""
+WORK="/work/sydr"
+SRC="/src/sydr"
 OUT="/out/sydr"
 
 PREFIX=$WORK/prefix
+mkdir -p $WORK
 mkdir -p $PREFIX
 mkdir -p $OUT
 
@@ -32,7 +33,7 @@ export CXX=clang++
 export CFLAGS=""
 export CXXFLAGS=""
 
-SANITIZER="address undefined"
+SANITIZER=""
 
 BUILD=$WORK/build
 
@@ -224,16 +225,14 @@ NSS_STATIC_LIBS=`ls $SRC/nss-3.75/dist/Debug/lib/lib*.a`
 NSS_STATIC_LIBS="$NSS_STATIC_LIBS $NSS_STATIC_LIBS $NSS_STATIC_LIBS"
 BUILD_LDFLAGS="$BUILD_LDFLAGS $NSS_STATIC_LIBS"
 
-$CC $CFLAGS -I. main.c -c -o main.o
-
 fuzzers=$(find $SRC/poppler/cpp/tests/fuzzing/ -name "*_fuzzer.cc")
 
 for f in $fuzzers; do
-    fuzzer_name=$(basename $f .cc)_sydr
+    fuzzer_name=$(basename $f _fuzzer.cc)_sydr
 
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -I$SRC/poppler/cpp -I$SRC/poppler/build/cpp \
         $BUILD_CFLAGS \
-        $f -o $OUT/$fuzzer_name main.o \
+        $f -o $OUT/$fuzzer_name \
         $PREDEPS_LDFLAGS \
         $SRC/poppler/build/cpp/libpoppler-cpp.a \
         $SRC/poppler/build/libpoppler.a \
@@ -249,11 +248,11 @@ if [ "$SANITIZER" != "memory" ]; then
 
     fuzzers=$(find $SRC/poppler/glib/tests/fuzzing/ -name "*_fuzzer.cc")
     for f in $fuzzers; do
-        fuzzer_name=$(basename $f .cc)_sydr
+        fuzzer_name=$(basename $f _fuzzer.cc)_sydr
 
         $CXX $CXXFLAGS -std=c++11 -static-libgcc -I$SRC/poppler/glib -I$SRC/poppler/build/glib \
             $BUILD_CFLAGS \
-            $f -o $OUT/$fuzzer_name main.o \
+            $f -o $OUT/$fuzzer_name \
             $PREDEPS_LDFLAGS \
             $SRC/poppler/build/glib/libpoppler-glib.a \
             $SRC/poppler/build/cpp/libpoppler-cpp.a \
@@ -274,12 +273,12 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $NSS_STATIC_LIBS"
 
 fuzzers=$(find $SRC/poppler/qt5/tests/fuzzing/ -name "*_fuzzer.cc")
 for f in $fuzzers; do
-    fuzzer_name=$(basename $f .cc)_sydr
+    fuzzer_name=$(basename $f _fuzzer.cc)_sydr
 
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -fPIC \
         -I$SRC/poppler/qt5/src -I$SRC/poppler/build/qt5/src \
         $BUILD_CFLAGS \
-        $f -o $OUT/$fuzzer_name main.o \
+        $f -o $OUT/$fuzzer_name \
         $PREDEPS_LDFLAGS \
         $SRC/poppler/build/qt5/src/libpoppler-qt5.a \
         $SRC/poppler/build/cpp/libpoppler-cpp.a \

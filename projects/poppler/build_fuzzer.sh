@@ -15,11 +15,12 @@
 # limitations under the License.
 #
 ################################################################################
-WORK="/poppler"
-SRC=""
+WORK="/work/libfuzzer"
+SRC="/src/libfuzzer"
 OUT="/out/libfuzzer"
 
 PREFIX=$WORK/prefix
+mkdir -p $WORK
 mkdir -p $PREFIX
 mkdir -p $OUT
 
@@ -32,7 +33,7 @@ export CXX=clang++
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
-SANITIZER="address undefined"
+SANITIZER=""
 
 BUILD=$WORK/build
 
@@ -227,7 +228,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $NSS_STATIC_LIBS"
 fuzzers=$(find $SRC/poppler/cpp/tests/fuzzing/ -name "*_fuzzer.cc")
 
 for f in $fuzzers; do
-    fuzzer_name=$(basename $f .cc)
+    fuzzer_name=$(basename $f _fuzzer.cc)_fuzzer
 
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -I$SRC/poppler/cpp -I$SRC/poppler/build/cpp \
         $BUILD_CFLAGS \
@@ -247,7 +248,7 @@ if [ "$SANITIZER" != "memory" ]; then
 
     fuzzers=$(find $SRC/poppler/glib/tests/fuzzing/ -name "*_fuzzer.cc")
     for f in $fuzzers; do
-        fuzzer_name=$(basename $f .cc)_sydr
+        fuzzer_name=$(basename $f _fuzzer.cc)_fuzzer
 
         $CXX $CXXFLAGS -std=c++11 -static-libgcc -I$SRC/poppler/glib -I$SRC/poppler/build/glib \
             $BUILD_CFLAGS \
@@ -272,7 +273,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $NSS_STATIC_LIBS"
 
 fuzzers=$(find $SRC/poppler/qt5/tests/fuzzing/ -name "*_fuzzer.cc")
 for f in $fuzzers; do
-    fuzzer_name=$(basename $f .cc)
+    fuzzer_name=$(basename $f _fuzzer.cc)_fuzzer
 
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -fPIC \
         -I$SRC/poppler/qt5/src -I$SRC/poppler/build/qt5/src \
@@ -298,6 +299,8 @@ if [ ! -f "${OUT}/poppler.dict" ]; then
     exit 1
 fi
 
-unzip $OUT/poppler_seed_corpus.zip
+mkdir -p $OUT/corpus
+
+unzip $OUT/poppler_seed_corpus.zip -d $OUT/corpus
 
 rm $OUT/poppler_seed_corpus.zip
