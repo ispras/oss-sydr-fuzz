@@ -1,5 +1,4 @@
-# Copyright 2018 Google Inc.
-# Modifications copyright (C) 2021 ISP RAS
+# Copyright 2021 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,24 +14,10 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+[sydr]
+args = "-l debug -n 1024 --app-timeout 60"
+target = "/load_from_memory_tiff_sydr @@"
 
-# Set author of this docker container.
-MAINTAINER Andrey Fedotov
-
-# Install dependencies.
-RUN apt-get update && apt-get install -y subversion  autoconf automake libtool wget
-
-# Checkout FreeImage.
-RUN svn checkout -r 1903 https://svn.code.sf.net/p/freeimage/svn/ freeimage-svn
-
-WORKDIR /freeimage-svn/FreeImage/trunk/
-
-# Copy targets and build script.
-COPY build.sh ./
-COPY *_fuzzer.cc *_sydr.cc /
-
-# Run build script.
-RUN ./build.sh
-
-WORKDIR /
+[libfuzzer]
+path = "/load_from_memory_tiff_fuzzer"
+args = "-rss_limit_mb=8192"
