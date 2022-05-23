@@ -30,10 +30,6 @@ Minimize corpus:
 
     # sydr-fuzz -c load_from_memory.toml cmin
 
-Collect and report coverage:
-
-    # sydr-fuzz -c load_from_memory.toml cov-report
-
 ## Check Security Predicates
 
 Minimize corpus:
