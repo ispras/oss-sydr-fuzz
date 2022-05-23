@@ -68,6 +68,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
     * <https://sourceforge.net/p/freeimage/bugs/345/>
+    * <https://sourceforge.net/p/freeimage/bugs/347/>
 * miniz
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
