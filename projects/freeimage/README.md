@@ -26,7 +26,7 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c load_from_memory.toml run
 
-## Minimize corpus:
+## Minimize corpus
 
     # sydr-fuzz -c load_from_memory.toml cmin
 
