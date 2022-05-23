@@ -68,6 +68,19 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
     * <https://sourceforge.net/p/freeimage/bugs/345/>
+* miniz
+    * <https://github.com/richgel999/miniz/pull/238>
+* miniz-2.0.8 (pytorch third\_party):
+    * <https://github.com/pytorch/pytorch/issues/74798>
+* OpenXLSX:
+    * <https://github.com/troldal/OpenXLSX/issues/140>
+    * <https://github.com/troldal/OpenXLSX/issues/139>
+* PyTorch:
+    * <https://github.com/pytorch/pytorch/issues/77561>
+    * <https://github.com/pytorch/pytorch/issues/77563>
+    * <https://github.com/pytorch/pytorch/issues/77573>
+    * <https://github.com/pytorch/pytorch/issues/77575>
+    * <https://github.com/pytorch/pytorch/pull/77557>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
@@ -83,17 +96,6 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/tfussell/xlnt/issues/598>
     * <https://github.com/tfussell/xlnt/issues/616>
     * <https://github.com/tfussell/xlnt/issues/626>
-* OpenXLSX:
-    * <https://github.com/troldal/OpenXLSX/issues/140>
-    * <https://github.com/troldal/OpenXLSX/issues/139>
-* miniz-2.0.8 (pytorch third\_party):
-    * <https://github.com/pytorch/pytorch/issues/74798>
-* PyTorch:
-    * <https://github.com/pytorch/pytorch/issues/77561>
-    * <https://github.com/pytorch/pytorch/issues/77563>
-    * <https://github.com/pytorch/pytorch/issues/77573>
-    * <https://github.com/pytorch/pytorch/issues/77575>
-    * <https://github.com/pytorch/pytorch/pull/77557>
 
 ## Cite Us
 
