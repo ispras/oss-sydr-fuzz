@@ -30,6 +30,10 @@ $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_fuzzer
 
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_tiff_fuzzer
+
 cd -
 make clean
 CXX="clang++" CXXFLAGS="-g" make  -j$(nproc)
@@ -38,6 +42,10 @@ cd /
 $CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_sydr
+
+$CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_tiff_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_tiff_sydr
 
 cd -
 make clean
