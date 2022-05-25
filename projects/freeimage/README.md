@@ -26,6 +26,16 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c load_from_memory.toml run
 
+## Minimize corpus
+
+    # sydr-fuzz -c load_from_memory.toml cmin
+
+## Check Security Predicates
+
+Check security predicates on new corpus:
+
+    # sydr-fuzz -c load_from_memory.toml security
+
 ## Alternative Fuzz Targets
 
 FreeImage project has 2 fuzz targets.
@@ -33,6 +43,10 @@ FreeImage project has 2 fuzz targets.
 ### load_from_memory
 
     # sydr-fuzz -c load_from_memory.toml run
+
+### load_from_memory_tiff
+
+    # sydr-fuzz -c load_from_memory_tiff.toml run
 
 ### transform_combined_jpeg
 
