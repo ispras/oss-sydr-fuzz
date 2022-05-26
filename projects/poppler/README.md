@@ -39,9 +39,9 @@ Change directory to `/fuzz`:
   * qt_textbox
   * util
 
-### Fuzzing
+## Fuzzing
 
-## annot
+### annot
 
 Run hybrid fuzzing:
 
@@ -56,7 +56,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c annot.toml cov-export -- -format=lcov > annot.lcov
     # genhtml -o annot-html annot.lcov
 
-## doc_attr
+### doc_attr
 
 Run hybrid fuzzing:
 
@@ -71,7 +71,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c doc_attr.toml cov-export -- -format=lcov > doc_attr.lcov
     # genhtml -o doc_attr-html doc_attr.lcov
 
-## doc
+### doc
 
 Run hybrid fuzzing:
 
@@ -86,7 +86,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c doc.toml cov-export -- -format=lcov > doc.lcov
     # genhtml -o doc-html doc.lcov
 
-## find_text
+### find_text
 
 Run hybrid fuzzing:
 
@@ -101,7 +101,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c find_text.toml cov-export -- -format=lcov > find_text.lcov
     # genhtml -o find_text-html find_text.lcov
 
-## label
+### label
 
 Run hybrid fuzzing:
 
@@ -116,7 +116,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c label.toml cov-export -- -format=lcov > label.lcov
     # genhtml -o label-html label.lcov
 
-## page_label
+### page_label
 
 Run hybrid fuzzing:
 
@@ -131,7 +131,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c page_label.toml cov-export -- -format=lcov > page_label.lcov
     # genhtml -o page_label-html page_label.lcov
 
-## page_search
+### page_search
 
 Run hybrid fuzzing:
 
@@ -146,7 +146,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c page_search.toml cov-export -- -format=lcov > page_search.lcov
     # genhtml -o page_search-html page_search.lcov
 
-## pdf_draw
+### pdf_draw
 
 Run hybrid fuzzing:
 
@@ -161,7 +161,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c pdf_draw.toml cov-export -- -format=lcov > pdf_draw.lcov
     # genhtml -o pdf_draw-html pdf_draw.lcov
 
-## pdf_file
+### pdf_file
 
 Run hybrid fuzzing:
 
@@ -176,7 +176,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c pdf_file.toml cov-export -- -format=lcov > pdf_file.lcov
     # genhtml -o pdf_file-html pdf_file.lcov
 
-## pdf
+### pdf
 
 Run hybrid fuzzing:
 
@@ -191,7 +191,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c pdf.toml cov-export -- -format=lcov > pdf.lcov
     # genhtml -o pdf-html pdf.lcov
 
-## qt_annot
+### qt_annot
 
 Run hybrid fuzzing:
 
@@ -206,7 +206,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c qt_annot.toml cov-export -- -format=lcov > qt_annot.lcov
     # genhtml -o qt_annot-html qt_annot.lcov
 
-## qt_label
+### qt_label
 
 Run hybrid fuzzing:
 
@@ -221,7 +221,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c qt_label.toml cov-export -- -format=lcov > qt_label.lcov
     # genhtml -o qt_label-html qt_label.lcov
 
-## qt_pdf
+### qt_pdf
 
 Run hybrid fuzzing:
 
@@ -236,7 +236,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c qt_pdf.toml cov-export -- -format=lcov > qt_pdf.lcov
     # genhtml -o qt_pdf-html qt_pdf.lcov
 
-## qt_search
+### qt_search
 
 Run hybrid fuzzing:
 
@@ -251,7 +251,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c qt_search.toml cov-export -- -format=lcov > qt_search.lcov
     # genhtml -o qt_search-html qt_search.lcov
 
-## qt_textbox
+### qt_textbox
 
 Run hybrid fuzzing:
 
@@ -266,7 +266,7 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c qt_textbox.toml cov-export -- -format=lcov > qt_textbox.lcov
     # genhtml -o qt_textbox-html qt_textbox.lcov
 
-## util
+### util
 
 Run hybrid fuzzing:
 
