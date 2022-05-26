@@ -73,7 +73,7 @@ elif [ "$SANITIZER" = "coverage" ]; then
     CXXFLAGS="${CXXFLAGS/"-fprofile-instr-generate"/" "}"
 fi
 
-./nss/build.sh $nss_flag --asan --ubsan --disable-tests --static -v -Dmozilla_client=1 -Dzlib_libs=$PREFIX/lib/libz.a -Dsign_libs=0
+./nss/build.sh $nss_flag --disable-tests --static -v -Dmozilla_client=1 -Dzlib_libs=$PREFIX/lib/libz.a -Dsign_libs=0
 
 CFLAGS="$SAVE_CFLAGS"
 CXXFLAGS="$SAVE_CXXFLAGS"
@@ -225,6 +225,8 @@ NSS_STATIC_LIBS=`ls $SRC/nss-3.75/dist/Debug/lib/lib*.a`
 NSS_STATIC_LIBS="$NSS_STATIC_LIBS $NSS_STATIC_LIBS $NSS_STATIC_LIBS"
 BUILD_LDFLAGS="$BUILD_LDFLAGS $NSS_STATIC_LIBS"
 
+$CC $CFLAGS -I. $SRC/poppler/main.c -c -o main.o
+
 fuzzers=$(find $SRC/poppler/cpp/tests/fuzzing/ -name "*_fuzzer.cc")
 
 for f in $fuzzers; do
@@ -232,7 +234,7 @@ for f in $fuzzers; do
 
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -I$SRC/poppler/cpp -I$SRC/poppler/build/cpp \
         $BUILD_CFLAGS \
-        $f -o $OUT/$fuzzer_name \
+        $f -o $OUT/$fuzzer_name main.o \
         $PREDEPS_LDFLAGS \
         $SRC/poppler/build/cpp/libpoppler-cpp.a \
         $SRC/poppler/build/libpoppler.a \
@@ -252,7 +254,7 @@ if [ "$SANITIZER" != "memory" ]; then
 
         $CXX $CXXFLAGS -std=c++11 -static-libgcc -I$SRC/poppler/glib -I$SRC/poppler/build/glib \
             $BUILD_CFLAGS \
-            $f -o $OUT/$fuzzer_name \
+            $f -o $OUT/$fuzzer_name main.o \
             $PREDEPS_LDFLAGS \
             $SRC/poppler/build/glib/libpoppler-glib.a \
             $SRC/poppler/build/cpp/libpoppler-cpp.a \
@@ -278,7 +280,7 @@ for f in $fuzzers; do
     $CXX $CXXFLAGS -std=c++11 -static-libgcc -fPIC \
         -I$SRC/poppler/qt5/src -I$SRC/poppler/build/qt5/src \
         $BUILD_CFLAGS \
-        $f -o $OUT/$fuzzer_name \
+        $f -o $OUT/$fuzzer_name main.o \
         $PREDEPS_LDFLAGS \
         $SRC/poppler/build/qt5/src/libpoppler-qt5.a \
         $SRC/poppler/build/cpp/libpoppler-cpp.a \
