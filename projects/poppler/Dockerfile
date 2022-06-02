@@ -44,9 +44,10 @@ RUN wget https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_75_RTM/src/nss-
 RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
 
 RUN git clone https://github.com/mozilla/pdf.js pdf.js && \
-    zip -q ./poppler_seed_corpus.zip pdf.js/test/pdfs/*.pdf && \
+    mkdir -p /out/corpus && \
+    cp pdf.js/test/pdfs/*.pdf /out/corpus && \
     rm -rf pdf.js
-ADD https://raw.githubusercontent.com/google/fuzzing/master/dictionaries/pdf.dict ./poppler.dict
+ADD https://raw.githubusercontent.com/google/fuzzing/master/dictionaries/pdf.dict /out/poppler.dict
 
 WORKDIR /src/libfuzzer/poppler
 
@@ -63,10 +64,6 @@ RUN ./build_fuzzer.sh
 WORKDIR /src/sydr
 
 # Install build dependencies.
-RUN apt-get update && apt-get install -y wget autoconf automake libtool pkg-config gperf
-RUN apt-get install python -y
-RUN apt-get install zip
-RUN pip3 install meson ninja gyp-next
 RUN git clone https://github.com/madler/zlib.git
 RUN git clone https://gitlab.freedesktop.org/freetype/freetype.git
 RUN git clone https://github.com/mm2/Little-CMS.git
@@ -81,11 +78,6 @@ RUN tar xvJf ./glib-2.70.0.tar.xz
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 RUN wget https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_75_RTM/src/nss-3.75-with-nspr-4.32.tar.gz
 RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
-
-RUN git clone https://github.com/mozilla/pdf.js pdf.js && \
-    zip -q ./poppler_seed_corpus.zip pdf.js/test/pdfs/*.pdf && \
-    rm -rf pdf.js
-ADD https://raw.githubusercontent.com/google/fuzzing/master/dictionaries/pdf.dict ./poppler.dict
 
 WORKDIR /src/sydr/poppler
 
@@ -105,10 +97,6 @@ RUN ./build_sydr.sh
 WORKDIR /src/cov
 
 # Install build dependencies.
-RUN apt-get update && apt-get install -y wget autoconf automake libtool pkg-config gperf
-RUN apt-get install python -y
-RUN apt-get install zip
-RUN pip3 install meson ninja gyp-next
 RUN git clone https://github.com/madler/zlib.git
 RUN git clone https://gitlab.freedesktop.org/freetype/freetype.git
 RUN git clone https://github.com/mm2/Little-CMS.git
@@ -123,11 +111,6 @@ RUN tar xvJf ./glib-2.70.0.tar.xz
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 RUN wget https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_75_RTM/src/nss-3.75-with-nspr-4.32.tar.gz
 RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
-
-RUN git clone https://github.com/mozilla/pdf.js pdf.js && \
-    zip -q ./poppler_seed_corpus.zip pdf.js/test/pdfs/*.pdf && \
-    rm -rf pdf.js
-ADD https://raw.githubusercontent.com/google/fuzzing/master/dictionaries/pdf.dict ./poppler.dict
 
 WORKDIR /src/cov/poppler
 

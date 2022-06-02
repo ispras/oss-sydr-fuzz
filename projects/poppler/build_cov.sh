@@ -17,12 +17,11 @@
 ################################################################################
 WORK="/work/cov"
 SRC="/src/cov"
-OUT="/out/cov"
+OUT="/out"
 
 PREFIX=$WORK/prefix
 mkdir -p $WORK
 mkdir -p $PREFIX
-mkdir -p $OUT
 
 export PKG_CONFIG="`which pkg-config` --static"
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
@@ -131,7 +130,7 @@ if [ "$SANITIZER" != "memory" ]; then
 
     pushd $SRC/libpng
     autoreconf -fi
-    CPPFLAGS=-I$PREFIX/include LDFLAGS=-L$PREFIX/lib ./configure --prefix="$PREFIX" --disable-shared --disable-dependency-tracking
+    CPPFLAGS="-fprofile-instr-generate -fcoverage-mapping -I$PREFIX/include" LDFLAGS=-L$PREFIX/lib ./configure --prefix="$PREFIX" --disable-shared --disable-dependency-tracking
     make -j$(nproc)
     make install
 
@@ -209,9 +208,6 @@ make -j$(nproc) poppler poppler-cpp poppler-qt5
 if [ "$SANITIZER" != "memory" ]; then
     make -j$(nproc) poppler-glib
 fi
-
-export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
-export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
 PREDEPS_LDFLAGS="-Wl,-Bdynamic -ldl -lm -lc -lz -pthread -lrt -lpthread"
 DEPS="freetype2 lcms2 libopenjp2"

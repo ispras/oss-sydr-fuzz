@@ -17,12 +17,11 @@
 ################################################################################
 WORK="/work/sydr"
 SRC="/src/sydr"
-OUT="/out/sydr"
+OUT="/out"
 
 PREFIX=$WORK/prefix
 mkdir -p $WORK
 mkdir -p $PREFIX
-mkdir -p $OUT
 
 export PKG_CONFIG="`which pkg-config` --static"
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
@@ -209,9 +208,6 @@ make -j$(nproc) poppler poppler-cpp poppler-qt5
 if [ "$SANITIZER" != "memory" ]; then
     make -j$(nproc) poppler-glib
 fi
-
-export CFLAGS=""
-export CXXFLAGS=""
 
 PREDEPS_LDFLAGS="-Wl,-Bdynamic -ldl -lm -lc -lz -pthread -lrt -lpthread"
 DEPS="freetype2 lcms2 libopenjp2"

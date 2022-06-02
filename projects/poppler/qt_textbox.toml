@@ -16,11 +16,11 @@
 
 [sydr]
 args = "-l debug -n 1024 --app-timeout 180"
-target = "/out/sydr/qt_textbox_sydr @@"
+target = "/out/qt_textbox_sydr @@"
 
 [libfuzzer]
-path = "/out/libfuzzer/qt_textbox_fuzzer"
-args = "/out/libfuzzer/corpus/pdf.js/test/pdfs -dict=/out/libfuzzer/poppler.dict"
+path = "/out/qt_textbox_fuzzer"
+args = "/out/corpus -dict=/out/poppler.dict"
 
 [cov]
-target = "/out/cov/qt_textbox_cov @@"
+target = "/out/qt_textbox_cov @@"

@@ -17,7 +17,7 @@
 ################################################################################
 WORK="/work/libfuzzer"
 SRC="/src/libfuzzer"
-OUT="/out/libfuzzer"
+OUT="/out"
 
 PREFIX=$WORK/prefix
 mkdir -p $WORK
@@ -131,7 +131,7 @@ if [ "$SANITIZER" != "memory" ]; then
 
     pushd $SRC/libpng
     autoreconf -fi
-    CPPFLAGS=-I$PREFIX/include LDFLAGS=-L$PREFIX/lib ./configure --prefix="$PREFIX" --disable-shared --disable-dependency-tracking
+    CPPFLAGS="-fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero -I$PREFIX/include" LDFLAGS=-L$PREFIX/lib ./configure --prefix="$PREFIX" --disable-shared --disable-dependency-tracking
     make -j$(nproc)
     make install
 
@@ -286,21 +286,3 @@ for f in $fuzzers; do
         $BUILD_LDFLAGS \
         -Wl,-Bdynamic
 done
-
-mv $SRC/{*.zip,*.dict} $OUT
-
-if [ ! -f "${OUT}/poppler_seed_corpus.zip" ]; then
-    echo "missing seed corpus"
-    exit 1
-fi
-
-if [ ! -f "${OUT}/poppler.dict" ]; then
-    echo "missing dictionary"
-    exit 1
-fi
-
-mkdir -p $OUT/corpus
-
-unzip $OUT/poppler_seed_corpus.zip -d $OUT/corpus
-
-rm $OUT/poppler_seed_corpus.zip

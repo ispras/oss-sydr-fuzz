@@ -1,6 +1,6 @@
 # POPPLER
 
-zlib is a free software utility library used for rendering Portable Document Format (PDF).
+Poppler is a library for rendering PDF files, and examining or modifying their structure.
 
 ## Build Docker
 

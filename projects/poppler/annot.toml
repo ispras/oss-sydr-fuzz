@@ -16,11 +16,11 @@
 
 [sydr]
 args = "-l debug -n 1024 --app-timeout 180"
-target = "/out/sydr/annot_sydr @@"
+target = "/out/annot_sydr @@"
 
 [libfuzzer]
-path = "/out/libfuzzer/annot_fuzzer"
-args = "/out/libfuzzer/corpus/pdf.js/test/pdfs -dict=/out/libfuzzer/poppler.dict"
+path = "/out/annot_fuzzer"
+args = "/out/corpus -dict=/out/poppler.dict"
 
 [cov]
-target = "/out/cov/annot_cov @@"
+target = "/out/annot_cov @@"
