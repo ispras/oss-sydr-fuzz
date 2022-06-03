@@ -51,3 +51,4 @@ Fuzz tagrets:
   * imdecode
   * imencode
   * imread
+  * readnetfromtensorflow
