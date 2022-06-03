@@ -1,4 +1,5 @@
 # Copyright 2018 Google Inc.
+# Modifications copyright (C) 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,17 +19,13 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt-get install -y build-essential cmake pkg-config
 
-RUN git clone --depth 1 https://github.com/opencv/opencv.git opencv
+RUN git clone https://github.com/opencv/opencv.git opencv
 
 WORKDIR /opencv/
 
 RUN git checkout cf38098ba83c8354e0119f4c8da2e367dbfd479b
 
-COPY build.sh test.sh /opencv/
-
-RUN chmod 777 /opencv/build.sh
-
-RUN chmod 777 /opencv/test.sh
+COPY build.sh /opencv/
 
 COPY *.cc *.c *.h /opencv/
 
