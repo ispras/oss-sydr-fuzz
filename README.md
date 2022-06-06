@@ -42,6 +42,7 @@ external repositories.
 * openvswitch
 * openxlsx
 * poco
+* poppler
 * postgresql
 * rapidjson
 * re2
