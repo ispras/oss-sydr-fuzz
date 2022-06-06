@@ -8,7 +8,8 @@ RUN apt-get update && \
     apt-get -y install build-essential gcc-multilib g++-multilib git \
                        wget curl unzip clang-11 vim lsb-release gdb zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
-                       gcc-10-plugin-dev gcc-10-multilib python3 python3-pip
+                       gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
+                       libtool
 
 RUN python3 -m pip install scipy numpy
 
