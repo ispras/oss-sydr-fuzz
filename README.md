@@ -37,6 +37,7 @@ external repositories.
 * libpng
 * miniz
 * miniz-2.0.8
+* opencv
 * openssl
 * openvswitch
 * openxlsx
