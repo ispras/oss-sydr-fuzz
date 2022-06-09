@@ -79,10 +79,10 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/troldal/OpenXLSX/issues/140>
     * <https://github.com/troldal/OpenXLSX/issues/139>
 * PyTorch:
-    * <https://github.com/pytorch/pytorch/issues/77561>
-    * <https://github.com/pytorch/pytorch/issues/77563>
-    * <https://github.com/pytorch/pytorch/issues/77573>
-    * <https://github.com/pytorch/pytorch/issues/77575>
+    * <https://github.com/pytorch/pytorch/issues/77561> (PR: https://github.com/pytorch/pytorch/pull/79192)
+    * <https://github.com/pytorch/pytorch/issues/77563> (PR: https://github.com/pytorch/pytorch/pull/79192)
+    * <https://github.com/pytorch/pytorch/issues/77573> (PR: https://github.com/pytorch/pytorch/pull/79192)
+    * <https://github.com/pytorch/pytorch/issues/77575> (PR: https://github.com/pytorch/pytorch/pull/79192)
     * <https://github.com/pytorch/pytorch/pull/77557>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
