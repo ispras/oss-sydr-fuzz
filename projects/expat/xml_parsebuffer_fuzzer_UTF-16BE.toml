@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024 --app-timeout 180"
+args = "-l debug -j 2 -n 1024"
 target = "/xml_parsebuffer_fuzzer_UTF-16BE_sydr @@"
 jobs = 2
 

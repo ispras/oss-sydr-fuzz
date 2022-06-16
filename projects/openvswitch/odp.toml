@@ -17,7 +17,7 @@
 exit-on-time = 7200
 
 [sydr]
-args = "-l debug --invert-n 1024 --app-timeout 60"
+args = "-l debug --invert-n 1024"
 target = "/openvswitch_sydr/odp_target @@"
 
 [libfuzzer]

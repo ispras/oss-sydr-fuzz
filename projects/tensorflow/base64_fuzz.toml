@@ -17,7 +17,7 @@
 exit-on-time = 3600
 
 [sydr]
-args = "-n 1024 -l debug --app-timeout 60"
+args = "-n 1024 -l debug"
 target = "/sydr/base64_fuzz @@"
 
 [libfuzzer]

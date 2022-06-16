@@ -17,7 +17,7 @@
 exit-on-time = 3600
 
 [sydr]
-args = "-l debug -n 1024 --app-timeout 60"
+args = "-l debug -n 1024"
 target = "/sydr/cleanpath_fuzz @@"
 
 [libfuzzer]

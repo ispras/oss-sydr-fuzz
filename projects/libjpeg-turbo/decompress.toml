@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 512 --app-timeout 180"
+args = "-l debug -j 2 -n 512"
 target = "/decompress_sydr @@"
 jobs = 2
 

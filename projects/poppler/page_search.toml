@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -n 1024 --app-timeout 180"
+args = "-l debug -n 1024"
 target = "/out/page_search_sydr @@"
 
 [libfuzzer]

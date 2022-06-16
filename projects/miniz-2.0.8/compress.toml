@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -s 90 --app-timeout 180"
+args = "-l debug -s 90"
 target = "/sydr/compress_sydr @@"
 
 [libfuzzer]

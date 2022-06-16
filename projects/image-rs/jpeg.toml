@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 4 -n 1024 --app-timeout 60"
+args = "-l debug -j 4 -n 1024"
 target = "/sydr_script_jpeg @@"
 jobs = 2
 

@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -n 1024 --app-timeout 60"
+args = "-l debug -n 1024"
 target = "/load_from_memory_sydr @@"
 
 [libfuzzer]

@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "--strategy direct -l debug -j 2 --app-timeout 300 --solving-timeout 30"
+args = "--strategy direct -l debug -j 2 --solving-timeout 30"
 target = "/out/simple_query_sydr @@"
 jobs = 2
 

@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 4 -n 1024 --app-timeout 180"
+args = "-l debug -j 4 -n 1024"
 target = "/lcms_sydr/cmsIT8_load_sydr @@"
 jobs = 3
 
