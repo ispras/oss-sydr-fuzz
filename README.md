@@ -12,6 +12,7 @@ Each open source target project provides:
 
 * Fuzz target for libFuzzer
 * Fuzz target for Sydr
+* Target built with llvm-cov
 * Build script
 * Dictionary
 * Initial seed corpus
