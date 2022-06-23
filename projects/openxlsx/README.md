@@ -24,3 +24,11 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz run
+
+Minimize corpus:
+
+    # sydr-fuzz cmin
+
+Collect and report coverage:
+
+    # sydr-fuzz cov-report
