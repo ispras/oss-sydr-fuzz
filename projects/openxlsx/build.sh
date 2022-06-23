@@ -51,3 +51,21 @@ $CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
     -c /sydr.cc -o sydr.o
 
 $CXX $CXXFLAGS ./sydr.o ./output/libOpenXLSX.a -o /sydr
+
+
+# Build targets for Coverage
+
+cd .. && rm -rf build && mkdir build && cd build
+cmake -DCMAKE_CXX_COMPILER=clang++ \
+      -DCMAKE_CXX_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+      ..
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . --target OpenXLSX --config Release
+CXX="clang++"
+CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+
+# Building cov target
+$CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
+    -I/openxlsx/OpenXLSX/external/zippy -I/openxlsx/OpenXLSX/external/nowide \
+    -c /sydr.cc -o cov.o
+
+$CXX $CXXFLAGS ./cov.o ./output/libOpenXLSX.a -o /cov

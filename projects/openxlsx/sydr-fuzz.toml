@@ -21,3 +21,6 @@ target = "/sydr @@"
 [libfuzzer]
 path = "/fuzzer"
 args = "-detect_leaks=0 -dict=xlst.dict"
+
+[cov]
+target = "/cov @@"
