@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/swim_proto_meta_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/swim_proto_meta_fuzzer"
 args = "/corpus_swim_proto_meta"
+
+[cov]
+target = "/swim_proto_meta_cov @@"

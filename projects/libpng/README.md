@@ -34,3 +34,7 @@ Get LCOV HTML coverage report:
 
     # sydr-fuzz -c libpng_read.toml cov-export -- -format=lcov > libpng_read.lcov
     # genhtml -o libpng_read-html libpng_read.lcov
+
+### Hybrid fuzzing with AFL++
+
+    # sydr-fuzz -c libpng_read-afl++.toml run

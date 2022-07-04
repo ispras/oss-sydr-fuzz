@@ -31,6 +31,14 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c decompress.toml run
 
+Collect and report coverage:
+
+    # sydr-fuzz -c decompress.toml cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c decompress-afl++.toml run
+
 ## Alternative Fuzz Targets
 
 libjpeg-turbo project has 3 fuzz targets.

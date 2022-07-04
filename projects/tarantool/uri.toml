@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/uri_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/uri_fuzzer"
 args = "/corpus_uri"
+
+[cov]
+target = "/uri_cov @@"

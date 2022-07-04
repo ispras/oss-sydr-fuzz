@@ -15,9 +15,12 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -s 90"
+args = "-l debug"
 target = "/load_from_memory_tiff_sydr @@"
 
 [libfuzzer]
 path = "/load_from_memory_tiff_fuzzer"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus_tiff"
+
+[cov]
+target = "/load_from_memory_tiff_cov @@"

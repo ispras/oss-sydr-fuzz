@@ -30,11 +30,19 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c load_from_memory.toml cmin
 
+## Collect and Report coverage
+
+    # sydr-fuzz -c loaf_from_memory.toml cov-report
+
 ## Check Security Predicates
 
 Check security predicates on new corpus:
 
     # sydr-fuzz -c load_from_memory.toml security
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c load_from_memory-afl++.toml run
 
 ## Alternative Fuzz Targets
 

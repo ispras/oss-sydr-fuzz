@@ -33,7 +33,8 @@ RUN git clone  https://github.com/guidovranken/fuzzing-headers.git
 # Fix commit. It could be updated.
 RUN cd rapidjson && git checkout 4d6cb08189cf7336821f04090b612baa2ca6a90d && cd /
 
-RUN mkdir /rapidjson-sydr && mkdir /rapidjson-fuzzer && mkdir corpus
+RUN mkdir /rapidjson-sydr && mkdir /rapidjson-fuzzer && mkdir /rapidjson-afl && \
+    mkdir /rapidjson-cov && mkdir corpus
 
 WORKDIR rapidjson-fuzzers
 
@@ -42,6 +43,8 @@ COPY ./build.sh .
 
 # Copy target for sydr
 COPY ./rapidjson-sydr.cpp .
+
+COPY afl.cc /
 
 #  Build targets.
 RUN ./build.sh

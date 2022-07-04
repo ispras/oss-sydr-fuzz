@@ -52,7 +52,7 @@ mkdir /corpus
 SRC="."
 
 # add seed corpus.
-find $SRC/libpng -name "*.png" | grep -v crashers | \
+find $SRC -name "*.png" | grep -v crashers | \
      xargs -I {} cp {} /corpus
 
 
@@ -62,10 +62,32 @@ $CXX $CXXFLAGS -std=c++11 -I. \
      -o /libpng_read_fuzzer \
      .libs/libpng16.a -lz
 
+# Build targets for AFL++
+
+make clean
+
+export CC=afl-clang-fast
+export CXX=afl-clang-fast++
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+./configure
+make -j$(nproc) clean
+make -j$(nproc) all
+
+$CC $CFLAGS -I. afl.cc -c -o afl.o
+
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_read_fuzzer.cc \
+     -o /libpng_read_afl \
+     afl.o .libs/libpng16.a -lz
+
 # Build targets for Sydr
 
 make clean
 
+export CC=clang
+export CXX=clang++
 export CFLAGS="-g -fPIC"
 export CXXFLAGS="-g -fPIC"
 
@@ -84,8 +106,8 @@ $CXX $CXXFLAGS -std=c++11 -I. \
 
 make clean
 
-export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
-export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 
 ./configure
 make -j$(nproc) clean

@@ -48,10 +48,41 @@ for f in $(find $SRC -name '*_fuzzer.c'); do
     rm -f /tmp/$b.o=
 done
 
+# Build targets for AFL++
+
+make clean
+
+export CC=afl-clang-fast
+export CXX=afl-clang-fast++
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+./configure
+make -j$(nproc) clean
+make -j$(nproc) all
+
+SRC="."
+
+$CC $CFLAGS -I. afl.cc -c -o afl.o
+
+for f in $(find $SRC -name '*_fuzzer.cc'); do
+    b=$(basename -s .cc $f)_afl
+    $CXX $CXXFLAGS -std=c++11 -I. $f -o /$b afl.o ./libz.a
+done
+
+for f in $(find $SRC -name '*_fuzzer.c'); do
+    b=$(basename -s .c $f)_afl
+    $CC $CFLAGS -I. $f -c -o /tmp/$b.o
+    $CXX $CXXFLAGS -o /$b afl.o /tmp/$b.o ./libz.a
+    rm -f /tmp/$b.o=
+done
+
 # Build targets for Sydr
 
 make clean
 
+export CC=clang
+export CXX=clang++
 export CFLAGS="-g -fPIC"
 export CXXFLAGS="-g -fPIC"
 

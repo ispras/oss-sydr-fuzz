@@ -2,7 +2,7 @@
 
 This repository is a fork of [OSS-Fuzz](https://github.com/google/oss-fuzz)
 project. OSS-Sydr-Fuzz contains open source software targets for sydr-fuzz that
-combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html)) with
+combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html), [AFL++](https://github.com/AFLplusplus/AFLplusplus)) with
 the power of dynamic symbolic execution
 ([Sydr](https://arxiv.org/abs/2011.09269)).
 
@@ -11,6 +11,7 @@ the power of dynamic symbolic execution
 Each open source target project provides:
 
 * Fuzz target for libFuzzer
+* Fuzz target for AFL++
 * Fuzz target for Sydr
 * Target built with llvm-cov
 * Build script

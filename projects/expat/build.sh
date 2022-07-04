@@ -16,6 +16,8 @@
 #
 ################################################################################
 
+# Build project for libFuzzer.
+
 CC=clang
 CXX=clang++
 CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
@@ -69,7 +71,54 @@ do
   fi
 done
 
+# Build the project for AFL++.
+CC=afl-clang-fast
+CXX=afl-clang-fast++
+CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export LIB_FUZZING_ENGINE="$PWD/afl.o"
+
+: ${LD:="${CXX}"}
+: ${LDFLAGS:="${CXXFLAGS}"}  # to make sure we link with sanitizer runtime
+
+cmake_args=(
+    # Specific to Expat
+    -DEXPAT_BUILD_FUZZERS=ON
+    -DEXPAT_OSSFUZZ_BUILD=ON
+    -DEXPAT_SHARED_LIBS=OFF
+
+    # C compiler
+    -DCMAKE_C_COMPILER="${CC}"
+    -DCMAKE_C_FLAGS="${CFLAGS}"
+
+    # C++ compiler
+    -DCMAKE_CXX_COMPILER="${CXX}"
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}"
+
+    # Linker
+    -DCMAKE_LINKER="${LD}"
+    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}"
+    -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}"
+    -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
+)
+
+cd ..
+rm -rf build
+mkdir -p build
+cd build
+$CC $CFLAGS -c ../afl.cc -o $LIB_FUZZING_ENGINE
+cmake ../expat "${cmake_args[@]}"
+make -j$(nproc)
+
+for fuzzer in fuzz/*;
+do
+  fuzzer_name=$(basename $fuzzer)
+  cp $fuzzer /${fuzzer_name}_afl
+done
+
 # Build the project for Sydr.
+CC=clang
+CXX=clang++
 CFLAGS="-g"
 CXXFLAGS="-g"
 LDFLAGS=""
@@ -108,4 +157,47 @@ for fuzzer in fuzz/*;
 do
   fuzzer_name=$(basename $fuzzer)
   cp $fuzzer /${fuzzer_name}_sydr
+done
+
+# Build the project for llvm-cov.
+CC=clang
+CXX=clang++
+CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+LDFLAGS=""
+export LIB_FUZZING_ENGINE="$PWD/main.o"
+
+cmake_args=(
+    # Specific to Expat
+    -DEXPAT_BUILD_FUZZERS=ON
+    -DEXPAT_OSSFUZZ_BUILD=ON
+    -DEXPAT_SHARED_LIBS=OFF
+
+    # C compiler
+    -DCMAKE_C_COMPILER="${CC}"
+    -DCMAKE_C_FLAGS="${CFLAGS}"
+
+    # C++ compiler
+    -DCMAKE_CXX_COMPILER="${CXX}"
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}"
+
+    # Linker
+    -DCMAKE_LINKER="${LD}"
+    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}"
+    -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}"
+    -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
+)
+
+cd ..
+rm -rf build
+mkdir -p build
+cd build
+$CC $CFLAGS -c ../main.c -o $LIB_FUZZING_ENGINE
+cmake ../expat "${cmake_args[@]}"
+make -j$(nproc)
+
+for fuzzer in fuzz/*;
+do
+  fuzzer_name=$(basename $fuzzer)
+  cp $fuzzer /${fuzzer_name}_cov
 done

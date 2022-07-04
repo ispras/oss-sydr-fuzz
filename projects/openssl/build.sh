@@ -16,6 +16,8 @@
 #
 ################################################################################
 
+# Build libFuzzer fuzz targets.
+
 mkdir /out
 export CC="clang"
 export CXX="clang++"
@@ -39,8 +41,28 @@ for f in $fuzzers; do
 	cp $f /out
 done
 
-# Build Sydr fuzz targets
+# Build AFL++ fuzz targets.
 
+export CC="afl-clang-fast"
+export CXX="afl-clang-fast++"
+export CFLAGS="-g -fsanitize=address,bounds,undefined,null,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,bounds,undefined,null,float-divide-by-zero"
+make clean
+./config --debug -DPEDANTIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION no-shared enable-tls1_3 enable-rc5 enable-md2 enable-ec_nistp_64_gcc_128 enable-ssl3 enable-ssl3-method enable-nextprotoneg enable-weak-ssl-ciphers $CFLAGS -fno-sanitize=alignment
+make -j$(nproc) LDCMD="$CXX $CXXFLAGS"
+
+targets=$(find fuzz -type f -name \*_afl.c)
+for target in $targets; do
+	basename=$(basename $target)
+        name=${basename%_*}
+	echo "Build ${name} fuzz target for AFL++"
+	$CC $CFLAGS -Iinclude -Ifuzz -pthread -m64 -fno-omit-frame-pointer -Wall -O0 -L. -DOPENSSL_BUILDING_OPENSSL -DPEDANTIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -o /out/${name}_afl ${target} fuzz/fuzz_rand.c -lssl -lcrypto -ldl -pthread
+done
+
+# Build Sydr fuzz targets.
+
+export CC="clang"
+export CXX="clang++"
 export CFLAGS="-g"
 export CXXFLAGS="-g"
 make clean
@@ -53,6 +75,24 @@ for target in $targets; do
         name=${basename%_*}
 	echo "Build ${name} fuzz target for Sydr"
 	clang -Iinclude -Ifuzz -pthread -m64 -fno-omit-frame-pointer -g -Wall -O0 -L. -DOPENSSL_BUILDING_OPENSSL -DPEDANTIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -o /out/${name}_sydr ${target} fuzz/fuzz_rand.c -lssl -lcrypto -ldl -pthread
+done
+
+# Build Sydr fuzz targets.
+
+export CC="clang"
+export CXX="clang++"
+export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+make clean
+./config --debug -DPEDANTIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION no-shared enable-tls1_3 enable-rc5 enable-md2 enable-ec_nistp_64_gcc_128 enable-ssl3 enable-ssl3-method enable-nextprotoneg enable-weak-ssl-ciphers $CFLAGS -fno-sanitize=alignment
+make -j$(nproc) LDCMD="$CXX $CXXFLAGS"
+
+targets=$(find fuzz -type f -name \*_sydr.c)
+for target in $targets; do
+	basename=$(basename $target)
+        name=${basename%_*}
+	echo "Build ${name} fuzz target for llvm-cov"
+	$CC $CFLAGS -Iinclude -Ifuzz -pthread -m64 -fno-omit-frame-pointer -Wall -O0 -L. -DOPENSSL_BUILDING_OPENSSL -DPEDANTIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -o /out/${name}_cov ${target} fuzz/fuzz_rand.c -lssl -lcrypto -ldl -pthread
 done
 
 cp fuzz/oids.txt /out/asn1.dict

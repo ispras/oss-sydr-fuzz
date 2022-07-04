@@ -31,7 +31,7 @@ WORKDIR libcbor
 RUN git checkout aa79fb7ba5e032c50530c689b6f20f2a74cafa97
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh cbor_load_sydr.cc ./oss-fuzz/
+COPY build.sh cbor_load_sydr.cc afl.cc ./oss-fuzz/
 
 # Build fuzz targets.
 RUN ./oss-fuzz/build.sh

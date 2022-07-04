@@ -15,12 +15,12 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -s 90"
+args = "-l debug"
 target = "/sydr @@"
 
 [libfuzzer]
 path = "/fuzzer"
-args = "-detect_leaks=0 -dict=xlst.dict"
+args = "-detect_leaks=0 -dict=xlst.dict /corpus"
 
 [cov]
 target = "/cov @@"

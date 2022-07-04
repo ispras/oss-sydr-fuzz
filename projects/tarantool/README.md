@@ -27,6 +27,14 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c uri.toml run
 
+Collect and report coverage:
+
+    # sydr-fuzz -c uri.toml cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c uri-afl++.toml run
+
 ## Alternative Fuzz Targets
 
 Tarantool project has 5 fuzz targets.

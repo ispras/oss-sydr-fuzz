@@ -16,7 +16,7 @@
 #
 ################################################################################
 
-# build the target.
+# build targets for libFuzzer
 ./autogen.sh
 ./configure CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero" CC=clang CXX=clang++
 make -j$(nproc) all
@@ -37,8 +37,32 @@ for F in $FUZZERS; do
         src/.libs/liblcms2.a
 done
 
-# build the target for Sydr
+# build targets for AFL++
 make clean
+./configure CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" CC=afl-clang-fast CXX=afl-clang-fast++
+make -j$(nproc) all
+
+CC=afl-clang-fast
+CXX=afl-clang-fast++
+mkdir /lcms_afl
+OUT=/lcms_afl
+FUZZERS="cmsIT8_load_fuzzer cms_transform_fuzzer cms_overwrite_transform_fuzzer"
+CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+$CXX $CXXFLAGS -o afl.o -c /afl.cc
+for F in $FUZZERS; do
+    $CC $CFLAGS -c -Iinclude \
+        ./$F.c -o ./$F.o
+    $CXX $CXXFLAGS \
+        afl.o ./$F.o -o $OUT/$F \
+        src/.libs/liblcms2.a
+done
+
+# build targets for Sydr
+make clean
+CC=clang
+CC=clang++
 CFLAGS="-g"
 CXXFLAGS="-g"
 ./configure
@@ -47,6 +71,27 @@ make -j$(nproc) all
 # build your Sydr targets
 mkdir /lcms_sydr
 OUT=/lcms_sydr
+FUZZERS="cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
+for F in $FUZZERS; do
+    $CC $CFLAGS -c -Iinclude \
+        ./$F.c -o ./$F.o
+    $CXX $CXXFLAGS \
+        ./$F.o -o $OUT/$F \
+        src/.libs/liblcms2.a
+done
+
+# Build targets for llvm-cov
+make clean
+CC=clang
+CC=clang++
+CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+./configure
+make -j$(nproc) all
+
+# build your Sydr targets
+mkdir /lcms_cov
+OUT=/lcms_cov
 FUZZERS="cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
 for F in $FUZZERS; do
     $CC $CFLAGS -c -Iinclude \

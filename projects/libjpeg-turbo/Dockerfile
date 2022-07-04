@@ -31,7 +31,7 @@ WORKDIR libjpeg-turbo
 RUN git checkout df3c3dcb9b0b24d78f9e58e28c8b509a49967ba8
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh compress_sydr.cc decompress_sydr.cc transform_sydr.cc ./fuzz/
+COPY build.sh compress_sydr.cc decompress_sydr.cc transform_sydr.cc afl.cc ./fuzz/
 
 # Build fuzz targets.
 RUN ./fuzz/build.sh

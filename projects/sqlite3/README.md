@@ -24,3 +24,11 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz run
+
+Collect and report coverage:
+
+    # sydr-fuzz cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c sydr-fuzz-afl++.toml run

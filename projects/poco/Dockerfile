@@ -35,6 +35,7 @@ COPY build.sh \
      json_parse_sydr.cc \
      xml_parse_fuzzer.cc \
      xml_parse_sydr.cc \
+     afl.cc \
      /
 
 # Build fuzz targets.

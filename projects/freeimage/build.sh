@@ -67,3 +67,49 @@ cd /
 $CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/ \
 	transform_combined_jpeg_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
 	-o /transform_combined_jpeg_sydr
+
+# Build targets for AFL++
+
+cd -
+make clean
+CXX="afl-clang-fast++" CXXFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" make  -j$(nproc)
+
+cd /
+CXX="afl-clang-fast++"
+CXXFLAGS="-fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -g"
+
+$CXX $CXXFLAGS -o afl.o -c afl.cc
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  afl.o load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_afl
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  afl.o load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_tiff_afl
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  afl.o transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /transform_combined_jpeg_afl
+
+# Build targets for llvm-cov
+
+cd -
+make clean
+CXX="clang++" CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping" make  -j$(nproc)
+
+cd /
+CXX="clang++"
+CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping -g"
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_cov
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_tiff_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_tiff_cov
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  transform_combined_jpeg_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /transform_combined_jpeg_cov

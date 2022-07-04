@@ -59,6 +59,52 @@ $CXX $CXXFLAGS xml_fuzzer.o \
     ./lib/libPocoFoundation.a \
     -o /xml_parser_fuzzer -lpthread -ldl -lrt
 
+# Build targets for AFL++
+
+cd .. && rm -rf cmake-build && mkdir cmake-build && cd cmake-build
+cmake -DBUILD_SHARED_LIBS=OFF \
+      -DENABLE_TESTS=OFF \
+      -DCMAKE_CXX_COMPILER=afl-clang-fast++ \
+      -DCMAKE_CXX_FLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
+      ..
+make -j$(nproc)
+CXX="afl-clang-fast++"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+$CXX $CXXFLAGS -std=gnu++14 -o afl.o -c /afl.cc
+
+# Building JSON fuzztarget for Poco
+$CXX $CXXFLAGS -DPOCO_ENABLE_CPP11 -DPOCO_ENABLE_CPP14 \
+    -DPOCO_HAVE_FD_EPOLL -DPOCO_OS_FAMILY_UNIX \
+    -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE \
+    -D_REENTRANT -D_THREAD_SAFE -D_XOPEN_SOURCE=500 \
+    -I/poco/JSON/include \
+    -I/poco/Foundation/include \
+    -O2 -g -DNDEBUG -std=gnu++14 \
+    -o json_fuzzer.o -c /json_parse_fuzzer.cc
+
+$CXX $CXXFLAGS afl.o \
+    json_fuzzer.o \
+    ./lib/libPocoJSON.a \
+    ./lib/libPocoFoundation.a \
+    -o /json_parser_afl -lpthread -ldl -lrt
+
+# Building XML fuzztarget for Poco
+$CXX $CXXFLAGS -DPOCO_ENABLE_CPP11 -DPOCO_ENABLE_CPP14 \
+    -DPOCO_HAVE_FD_EPOLL -DPOCO_OS_FAMILY_UNIX \
+    -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE \
+    -D_REENTRANT -D_THREAD_SAFE -D_XOPEN_SOURCE=500 \
+    -I/poco/XML/include \
+    -I/poco/Foundation/include \
+    -O2 -g -DNDEBUG -std=gnu++14 \
+    -o xml_fuzzer.o -c /xml_parse_fuzzer.cc
+
+$CXX $CXXFLAGS afl.o \
+    xml_fuzzer.o \
+    ./lib/libPocoXML.a \
+    ./lib/libPocoFoundation.a \
+    -o /xml_parser_afl -lpthread -ldl -lrt
+
 # Build targets for Sydr
 
 cd .. && rm -rf cmake-build && mkdir cmake-build && cd cmake-build

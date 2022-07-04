@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/out/crl_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/out/crl"
 args = "/openssl/fuzz/corpora/crl"
+
+[cov]
+target = "/out/crl_cov @@"

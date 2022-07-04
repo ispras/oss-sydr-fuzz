@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -n 1024"
+args = "-l debug"
 target = "/out_sydr/imdecode_fuzzer @@"
 
 [libfuzzer]

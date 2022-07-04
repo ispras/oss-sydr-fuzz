@@ -35,6 +35,10 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c checksum.toml cov-export -- -format=lcov > checksum.lcov
     # genhtml -o checksum-html checksum.lcov
 
+### Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c checksum-afl++.toml run
+
 Similary for other fuzz tagrets.
 
 Fuzz tagrets:

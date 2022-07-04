@@ -32,6 +32,7 @@ RUN git checkout 3534eda7b59fef0dcfd04260820df804941e4f9b
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
 COPY build.sh cmsIT8_load_*.c cms_transform_*.c cms_overwrite_transform_*.c ./
+COPY afl.cc /
 
 # Build fuzz targets.
 RUN ./build.sh

@@ -43,6 +43,17 @@ cp *_fuzzer /out
 cd ../../..
 make clean
 
+CC="afl-clang-fast" CXX="afl-clang-fast++" \
+CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" \
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" \
+../configure
+make -j$(nproc)
+cd src/backend/fuzzer
+make afl
+cp *_afl /out
+cd ../../..
+make clean
+
 CC="clang" CXX="clang++" \
 CFLAGS="-g" \
 CXXFLAGS="-g" \

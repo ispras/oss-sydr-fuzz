@@ -50,7 +50,43 @@ $CXX $CXXFLAGS \
     ../test/ossfuzz.o -pthread -ldl -o $OUT/ossfuzz \
     ./sqlite3.o
 
+# Build fuzz target for AFL++
+export CC=afl-clang-fast
+export CXX=afl-clang-fast++
+
+cd ..
+rm -rf bld
+mkdir bld
+cd bld
+
+export CFLAGS="-DSQLITE_MAX_LENGTH=128000000 \
+               -DSQLITE_MAX_SQL_LENGTH=128000000 \
+               -DSQLITE_MAX_MEMORY=25000000 \
+               -DSQLITE_PRINTF_PRECISION_LIMIT=1048576 \
+               -DSQLITE_DEBUG=1 \
+               -DSQLITE_MAX_PAGE_COUNT=16384 \
+               -g \
+               -fsanitize=address,bounds,undefined,null,float-divide-by-zero"
+
+export CXXFLAGS="-g -fsanitize=address,bounds,undefined,null,float-divide-by-zero"
+
+$CXX $CXXFLAGS -o ../test/afl.o -c ../test/afl.cc
+
+../configure
+make -j$(nproc)
+make sqlite3.c
+
+$CC $CFLAGS -I. -c \
+    ../test/ossfuzz.c -o ../test/ossfuzz.o
+
+$CXX $CXXFLAGS \
+    ../test/afl.o ../test/ossfuzz.o -pthread -ldl -o $OUT/aflfuzz \
+    ./sqlite3.o
+
 # Build fuzz target for Sydr
+export CC=clang
+export CXX=clang++
+
 cd ..
 rm -rf bld
 mkdir bld
@@ -74,4 +110,33 @@ $CC $CFLAGS -I. -c \
 
 $CXX \
     ../test/sydrfuzz.o -pthread -ldl -o $OUT/sydrfuzz \
+    ./sqlite3.o
+
+# Build fuzz target for Sydr
+export CC=clang
+export CXX=clang++
+
+cd ..
+rm -rf bld
+mkdir bld
+cd bld
+
+export CFLAGS="-DSQLITE_MAX_LENGTH=128000000 \
+               -DSQLITE_MAX_SQL_LENGTH=128000000 \
+               -DSQLITE_MAX_MEMORY=25000000 \
+               -DSQLITE_PRINTF_PRECISION_LIMIT=1048576 \
+               -DSQLITE_DEBUG=1 \
+               -DSQLITE_MAX_PAGE_COUNT=16384 \
+               -g -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+
+../configure
+make -j$(nproc)
+make sqlite3.c
+
+$CC $CFLAGS -I. -c \
+    ../test/sydrfuzz.c -o ../test/sydrfuzz.o
+
+$CXX \
+    ../test/sydrfuzz.o -pthread -ldl -o $OUT/cov \
     ./sqlite3.o

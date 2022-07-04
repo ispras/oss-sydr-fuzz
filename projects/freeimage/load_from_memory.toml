@@ -15,9 +15,12 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -n 1024"
+args = "-l debug"
 target = "/load_from_memory_sydr @@"
 
 [libfuzzer]
 path = "/load_from_memory_fuzzer"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus_bmp"
+
+[cov]
+target = "/load_from_memory_cov @@"

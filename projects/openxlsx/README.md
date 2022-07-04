@@ -32,3 +32,7 @@ Minimize corpus:
 Collect and report coverage:
 
     # sydr-fuzz cov-report
+
+## Hybrid fuzzing with AFL++
+
+    # sydr-fuzz -c sydr-fuzz-afl++.toml run

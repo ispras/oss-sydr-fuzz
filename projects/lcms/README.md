@@ -25,6 +25,18 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c cmsIT8_load.toml run
 
+Minimize corpus:
+
+    # sydr-fuzz -c cmsIT8_load.toml cmin
+
+Collect and report coverage:
+
+    # sydr-fuzz -c cmsIT8_load.toml cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c cmsIT8_load-afl++.toml run
+
 ## Alternative Fuzz Targets
 
 Little CMS project has 3 fuzz targets.

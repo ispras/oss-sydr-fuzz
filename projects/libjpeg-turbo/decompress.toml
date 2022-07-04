@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 512"
+args = "-l debug -j 2"
 target = "/decompress_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/decompress_fuzzer"
 args = "/corpus_decompress"
+
+[cov]
+target = "/decompress_cov @@"

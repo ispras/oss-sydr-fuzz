@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/out/asn1parse_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/out/asn1parse"
 args = "-dict=/out/asn1.dict /openssl/fuzz/corpora/asn1parse"
+
+[cov]
+target = "/out/asn1parse_cov @@"

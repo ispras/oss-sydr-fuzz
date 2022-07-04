@@ -38,6 +38,10 @@ COPY ./build.sh ./
 # Copy source code for sydr fuzz target.
 COPY re2_sydr.cc ./re2/fuzzing/
 
+COPY afl.cc /
+
+RUN mkdir /corpus
+
 # Build fuzz targets.
 RUN ./build.sh
 

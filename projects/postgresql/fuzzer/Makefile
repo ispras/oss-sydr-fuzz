@@ -49,6 +49,18 @@ simple_query_fuzzer.o json_parser_fuzzer.o protocol_fuzzer.o fuzzer_initialize.o
 protocol_fuzzer: %: %.o $(OBJS_FUZZERS)
 	clang++ -g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $(call expand_subsys,$^) -o $@ -Wl,--wrap=exit -Wl,--wrap=pq_getbyte
 
+afl: simple_query_afl \
+	json_parser_afl
+
+simple_query_afl json_parser_afl: %: %.o fuzzer_initialize_afl.o $(OBJS_FUZZERS)
+	afl-clang-fast++ -g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero $(call expand_subsys,$^) -o $@ -ldl -lpthread -lrt
+
+simple_query_afl.o json_parser_afl.o: %.o: %.c
+	afl-clang-fast $(CPPFLAGS) -g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero -c -o $@ $^
+
+fuzzer_initialize_afl.o: %.o: fuzzer_initialize.c
+	afl-clang-fast $(CPPFLAGS) -g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero -c -o $@ $^
+
 sydr: simple_query_sydr \
 	json_parser_sydr
 

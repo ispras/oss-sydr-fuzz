@@ -30,7 +30,7 @@ WORKDIR xlnt
 RUN git checkout d88c901faa539f9272a81ba0bab72def70ca18d7 && git submodule update --init --recursive
 
 # Copy build script and targets.
-COPY load_fuzzer.cc load_sydr.cc build.sh ./
+COPY load_fuzzer.cc load_sydr.cc afl.cc build.sh ./
 
 
 # Build fuzz targets.

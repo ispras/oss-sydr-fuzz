@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/out/x509_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/out/x509"
 args = "-dict=/out/x509.dict /openssl/fuzz/corpora/x509"
+
+[cov]
+target = "/out/x509_cov @@"

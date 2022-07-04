@@ -17,7 +17,7 @@
 exit-on-time = 3600
 
 [sydr]
-args = "-l debug -n 1024"
+args = "-l debug"
 target = "/sydr/check_numerics_fuzz @@"
 
 [libfuzzer]

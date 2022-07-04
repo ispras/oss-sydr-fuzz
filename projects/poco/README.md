@@ -39,6 +39,10 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c json_parser.toml cov-export -- -format=lcov > json_parser.lcov
     # genhtml -o json_parser-html json_parser.lcov
 
+#### Hybrid fuzzing with AFL++
+
+    # sydr-fuzz -c json_parser-afl++.toml run
+
 ### XML fuzzing
 
 Run hybrid fuzzing:
@@ -53,3 +57,7 @@ Get LCOV HTML coverage report:
 
     # sydr-fuzz -c xml_parser.toml cov-export -- -format=lcov > xml_parser.lcov
     # genhtml -o xml_parser-html xml_parser.lcov
+
+#### Hybrid fuzzing with AFL++
+
+    # sydr-fuzz -c xml_parser-afl++.toml run
