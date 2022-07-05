@@ -45,6 +45,7 @@ external repositories.
 * poco
 * poppler
 * postgresql
+* pytorch
 * rapidjson
 * re2
 * sqlite3
