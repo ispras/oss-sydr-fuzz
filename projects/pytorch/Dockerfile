@@ -41,8 +41,7 @@ COPY build_*.sh \
 
 # Apply PyTorch fixes.
 RUN cd /pytorch_fuzz && \
-    git apply /stoull.patch && \
-    git apply /errors.patch
+    git apply /stoull.patch
 RUN rm /pytorch_fuzz/third_party/miniz-2.0.8/miniz.*
 RUN cp miniz.* /pytorch_fuzz/third_party/miniz-2.0.8/.
 

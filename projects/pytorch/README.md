@@ -29,3 +29,8 @@ PyTorch is an open source machine learning framework based on the Torch library,
 * mobile_fuzz
 
 `sydr-fuzz -c mobile.toml run`
+
+## Applyed patches
+
+* miniz.* – Updated miniz version for fix segmentation fault.
+* stoull.patch – Added additional caffe2 version check for deeper fuzzing.
