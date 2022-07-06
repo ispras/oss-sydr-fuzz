@@ -88,29 +88,29 @@ lib/libc10.a  \
 clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 -DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 -DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 -DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch -DUSE_EXTERNAL_MZCRC -D_FILE_OFFSET_BITS=64 -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -DTH_HAVE_THREAD -g -O2 -fprofile-instr-generate -fcoverage-mapping -I/pytorch_cov/torch/include /dump_sydr.cc -c -o ./dump_cov.o
 
 # Link dump_cov target
-clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG ./dump_cov.o lib/libtorch.a \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch.a" -Wl,--no-whole-archive  \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive  \ 
-lib/libbreakpad.a  \ 
-lib/libbreakpad_common.a  \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive  \ 
-lib/libqnnpack.a  \ 
-lib/libpytorch_qnnpack.a  \ 
-lib/libnnpack.a  \ 
-lib/libXNNPACK.a  \ 
-lib/libpthreadpool.a  \ 
-lib/libcpuinfo.a  \ 
-lib/libclog.a \ 
-lib/libfoxi_loader.a  \ 
--lrt -lm -ldl  \ 
-lib/libkineto.a \ 
-sleef/lib/libsleef.a  \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libonnx.a" -Wl,--no-whole-archive  \ 
-lib/libonnx_proto.a  \ 
-lib/libprotobuf.a  \ 
--pthread \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive  \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive  \ 
-lib/libc10.a  \ 
--Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \ 
+clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG ./dump_cov.o lib/libtorch.a \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch.a" -Wl,--no-whole-archive  \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive  \
+lib/libbreakpad.a  \
+lib/libbreakpad_common.a  \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive  \
+lib/libqnnpack.a  \
+lib/libpytorch_qnnpack.a  \
+lib/libnnpack.a  \
+lib/libXNNPACK.a  \
+lib/libpthreadpool.a  \
+lib/libcpuinfo.a  \
+lib/libclog.a \
+lib/libfoxi_loader.a  \
+-lrt -lm -ldl  \
+lib/libkineto.a \
+sleef/lib/libsleef.a  \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libonnx.a" -Wl,--no-whole-archive  \
+lib/libonnx_proto.a  \
+lib/libprotobuf.a  \
+-pthread \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive  \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive  \
+lib/libc10.a  \
+-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
 -o /dump_cov

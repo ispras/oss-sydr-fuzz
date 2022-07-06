@@ -73,4 +73,3 @@ int main(int argc, char **argv) {
     torch::jit::dump_opnames(m, opnames);
     return 0;
 }
-

@@ -8,9 +8,13 @@ PyTorch is an open source machine learning framework based on the Torch library,
 
 ## Run Hybrid Fuzzing
 
+* Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
+
+`$ unzip sydr.zip`
+
 * Run Docker
 
-`$ docker run --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch bash`
+`$ docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash`
 
 * Change directory to `/fuzz`:
 
