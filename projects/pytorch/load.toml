@@ -20,7 +20,7 @@ target = "/load_sydr @@"
 
 [libfuzzer]
 path = "/load_fuzz"
-args = "-detect_leaks=0 -rss_limit_mb=36384 -timeout=300 -report_slow_units=350 /corpus"
+args = "-detect_leaks=0 -rss_limit_mb=30720 -timeout=300 -report_slow_units=350 /corpus"
 
 [cov]
 target = "/load_cov @@"
