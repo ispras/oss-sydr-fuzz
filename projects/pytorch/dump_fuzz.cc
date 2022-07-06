@@ -32,7 +32,6 @@ namespace torch {
           auto methods = m.get_methods();
           for (const auto& method : methods) {
             const auto& func = method.function();
-            //std::cout << "function name: " << func.name() << std::endl;
             auto graph = toGraphFunction(func).graph()->copy();
             torch::jit::Code code(graph, "");
             for (size_t i = 0; i < code.instructions().size(); ++i) {
@@ -43,13 +42,11 @@ namespace torch {
                 std::string namestr = opname.name;
                 if (!opname.overload_name.empty())
                   namestr += "." + opname.overload_name;
-                //std::cout << "    " << namestr << std::endl;
                 opnames.emplace(namestr);
               }
             }
           }
           for (const auto& sub_m : m.children()) {
-            //std::cout << "sub module name: " << sub_m.type()->name()->qualifiedName() << std::endl;
             dump_opnames(sub_m, opnames);
           }
         }
