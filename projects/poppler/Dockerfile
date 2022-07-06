@@ -37,8 +37,8 @@ RUN git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
 RUN git clone https://gitlab.freedesktop.org/cairo/cairo.git
 RUN git clone --branch=5.15 git://code.qt.io/qt/qtbase.git
 RUN git clone https://gitlab.gnome.org/GNOME/pango.git
-ADD https://ftp.gnome.org/pub/gnome/sources/glib/2.70/glib-2.70.0.tar.xz .
-RUN tar xvJf ./glib-2.70.0.tar.xz
+ADD https://ftp.gnome.org/pub/gnome/sources/glib/2.73/glib-2.73.1.tar.xz .
+RUN tar xvJf ./glib-2.73.1.tar.xz
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 RUN wget https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_75_RTM/src/nss-3.75-with-nspr-4.32.tar.gz
 RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
@@ -73,8 +73,8 @@ RUN git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
 RUN git clone https://gitlab.freedesktop.org/cairo/cairo.git
 RUN git clone --branch=5.15 git://code.qt.io/qt/qtbase.git
 RUN git clone https://gitlab.gnome.org/GNOME/pango.git
-ADD https://ftp.gnome.org/pub/gnome/sources/glib/2.70/glib-2.70.0.tar.xz .
-RUN tar xvJf ./glib-2.70.0.tar.xz
+ADD https://ftp.gnome.org/pub/gnome/sources/glib/2.73/glib-2.73.1.tar.xz .
+RUN tar xvJf ./glib-2.73.1.tar.xz
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 RUN wget https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_75_RTM/src/nss-3.75-with-nspr-4.32.tar.gz
 RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
@@ -106,8 +106,8 @@ RUN git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
 RUN git clone https://gitlab.freedesktop.org/cairo/cairo.git
 RUN git clone --branch=5.15 git://code.qt.io/qt/qtbase.git
 RUN git clone https://gitlab.gnome.org/GNOME/pango.git
-ADD https://ftp.gnome.org/pub/gnome/sources/glib/2.70/glib-2.70.0.tar.xz .
-RUN tar xvJf ./glib-2.70.0.tar.xz
+ADD https://ftp.gnome.org/pub/gnome/sources/glib/2.73/glib-2.73.1.tar.xz .
+RUN tar xvJf ./glib-2.73.1.tar.xz
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 RUN wget https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_75_RTM/src/nss-3.75-with-nspr-4.32.tar.gz
 RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
@@ -115,7 +115,7 @@ RUN git clone https://gitlab.freedesktop.org/poppler/poppler.git
 WORKDIR /src/cov/poppler
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 4139f79cf8c4e3f529570c9a300491c36f9100e8
+RUN git checkout bb1651334abc11495fa0326c8d562243d2a4b055
 
 COPY main.c \
      ./
