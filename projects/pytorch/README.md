@@ -36,5 +36,5 @@ PyTorch is an open source machine learning framework based on the Torch library,
 
 ## Applyed patches
 
-* miniz.* – Updated miniz version for fix segmentation fault.
-* stoull.patch – Added additional caffe2 version check for deeper fuzzing.
+* miniz.* – Updated miniz version to fix segmentation fault.
+* stoull.patch – Catch stoull exception to allow the fuzzer go deeper.
