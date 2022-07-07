@@ -14,21 +14,21 @@ This project uses some performance related settings and you can tune this for yo
 
 ## Run Hybrid Fuzzing
 
-* Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
+Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
 
     $ unzip sydr.zip
 
-* Run Docker:
+Run Docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash
 
-* Change directory to `/fuzz`:
+Change directory to `/fuzz`:
 
     # cd /fuzz
 
 ### Fuzz Targets
 
-* dump_fuzz
+#### dump_fuzz
 
 Run hybrid fuzzing:
 
@@ -38,7 +38,7 @@ Minimize corpus:
 
     # sydr-fuzz -c dump.toml cmin
 
-* load_fuzz
+#### load_fuzz
 
 Run hybrid fuzzing:
 
@@ -48,7 +48,7 @@ Minimize corpus:
 
     # sydr-fuzz -c load.toml cmin
 
-* mobile_fuzz
+#### mobile_fuzz
 
 Run hybrid fuzzing:
 
