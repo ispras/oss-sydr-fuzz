@@ -49,7 +49,6 @@ RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd 
     make install -j 200 && cd .. && rm -rf afl-cov
 
 ENV LLVM_CONFIG=llvm-config
-ENV AFL_SKIP_CPUFREQ=1
 ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
