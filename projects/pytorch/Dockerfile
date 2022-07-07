@@ -21,9 +21,6 @@ MAINTAINER Kirill Parhomenko
 # Install build dependencies.
 RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions 
 
-# set timezone
-RUN ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
 RUN cd /pytorch_fuzz && \
