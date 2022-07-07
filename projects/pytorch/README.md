@@ -4,7 +4,7 @@ PyTorch is an open source machine learning framework based on the Torch library,
 
 ## Perfomance note
 
-This project uses some perfomance related settings and you can tune this for your machine:
+This project uses some performance related settings and you can tune this for your machine:
 
 * `-rss_limit_mb=30720` in *.toml - Memory usage limit for libFuzzer (in Mb), default 30GB. Use 0 to disable the limit. If an input requires more than this amount of RSS memory to execute, the process is treated as a failure case. The limit is checked in a separate thread every second.
 
@@ -62,11 +62,11 @@ Run hybrid fuzzing:
 
     `$ sydr-fuzz -c <target_name>.toml security`
 
-## Crash amalysis with Casr
+## Crash analysis with Casr
 
     `$ sydr-fuzz -c <target_name>.toml casr`
 
-## Applyed patches
+## Applied patches
 
 * miniz.* – Updated miniz version to fix segmentation fault.
 * stoull.patch – Catch stoull exception to allow the fuzzer go deeper.
