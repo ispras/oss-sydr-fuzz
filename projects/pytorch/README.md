@@ -6,8 +6,6 @@ PyTorch is an open source machine learning framework based on the Torch library,
 
 This project uses some perfomance related settings and you can tune this for your machine:
 
-* `MAX_JOBS=100` in build_*.sh – The maximum number of jobs to build the whole project, if your machine has fewer threads, the build system will use all the threads.
-
 * `-rss_limit_mb=30720` in *.toml - Memory usage limit for libFuzzer (in Mb), default 30GB. Use 0 to disable the limit. If an input requires more than this amount of RSS memory to execute, the process is treated as a failure case. The limit is checked in a separate thread every second.
 
 ## Build Docker
