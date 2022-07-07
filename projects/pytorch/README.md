@@ -12,7 +12,7 @@ This project uses some perfomance related settings and you can tune this for you
 
 ## Build Docker
 
-`$ docker build -t oss-sydr-fuzz-pytorch .`
+`$ sudo docker build -t oss-sydr-fuzz-pytorch .`
 
 ## Run Hybrid Fuzzing
 
@@ -22,7 +22,7 @@ This project uses some perfomance related settings and you can tune this for you
 
 * Run Docker
 
-`$ docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash`
+`$ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash`
 
 * Change directory to `/fuzz`:
 
