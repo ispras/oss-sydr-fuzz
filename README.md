@@ -68,6 +68,8 @@ Feel free to support new fuzz targets. The workflow is following:
 
 ## Trophies
 
+* Cairo:
+    * <https://gitlab.freedesktop.org/cairo/cairo/-/issues/579>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
@@ -80,6 +82,8 @@ Feel free to support new fuzz targets. The workflow is following:
 * OpenXLSX:
     * <https://github.com/troldal/OpenXLSX/issues/140>
     * <https://github.com/troldal/OpenXLSX/issues/139>
+* Poppler:
+    * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1268>
 * PyTorch:
     * <https://github.com/pytorch/pytorch/issues/77561> (PR: https://github.com/pytorch/pytorch/pull/79192)
     * <https://github.com/pytorch/pytorch/issues/77563> (PR: https://github.com/pytorch/pytorch/pull/79192)
