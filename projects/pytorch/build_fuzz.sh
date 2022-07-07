@@ -18,7 +18,7 @@
 
 cd /pytorch_fuzz/
 # Build torch with sans
-MAX_JOBS=100 USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 CXXFLAGS='-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero' CFLAGS='-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero' python3 setup.py build
+MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 CXXFLAGS='-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero' CFLAGS='-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero' python3 setup.py build
 
 cd build
 
