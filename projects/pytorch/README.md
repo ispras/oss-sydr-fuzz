@@ -10,61 +10,61 @@ This project uses some performance related settings and you can tune this for yo
 
 ## Build Docker
 
-    `$ sudo docker build -t oss-sydr-fuzz-pytorch .`
+    $ sudo docker build -t oss-sydr-fuzz-pytorch .
 
 ## Run Hybrid Fuzzing
 
 * Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
 
-    `$ unzip sydr.zip`
+    $ unzip sydr.zip
 
 * Run Docker:
 
-    `$ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash`
+    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash
 
 * Change directory to `/fuzz`:
 
-    `$ cd /fuzz`
+    # cd /fuzz
 
 ### Fuzz Targets
 
 * dump_fuzz
 
-Minimize corpus:
-
-    `$ sydr-fuzz -c dump.toml cmin`
-
 Run hybrid fuzzing:
 
-    `$ sydr-fuzz -c dump.toml run`
+    # sydr-fuzz -c dump.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c dump.toml cmin
 
 * load_fuzz
 
-Minimize corpus:
-
-    `$ sydr-fuzz -c load.toml cmin`
-
 Run hybrid fuzzing:
 
-    `$ sydr-fuzz -c load.toml run`
+    # sydr-fuzz -c load.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c load.toml cmin
 
 * mobile_fuzz
 
-Minimize corpus:
-
-    `$ sydr-fuzz -c mobile.toml cmin`
-
 Run hybrid fuzzing:
 
-    `$ sydr-fuzz -c mobile.toml run`
+    # sydr-fuzz -c mobile.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c mobile.toml cmin
 
 ## Security predicates
 
-    `$ sydr-fuzz -c <target_name>.toml security`
+    # sydr-fuzz -c <target_name>.toml security
 
 ## Crash analysis with Casr
 
-    `$ sydr-fuzz -c <target_name>.toml casr`
+    # sydr-fuzz -c <target_name>.toml casr
 
 ## Applied patches
 
