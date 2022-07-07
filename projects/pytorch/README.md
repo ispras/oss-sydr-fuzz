@@ -12,35 +12,35 @@ This project uses some perfomance related settings and you can tune this for you
 
 ## Build Docker
 
-`docker build -t oss-sydr-fuzz-pytorch .`
+`$ docker build -t oss-sydr-fuzz-pytorch .`
 
 ## Run Hybrid Fuzzing
 
 * Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
 
-`unzip sydr.zip`
+`$ unzip sydr.zip`
 
 * Run Docker
 
-`docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash`
+`$ docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash`
 
 * Change directory to `/fuzz`:
 
-`cd /fuzz`
+`$ cd /fuzz`
 
 ### Fuzz Targets
 
 * dump_fuzz
 
-`sydr-fuzz -c dump.toml run`
+`$ sydr-fuzz -c dump.toml run`
 
 * load_fuzz
 
-`sydr-fuzz -c load.toml run`
+`$ sydr-fuzz -c load.toml run`
 
 * mobile_fuzz
 
-`sydr-fuzz -c mobile.toml run`
+`$ sydr-fuzz -c mobile.toml run`
 
 ## Applyed patches
 
