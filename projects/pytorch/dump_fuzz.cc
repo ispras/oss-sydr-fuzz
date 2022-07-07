@@ -24,8 +24,6 @@
 #include <torch/csrc/jit/runtime/instruction.h>
 #include <c10/util/Flags.h>
 
-#include <fstream>
-
 namespace torch {
     namespace jit {
         void dump_opnames(const Module& m, std::unordered_set<std::string>& opnames) {
