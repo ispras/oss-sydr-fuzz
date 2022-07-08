@@ -9,7 +9,7 @@ RUN apt-get update && \
                        wget curl unzip clang-11 vim lsb-release gdb zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
-                       libtool
+                       libtool gnuplot
 
 RUN python3 -m pip install scipy numpy
 
@@ -38,7 +38,7 @@ RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
                   -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
                   -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt" \
                   -GNinja && \
-    CMAKE_BUILD_PARALLEL_LEVEL=200 cmake --build . && cmake --build . && \
+    CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && cmake --build . && \
     cmake --install . && cd ../.. && rm -rf llvm-project
 
 RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
@@ -46,16 +46,16 @@ RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
 
 RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd /afl-cov && \
     git checkout bb51de02c06dca2bfa2dfb494fa3b095950ec879 && \
-    make install -j 200 && cd .. && rm -rf afl-cov
+    make install -j $(nproc) && cd .. && rm -rf afl-cov
 
 ENV LLVM_CONFIG=llvm-config
 ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout a790bf6cc2bb63f0659d8c96b46f5f4db2f9d4bc && \
+    git checkout 40947508037b874020c8dd1251359fecaab04b9d && \
     export CC=gcc-10 && export CXX=g++-10 && make clean && \
-    make distrib -j 200 && make install -j 200 && make clean && cd .. && rm -rf AFLplusplus
+    make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 ENV PATH=$PATH:/fuzz/sydr
 
