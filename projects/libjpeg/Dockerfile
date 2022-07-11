@@ -20,12 +20,12 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 MAINTAINER Andrey Fedotov
 
 # Install build dependencies.
-RUN apt-get update && apt-get install -y make yasm cmake
+RUN apt-get update && apt-get install -y make yasm cmake wget
 
 
-COPY build.sh jcompress_sydr.cc jcompress_fuzzer.cc jpegsrc.v9e.tar.gz ./fuzz/
+COPY build.sh jcompress_sydr.cc jcompress_fuzzer.cc ./fuzz/
 
-RUN tar -xnf ./fuzz/jpegsrc.v9e.tar.gz
+RUN wget http://www.ijg.org/files/jpegsrc.v9e.tar.gz && tar -xnf jpegsrc.v9e.tar.gz
 
 COPY rdgif.c /jpeg-9e
 COPY rdtarga.c /jpeg-9e
