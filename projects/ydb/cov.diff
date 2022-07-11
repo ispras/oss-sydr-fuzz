@@ -1,0 +1,231 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b4923c1516..134c7b2d57 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -55,6 +55,8 @@ set(CMAKE_C_FLAGS "\
+   -msse4.2 \
+   -mpopcnt \
+   -mcx16 \
++  -g \
++  -fprofile-instr-generate -fcoverage-mapping \
+   "
+ )
+ set(CMAKE_CXX_FLAGS "\
+@@ -110,6 +112,8 @@ set(CMAKE_CXX_FLAGS "\
+   -Wno-deprecated-enum-float-conversion \
+   -Wno-ambiguous-reversed-operator \
+   -Wno-deprecated-volatile \
++  -g \
++  -fprofile-instr-generate -fcoverage-mapping \
+   "
+ )
+ add_link_options(
+diff --git a/library/cpp/cgiparam/CMakeLists.txt b/library/cpp/cgiparam/CMakeLists.txt
+index 2b360f82a1..f565e5b3de 100644
+--- a/library/cpp/cgiparam/CMakeLists.txt
++++ b/library/cpp/cgiparam/CMakeLists.txt
+@@ -18,3 +18,15 @@ target_link_libraries(library-cpp-cgiparam PUBLIC
+ target_sources(library-cpp-cgiparam PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/cgiparam/cgiparam.cpp
+ )
++
++add_executable(cgiparam_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/cgiparam/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(cgiparam_cov PUBLIC
++library-cpp-cgiparam
++-ldl
++-lpthread
++)
++
+diff --git a/library/cpp/containers/flat_hash/CMakeLists.txt b/library/cpp/containers/flat_hash/CMakeLists.txt
+index 11e1864b0a..46230d7bbc 100644
+--- a/library/cpp/containers/flat_hash/CMakeLists.txt
++++ b/library/cpp/containers/flat_hash/CMakeLists.txt
+@@ -28,3 +28,25 @@ target_sources(cpp-containers-flat_hash PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/lib/table.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/lib/value_markers.cpp
+ )
++
++add_executable(dense_map_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/fuzz/dense_map_fuzz/fuzz.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(dense_map_cov PUBLIC
++cpp-containers-flat_hash
++-ldl
++-lpthread
++)
++
++add_executable(flat_map_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/fuzz/flat_map_fuzz/fuzz.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(flat_map_cov PUBLIC
++cpp-containers-flat_hash
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt b/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt
+index 0c626f6cba..07d20fcfef 100644
+--- a/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt
++++ b/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt
+@@ -15,3 +15,14 @@ target_link_libraries(cpp-containers-intrusive_rb_tree PUBLIC
+ target_sources(cpp-containers-intrusive_rb_tree PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/containers/intrusive_rb_tree/rb_tree.cpp
+ )
++
++add_executable(intrusive_rb_tree_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/containers/intrusive_rb_tree/fuzz/rb_tree_fuzzing.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(intrusive_rb_tree_cov PUBLIC
++cpp-containers-intrusive_rb_tree
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/http/io/CMakeLists.txt b/library/cpp/http/io/CMakeLists.txt
+index b8e477b6b7..c52cdea9ec 100644
+--- a/library/cpp/http/io/CMakeLists.txt
++++ b/library/cpp/http/io/CMakeLists.txt
+@@ -22,3 +22,14 @@ target_sources(cpp-http-io PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/http/io/headers.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/http/io/stream.cpp
+ )
++
++add_executable(http_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/http/io/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(http_cov PUBLIC
++cpp-http-io
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/json/CMakeLists.txt b/library/cpp/json/CMakeLists.txt
+index ca36c8f305..df2da34c73 100644
+--- a/library/cpp/json/CMakeLists.txt
++++ b/library/cpp/json/CMakeLists.txt
+@@ -23,3 +23,14 @@ target_sources(library-cpp-json PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/json/json_prettifier.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/json/rapidjson_helpers.cpp
+ )
++
++add_executable(json_cpp_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/json/fuzzy_test/main.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(json_cpp_cov PUBLIC
++library-cpp-json
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/monlib/encode/json/CMakeLists.txt b/library/cpp/monlib/encode/json/CMakeLists.txt
+index bcdb013523..3489928751 100644
+--- a/library/cpp/monlib/encode/json/CMakeLists.txt
++++ b/library/cpp/monlib/encode/json/CMakeLists.txt
+@@ -21,3 +21,19 @@ target_sources(monlib-encode-json PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/json/json_decoder.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/json/json_encoder.cpp
+ )
++
++add_executable(json_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/json/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake/fake.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_include_directories(json_cov PUBLIC
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake
++)
++
++target_link_libraries(json_cov PUBLIC
++monlib-encode-json
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/monlib/encode/prometheus/CMakeLists.txt b/library/cpp/monlib/encode/prometheus/CMakeLists.txt
+index 662ee84590..ac78bcdbf9 100644
+--- a/library/cpp/monlib/encode/prometheus/CMakeLists.txt
++++ b/library/cpp/monlib/encode/prometheus/CMakeLists.txt
+@@ -18,3 +18,19 @@ target_sources(monlib-encode-prometheus PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/prometheus/prometheus_decoder.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/prometheus/prometheus_encoder.cpp
+ )
++
++add_executable(prometheus_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/prometheus/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake/fake.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_include_directories(prometheus_cov PUBLIC
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake
++)
++
++target_link_libraries(prometheus_cov PUBLIC
++monlib-encode-prometheus
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/monlib/encode/spack/CMakeLists.txt b/library/cpp/monlib/encode/spack/CMakeLists.txt
+index 1be9c24714..09072e4809 100644
+--- a/library/cpp/monlib/encode/spack/CMakeLists.txt
++++ b/library/cpp/monlib/encode/spack/CMakeLists.txt
+@@ -25,3 +25,19 @@ target_sources(monlib-encode-spack PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/spack/varint.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/spack/compression.cpp
+ )
++
++add_executable(spack_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/spack/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake/fake.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_include_directories(spack_cov PUBLIC
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake
++)
++
++target_link_libraries(spack_cov PUBLIC
++monlib-encode-spack
++-ldl
++-lpthread
++)
+diff --git a/library/cpp/string_utils/base64/CMakeLists.txt b/library/cpp/string_utils/base64/CMakeLists.txt
+index 0bf08c6bca..074b47c89f 100644
+--- a/library/cpp/string_utils/base64/CMakeLists.txt
++++ b/library/cpp/string_utils/base64/CMakeLists.txt
+@@ -21,3 +21,25 @@ target_link_libraries(cpp-string_utils-base64 PUBLIC
+ target_sources(cpp-string_utils-base64 PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/string_utils/base64/base64.cpp
+ )
++
++add_executable(cpp-string_utils-base64_lib_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/string_utils/base64/fuzz/lib/main.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(cpp-string_utils-base64_lib_cov PUBLIC
++cpp-string_utils-base64
++-ldl
++-lpthread
++)
++
++add_executable(cpp-string_utils-base64_uneven_cov
++  ${CMAKE_SOURCE_DIR}/library/cpp/string_utils/base64/fuzz/uneven/main.cpp
++  ${CMAKE_SOURCE_DIR}/sydr.cc
++)
++
++target_link_libraries(cpp-string_utils-base64_uneven_cov PUBLIC
++cpp-string_utils-base64
++-ldl
++-lpthread
++)
