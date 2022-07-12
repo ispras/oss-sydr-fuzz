@@ -27,3 +27,8 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c compress.toml run
 
+Get LCOV HTML coverage report:
+
+    # sydr-fuzz cov-export -- -format=lcov > compress.lcov
+    # genhtml -o compress-html compress.lcov
+
