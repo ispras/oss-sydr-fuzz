@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-MAINTAINER Alexey Vishnyakov
+MAINTAINER Andrey Fedotov
 
 # Install build dependencies.
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
@@ -43,7 +43,7 @@ COPY fuzzer.diff ./
 RUN  cd ydb && git apply ../fuzzer.diff
 RUN cd build-fuzz && \
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../ydb/clang.toolchain ../ydb && \
-    ninja -j100
+    ninja -j$(nproc)
 
 # Build projetc for Sydr.
 RUN mkdir build-sydr
@@ -54,7 +54,7 @@ RUN  cd ydb && git apply ../sydr.diff
 
 RUN cd build-sydr && \
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../ydb/clang.toolchain ../ydb && \
-    ninja -j100    
+    ninja -j$(nproc)
 
 # Build project for coverage.
 #RUN mkdir build-cov
