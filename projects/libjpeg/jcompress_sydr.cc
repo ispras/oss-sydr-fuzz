@@ -96,12 +96,10 @@ struct test {
   int quality;
 };
 
-int LLVMFuzzerTestOneInput(uint8_t *data, size_t size) {
+int LLVMFuzzerTestOneInput(const char *file_name) {
   struct jpeg_compress_struct cinfo;
   struct my_error_mgr jerr;
-  char input_file[FILENAME_MAX] = {0};
-  int fd = -1, ti = 0, i = 0;
-  char ff = 0;
+  int ti = 0, i = 0;
   FILE *file;
   unsigned char *dstBuf = NULL;
   cjpeg_source_ptr src_mgr;
@@ -110,10 +108,7 @@ int LLVMFuzzerTestOneInput(uint8_t *data, size_t size) {
                               {JCS_CMYK, 80},   {JCS_BG_RGB, 70},
                               {JCS_BG_YCC, 60}, {JCS_YCCK, 50}};
 
-  snprintf(input_file, FILENAME_MAX, "/tmp/libjpeg_compress_fuzz.XXXXXX");
-  if ((fd = mkstemp(input_file)) < 0 || write(fd, data, size) < 0)
-    goto bailout;
-  if ((file = fdopen(fd, "rb")) == NULL)
+  if ((file = fopen(file_name, "rb")) == NULL)
     goto bailout;
   // <------------------------------------> //
   jerr.pub.error_exit = my_error_exit;
@@ -166,24 +161,10 @@ int LLVMFuzzerTestOneInput(uint8_t *data, size_t size) {
   // <-----------------------------------> //
 
 bailout:
-  if (fd >= 0 || file == NULL) {
-    fclose(file);
-    if (strlen(input_file) > 0)
-      unlink(input_file);
-  }
-  free(data);
+  fclose(file);
   return 0;
 }
 
 int main(int argc, char **argv) {
-  FILE *fd = fopen(argv[1], "rb");
-  if (!fd)
-    return 1;
-  fseek(fd, 0, SEEK_END);
-  long fsize = ftell(fd);
-  fseek(fd, 0, SEEK_SET);
-  char *buffer = (char *)malloc(fsize);
-  fread(buffer, 1, fsize, fd);
-  fclose(fd);
-  return LLVMFuzzerTestOneInput((uint8_t *)buffer, fsize);
+  return LLVMFuzzerTestOneInput(argv[1]);
 }

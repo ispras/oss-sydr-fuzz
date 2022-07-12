@@ -101,7 +101,6 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t *data, size_t size) {
   struct my_error_mgr jerr;
   char input_file[FILENAME_MAX] = {0};
   int fd = -1, ti = 0, i = 0;
-  char ff = 0;
   FILE *file;
   unsigned char *dstBuf = NULL;
   cjpeg_source_ptr src_mgr;

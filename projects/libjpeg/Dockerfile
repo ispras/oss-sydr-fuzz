@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2022 Google Inc.
 # Modifications copyright (C) 2021 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,18 +17,16 @@
 
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-MAINTAINER Andrey Fedotov
+MAINTAINER Georgy Savidov
 
 # Install build dependencies.
-RUN apt-get update && apt-get install -y make yasm cmake wget
+RUN apt-get update && apt-get install -y make yasm wget
 
+COPY build.sh jcompress_sydr.cc jcompress_fuzzer.cc jpeg-9e.patch ./fuzz/
 
-COPY build.sh jcompress_sydr.cc jcompress_fuzzer.cc ./fuzz/
-
-RUN wget http://www.ijg.org/files/jpegsrc.v9e.tar.gz && tar -xnf jpegsrc.v9e.tar.gz
-
-COPY rdgif.c /jpeg-9e
-COPY rdtarga.c /jpeg-9e
+RUN wget http://www.ijg.org/files/jpegsrc.v9e.tar.gz && \
+    tar -xnf jpegsrc.v9e.tar.gz && \
+    patch -s -p0 < /fuzz/jpeg-9e.patch
 
 WORKDIR jpeg-9e
 

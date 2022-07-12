@@ -11,7 +11,7 @@ identified in the SourceForge summary.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/libjpeg-turbo` directory:
+Unzip Sydr (`sydr.zip`) in `projects/libjpeg` directory:
 
     $ unzip sydr.zip
 

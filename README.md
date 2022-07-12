@@ -35,6 +35,7 @@ external repositories.
 * lcms
 * libcbor
 * libjpeg-turbo
+* libjpeg
 * libpng
 * miniz
 * miniz-2.0.8

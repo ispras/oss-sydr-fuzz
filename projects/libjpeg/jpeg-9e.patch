@@ -1,0 +1,24 @@
+diff -ruN jpeg-9e/rdgif.c jpeg-9e-new/rdgif.c
+--- jpeg-9e/rdgif.c	2020-06-18 15:18:22.000000000 +0300
++++ jpeg-9e-new/rdgif.c	2022-07-12 17:28:53.113203020 +0300
+@@ -456,7 +456,7 @@
+     height = LM_to_uint(hdrbuf, 6);
+     if (width <= 0 || height <= 0)
+       ERREXIT(cinfo, JERR_GIF_OUTOFRANGE);
+-    source->is_interlaced = (BitSet(hdrbuf[8], INTERLACE) != 0);
++    source->is_interlaced = (boolean)(BitSet(hdrbuf[8], INTERLACE) != 0);
+ 
+     /* Read local colormap if header indicates it is present */
+     /* Note: if we wanted to support skipping images, */
+diff -ruN jpeg-9e/rdtarga.c jpeg-9e-new/rdtarga.c
+--- jpeg-9e/rdtarga.c	2019-04-24 23:16:28.000000000 +0300
++++ jpeg-9e-new/rdtarga.c	2022-07-12 17:29:01.081224255 +0300
+@@ -358,7 +358,7 @@
+   source->pixel_size = UCH(targaheader[16]) >> 3;
+   flags = UCH(targaheader[17]);	/* Image Descriptor byte */
+ 
+-  is_bottom_up = ((flags & 0x20) == 0);	/* bit 5 set => top-down */
++  is_bottom_up = (boolean)((flags & 0x20) == 0);	/* bit 5 set => top-down */
+   interlace_type = flags >> 6;	/* bits 6/7 are interlace code */
+ 
+   if (cmaptype > 1 ||		/* cmaptype must be 0 or 1 */
