@@ -1,0 +1,480 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b4923c1516..9c6024d9e6 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -55,6 +55,8 @@ set(CMAKE_C_FLAGS "\
+   -msse4.2 \
+   -mpopcnt \
+   -mcx16 \
++  -fsanitize=fuzzer-no-link \
++  -g \
+   "
+ )
+ set(CMAKE_CXX_FLAGS "\
+@@ -110,6 +112,8 @@ set(CMAKE_CXX_FLAGS "\
+   -Wno-deprecated-enum-float-conversion \
+   -Wno-ambiguous-reversed-operator \
+   -Wno-deprecated-volatile \
++  -fsanitize=fuzzer-no-link \
++  -g \
+   "
+ )
+ add_link_options(
+diff --git a/library/cpp/cgiparam/CMakeLists.txt b/library/cpp/cgiparam/CMakeLists.txt
+index 2b360f82a1..2137e51b24 100644
+--- a/library/cpp/cgiparam/CMakeLists.txt
++++ b/library/cpp/cgiparam/CMakeLists.txt
+@@ -18,3 +18,20 @@ target_link_libraries(library-cpp-cgiparam PUBLIC
+ target_sources(library-cpp-cgiparam PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/cgiparam/cgiparam.cpp
+ )
++
++add_executable(cgiparam_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/cgiparam/fuzz/main.cpp
++)
++
++target_include_directories(cgiparam_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(cgiparam_fuzz PUBLIC
++library-cpp-cgiparam
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(cgiparam_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/cgiparam/fuzz/main.cpp b/library/cpp/cgiparam/fuzz/main.cpp
+index 69d82b5f32..9abc70f9ed 100644
+--- a/library/cpp/cgiparam/fuzz/main.cpp
++++ b/library/cpp/cgiparam/fuzz/main.cpp
+@@ -1,5 +1,12 @@
+ #include <library/cpp/cgiparam/cgiparam.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     try {
+         TCgiParameters(TStringBuf((const char*)data, size));
+diff --git a/library/cpp/containers/flat_hash/CMakeLists.txt b/library/cpp/containers/flat_hash/CMakeLists.txt
+index 11e1864b0a..9adb17d61f 100644
+--- a/library/cpp/containers/flat_hash/CMakeLists.txt
++++ b/library/cpp/containers/flat_hash/CMakeLists.txt
+@@ -28,3 +28,37 @@ target_sources(cpp-containers-flat_hash PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/lib/table.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/lib/value_markers.cpp
+ )
++
++add_executable(dense_map_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/fuzz/dense_map_fuzz/fuzz.cpp
++)
++
++target_include_directories(dense_map_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(dense_map_fuzz PUBLIC
++cpp-containers-flat_hash
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(dense_map_fuzz PRIVATE -fsanitize=fuzzer)
++
++add_executable(flat_map_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/containers/flat_hash/fuzz/flat_map_fuzz/fuzz.cpp
++)
++
++target_include_directories(flat_map_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(flat_map_fuzz PUBLIC
++cpp-containers-flat_hash
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(flat_map_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/containers/flat_hash/fuzz/dense_map_fuzz/fuzz.cpp b/library/cpp/containers/flat_hash/fuzz/dense_map_fuzz/fuzz.cpp
+index 3d13482a3d..f9d7ecd073 100644
+--- a/library/cpp/containers/flat_hash/fuzz/dense_map_fuzz/fuzz.cpp
++++ b/library/cpp/containers/flat_hash/fuzz/dense_map_fuzz/fuzz.cpp
+@@ -10,6 +10,13 @@
+ #include <util/generic/xrange.h>
+ #include <util/generic/bt_exception.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ using namespace NFlatHash;
+ 
+ namespace {
+diff --git a/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt b/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt
+index 0c626f6cba..ae90f753cd 100644
+--- a/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt
++++ b/library/cpp/containers/intrusive_rb_tree/CMakeLists.txt
+@@ -15,3 +15,20 @@ target_link_libraries(cpp-containers-intrusive_rb_tree PUBLIC
+ target_sources(cpp-containers-intrusive_rb_tree PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/containers/intrusive_rb_tree/rb_tree.cpp
+ )
++
++add_executable(intrusive_rb_tree_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/containers/intrusive_rb_tree/fuzz/rb_tree_fuzzing.cpp
++)
++
++target_include_directories(intrusive_rb_tree_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(intrusive_rb_tree_fuzz PUBLIC
++cpp-containers-intrusive_rb_tree
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(intrusive_rb_tree_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/containers/intrusive_rb_tree/fuzz/rb_tree_fuzzing.cpp b/library/cpp/containers/intrusive_rb_tree/fuzz/rb_tree_fuzzing.cpp
+index 92370760b5..46287d3fc7 100644
+--- a/library/cpp/containers/intrusive_rb_tree/fuzz/rb_tree_fuzzing.cpp
++++ b/library/cpp/containers/intrusive_rb_tree/fuzz/rb_tree_fuzzing.cpp
+@@ -4,6 +4,13 @@
+ #include <stdint.h>
+ #include <stddef.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ struct TCmp {
+     template <class T>
+     static inline bool Compare(const T& l, const T& r) {
+diff --git a/library/cpp/http/io/CMakeLists.txt b/library/cpp/http/io/CMakeLists.txt
+index b8e477b6b7..f7b36496a3 100644
+--- a/library/cpp/http/io/CMakeLists.txt
++++ b/library/cpp/http/io/CMakeLists.txt
+@@ -22,3 +22,18 @@ target_sources(cpp-http-io PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/http/io/headers.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/http/io/stream.cpp
+ )
++
++add_executable(http_fuzz ${CMAKE_SOURCE_DIR}/library/cpp/http/io/fuzz/main.cpp)
++
++target_include_directories(http_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(http_fuzz PUBLIC
++cpp-http-io
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(http_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/http/io/fuzz/main.cpp b/library/cpp/http/io/fuzz/main.cpp
+index 8ded9c7e32..4628bf81df 100644
+--- a/library/cpp/http/io/fuzz/main.cpp
++++ b/library/cpp/http/io/fuzz/main.cpp
+@@ -3,6 +3,13 @@
+ #include <util/generic/vector.h>
+ #include <util/stream/mem.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     TMemoryInput mi(data, size);
+ 
+diff --git a/library/cpp/json/CMakeLists.txt b/library/cpp/json/CMakeLists.txt
+index ca36c8f305..ee55fcdc6c 100644
+--- a/library/cpp/json/CMakeLists.txt
++++ b/library/cpp/json/CMakeLists.txt
+@@ -23,3 +23,20 @@ target_sources(library-cpp-json PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/json/json_prettifier.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/json/rapidjson_helpers.cpp
+ )
++
++add_executable(json_cpp_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/json/fuzzy_test/main.cpp
++)
++
++target_include_directories(json_cpp_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(json_cpp_fuzz PUBLIC
++library-cpp-json
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(json_cpp_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/json/fuzzy_test/main.cpp b/library/cpp/json/fuzzy_test/main.cpp
+index 29a53aac14..78f40cca0e 100644
+--- a/library/cpp/json/fuzzy_test/main.cpp
++++ b/library/cpp/json/fuzzy_test/main.cpp
+@@ -3,6 +3,13 @@
+ #include <util/random/random.h>
+ #include <util/stream/str.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     const auto json = TString((const char*)data, size);
+ 
+diff --git a/library/cpp/monlib/encode/json/CMakeLists.txt b/library/cpp/monlib/encode/json/CMakeLists.txt
+index bcdb013523..05b3dcbb25 100644
+--- a/library/cpp/monlib/encode/json/CMakeLists.txt
++++ b/library/cpp/monlib/encode/json/CMakeLists.txt
+@@ -21,3 +21,22 @@ target_sources(monlib-encode-json PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/json/json_decoder.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/json/json_encoder.cpp
+ )
++
++add_executable(json_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/json/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake/fake.cpp
++)
++
++target_include_directories(json_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake
++)
++
++target_link_libraries(json_fuzz PUBLIC
++monlib-encode-json
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(json_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/monlib/encode/json/fuzz/main.cpp b/library/cpp/monlib/encode/json/fuzz/main.cpp
+index 4f40310e06..fa34115523 100644
+--- a/library/cpp/monlib/encode/json/fuzz/main.cpp
++++ b/library/cpp/monlib/encode/json/fuzz/main.cpp
+@@ -3,6 +3,12 @@
+ 
+ #include <util/generic/strbuf.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
+ 
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     auto encoder = NMonitoring::EncoderFake();
+diff --git a/library/cpp/monlib/encode/prometheus/CMakeLists.txt b/library/cpp/monlib/encode/prometheus/CMakeLists.txt
+index 662ee84590..63d08d6f6b 100644
+--- a/library/cpp/monlib/encode/prometheus/CMakeLists.txt
++++ b/library/cpp/monlib/encode/prometheus/CMakeLists.txt
+@@ -18,3 +18,22 @@ target_sources(monlib-encode-prometheus PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/prometheus/prometheus_decoder.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/prometheus/prometheus_encoder.cpp
+ )
++
++add_executable(prometheus_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/prometheus/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake/fake.cpp
++)
++
++target_include_directories(prometheus_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake
++)
++
++target_link_libraries(prometheus_fuzz PUBLIC
++monlib-encode-prometheus
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(prometheus_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/monlib/encode/prometheus/fuzz/main.cpp b/library/cpp/monlib/encode/prometheus/fuzz/main.cpp
+index 24bda2d32e..65259bf847 100644
+--- a/library/cpp/monlib/encode/prometheus/fuzz/main.cpp
++++ b/library/cpp/monlib/encode/prometheus/fuzz/main.cpp
+@@ -3,6 +3,12 @@
+ 
+ #include <util/stream/mem.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
+ 
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* buf, size_t size) {
+     using namespace NMonitoring;
+diff --git a/library/cpp/monlib/encode/spack/CMakeLists.txt b/library/cpp/monlib/encode/spack/CMakeLists.txt
+index 1be9c24714..c349cce5be 100644
+--- a/library/cpp/monlib/encode/spack/CMakeLists.txt
++++ b/library/cpp/monlib/encode/spack/CMakeLists.txt
+@@ -25,3 +25,22 @@ target_sources(monlib-encode-spack PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/spack/varint.cpp
+   ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/spack/compression.cpp
+ )
++
++add_executable(spack_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/spack/fuzz/main.cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake/fake.cpp
++)
++
++target_include_directories(spack_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++  ${CMAKE_SOURCE_DIR}/library/cpp/monlib/encode/fake
++)
++
++target_link_libraries(spack_fuzz PUBLIC
++monlib-encode-spack
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(spack_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/monlib/encode/spack/fuzz/main.cpp b/library/cpp/monlib/encode/spack/fuzz/main.cpp
+index 6a14afe71c..61168c9345 100644
+--- a/library/cpp/monlib/encode/spack/fuzz/main.cpp
++++ b/library/cpp/monlib/encode/spack/fuzz/main.cpp
+@@ -3,6 +3,13 @@
+ 
+ #include <util/stream/mem.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ 
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     using namespace NMonitoring;
+diff --git a/library/cpp/string_utils/base64/CMakeLists.txt b/library/cpp/string_utils/base64/CMakeLists.txt
+index 0bf08c6bca..3b0d4902aa 100644
+--- a/library/cpp/string_utils/base64/CMakeLists.txt
++++ b/library/cpp/string_utils/base64/CMakeLists.txt
+@@ -21,3 +21,37 @@ target_link_libraries(cpp-string_utils-base64 PUBLIC
+ target_sources(cpp-string_utils-base64 PRIVATE
+   ${CMAKE_SOURCE_DIR}/library/cpp/string_utils/base64/base64.cpp
+ )
++
++add_executable(cpp-string_utils-base64_lib_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/string_utils/base64/fuzz/lib/main.cpp
++)
++
++target_include_directories(cpp-string_utils-base64_lib_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(cpp-string_utils-base64_lib_fuzz PUBLIC
++cpp-string_utils-base64
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(cpp-string_utils-base64_lib_fuzz PRIVATE -fsanitize=fuzzer)
++
++add_executable(cpp-string_utils-base64_uneven_fuzz
++  ${CMAKE_SOURCE_DIR}/library/cpp/string_utils/base64/fuzz/uneven/main.cpp
++)
++
++target_include_directories(cpp-string_utils-base64_uneven_fuzz PUBLIC
++${CMAKE_SOURCE_DIR}/contrib/libs/tcmalloc
++${CMAKE_SOURCE_DIR}/contrib/restricted/abseil-cpp
++)
++
++target_link_libraries(cpp-string_utils-base64_uneven_fuzz PUBLIC
++cpp-string_utils-base64
++libs-tcmalloc-malloc_extension
++-ldl
++)
++
++target_link_options(cpp-string_utils-base64_uneven_fuzz PRIVATE -fsanitize=fuzzer)
+diff --git a/library/cpp/string_utils/base64/fuzz/lib/main.cpp b/library/cpp/string_utils/base64/fuzz/lib/main.cpp
+index 28547ae7a5..e9117b2a06 100644
+--- a/library/cpp/string_utils/base64/fuzz/lib/main.cpp
++++ b/library/cpp/string_utils/base64/fuzz/lib/main.cpp
+@@ -3,6 +3,13 @@
+ #include <util/system/types.h>
+ #include <util/system/yassert.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     const TStringBuf example{reinterpret_cast<const char*>(data), size};
+     const auto converted = Base64Decode(Base64Encode(example));
+diff --git a/library/cpp/string_utils/base64/fuzz/uneven/main.cpp b/library/cpp/string_utils/base64/fuzz/uneven/main.cpp
+index 915e81a7e5..e79350b61d 100644
+--- a/library/cpp/string_utils/base64/fuzz/uneven/main.cpp
++++ b/library/cpp/string_utils/base64/fuzz/uneven/main.cpp
+@@ -3,6 +3,13 @@
+ #include <util/system/types.h>
+ #include <util/system/yassert.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ extern "C" int LLVMFuzzerTestOneInput(const ui8* data, size_t size) {
+     const TStringBuf example{reinterpret_cast<const char*>(data), size};
+     Y_UNUSED(Base64DecodeUneven(example));
+diff --git a/util/generic/fuzz/vector/main.cpp b/util/generic/fuzz/vector/main.cpp
+index 0a0293f795..9673ec4f7e 100644
+--- a/util/generic/fuzz/vector/main.cpp
++++ b/util/generic/fuzz/vector/main.cpp
+@@ -1,6 +1,13 @@
+ #include <util/generic/vector.h>
+ #include <util/stream/mem.h>
+ 
++#include <tcmalloc/malloc_extension.h>
++
++extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
++ tcmalloc::MallocExtension::ActivateGuardedSampling();
++ return 0;
++}
++
+ template <class T>
+ static inline T Read(IInputStream& in) {
+     T t;

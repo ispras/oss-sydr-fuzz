@@ -54,6 +54,7 @@ external repositories.
 * tinyxml2
 * unbound
 * xlnt
+* ydb
 * zlib
 
 ## Contributing
