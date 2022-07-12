@@ -52,8 +52,6 @@ make clean
 make -j$(nproc)
 make install
 
-export LDFLAGS="-fprofile-instr-generate"
-
 $CXX $CXXFLAGS -std=c++11 /fuzz/jcompress_sydr.cc /jpeg-9e/rdgif.c /jpeg-9e/rdtarga.c \
     /jpeg-9e/rdbmp.c /jpeg-9e/rdppm.c /jpeg-9e/.libs/libjpeg.a -I /jpeg-9e -o /compress_cov
 
