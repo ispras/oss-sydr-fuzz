@@ -31,6 +31,10 @@ export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,floa
 $CXX $CXXFLAGS -std=c++11 /fuzz/jcompress_fuzzer.cc /jpeg-9e/rdgif.c /jpeg-9e/rdtarga.c \
     /jpeg-9e/rdbmp.c /jpeg-9e/rdppm.c /jpeg-9e/.libs/libjpeg.a -I /jpeg-9e -o /compress_fuzzer
 
+$CXX $CXXFLAGS -std=c++11 /fuzz/jdecompress_fuzzer.cc /jpeg-9e/wrbmp.c /jpeg-9e/wrgif.c \
+    /jpeg-9e/wrppm.c /jpeg-9e/wrrle.c /jpeg-9e/wrtarga.c /jpeg-9e/.libs/libjpeg.a \
+    -I /jpeg-9e -o /decompress_fuzzer
+
 # build targets for Sydr
 
 export CXXFLAGS="-g"
@@ -44,6 +48,10 @@ make install
 $CXX $CXXFLAGS -std=c++11 /fuzz/jcompress_sydr.cc /jpeg-9e/rdgif.c /jpeg-9e/rdtarga.c \
     /jpeg-9e/rdbmp.c /jpeg-9e/rdppm.c /jpeg-9e/.libs/libjpeg.a -I /jpeg-9e -o /compress_sydr
 
+$CXX $CXXFLAGS -std=c++11 /fuzz/jdecompress_sydr.cc /jpeg-9e/wrbmp.c /jpeg-9e/wrgif.c \
+    /jpeg-9e/wrppm.c /jpeg-9e/wrrle.c /jpeg-9e/wrtarga.c /jpeg-9e/.libs/libjpeg.a \
+    -I /jpeg-9e -o /decompress_sydr
+
 export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
@@ -55,3 +63,6 @@ make install
 $CXX $CXXFLAGS -std=c++11 /fuzz/jcompress_sydr.cc /jpeg-9e/rdgif.c /jpeg-9e/rdtarga.c \
     /jpeg-9e/rdbmp.c /jpeg-9e/rdppm.c /jpeg-9e/.libs/libjpeg.a -I /jpeg-9e -o /compress_cov
 
+$CXX $CXXFLAGS -std=c++11 /fuzz/jdecompress_sydr.cc /jpeg-9e/wrbmp.c /jpeg-9e/wrgif.c \
+    /jpeg-9e/wrppm.c /jpeg-9e/wrrle.c /jpeg-9e/wrtarga.c /jpeg-9e/.libs/libjpeg.a \
+    -I /jpeg-9e -o /decompress_cov

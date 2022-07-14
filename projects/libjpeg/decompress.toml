@@ -16,12 +16,12 @@
 
 [sydr]
 args = "-l debug -j2"
-target = "/compress_sydr @@"
+target = "/decompress_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/compress_fuzzer"
-args = "-rss_limit_mb=0 /corpus_compress"
+path = "/decompress_fuzzer"
+args = "-rss_limit_mb=0 /corpus_decompress"
 
 [cov]
-target = "/compress_cov @@"
+target = "/decompress_cov @@"
