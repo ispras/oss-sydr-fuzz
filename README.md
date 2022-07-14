@@ -86,7 +86,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/troldal/OpenXLSX/issues/139>
 * Poppler:
     * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1268>
-    * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1269>
+    * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1269> ([PR](https://gitlab.freedesktop.org/poppler/poppler/-/merge_requests/1221))
 * PyTorch:
     * <https://github.com/pytorch/pytorch/issues/77561> (PR: https://github.com/pytorch/pytorch/pull/79192)
     * <https://github.com/pytorch/pytorch/issues/77563> (PR: https://github.com/pytorch/pytorch/pull/79192)
