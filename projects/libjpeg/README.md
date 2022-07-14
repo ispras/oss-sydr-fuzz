@@ -32,3 +32,15 @@ Get LCOV HTML coverage report:
     # sydr-fuzz -c compress.toml cov-export -- -format=lcov > compress.lcov
     # genhtml -o compress-html compress.lcov
 
+## Alternative Fuzz Targets
+
+libjpeg project has 2 fuzz targets.
+
+### compress
+
+    # sydr-fuzz -c compress.toml run
+
+### decompress
+
+    # sydr-fuzz -c decompress.toml run
+

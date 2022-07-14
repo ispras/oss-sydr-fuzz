@@ -58,8 +58,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   IMAGE_FORMATS tests[NUMTESTS]{
       FMT_BMP, FMT_GIF, FMT_GIF0, FMT_OS2, FMT_PPM, FMT_RLE, FMT_TARGA,
   };
-  snprintf(filename, FILENAME_MAX, "/tmp/libjpeg_decompress_fuzz.XXXXXX");
-  if ((fd = mkstemp(filename)) < 0 || (file = fdopen(fd, "wb")) == NULL)
+  if ((file = fopen("/dev/null", "wb")) == NULL)
     goto bailout;
 
   // <------------------------------------> //
@@ -131,11 +130,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // <-----------------------------------> //
 
 bailout:
-  if (fd >= 0 || file == NULL) {
-    fclose(file);
-    if (strlen(filename) > 0)
-      unlink(filename);
-  }
+  fclose(file);
   free((void *)data);
   return 0;
 }
