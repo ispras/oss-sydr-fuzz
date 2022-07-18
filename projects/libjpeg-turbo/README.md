@@ -45,7 +45,6 @@ libjpeg-turbo project has 3 fuzz targets.
 
 ### compress
 
-    # export ASAN_OPTIONS=allocator_may_return_null=1
     # sydr-fuzz -c compress.toml run
 
 ### decompress
