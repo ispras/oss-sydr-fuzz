@@ -15,8 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -n 1024"
+args = "-l debug"
 target = "/re2_sydr/re2_sydr @@"
 
 [libfuzzer]
 path = "/re2_fuzzer/re2_fuzzer"
+
+[cov]
+target = "/re2_cov/re2_cov @@"

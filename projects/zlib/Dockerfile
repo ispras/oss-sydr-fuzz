@@ -26,7 +26,7 @@ WORKDIR /zlib
 
 RUN git checkout 21767c654d31d2dccdde4330529775c6c5fd5389
 
-COPY *.c* build.sh \
+COPY afl.cc *.c* build.sh \
          ./
 
 RUN ./build.sh

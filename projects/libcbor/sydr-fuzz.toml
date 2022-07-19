@@ -22,3 +22,6 @@ jobs = 4
 [libfuzzer]
 path = "/cbor_load_fuzzer"
 args = "/corpus"
+
+[cov]
+target = "/cbor_load_cov @@"

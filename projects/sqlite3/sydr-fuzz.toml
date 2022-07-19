@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 4 -n 1024"
+args = "-l debug -j 4"
 target = "/sqlite3/sydrfuzz @@"
 jobs = 2
 
 [libfuzzer]
 path = "/sqlite3/ossfuzz"
 args = "-rss_limit_mb=8192 -dict=sql.dict -jobs=6 /corpus"
+
+[cov]
+target = "/sqlite3/cov @@"

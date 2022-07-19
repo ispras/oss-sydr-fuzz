@@ -27,6 +27,14 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c x509.toml run
 
+Collect and report coverage:
+
+    # sydr-fuzz -c x509.toml cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c x509-afl++.toml run
+
 ## Alternative Fuzz Targets
 
 OpenSSL project has 11 fuzz targets.

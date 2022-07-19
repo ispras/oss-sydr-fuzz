@@ -20,12 +20,12 @@
 mkdir build
 cd build
 cmake -DCMAKE_CXX_COMPILER=clang++ \
-      -DCMAKE_CXX_FLAGS="-DNDEBUG -g -fsanitize=fuzzer-no-link,address" \
+      -DCMAKE_CXX_FLAGS="-DNDEBUG -g -fsanitize=fuzzer-no-link,address,undefined" \
       ..
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . --target OpenXLSX --config Release
 
 CXX="clang++"
-CXXFLAGS="-g -fsanitize=fuzzer,address"
+CXXFLAGS="-g -fsanitize=fuzzer,address,undefined"
 
 # Building Document fuzztarget
 $CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
@@ -33,6 +33,29 @@ $CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
     -c /fuzzer.cc -o fuzzer.o
 
 $CXX $CXXFLAGS ./fuzzer.o ./output/libOpenXLSX.a -o /fuzzer
+
+
+# Build targets for AFL++
+
+cd .. && rm -rf build && mkdir build && cd build
+cmake -DCMAKE_CXX_COMPILER=afl-clang-fast++ \
+      -DCMAKE_CXX_FLAGS="-DNDEBUG -g -fsanitize=address,undefined" \
+      ..
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . --target OpenXLSX --config Release
+
+CXX="afl-clang-fast++"
+CXXFLAGS="-g -fsanitize=address,undefined"
+
+# Building Document fuzztarget
+$CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
+    -I/openxlsx/OpenXLSX/external/zippy -I/openxlsx/OpenXLSX/external/nowide \
+    -c /fuzzer.cc -o fuzzer.o
+
+$CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
+    -I/openxlsx/OpenXLSX/external/zippy -I/openxlsx/OpenXLSX/external/nowide \
+    -c /afl.cc -o afl.o
+
+$CXX $CXXFLAGS ./afl.o ./fuzzer.o ./output/libOpenXLSX.a -o /afl
 
 
 # Build targets for Sydr
@@ -64,7 +87,7 @@ CXX="clang++"
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 
 # Building cov target
-$CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
+$CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I/openxlsx/build/OpenXLSX \
     -I/openxlsx/OpenXLSX/external/zippy -I/openxlsx/OpenXLSX/external/nowide \
     -c /sydr.cc -o cov.o
 

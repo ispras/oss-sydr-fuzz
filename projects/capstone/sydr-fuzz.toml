@@ -15,11 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/sydr_disasmnext @@"
 jobs = 2
 
 [libfuzzer]
 path = "/fuzz_disasmnext"
 args = "/corpusnext"
-merge = false
+cmin = false

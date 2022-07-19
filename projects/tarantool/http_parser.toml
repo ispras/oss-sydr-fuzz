@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/http_parser_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/http_parser_fuzzer"
 args = "/corpus_http_parser"
+
+[cov]
+target = "/http_parser_cov @@"

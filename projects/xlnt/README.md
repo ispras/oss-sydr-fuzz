@@ -28,3 +28,7 @@ Get LCOV HTML coverage report:
 
     # sydr-fuzz cov-export -- -format=lcov > load.lcov
     # genhtml -o load-html load.lcov
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c sydr-fuzz-afl++.toml run

@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 512"
+args = "-l debug -j 2"
 target = "/compress_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/compress_fuzzer"
 args = "-rss_limit_mb=0 /corpus_compress"
+
+[cov]
+target = "/compress_cov @@"

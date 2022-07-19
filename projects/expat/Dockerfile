@@ -31,9 +31,12 @@ WORKDIR expat
 RUN git checkout 9c42ebdd4a3b901dd47fb20925291ff10698b610
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh main.c *.dict ./
+COPY build.sh main.c afl.cc *.dict ./
 
 # Build fuzz targets.
 RUN ./build.sh
 
 WORKDIR /
+
+COPY corpus.zip /
+RUN unzip /corpus.zip

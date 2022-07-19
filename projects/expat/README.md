@@ -28,6 +28,14 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c xml_parse_fuzzer_UTF-8.toml run
 
+Collect and report coverage:
+
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-8.toml cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c xml_parse_fuzzer_UTF-8-afl++.toml run
+
 ## Alternative Fuzz Targets
 
 Expat project has 12 fuzz targets.

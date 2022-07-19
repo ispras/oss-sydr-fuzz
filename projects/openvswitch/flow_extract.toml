@@ -17,7 +17,7 @@
 exit-on-time = 7200
 
 [sydr]
-args = "-l debug --invert-n 1024"
+args = "-l debug"
 target = "/openvswitch_sydr/flow_extract_target @@"
 
 [libfuzzer]

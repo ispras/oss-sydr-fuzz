@@ -20,10 +20,20 @@ CXX="clang++"
 CXXFLAGS="-g -DASAN -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address "
 $CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp -o /rapidjson-fuzzer/rapidjson-fuzzer
 
+CXX="afl-clang-fast++"
+CXXFLAGS="-g -DASAN -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address"
+$CXX $CXXFLAGS -o /afl.o -c /afl.cc
+$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp /afl.o -o /rapidjson-afl/rapidjson-afl
+
+CXX="clang++"
 CFLAGS="-g"
 CXXFLAGS="-g"
 $CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include rapidjson-sydr.cpp -o /rapidjson-sydr/rapidjson-sydr
 
+CXX="clang++"
+CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include rapidjson-sydr.cpp -o /rapidjson-cov/rapidjson-cov
 # Disabled because compiliation fails for reasons unknown.
 # Using the exact same compile commands locally does not fail.
 # Try enabling again in the future.

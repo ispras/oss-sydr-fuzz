@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -s 90 -m 8192"
+args = "-l debug"
 target = "/sydr/uncompress_sydr @@"
 
 [libfuzzer]

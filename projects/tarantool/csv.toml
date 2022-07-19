@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/csv_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/csv_fuzzer"
 args = "/corpus_csv"
+
+[cov]
+target = "/csv_cov @@"

@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -s 90"
+args = "-l debug"
 target = "/sydr/large_sydr @@"
 
 [libfuzzer]

@@ -32,7 +32,7 @@ RUN git checkout ff3e4508bde0d7f7ab211ca9f027bef820ba1d70
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
 COPY build.sh ./
-COPY targets/*_sydr.c ./fuzz/
+COPY targets/*_sydr.c targets/*_afl.c ./fuzz/
 
 # Build fuzz targets.
 RUN ./build.sh

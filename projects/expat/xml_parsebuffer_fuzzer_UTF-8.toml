@@ -15,10 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2 -n 1024"
+args = "-l debug -j 2"
 target = "/xml_parsebuffer_fuzzer_UTF-8_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/xml_parsebuffer_fuzzer_UTF-8"
-args = "-dict=/xml_parsebuffer_fuzzer_UTF-8.dict"
+args = "-dict=/xml_parsebuffer_fuzzer_UTF-8.dict /corpus"
+
+[cov]
+target = "/xml_parsebuffer_fuzzer_UTF-8_cov @@"

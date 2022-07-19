@@ -16,7 +16,6 @@
 
 exit-on-time = 3600
 [sydr]
-args = "-s 60"
 target = "/ydbwork/build-sydr/library/cpp/cgiparam/cgiparam_sydr @@"
 timeout = 150
 jobs = 2

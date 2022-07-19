@@ -36,6 +36,8 @@ COPY build.sh .
 # Copy source code for Sydr fuzz target.
 COPY sydrfuzz.c test
 
+COPY afl.cc test
+
 # Build fuzz targets.
 RUN ./build.sh
 
