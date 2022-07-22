@@ -82,6 +82,8 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
     * <https://github.com/pytorch/pytorch/issues/74798>
+* OpenJPEG (OpenCV 3rdparty)
+    * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
     * <https://github.com/troldal/OpenXLSX/issues/140>
     * <https://github.com/troldal/OpenXLSX/issues/139>
