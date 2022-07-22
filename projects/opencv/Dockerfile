@@ -23,7 +23,7 @@ RUN git clone https://github.com/opencv/opencv.git opencv
 
 WORKDIR /opencv/
 
-RUN git checkout cf38098ba83c8354e0119f4c8da2e367dbfd479b
+RUN git checkout a42b35598e2543d6dab3ac73be92fb77742e0747
 
 COPY build.sh /opencv/
 
