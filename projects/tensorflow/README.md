@@ -49,7 +49,7 @@ Run these commands to generate separate `html` files:
     # cd /fuzz
     # sydr-fuzz -c cleanpath_fuzz.toml cov-export -j 100 -- -format=lcov > cleanpath_fuzz.lcov
     # sed -i 's/:\/proc\/self\/cwd/:\/tensorflow/g' cleanpath_fuzz.lcov
-    # sed -i "s/:\/tensorflow\/external/:$(find /root/.cache/bazel/_bazel_root -name external | head -1 | sed 's/\//\\\//g')/g" cleanpath_fuzz.lcov
+    # sed -i "s/:\/tensorflow\/external/:$(find /root/.cache/bazel/_bazel_root -name 'com_google*' | grep external | grep -v execroot | head -1 | sed s'/external.*/external/g' | sed 's/\//\\\//g')/g" cleanpath_fuzz.lcov
     # genhtml -o /fuzz/cleanpath-cov-html/ cleanpath_fuzz.lcov
 
 Open /fuzz/cleanpath-cov-html/index.html with browser.
