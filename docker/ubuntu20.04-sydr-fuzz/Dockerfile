@@ -9,7 +9,7 @@ RUN apt-get update && \
                        wget curl unzip clang-11 vim lsb-release gdb zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
-                       libtool gnuplot
+                       libtool gnuplot binutils-dev
 
 RUN python3 -m pip install scipy numpy
 
@@ -31,14 +31,24 @@ RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-li
 RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
     git checkout de5b16d8ca2d14ff0d9b6be9cf40566bc7eb5a01 && \
     mkdir build && cd build && \
-    cmake ../llvm -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
-                  -DCMAKE_C_COMPILER=clang-11 -DCMAKE_CXX_COMPILER=clang++-11 \
-                  -DCMAKE_BUILD_TYPE=Release \
-                  -DLLVM_ENABLE_ZLIB=ON \
-                  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
-                  -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt" \
-                  -GNinja && \
-    CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && cmake --build . && \
+    cmake \
+        -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
+        -DCMAKE_CXX_COMPILER=clang++-11 \
+        -DCLANG_INCLUDE_DOCS="OFF" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_BINUTILS_INCDIR=/usr/include/ \
+        -DLLVM_BUILD_LLVM_DYLIB="ON" \
+        -DLLVM_ENABLE_ZLIB=ON \
+        -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
+        -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;clang-tools-extra" \
+        -DLLVM_ENABLE_WARNINGS="OFF" \
+        -DLLVM_INCLUDE_BENCHMARKS="OFF" \
+        -DLLVM_INCLUDE_DOCS="OFF" \
+        -DLLVM_INCLUDE_EXAMPLES="OFF" \
+        -DLLVM_INCLUDE_TESTS="OFF" \
+        -DLLVM_LINK_LLVM_DYLIB="ON" \
+        -GNinja  ../llvm/ && \
+    CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && \
     cmake --install . && cd ../.. && rm -rf llvm-project
 
 RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
@@ -53,8 +63,8 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout 40947508037b874020c8dd1251359fecaab04b9d && \
-    export CC=gcc-10 && export CXX=g++-10 && make clean && \
+    git checkout 40947508037b874020c8dd1251359fecaab04b9d && export CC=clang && export CXX=clang++ && \
+    export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 ENV PATH=$PATH:/fuzz/sydr
