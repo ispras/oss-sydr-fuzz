@@ -38,16 +38,15 @@ RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_BINUTILS_INCDIR=/usr/include/ \
 	-DLLVM_BUILD_LLVM_DYLIB="ON" \
-	-DLLVM_ENABLE_BINDINGS="OFF" \
 	-DLLVM_ENABLE_ZLIB=ON \
-	-DLLVM_ENABLE_PROJECTS='clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;clang-tools-extra' \
+        -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
+	-DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;clang-tools-extra" \
 	-DLLVM_ENABLE_WARNINGS="OFF" \
 	-DLLVM_INCLUDE_BENCHMARKS="OFF" \
 	-DLLVM_INCLUDE_DOCS="OFF" \
 	-DLLVM_INCLUDE_EXAMPLES="OFF" \
 	-DLLVM_INCLUDE_TESTS="OFF" \
 	-DLLVM_LINK_LLVM_DYLIB="ON" \
-	-DLLVM_TARGETS_TO_BUILD="host" \
 	-GNinja  ../llvm/ && \
     CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && \
     cmake --install . && cd ../.. && rm -rf llvm-project
@@ -65,8 +64,8 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout 40947508037b874020c8dd1251359fecaab04b9d && \
-    export CC=clang && export CXX=clang++ && make clean && \
+    git checkout 40947508037b874020c8dd1251359fecaab04b9d && export CC=clang && export CXX=clang++ \ 
+    export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 ENV PATH=$PATH:/fuzz/sydr
