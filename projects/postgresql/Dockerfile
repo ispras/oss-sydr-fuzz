@@ -39,7 +39,9 @@ COPY build.sh add_fuzzers.diff ./
 RUN ./build.sh
 
 # Prepare seed corpus.
-RUN /corpus_json
+WORKDIR /
+COPY corpus_json.zip /
+RUN unzip corpus_json.zip
 WORKDIR /corpus
 RUN cp -r /postgresql/src/test/regress/sql/* .
 WORKDIR /
