@@ -32,22 +32,22 @@ RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
     git checkout de5b16d8ca2d14ff0d9b6be9cf40566bc7eb5a01 && \
     mkdir build && cd build && \
     cmake \
-	-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
-	-DCMAKE_CXX_COMPILER=clang++-11 \
-	-DCLANG_INCLUDE_DOCS="OFF" \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DLLVM_BINUTILS_INCDIR=/usr/include/ \
-	-DLLVM_BUILD_LLVM_DYLIB="ON" \
-	-DLLVM_ENABLE_ZLIB=ON \
+        -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
+        -DCMAKE_CXX_COMPILER=clang++-11 \
+        -DCLANG_INCLUDE_DOCS="OFF" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_BINUTILS_INCDIR=/usr/include/ \
+        -DLLVM_BUILD_LLVM_DYLIB="ON" \
+        -DLLVM_ENABLE_ZLIB=ON \
         -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
-	-DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;clang-tools-extra" \
-	-DLLVM_ENABLE_WARNINGS="OFF" \
-	-DLLVM_INCLUDE_BENCHMARKS="OFF" \
-	-DLLVM_INCLUDE_DOCS="OFF" \
-	-DLLVM_INCLUDE_EXAMPLES="OFF" \
-	-DLLVM_INCLUDE_TESTS="OFF" \
-	-DLLVM_LINK_LLVM_DYLIB="ON" \
-	-GNinja  ../llvm/ && \
+        -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;clang-tools-extra" \
+        -DLLVM_ENABLE_WARNINGS="OFF" \
+        -DLLVM_INCLUDE_BENCHMARKS="OFF" \
+        -DLLVM_INCLUDE_DOCS="OFF" \
+        -DLLVM_INCLUDE_EXAMPLES="OFF" \
+        -DLLVM_INCLUDE_TESTS="OFF" \
+        -DLLVM_LINK_LLVM_DYLIB="ON" \
+        -GNinja  ../llvm/ && \
     CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && \
     cmake --install . && cd ../.. && rm -rf llvm-project
 
