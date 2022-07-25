@@ -20,7 +20,7 @@ CXX="clang++"
 CXXFLAGS="-g -DASAN -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address "
 $CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp -o /rapidjson-fuzzer/rapidjson-fuzzer
 
-CXX="afl-clang-fast++"
+CXX="afl-clang-lto++"
 CXXFLAGS="-g -DASAN -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address"
 $CXX $CXXFLAGS -o /afl.o -c /afl.cc
 $CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp /afl.o -o /rapidjson-afl/rapidjson-afl
