@@ -39,11 +39,11 @@ done
 
 # build targets for AFL++
 make clean
-./configure CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" CC=afl-clang-fast CXX=afl-clang-fast++
+./configure CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" CC=afl-clang-lto CXX=afl-clang-lto++
 make -j$(nproc) all
 
-CC=afl-clang-fast
-CXX=afl-clang-fast++
+CC=afl-clang-lto
+CXX=afl-clang-lto++
 mkdir /lcms_afl
 OUT=/lcms_afl
 FUZZERS="cmsIT8_load_fuzzer cms_transform_fuzzer cms_overwrite_transform_fuzzer"
