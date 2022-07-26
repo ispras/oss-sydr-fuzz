@@ -20,7 +20,7 @@ target = "/out/bndiv_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /openssl/fuzz/corpora/bndiv"
+args = "-t 1000+ -i /openssl/fuzz/corpora/bndiv"
 target = "/out/bndiv_afl"
 
 [cov]

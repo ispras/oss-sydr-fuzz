@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/libpng_read_sydr @@"
 
 [aflplusplus]
-args = "-x png.dict -i /corpus"
+args = "-x png.dict -t 1000+ -i /corpus"
 target = "/libpng_read_afl"
 
 [cov]

@@ -20,7 +20,7 @@ target = "/out/bignum_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /openssl/fuzz/corpora/bignum"
+args = "-t 1000+ -i /openssl/fuzz/corpora/bignum"
 target = "/out/bignum_afl"
 
 [cov]
