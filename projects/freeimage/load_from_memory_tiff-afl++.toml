@@ -20,7 +20,7 @@ target = "/load_from_memory_tiff_sydr @@"
 
 [aflplusplus]
 target = "/load_from_memory_tiff_afl"
-args = "-i /corpus_tiff"
+args = "-t 1000+ -i /corpus_tiff"
 
 [cov]
 target = "/load_from_memory_tiff_cov @@"
