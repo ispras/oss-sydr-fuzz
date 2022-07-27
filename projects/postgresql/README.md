@@ -28,7 +28,7 @@ Run hybrid fuzzing:
 
 Collect and report coverage:
 
-    # sydr-fuzz -c sumple_query.toml cov-report
+    # sydr-fuzz -c simple_query.toml cov-report
 
 ## Cleanup Temporary Databases During Fuzzing
 
