@@ -1,0 +1,12 @@
+exit-on-time=7200
+
+[sydr]
+args = "-l debug -s 90"
+target = "/libpcap/dse/load_sydr @@"
+
+[libfuzzer]
+path = "/libpcap/libfuzzer/load_fuzz"
+args = "-rss_limit_mb=8192 -max_len=65535 -jobs=1000 -workers=2 /corpus"
+
+[cov]
+target = "/libpcap/cover/load_cover @@"

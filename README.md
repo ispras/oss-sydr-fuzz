@@ -37,6 +37,7 @@ external repositories.
 * libcbor
 * libjpeg-turbo
 * libjpeg
+* libpcap
 * libpng
 * miniz
 * miniz-2.0.8
