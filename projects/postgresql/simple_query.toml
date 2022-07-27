@@ -22,3 +22,6 @@ jobs = 2
 [libfuzzer]
 path = "/out/simple_query_fuzzer"
 args = "-jobs=4 -dict=sql.dict /corpus"
+
+[cov]
+target = "/out/simple_query_cov @@"

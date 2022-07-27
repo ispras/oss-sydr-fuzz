@@ -73,6 +73,21 @@ simple_query_sydr.o json_parser_sydr.o: %.o: %.c
 fuzzer_initialize_sydr.o: %.o: fuzzer_initialize.c
 	clang $(CPPFLAGS) -g -c -o $@ $^
 
+cov: simple_query_cov \
+	json_parser_cov
+
+simple_query_cov json_parser_cov: %: %.o fuzzer_initialize_cov.o $(OBJS_FUZZERS)
+	clang++ -g -fprofile-instr-generate -fcoverage-mapping $(call expand_subsys,$^) -o $@ -ldl -lpthread -lrt
+
+simple_query_cov.o: %.o: simple_query_sydr.c
+	clang $(CPPFLAGS) -g -fprofile-instr-generate -fcoverage-mapping -c -o $@ $^
+
+json_parser_cov.o: %.o: json_parser_sydr.c
+	clang $(CPPFLAGS) -g -fprofile-instr-generate -fcoverage-mapping -c -o $@ $^
+
+fuzzer_initialize_cov.o: %.o: fuzzer_initialize.c
+	clang $(CPPFLAGS) -g -fprofile-instr-generate -fcoverage-mapping -c -o $@ $^
+
 dbfuzz: dbfuzz.o | submake-libpgport temp-install
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) $(LDFLAGS_EX) $(LIBS) -o $@ \
 	&& PATH="$(abs_top_builddir)/tmp_install$(bindir):$$PATH" LD_LIBRARY_PATH="$(abs_top_builddir)/tmp_install/usr/local/pgsql/lib" ./dbfuzz

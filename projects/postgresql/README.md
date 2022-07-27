@@ -26,6 +26,10 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c simple_query.toml run
 
+Collect and report coverage:
+
+    # sydr-fuzz -c simple_query.toml cov-report
+
 ## Cleanup Temporary Databases During Fuzzing
 
 New temporary databases are created for each Sydr run in `/tmp` directory. These

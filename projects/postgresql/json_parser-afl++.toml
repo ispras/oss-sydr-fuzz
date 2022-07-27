@@ -22,3 +22,6 @@ jobs = 4
 [aflplusplus]
 args = "-t 1000+ -i /corpus_json"
 target = "/out/json_parser_afl"
+
+[cov]
+target = "/out/json_parser_cov @@"

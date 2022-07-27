@@ -22,3 +22,6 @@ jobs = 4
 [libfuzzer]
 path = "/out/json_parser_fuzzer"
 args = "-jobs=2"
+
+[cov]
+target = "/out/json_parser_cov @@"

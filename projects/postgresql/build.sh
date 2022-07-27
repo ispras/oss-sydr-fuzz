@@ -62,3 +62,14 @@ make -j$(nproc)
 cd src/backend/fuzzer
 make sydr
 cp *_sydr /out
+cd ../../..
+make clean
+
+CC="clang" CXX="clang++" \
+CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+../configure
+make -j$(nproc)
+cd src/backend/fuzzer
+make cov
+cp *_cov /out
