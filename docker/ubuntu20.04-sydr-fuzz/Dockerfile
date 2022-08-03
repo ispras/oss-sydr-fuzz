@@ -11,7 +11,7 @@ RUN apt-get update && \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
                        libtool gnuplot binutils-dev
 
-RUN python3 -m pip install scipy numpy
+RUN python3 -m pip install scipy numpy coverage
 
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
     mkdir /cmake && \
@@ -68,5 +68,7 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 ENV PATH=$PATH:/fuzz/sydr
+
+RUN git clone https://github.com/google/atheris && cd atheris && pip3 install . && cd .. && rm -rf atheris
 
 WORKDIR /
