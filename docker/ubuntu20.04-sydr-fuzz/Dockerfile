@@ -69,6 +69,6 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
 
 ENV PATH=$PATH:/fuzz/sydr
 
-RUN git clone https://github.com/google/atheris && cd atheris && pip3 install .
+RUN git clone https://github.com/google/atheris && cd atheris && pip3 install . && cd .. && rm -rf atheris
 
 WORKDIR /
