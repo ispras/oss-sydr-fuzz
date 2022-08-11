@@ -28,7 +28,7 @@ RUN git clone https://github.com/mm2/Little-CMS.git lcms
 WORKDIR lcms
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout b7e119beadd56e5d6aefcf4a3edee33dc78c92c6
+RUN git checkout a6ef58ec3716bad934d0cacc063ef1a419f4668f
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
 COPY build.sh cmsIT8_load_*.c cms_transform_*.c cms_overwrite_transform_*.c ./
