@@ -83,8 +83,8 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://sourceforge.net/p/freeimage/bugs/350/>
     * <https://sourceforge.net/p/freeimage/bugs/351/>
 * Little-CMS:
-    * <https://github.com/mm2/Little-CMS/issues/329>
-    * <https://github.com/mm2/Little-CMS/issues/331> (PR: https://github.com/mm2/Little-CMS/pull/330)
+    * <https://github.com/mm2/Little-CMS/issues/329> (PR: https://github.com/mm2/Little-CMS/pull/330)
+    * <https://github.com/mm2/Little-CMS/issues/331>
 * miniz
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
