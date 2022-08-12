@@ -20,4 +20,4 @@ target = "/sydr/zip_sydr @@"
 
 [libfuzzer]
 path = "/fuzzers/zip_fuzzer"
-args = "-dict=/zip_fuzzer.dict /corpus"
+args = "-dict=/zip_fuzzer.dict"
