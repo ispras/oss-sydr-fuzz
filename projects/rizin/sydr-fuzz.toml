@@ -20,7 +20,7 @@ target = "/rizin-fuzzing/sydr-plain/bin/rz-fuzz @@"
 
 [libfuzzer]
 path = "/rizin-fuzzing/libfuzzer-asan/bin/rz-fuzz"
-args = "/rizin-fuzzing/corpus -jobs=7 -rss_limit_mb=16000"
+args = "/rizin-fuzzing/corpus -detect_leaks=0 -jobs=7 -rss_limit_mb=16000"
 
 [cov]
 # Collect coverage for main binary
