@@ -16,9 +16,13 @@ Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-rizin /bin/bash
 
-Run hybrid fuzzing:
+Run hybrid fuzzing with libFuzzer:
 
-    # sydr-fuzz run -c sydr-fuzz-afl++.toml
+    # sydr-fuzz run
+
+Or with AFL++:
+
+    # sydr-fuzz -c sydr-fuzz-afl++.toml run
 
 Collect and report coverage:
 

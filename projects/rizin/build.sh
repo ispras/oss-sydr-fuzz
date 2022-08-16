@@ -30,7 +30,7 @@ CC=afl-clang-lto CFLAGS="-fsanitize=address,undefined" LDFLAGS="-fsanitize=addre
 # Build with libfuzzer
 CURR_BUILD=libfuzzer-asan
 mkdir /$CURR_BUILD
-CC=clang CFLAGS="-fsanitize=fuzzer-no-link,address" LDFLAGS="-fsanitize=fuzzer-no-link,undefined" meson -Dfuzz_mode=libfuzzer -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
+CC=clang CFLAGS="-fsanitize=fuzzer-no-link,address,undefined" LDFLAGS="-fsanitize=fuzzer-no-link,address,undefined" meson -Dfuzz_mode=libfuzzer -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
 
 # Coverage build
 CURR_BUILD=coverage-plain
