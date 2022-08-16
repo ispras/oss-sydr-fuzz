@@ -18,7 +18,7 @@ Run docker:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run
+    # sydr-fuzz run -c sydr-fuzz-afl++.toml
 
 Collect and report coverage:
 
