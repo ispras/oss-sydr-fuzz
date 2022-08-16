@@ -50,6 +50,7 @@ external repositories.
 * pytorch
 * rapidjson
 * re2
+* rizin
 * sqlite3
 * tarantool
 * tensorflow
