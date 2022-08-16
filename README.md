@@ -58,6 +58,7 @@ external repositories.
 * xlnt
 * ydb
 * zlib
+* rizin
 
 ## Contributing
 
