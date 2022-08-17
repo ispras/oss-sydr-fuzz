@@ -20,17 +20,17 @@ git apply --ignore-space-change --ignore-whitespace ./sydr-support-fuzzing.diff
 # Build sydr binary
 CURR_BUILD=sydr-plain
 mkdir /$CURR_BUILD
-CC=clang meson -Dfuzz_mode=sydr -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
+CC=clang CFLAGS="-g" meson -Dfuzz_mode=sydr -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
 
 # Build with AFL++ instrumentation + ASAN enabled
 CURR_BUILD=afl-asan
 mkdir /$CURR_BUILD
-CC=afl-clang-lto CFLAGS="-fsanitize=address,undefined" LDFLAGS="-fsanitize=address,undefined" meson -Dfuzz_mode=afl -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
+CC=afl-clang-lto CFLAGS="-g -fsanitize=address,undefined" LDFLAGS="-fsanitize=address,undefined" meson -Dfuzz_mode=afl -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
 
 # Build with libfuzzer
 CURR_BUILD=libfuzzer-asan
 mkdir /$CURR_BUILD
-CC=clang CFLAGS="-fsanitize=fuzzer-no-link,address,undefined" LDFLAGS="-fsanitize=fuzzer-no-link,address,undefined" meson -Dfuzz_mode=libfuzzer -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
+CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined" LDFLAGS="-fsanitize=fuzzer-no-link,address,undefined" meson -Dfuzz_mode=libfuzzer -Denable_tests=false -Denable_rz_test=false --default-library=static -Dstatic_runtime=false --buildtype=debugoptimized --prefix=/rizin-fuzzing/$CURR_BUILD build-$CURR_BUILD ; ninja -C build-$CURR_BUILD && ninja -C build-$CURR_BUILD install
 
 # Coverage build
 CURR_BUILD=coverage-plain
