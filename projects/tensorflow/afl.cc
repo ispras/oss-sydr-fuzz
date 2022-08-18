@@ -17,7 +17,7 @@ limitations under the License.
 
 __AFL_FUZZ_INIT();
 
-int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
 
 int
 main()
