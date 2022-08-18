@@ -61,10 +61,10 @@ done
 
 # build targets for Sydr
 make clean
-CC=clang
-CC=clang++
-CFLAGS="-g"
-CXXFLAGS="-g"
+export CC=clang
+export CXX=clang++
+export CFLAGS="-g"
+export CXXFLAGS="-g"
 ./configure
 make -j$(nproc) all
 
@@ -82,10 +82,10 @@ done
 
 # Build targets for llvm-cov
 make clean
-CC=clang
-CC=clang++
-CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CC=clang
+export CXX=clang++
+export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 ./configure
 make -j$(nproc) all
 
@@ -94,9 +94,9 @@ mkdir /lcms_cov
 OUT=/lcms_cov
 FUZZERS="cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
 for F in $FUZZERS; do
-    $CC $CFLAGS -c -Iinclude \
-        ./$F.c -o ./$F.o
+    $CC $CFLAGS -c -I /lcms/include \
+        /lcms/$F.c -o /lcms/$F.o
     $CXX $CXXFLAGS \
-        ./$F.o -o $OUT/$F \
-        src/.libs/liblcms2.a
+        /lcms/$F.o -o $OUT/$F \
+        /lcms/src/.libs/liblcms2.a
 done
