@@ -105,13 +105,13 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/pytorch/pytorch/issues/77575> (PR: https://github.com/pytorch/pytorch/pull/79192)
     * <https://github.com/pytorch/pytorch/pull/77557>
 * Rizin:
-    * [6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: https://github.com/rizinorg/rizin/pull/2930)
-    * [eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: https://github.com/rizinorg/rizin/pull/2930)
-    * [05bbd14](https://github.com/rizinorg/rizin/commit/05bbd147caccc60162d6fba9baaaf24befa281cd) (PR: https://github.com/rizinorg/rizin/pull/2930)
-    * [e5ad689](https://github.com/rizinorg/rizin/commit/e5ad689fc9407ad6f3b53de80c7102c0b1f9d017) (PR: https://github.com/rizinorg/rizin/pull/2930)
-    * [0e86b74](https://github.com/rizinorg/rizin/commit/0e86b74b1d18ca5689dec02976b43eeeac91cca0) (PR: https://github.com/rizinorg/rizin/pull/2930)
-    * [556ca2f](https://github.com/rizinorg/rizin/commit/556ca2f9eef01ec0f4a76d1fbacfcf3a87a44810) (PR: https://github.com/rizinorg/rizin/pull/2930)
-    * [d4134cb](https://github.com/rizinorg/rizin/commit/d4134cb58c2504846320a1e4d56c9137cf95efc2) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@05bbd14](https://github.com/rizinorg/rizin/commit/05bbd147caccc60162d6fba9baaaf24befa281cd) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@e5ad689](https://github.com/rizinorg/rizin/commit/e5ad689fc9407ad6f3b53de80c7102c0b1f9d017) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@0e86b74](https://github.com/rizinorg/rizin/commit/0e86b74b1d18ca5689dec02976b43eeeac91cca0) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@556ca2f](https://github.com/rizinorg/rizin/commit/556ca2f9eef01ec0f4a76d1fbacfcf3a87a44810) ([radareorg/radare2@a665f7f](https://github.com/radareorg/radare2/commit/a665f7fef30325e014af979e69a16150f164c3a2), PR: https://github.com/rizinorg/rizin/pull/2930)
+    * [rizinorg/rizin@d4134cb](https://github.com/rizinorg/rizin/commit/d4134cb58c2504846320a1e4d56c9137cf95efc2) (PR: https://github.com/rizinorg/rizin/pull/2930)
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
