@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2021 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/encode_jpeg_fuzz @@"
+target = "/sydr/tstring_fuzz @@"
 
-[libfuzzer]
-set_cover_merge=true
-path = "/fuzzer/encode_jpeg_fuzz"
-args = "-rss_limit_mb=8192 /corpus/encode_jpeg"
+[aflplusplus]
+target = "/afl/tstring_fuzz"
+args = "-t 1000+ -i /corpus/tstring"
 
 [cov]
-target = "/coverage/encode_jpeg_fuzz @@"
+target = "/coverage/tstring_fuzz @@"

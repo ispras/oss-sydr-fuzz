@@ -23,7 +23,7 @@ target = "/sydr/string_replace_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/string_replace_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/string_replace"
 
 [cov]
 target = "/coverage/string_replace_fuzz @@"

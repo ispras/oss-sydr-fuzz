@@ -23,7 +23,7 @@ target = "/sydr/one_hot_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/one_hot_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/one_hot"
 
 [cov]
 target = "/coverage/one_hot_fuzz @@"

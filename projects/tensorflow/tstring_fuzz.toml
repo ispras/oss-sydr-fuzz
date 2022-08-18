@@ -23,7 +23,7 @@ target = "/sydr/tstring_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/tstring_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/tstring"
 
 [cov]
 target = "/coverage/tstring_fuzz @@"

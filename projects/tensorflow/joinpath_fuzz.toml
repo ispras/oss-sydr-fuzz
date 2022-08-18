@@ -23,7 +23,7 @@ target = "/sydr/joinpath_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/joinpath_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/joinpath"
 
 [cov]
 target = "/coverage/joinpath_fuzz @@"

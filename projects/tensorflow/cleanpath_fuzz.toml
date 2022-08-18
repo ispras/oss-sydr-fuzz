@@ -23,7 +23,7 @@ target = "/sydr/cleanpath_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/cleanpath_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/cleanpath"
 
 [cov]
 target = "/coverage/cleanpath_fuzz @@"

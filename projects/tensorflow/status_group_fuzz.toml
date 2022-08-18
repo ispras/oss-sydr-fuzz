@@ -23,7 +23,7 @@ target = "/sydr/status_group_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/status_group_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/status_group"
 
 [cov]
 target = "/coverage/status_group_fuzz @@"

@@ -32,6 +32,10 @@ Collect and report coverage:
 
     # sydr-fuzz -c cleanpath_fuzz.toml cov-report
 
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c cleanpath_fuzz-afl++.toml run
+
 ## Check Security Predicates
 
 Minimize corpus:
