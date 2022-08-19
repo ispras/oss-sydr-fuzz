@@ -112,11 +112,15 @@ Feel free to support new fuzz targets. The workflow is following:
     * [rizinorg/rizin@0e86b74](https://github.com/rizinorg/rizin/commit/0e86b74b1d18ca5689dec02976b43eeeac91cca0) (PR: https://github.com/rizinorg/rizin/pull/2930)
     * [rizinorg/rizin@556ca2f](https://github.com/rizinorg/rizin/commit/556ca2f9eef01ec0f4a76d1fbacfcf3a87a44810) ([radareorg/radare2@a665f7f](https://github.com/radareorg/radare2/commit/a665f7fef30325e014af979e69a16150f164c3a2), PR: https://github.com/rizinorg/rizin/pull/2930)
     * [rizinorg/rizin@d4134cb](https://github.com/rizinorg/rizin/commit/d4134cb58c2504846320a1e4d56c9137cf95efc2) (PR: https://github.com/rizinorg/rizin/pull/2930)
+    * <https://github.com/rizinorg/rizin/issues/2935>
+    * <https://github.com/rizinorg/rizin/issues/2936>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
 * TensorFlow:
     * <https://github.com/tensorflow/tensorflow/pull/56455>
+* Torchvision
+    * <https://github.com/pytorch/vision/pull/6456>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
 * xlnt:
