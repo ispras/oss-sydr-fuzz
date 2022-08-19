@@ -22,7 +22,7 @@ target = "/sydr/parse_tensor_op_fuzz @@"
 
 [aflplusplus]
 target = "/afl/parse_tensor_op_fuzz"
-args = "-t 1000+ -i /parse_tensor_op"
+args = "-t 1000+ -i /corpus/parse_tensor_op"
 
 [cov]
 target = "/coverage/parse_tensor_op_fuzz @@"

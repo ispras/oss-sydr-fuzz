@@ -22,7 +22,7 @@ target = "/sydr/encode_jpeg_fuzz @@"
 
 [aflplusplus]
 target = "/afl/encode_jpeg_fuzz"
-args = "-t 1000+ -i encode_jpeg"
+args = "-t 1000+ -i /corpus/encode_jpeg"
 
 [cov]
 target = "/coverage/encode_jpeg_fuzz @@"

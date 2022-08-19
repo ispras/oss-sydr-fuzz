@@ -21,8 +21,8 @@ args = "-l debug"
 target = "/sydr/parseURI_fuzz @@"
 
 [aflplusplus]
-targer = "/afl/parseURI_fuzz"
-args = "-t 1000+ -i /parseURI"
+target = "/afl/parseURI_fuzz"
+args = "-t 1000+ -i /corpus/parseURI"
 
 [cov]
 target = "/coverage/parseURI_fuzz @@"

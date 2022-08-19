@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/joinpath_fuzz @@"
 
 [aflplusplus]
-target = "/fuzzer/joinpath_fuzz"
+target = "/afl/joinpath_fuzz"
 args = "-t 1000+ -i /corpus/joinpath"
 
 [cov]

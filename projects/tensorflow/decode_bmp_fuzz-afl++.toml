@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/decode_bmp_fuzz @@"
 
 [aflplusplus]
-path = "/afl/decode_bmp_fuzz"
+target = "/afl/decode_bmp_fuzz"
 args = "-t 1000+ -i /corpus/decode_bmp/"
 
 [cov]

@@ -23,6 +23,7 @@ target = "/sydr/decode_json_example_fuzz @@"
 [aflplusplus]
 target = "/afl/decode_json_example_fuzz"
 args = "-t 1000+ -x /dictionaries/decode_json_example.dict -i /corpus/decode_json_example/"
+cmin = false
 
 [cov]
 target = "/coverage/decode_json_example_fuzz @@"
