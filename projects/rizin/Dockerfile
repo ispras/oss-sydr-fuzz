@@ -34,7 +34,7 @@ RUN mkdir rizin-fuzzing && cd rizin-fuzzing && git clone https://github.com/rizi
 WORKDIR /rizin-fuzzing/rizin
 
 # Fix commit. It could be updated later.
-RUN git checkout d4134cb58c2504846320a1e4d56c9137cf95efc2 
+RUN git checkout d4134cb58c2504846320a1e4d56c9137cf95efc2
 
 # Copy patch file that implements fuzzing logic.
 COPY build.sh ./
@@ -47,6 +47,6 @@ RUN ./build.sh
 WORKDIR ..
 
 # Create corpus
-RUN git clone https://github.com/m4drat/rizin-fuzz-corpus && mv ./rizin-fuzz-corpus/corpus-min /rizin-fuzzing/corpus
+RUN git clone https://github.com/m4drat/rizin-fuzz-corpus && mv ./rizin-fuzz-corpus/corpus-min /rizin-fuzzing/corpus && rm -rf ./rizin-fuzz-corpus
 
 WORKDIR /fuzz
