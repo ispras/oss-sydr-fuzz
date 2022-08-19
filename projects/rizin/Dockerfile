@@ -47,6 +47,6 @@ RUN ./build.sh
 WORKDIR ..
 
 # Create corpus
-RUN mkdir ./corpus && git clone https://github.com/rizinorg/rizin-testbins && find ./rizin-testbins -type f -exec cp "{}" /rizin-fuzzing/corpus \; && rm -rf ./rizin-testbins
+RUN git clone https://github.com/m4drat/rizin-fuzz-corpus && mv ./rizin-fuzz-corpus/corpus-min /rizin-fuzzing/corpus && rm -rf ./rizin-fuzz-corpus
 
 WORKDIR /fuzz
