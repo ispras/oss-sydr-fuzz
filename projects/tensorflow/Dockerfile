@@ -107,4 +107,8 @@ RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip &&
     unzip /one_hot.zip && unzip /parse_tensor_op.zip && unzip /parseURI.zip && unzip /status_group.zip && \
     unzip /status.zip && unzip /stringprintf.zip && unzip /string_replace.zip && unzip /tstring.zip
 
+RUN rm /arg_def_case.zip /base64.zip /check_numerics.zip /cleanpath.zip /consume_leading_digits.zip /decode_compressed.zip \
+       /encode_base64.zip /encode_jpeg.zip /example_proto_fast_parsing.zip /joinpath.zip /one_hot.zip /parse_tensor_op.zip \
+       /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
+
 WORKDIR /
