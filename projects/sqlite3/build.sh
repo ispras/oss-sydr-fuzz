@@ -108,11 +108,11 @@ make sqlite3.c
 $CC $CFLAGS -I. -c \
     ../test/sydrfuzz.c -o ../test/sydrfuzz.o
 
-$CXX \
+$CXX $CXXFLAGS \
     ../test/sydrfuzz.o -pthread -ldl -o $OUT/sydrfuzz \
     ./sqlite3.o
 
-# Build fuzz target for Sydr
+# Build fuzz target for Coverage
 export CC=clang
 export CXX=clang++
 
@@ -137,6 +137,6 @@ make sqlite3.c
 $CC $CFLAGS -I. -c \
     ../test/sydrfuzz.c -o ../test/sydrfuzz.o
 
-$CXX \
+$CXX $CXXFLAGS\
     ../test/sydrfuzz.o -pthread -ldl -o $OUT/cov \
     ./sqlite3.o
