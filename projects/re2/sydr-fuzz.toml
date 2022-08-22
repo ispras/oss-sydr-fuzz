@@ -20,6 +20,7 @@ target = "/re2_sydr/re2_sydr @@"
 
 [libfuzzer]
 path = "/re2_fuzzer/re2_fuzzer"
+args = "/corpus"
 
 [cov]
 target = "/re2_cov/re2_cov @@"
