@@ -49,9 +49,6 @@ RUN  scrpit=$(find /root/.cargo/registry/src/ -name update-libfuzzer.sh) && $scr
 
 RUN ../build.sh
 
-# Default corpus.
-RUN mkdir /corpus
-
 # Prepare corporas.
 RUN mkdir /corpus_bmp && find /image -name '*.bmp' -exec cp {} /corpus_bmp \; && \
     mkdir /corpus_gif && find /image -name '*.gif' -exec cp {} /corpus_gif \; && \
