@@ -21,4 +21,4 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzzer_script_bmp"
-args = "-rss_limit_mb=8192 -jobs=4 /fuzz/corpus"
+args = "-rss_limit_mb=8192 -jobs=4 /corpus_bmp"

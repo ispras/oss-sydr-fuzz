@@ -48,3 +48,16 @@ RUN ../build.sh
 RUN  scrpit=$(find /root/.cargo/registry/src/ -name update-libfuzzer.sh) && $scrpit 3c7960cba19ed926b8e86b4c619e81c0f7da4d15
 
 RUN ../build.sh
+
+# Prepare corporas.
+RUN mkdir /corpus_bmp && find /image -name '*.bmp' -exec cp {} /corpus_bmp \; && \
+    mkdir /corpus_gif && find /image -name '*.gif' -exec cp {} /corpus_gif \; && \
+    mkdir /corpus_hdr && find /image -name '*.hdr' -exec cp {} /corpus_hdr \; && \
+    mkdir /corpus_ico && find /image -name '*.ico' -exec cp {} /corpus_ico \; && \
+    mkdir /corpus_jpg && find /image -name '*.jpg' -exec cp {} /corpus_jpg \; && \
+    mkdir /corpus_png && find /image -name '*.png' -exec cp {} /corpus_png \; && \
+    mkdir /corpus_pnm && find /image -name '*.pnm' -exec cp {} /corpus_pnm \; && \
+    mkdir /corpus_tga && find /image -name '*.tga' -exec cp {} /corpus_tga \; && \
+    mkdir /corpus_tiff && find /image -name '*.tiff' -exec cp {} /corpus_tiff \; && \
+    mkdir /corpus_webp && find /image -name '*.webp' -exec cp {} /corpus_webp \; && \
+    cp -r /image/tests/images/exr /corpus_exr
