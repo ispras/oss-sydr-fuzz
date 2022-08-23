@@ -55,10 +55,13 @@ make CXX=clang++ CXXFLAGS="-O2 -fno-omit-frame-pointer -g" -j$(nproc) obj/libre2
 
 CXX=clang++
 CXXFLAGS="-O2 -fno-omit-frame-pointer -g"
+
+$CXX $CXXFLAGS -o /main.o -c /main.c
+
 # Second, build the fuzzer (distributed with RE2).
 $CXX $CXXFLAGS -std=c++11 -I. -Ire2/fuzzing/compiler-rt/include/ \
-	re2/fuzzing/re2_sydr.cc -o /re2_sydr/re2_sydr -pthread \
-	obj/libre2.a
+	re2/fuzzing/re2_fuzzer.cc -o /re2_sydr/re2_sydr -pthread \
+	/main.o obj/libre2.a
 
 mkdir /re2_cov
 make clean
@@ -68,5 +71,7 @@ CXX=clang++
 CXXFLAGS="-O2 -fno-omit-frame-pointer -g -fprofile-instr-generate -fcoverage-mapping"
 # Second, build the fuzzer (distributed with RE2).
 $CXX $CXXFLAGS -std=c++11 -I. -Ire2/fuzzing/compiler-rt/include/ \
-	re2/fuzzing/re2_sydr.cc -o /re2_cov/re2_cov -pthread \
-	obj/libre2.a
+	re2/fuzzing/re2_fuzzer.cc -o /re2_cov/re2_cov -pthread \
+	/main.o obj/libre2.a
+
+rm /main.o
