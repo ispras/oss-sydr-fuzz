@@ -40,9 +40,11 @@ COPY re2_sydr.cc ./re2/fuzzing/
 
 COPY afl.cc /
 
-RUN mkdir /corpus
-
 # Build fuzz targets.
 RUN ./build.sh
 
-WORKDIR ..
+WORKDIR /
+
+# Prepare corpus.
+COPY corpus.zip /
+RUN unzip corpus.zip && rm corpus.zip
