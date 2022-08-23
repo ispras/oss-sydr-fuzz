@@ -53,22 +53,31 @@ mkdir /re2_sydr
 make clean
 make CXX=clang++ CXXFLAGS="-O2 -fno-omit-frame-pointer -g" -j$(nproc) obj/libre2.a
 
+CC=clang
 CXX=clang++
+CFLAGS="-O2 -fno-omit-frame-pointer -g"
 CXXFLAGS="-O2 -fno-omit-frame-pointer -g"
 
-$CXX $CXXFLAGS -o /main.o -c /main.c
+$CC $CFLAGS -o /main.o -c /main.c
 
 # Second, build the fuzzer (distributed with RE2).
 $CXX $CXXFLAGS -std=c++11 -I. -Ire2/fuzzing/compiler-rt/include/ \
 	re2/fuzzing/re2_fuzzer.cc -o /re2_sydr/re2_sydr -pthread \
 	/main.o obj/libre2.a
 
+rm /main.o
+
 mkdir /re2_cov
 make clean
 make CXX=clang++ CXXFLAGS="-O2 -fno-omit-frame-pointer -g -fprofile-instr-generate -fcoverage-mapping" -j$(nproc) obj/libre2.a
 
+CC=clang
 CXX=clang++
+CFLAGS="-O2 -fno-omit-frame-pointer -g -fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-O2 -fno-omit-frame-pointer -g -fprofile-instr-generate -fcoverage-mapping"
+
+$CC $CFLAGS -o /main.o -c /main.c
+
 # Second, build the fuzzer (distributed with RE2).
 $CXX $CXXFLAGS -std=c++11 -I. -Ire2/fuzzing/compiler-rt/include/ \
 	re2/fuzzing/re2_fuzzer.cc -o /re2_cov/re2_cov -pthread \
