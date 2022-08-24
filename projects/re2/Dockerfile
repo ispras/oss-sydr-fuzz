@@ -35,8 +35,8 @@ RUN git checkout 0dade9ff39bb6276f18dd6d4bc12d3c20479ee24
 # Copy modified build scripts for fuzz targets.
 COPY ./build.sh ./
 
-# Copy source code for sydr fuzz target.
-COPY re2_sydr.cc ./re2/fuzzing/
+# Copy main function to link with for Sydr target build.
+COPY main.c /
 
 COPY afl.cc /
 
