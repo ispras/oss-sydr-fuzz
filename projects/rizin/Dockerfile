@@ -34,7 +34,7 @@ RUN mkdir rizin-fuzzing && cd rizin-fuzzing && git clone https://github.com/rizi
 WORKDIR /rizin-fuzzing/rizin
 
 # Fix commit. It could be updated later.
-RUN git checkout 4b385978a1a33252c4f829d3db59fb3056afadb9
+RUN git checkout 6bdcbc5124febe28d2ac21cbcdaab77f6ccb83e9
 
 # Copy patch file that implements fuzzing logic.
 COPY build.sh ./
