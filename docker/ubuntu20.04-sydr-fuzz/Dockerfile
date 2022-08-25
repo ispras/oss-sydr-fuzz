@@ -55,7 +55,7 @@ RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
     ldconfig
 
 RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd /afl-cov && \
-    git checkout bb51de02c06dca2bfa2dfb494fa3b095950ec879 && \
+    git checkout 934541796068dfcdebbe0db84ebbf59798388063 && \
     make install -j $(nproc) && cd .. && rm -rf afl-cov
 
 ENV LLVM_CONFIG=llvm-config
@@ -63,7 +63,7 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout 40947508037b874020c8dd1251359fecaab04b9d && export CC=clang && export CXX=clang++ && \
+    git checkout 413e68ab6d588b12976c5ff34e1a27eae48c26d8 && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
