@@ -115,6 +115,29 @@ Feel free to support new fuzz targets. The workflow is following:
     * [rizinorg/rizin@d4134cb](https://github.com/rizinorg/rizin/commit/d4134cb58c2504846320a1e4d56c9137cf95efc2) (PR: https://github.com/rizinorg/rizin/pull/2930)
     * <https://github.com/rizinorg/rizin/issues/2935>
     * <https://github.com/rizinorg/rizin/issues/2936>
+    * <https://github.com/rizinorg/rizin/issues/2952>
+    * <https://github.com/rizinorg/rizin/issues/2953>
+    * <https://github.com/rizinorg/rizin/issues/2954>
+    * <https://github.com/rizinorg/rizin/issues/2955>
+    * <https://github.com/rizinorg/rizin/issues/2956>
+    * <https://github.com/rizinorg/rizin/issues/2957>
+    * <https://github.com/rizinorg/rizin/issues/2958>
+    * <https://github.com/rizinorg/rizin/issues/2959>
+    * <https://github.com/rizinorg/rizin/issues/2960>
+    * <https://github.com/rizinorg/rizin/issues/2961>
+    * <https://github.com/rizinorg/rizin/issues/2962>
+    * <https://github.com/rizinorg/rizin/issues/2963>
+    * <https://github.com/rizinorg/rizin/issues/2964>
+    * <https://github.com/rizinorg/rizin/issues/2965>
+    * <https://github.com/rizinorg/rizin/issues/2966>
+    * <https://github.com/rizinorg/rizin/issues/2967>
+    * <https://github.com/rizinorg/rizin/issues/2968>
+    * <https://github.com/rizinorg/rizin/issues/2969>
+    * <https://github.com/rizinorg/rizin/issues/2970>
+    * <https://github.com/rizinorg/rizin/issues/2971>
+    * <https://github.com/rizinorg/rizin/issues/2972>
+    * <https://github.com/rizinorg/rizin/issues/2973>
+    * <https://github.com/rizinorg/rizin/issues/2974>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
