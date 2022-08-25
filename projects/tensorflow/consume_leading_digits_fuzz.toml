@@ -23,7 +23,7 @@ target = "/sydr/consume_leading_digits_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/consume_leading_digits_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/consume_leading_digits"
 
 [cov]
 target = "/coverage/consume_leading_digits_fuzz @@"

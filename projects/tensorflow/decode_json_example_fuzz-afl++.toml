@@ -18,12 +18,12 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/encode_jpeg_fuzz @@"
+target = "/sydr/decode_json_example_fuzz @@"
 
-[libfuzzer]
-set_cover_merge=true
-path = "/fuzzer/encode_jpeg_fuzz"
-args = "-rss_limit_mb=8192 /corpus/encode_jpeg"
+[aflplusplus]
+target = "/afl/decode_json_example_fuzz"
+args = "-t 1000+ -x /dictionaries/decode_json_example.dict -i /corpus/decode_json_example/"
+cmin = false
 
 [cov]
-target = "/coverage/encode_jpeg_fuzz @@"
+target = "/coverage/decode_json_example_fuzz @@"

@@ -18,12 +18,11 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/encode_jpeg_fuzz @@"
+target = "/sydr/cleanpath_fuzz @@"
 
-[libfuzzer]
-set_cover_merge=true
-path = "/fuzzer/encode_jpeg_fuzz"
-args = "-rss_limit_mb=8192 /corpus/encode_jpeg"
+[aflplusplus]
+target = "/afl/cleanpath_fuzz"
+args = "-t 1000+ -i /corpus/cleanpath"
 
 [cov]
-target = "/coverage/encode_jpeg_fuzz @@"
+target = "/coverage/cleanpath_fuzz @@"

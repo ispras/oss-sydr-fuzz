@@ -23,7 +23,7 @@ target = "/sydr/stringprintf_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/stringprintf_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/stringprintf"
 
 [cov]
 target = "/coverage/stringprintf_fuzz @@"

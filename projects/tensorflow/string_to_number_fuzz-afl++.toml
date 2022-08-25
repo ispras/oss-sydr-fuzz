@@ -18,12 +18,11 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/encode_jpeg_fuzz @@"
+target = "/sydr/string_to_number_fuzz @@"
 
-[libfuzzer]
-set_cover_merge=true
-path = "/fuzzer/encode_jpeg_fuzz"
-args = "-rss_limit_mb=8192 /corpus/encode_jpeg"
+[aflplusplus]
+target = "/afl/string_to_number_fuzz"
+args = "-t 1000+ -i /corpus/string_to_number"
 
 [cov]
-target = "/coverage/encode_jpeg_fuzz @@"
+target = "/coverage/string_to_number_fuzz @@"

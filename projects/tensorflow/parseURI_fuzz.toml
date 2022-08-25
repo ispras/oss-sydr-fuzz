@@ -23,7 +23,7 @@ target = "/sydr/parseURI_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/parseURI_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/parseURI"
 
 [cov]
 target = "/coverage/parseURI_fuzz @@"

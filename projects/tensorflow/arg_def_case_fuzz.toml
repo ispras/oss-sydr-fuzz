@@ -23,7 +23,7 @@ target = "/sydr/arg_def_case_fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/arg_def_case_fuzz"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 /corpus/arg_def_case"
 
 [cov]
 target = "/coverage/arg_def_case_fuzz @@"
