@@ -20,22 +20,10 @@
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   if (size < 2) { return 0; }
   size_t size_i = size - 1;
-  char name[] = "/tmp/torch-fuzz-XXXXXX";
-  char *dir = mktemp(name);
-  std::ofstream fp;
-  fp.open(dir, std::ios::out | std::ios::binary);
-  fp.write((char *)(data + 1), size_i);
-  fp.close();
-
-  if (size <= 0) {
-    unlink(dir);
-    return 0;
-  }
 
   auto input_data =
-      torch::from_file(dir, /*shared=*/false, /*size=*/size_i, torch::kU8);
+      torch::from_blob((char *)(data + 1), /*size=*/size_i, torch::kU8);
   if (input_data.dim() != 1 || input_data.numel() <= 0) {
-    unlink(dir);
     return 0;
   }
 
@@ -66,14 +54,10 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         err.find("Unsupported color conversion request") != std::string::npos ||
         err.find("Corrupt JPEG data") != std::string::npos ||
         err.find("unknown JFIF revision") != std::string::npos) {
-      unlink(dir);
       return 0;
     }
-    unlink(dir);
     abort();
   }
-
-  unlink(dir);
 
   return 0;
 }
