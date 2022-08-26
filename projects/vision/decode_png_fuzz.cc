@@ -51,7 +51,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (err.find("Content is not png!") != std::string::npos ||
         err.find("Internal error") != std::string::npos ||
         err.find("At most 8-bit PNG images are supported currently") !=
-            std::string::npos) {
+            std::string::npos ||
+        err.find("Out of bound read") != std::string::npos) {
       unlink(dir);
       return 0;
     }
