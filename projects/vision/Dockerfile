@@ -19,9 +19,12 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 MAINTAINER Kirill Parhomenko
 
 # Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions 
+RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi \
+    typing_extensions 
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng-dev libjpeg-dev ffmpeg libavformat-dev libswscale-dev python-is-python3 nasm
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y \
+    libpng-dev libjpeg-dev ffmpeg libavformat-dev libswscale-dev python-is-python3 nasm
 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
@@ -47,8 +50,6 @@ RUN cd / && mkdir cv && cd cv/ && \
 
 # Copy build script and targets.
 COPY build_*.sh \
-     *.patch \
-     miniz.* \
      *_fuzz.cc \
      *_sydr.cc \
      afl.cc \
@@ -57,12 +58,6 @@ COPY build_*.sh \
      save_png2tensor.cc \
      *.toml \
      /
-
-# Apply PyTorch fixes.
-RUN cd /pytorch_fuzz && \
-    git apply /stoull.patch
-RUN rm /pytorch_fuzz/third_party/miniz-2.0.8/miniz.*
-RUN cp miniz.* /pytorch_fuzz/third_party/miniz-2.0.8/.
 
 # Copy for different targets.
 RUN cp -r /pytorch_fuzz/ /pytorch_sydr/

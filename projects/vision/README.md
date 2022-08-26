@@ -93,8 +93,3 @@ Minimize corpus:
 ## Crash analysis with Casr
 
     # sydr-fuzz -c <target_name>.toml casr
-
-## Applied patches for PyTorch
-
-* miniz.* – Updated miniz version to fix segmentation fault.
-* stoull.patch – Catch stoull exception to allow the fuzzer go deeper.
