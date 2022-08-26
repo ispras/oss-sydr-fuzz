@@ -19,8 +19,8 @@
 cd /pytorch_sydr
 # Build torch without sans
 MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 \
-	USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF \
-	USE_OPENMP=0 USE_MKLDNN=0 \
+	USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 \
+	BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 \
 	CXXFLAGS='-g' \
 	CFLAGS='-g' \
 	python3 setup.py build
@@ -125,9 +125,14 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_sydr/build/lib/libonnx_proto.a /pytorch_sydr/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
-	/pytorch_sydr/torch/lib/libc10.a -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive /libjpeg-turbo-2.1.3-sydr/build/libturbojpeg.a \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
+	/pytorch_sydr/torch/lib/libc10.a \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
+	/libjpeg-turbo-2.1.3-sydr/build/libturbojpeg.a \
 	-o /decode_jpeg_sydr
 
 # Build decode_png_sydr target
@@ -165,10 +170,13 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_sydr/build/lib/libonnx_proto.a /pytorch_sydr/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
 	/pytorch_sydr/torch/lib/libc10.a \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
 	/libpng-1.6.37-sydr/./.libs/libpng16.a \
 	/zlib-1.2.12-sydr/./libz.a \
 	-o /decode_png_sydr
@@ -208,9 +216,13 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_sydr/build/lib/libonnx_proto.a /pytorch_sydr/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
-	/pytorch_sydr/torch/lib/libc10.a -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive /libjpeg-turbo-2.1.3-sydr/build/libturbojpeg.a \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
+	/pytorch_sydr/torch/lib/libc10.a \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive /libjpeg-turbo-2.1.3-sydr/build/libturbojpeg.a \
 	-o /encode_jpeg_sydr
 
 # Build encode_png_sydr target
@@ -248,10 +260,13 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_sydr/build/lib/libonnx_proto.a /pytorch_sydr/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
 	/pytorch_sydr/torch/lib/libc10.a \
-	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
 	/libpng-1.6.37-sydr/./.libs/libpng16.a \
 	/zlib-1.2.12-sydr/./libz.a \
 	-o /encode_png_sydr

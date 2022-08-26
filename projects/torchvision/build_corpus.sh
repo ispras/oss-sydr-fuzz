@@ -50,10 +50,13 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libonnx.a" -Wl,--no-whole-archive \
     /pytorch_sydr/build/lib/libonnx_proto.a /pytorch_sydr/torch/lib/libprotobuf.a \
     -pthread \
-    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
+    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" \
+    -Wl,--no-whole-archive \
+    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" \
+    -Wl,--no-whole-archive \
     /pytorch_sydr/torch/lib/libc10.a \
-    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
+    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
+    -Wl,--no-whole-archive \
     /libjpeg-turbo-2.1.3-sydr/build/libturbojpeg.a \
     -o /save_jpeg
 
@@ -89,10 +92,13 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libonnx.a" -Wl,--no-whole-archive \
     /pytorch_sydr/build/lib/libonnx_proto.a /pytorch_sydr/torch/lib/libprotobuf.a \
     -pthread \
-    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
+    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx.a" \
+    -Wl,--no-whole-archive \
+    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx2.a" \
+    -Wl,--no-whole-archive \
     /pytorch_sydr/torch/lib/libc10.a \
-    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
+    -Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
+    -Wl,--no-whole-archive \
     /libpng-1.6.37-sydr/./.libs/libpng16.a \
     /zlib-1.2.12-sydr/./libz.a \
     -o /save_png

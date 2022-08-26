@@ -19,8 +19,8 @@
 cd /pytorch_cov
 # Build torch for cov
 MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 \
-	USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF \
-	USE_OPENMP=0 USE_MKLDNN=0 \
+	USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 \
+	BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 \
 	CXXFLAGS='-g -fprofile-instr-generate -fcoverage-mapping' \
 	CFLAGS='-g -fprofile-instr-generate -fcoverage-mapping' \
 	python3 setup.py build
@@ -80,7 +80,9 @@ make -j$(nproc)
 cd /vision_cov/
 Torch_DIR=/pytorch_cov/ cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
 	-DCMAKE_C_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
-	-DCMAKE_CXX_FLAGS="-g -O2 -fprofile-instr-generate -fcoverage-mapping -I/pytorch_cov/torch/csrc/api/include -I/pytorch_cov/torch/include -I/libjpeg-turbo-2.1.3-cov/" \
+	-DCMAKE_CXX_FLAGS="-g -O2 -fprofile-instr-generate -fcoverage-mapping \
+	-I/pytorch_cov/torch/csrc/api/include -I/pytorch_cov/torch/include \
+	-I/libjpeg-turbo-2.1.3-cov/" \
 	-S . -B build/
 
 cd build/
@@ -128,7 +130,10 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	-pthread \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
-	/pytorch_cov/torch/lib/libc10.a -Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive /libjpeg-turbo-2.1.3-cov/build/libturbojpeg.a \
+	/pytorch_cov/torch/lib/libc10.a \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
+	/libjpeg-turbo-2.1.3-cov/build/libturbojpeg.a \
 	-o /decode_jpeg_cov
 
 # Build decode_png_cov target
@@ -166,10 +171,13 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_cov/build/lib/libonnx_proto.a /pytorch_cov/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
 	/pytorch_cov/torch/lib/libc10.a \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
 	/libpng-1.6.37-cov/./.libs/libpng16.a \
 	/zlib-1.2.12-cov/./libz.a \
 	-o /decode_png_cov
@@ -210,9 +218,14 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_cov/build/lib/libonnx_proto.a /pytorch_cov/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
-	/pytorch_cov/torch/lib/libc10.a -Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive /libjpeg-turbo-2.1.3-cov/build/libturbojpeg.a \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
+	/pytorch_cov/torch/lib/libc10.a \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
+	/libjpeg-turbo-2.1.3-cov/build/libturbojpeg.a \
 	-o /encode_jpeg_cov
 
 # Build encode_png_cov target
@@ -250,10 +263,13 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libonnx.a" -Wl,--no-whole-archive \
 	/pytorch_cov/build/lib/libonnx_proto.a /pytorch_cov/torch/lib/libprotobuf.a \
 	-pthread \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" -Wl,--no-whole-archive \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx.a" \
+	-Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx2.a" \
+	-Wl,--no-whole-archive \
 	/pytorch_cov/torch/lib/libc10.a \
-	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" -Wl,--no-whole-archive \
+	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" \
+	-Wl,--no-whole-archive \
 	/libpng-1.6.37-cov/./.libs/libpng16.a \
 	/zlib-1.2.12-cov/./libz.a \
 	-o /encode_png_cov
