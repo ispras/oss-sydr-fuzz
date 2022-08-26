@@ -19,7 +19,7 @@
 #include <unistd.h>
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-  if (size <= 2) { return 0; }
+  if (size < 2) { return 0; }
   size_t size_i = size - 1;
   char name[] = "/tmp/torch-fuzz-XXXXXX";
   char *dir = mktemp(name);
