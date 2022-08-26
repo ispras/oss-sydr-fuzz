@@ -14,7 +14,7 @@ This project uses some performance related settings and you can tune this for yo
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/vision` directory:
+Unzip Sydr (`sydr.zip`) in `projects/torchvision` directory:
 
     $ unzip sydr.zip
 

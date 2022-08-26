@@ -56,7 +56,7 @@ external repositories.
 * tensorflow
 * tinyxml2
 * unbound
-* vision
+* torchvision
 * xlnt
 * ydb
 * zlib
