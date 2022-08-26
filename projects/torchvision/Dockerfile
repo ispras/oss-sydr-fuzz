@@ -51,7 +51,6 @@ RUN cd / && mkdir cv && cd cv/ && \
 # Copy build script and targets.
 COPY build_*.sh \
      *_fuzz.cc \
-     *_sydr.cc \
      afl.cc \
      main.cc \
      save_jpeg2tensor.cc \
