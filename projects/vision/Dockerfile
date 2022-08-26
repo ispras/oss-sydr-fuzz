@@ -38,7 +38,12 @@ RUN sed -i 's/add_library(${PROJECT_NAME} SHARED ${ALL_SOURCES})/add_library(${P
     sed -i 's/target_link_libraries(${PROJECT_NAME} PRIVATE ${TORCH_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES})/add_definitions(-DJPEG_FOUND -DPNG_FOUND)/' /vision_fuzz/CMakeLists.txt
 
 # Install OpenCV
-RUN cd / && mkdir cv && cd cv/ && wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && unzip opencv.zip && mkdir -p build && cd build && cmake -DBUILD_TESTS=OFF ../opencv-4.x && cmake --build . -j$(nproc) && make install && cd /
+RUN cd / && mkdir cv && cd cv/ && \
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && \
+    unzip opencv.zip && mkdir -p build && cd build && \
+    cmake -DBUILD_TESTS=OFF ../opencv-4.x && \
+    cmake --build . -j$(nproc) && \
+    make install && cd /
 
 # Copy build script and targets.
 COPY build_*.sh \
