@@ -39,7 +39,7 @@ COPY build.sh /
 
 COPY sydr_script_*.rs fuzz/fuzzers/
 
-COPY Cargo.toml fuzz
+COPY build-config/Cargo.toml fuzz
 
 # Build fuzz targets.
 RUN ../build.sh
