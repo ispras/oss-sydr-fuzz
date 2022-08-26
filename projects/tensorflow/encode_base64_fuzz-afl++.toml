@@ -21,6 +21,7 @@ args = "-l debug"
 target = "/sydr/encode_base64_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/encode_base64_fuzz"
 args = "-t 1000+ -i /corpus/encode_base64"
 

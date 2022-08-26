@@ -110,4 +110,7 @@ RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip &&
     /encode_base64.zip /encode_jpeg.zip /example_proto_fast_parsing.zip /joinpath.zip /one_hot.zip /parse_tensor_op.zip \
     /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
 
+# Increase timeout for forkserver spin up.
+ENV AFL_FORKSRV_INIT_TMOUT 15000
+
 WORKDIR /

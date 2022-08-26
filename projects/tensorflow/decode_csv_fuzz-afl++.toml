@@ -21,6 +21,7 @@ args = "-l debug"
 target = "/sydr/decode_csv_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/decode_csv_fuzz"
 args = "-t 1000+ -i /corpus/decode_csv"
 

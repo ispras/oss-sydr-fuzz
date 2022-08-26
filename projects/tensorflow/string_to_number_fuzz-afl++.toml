@@ -21,6 +21,7 @@ args = "-l debug"
 target = "/sydr/string_to_number_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/string_to_number_fuzz"
 args = "-t 1000+ -i /corpus/string_to_number"
 
