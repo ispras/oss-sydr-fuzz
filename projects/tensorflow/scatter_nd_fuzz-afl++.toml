@@ -22,6 +22,7 @@ target = "/sydr/scatter_nd_fuzz @@"
 
 [aflplusplus]
 rss_limit_mb = 8192
+ubsan_crash = true
 target = "/afl/scatter_nd_fuzz"
 args = "-t 1000+ -i /corpus/scatter_nd"
 

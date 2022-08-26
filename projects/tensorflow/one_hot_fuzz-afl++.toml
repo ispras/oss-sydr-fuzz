@@ -22,6 +22,7 @@ target = "/sydr/one_hot_fuzz @@"
 
 [aflplusplus]
 rss_limit_mb = 8192
+ubsan_crash = true
 target = "/afl/one_hot_fuzz"
 args = "-t 1000+ -i /corpus/one_hot"
 
