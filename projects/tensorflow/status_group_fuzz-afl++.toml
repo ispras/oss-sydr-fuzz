@@ -21,6 +21,7 @@ args = "-l debug"
 target = "/sydr/status_group_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/status_group_fuzz"
 args = "-t 1000+ -i /corpus/status_group"
 

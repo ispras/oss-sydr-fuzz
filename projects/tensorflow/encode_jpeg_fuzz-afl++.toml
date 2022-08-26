@@ -21,6 +21,7 @@ args = "-l debug"
 target = "/sydr/encode_jpeg_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/encode_jpeg_fuzz"
 args = "-t 1000+ -i /corpus/encode_jpeg"
 
