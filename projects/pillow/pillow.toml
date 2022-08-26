@@ -1,0 +1,4 @@
+exit-on-time=60
+[atheris]
+path = "/Pillow/Tests/oss-fuzz/fuzz_pillow.py"
+args = "/out/fuzz_pillow_seed_corpus/ -dict=/out/fuzz_pillow.dict -workers=5"

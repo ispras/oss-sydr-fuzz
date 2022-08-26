@@ -1,0 +1,4 @@
+exit-on-time=60
+[atheris]
+path = "/Pillow/Tests/oss-fuzz/fuzz_font.py"
+args = "/out/fuzz_font_seed_corpus -jobs=4 -workers=4"
