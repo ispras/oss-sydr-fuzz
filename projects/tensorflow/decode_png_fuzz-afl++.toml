@@ -24,7 +24,7 @@ target = "/sydr/decode_png_fuzz @@"
 rss_limit_mb = 8192
 ubsan_crash = true
 target = "/afl/decode_png_fuzz"
-args = "-t 1000+ -x /dictionaries/decode_png.dict -i /corpus/decode_png/"
+args = "-t 60000 -x /dictionaries/decode_png.dict -i /corpus/decode_png/"
 
 [cov]
 target = "/coverage/decode_png_fuzz @@"

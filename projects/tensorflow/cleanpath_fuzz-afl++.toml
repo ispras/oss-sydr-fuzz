@@ -23,7 +23,7 @@ target = "/sydr/cleanpath_fuzz @@"
 [aflplusplus]
 rss_limit_mb = 8192
 target = "/afl/cleanpath_fuzz"
-args = "-t 1000+ -i /corpus/cleanpath"
+args = "-t 60000 -i /corpus/cleanpath"
 
 [cov]
 target = "/coverage/cleanpath_fuzz @@"

@@ -23,7 +23,7 @@ target = "/sydr/stringprintf_fuzz @@"
 [aflplusplus]
 rss_limit_mb = 8192
 target = "/afl/stringprintf_fuzz"
-args = "-t 1000+ -i /corpus/stringprintf"
+args = "-t 60000 -i /corpus/stringprintf"
 
 [cov]
 target = "/coverage/stringprintf_fuzz @@"

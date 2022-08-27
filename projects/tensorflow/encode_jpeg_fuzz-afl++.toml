@@ -24,7 +24,7 @@ target = "/sydr/encode_jpeg_fuzz @@"
 rss_limit_mb = 8192
 ubsan_crash = true
 target = "/afl/encode_jpeg_fuzz"
-args = "-t 1000+ -i /corpus/encode_jpeg"
+args = "-t 60000 -i /corpus/encode_jpeg"
 
 [cov]
 target = "/coverage/encode_jpeg_fuzz @@"

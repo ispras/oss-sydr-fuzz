@@ -24,7 +24,7 @@ target = "/sydr/decode_bmp_fuzz @@"
 rss_limit_mb = 8192
 ubsan_crash = true
 target = "/afl/decode_bmp_fuzz"
-args = "-t 1000+ -i /corpus/decode_bmp/"
+args = "-t 60000 -i /corpus/decode_bmp/"
 
 [cov]
 target = "/coverage/decode_bmp_fuzz @@"

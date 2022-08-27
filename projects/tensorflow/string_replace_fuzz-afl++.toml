@@ -23,7 +23,7 @@ target = "/sydr/string_replace_fuzz @@"
 [aflplusplus]
 rss_limit_mb = 8192
 target = "/afl/string_replace_fuzz"
-args = "-t 1000+ -i /corpus/string_replace"
+args = "-t 60000 -i /corpus/string_replace"
 
 [cov]
 target = "/coverage/string_replace_fuzz @@"

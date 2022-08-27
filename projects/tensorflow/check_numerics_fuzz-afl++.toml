@@ -24,7 +24,7 @@ target = "/sydr/check_numerics_fuzz @@"
 rss_limit_mb = 8192
 ubsan_crash = true
 target = "/afl/check_numerics_fuzz"
-args = "-t 1000+ -i /corpus/check_numerics"
+args = "-t 60000 -i /corpus/check_numerics"
 
 [cov]
 target = "/coverage/check_numerics_fuzz @@"

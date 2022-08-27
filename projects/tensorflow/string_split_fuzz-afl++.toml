@@ -24,7 +24,7 @@ target = "/sydr/string_split_fuzz @@"
 rss_limit_mb = 8192
 ubsan_crash = true
 target = "/afl/string_split_fuzz"
-args = "-t 1000+ -i /corpus/string_split"
+args = "-t 60000 -i /corpus/string_split"
 
 [cov]
 target = "/coverage/string_split_fuzz @@"

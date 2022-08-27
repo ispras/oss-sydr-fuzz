@@ -23,7 +23,7 @@ target = "/sydr/status_fuzz @@"
 [aflplusplus]
 rss_limit_mb = 8192
 target = "/afl/status_fuzz"
-args = "-t 1000+ -i /corpus/status"
+args = "-t 60000 -i /corpus/status"
 
 [cov]
 target = "/coverage/status_fuzz @@"
