@@ -21,8 +21,10 @@ args = "-l debug"
 target = "/sydr/decode_compressed_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
+ubsan_crash = true
 target = "/afl/decode_compressed_fuzz"
-args = "-t 1000+ -i /corpus/decode_compressed"
+args = "-t 60000 -i /corpus/decode_compressed"
 
 [cov]
 target = "/coverage/decode_compressed_fuzz @@"

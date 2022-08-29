@@ -21,8 +21,10 @@ args = "-l debug"
 target = "/sydr/decode_json_example_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
+ubsan_crash = true
 target = "/afl/decode_json_example_fuzz"
-args = "-t 1000+ -x /dictionaries/decode_json_example.dict -i /corpus/decode_json_example/"
+args = "-t 60000 -x /dictionaries/decode_json_example.dict -i /corpus/decode_json_example/"
 cmin = false
 
 [cov]

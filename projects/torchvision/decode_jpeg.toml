@@ -14,16 +14,13 @@
 #
 ################################################################################
 
-exit-on-time = 3600
-
 [sydr]
 args = "-l debug"
-target = "/sydr/status_group_fuzz @@"
+target = "/decode_jpeg_sydr @@"
 
-[aflplusplus]
-rss_limit_mb = 8192
-target = "/afl/status_group_fuzz"
-args = "-t 60000 -i /corpus/status_group"
+[libfuzzer]
+path = "/decode_jpeg_fuzz"
+args = "-detect_leaks=0 -rss_limit_mb=15360 -timeout=300 -report_slow_units=350 /jpeg_corpus/"
 
 [cov]
-target = "/coverage/status_group_fuzz @@"
+target = "/decode_jpeg_cov @@"

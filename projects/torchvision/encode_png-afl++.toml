@@ -14,16 +14,14 @@
 #
 ################################################################################
 
-exit-on-time = 3600
-
 [sydr]
 args = "-l debug"
-target = "/sydr/status_group_fuzz @@"
+target = "/encode_png_sydr @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
-target = "/afl/status_group_fuzz"
-args = "-t 60000 -i /corpus/status_group"
+target = "/encode_png_fuzz_afl"
+args = "-i /png_tensor/ -t 5000+"
+jobs = 3
 
 [cov]
-target = "/coverage/status_group_fuzz @@"
+target = "/encode_png_cov @@"

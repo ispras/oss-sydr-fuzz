@@ -21,8 +21,10 @@ args = "-l debug"
 target = "/sydr/decode_wav_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
+ubsan_crash = true
 target = "/afl/decode_wav_fuzz"
-args = "-t 1000+ -x /dictionaries/decode_wav.dict -i /corpus/decode_wav/"
+args = "-t 60000 -x /dictionaries/decode_wav.dict -i /corpus/decode_wav/"
 
 [cov]
 target = "/coverage/decode_wav_fuzz @@"

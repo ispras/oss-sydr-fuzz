@@ -21,8 +21,9 @@ args = "-l debug"
 target = "/sydr/tstring_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/tstring_fuzz"
-args = "-t 1000+ -i /corpus/tstring"
+args = "-t 60000 -i /corpus/tstring"
 
 [cov]
 target = "/coverage/tstring_fuzz @@"

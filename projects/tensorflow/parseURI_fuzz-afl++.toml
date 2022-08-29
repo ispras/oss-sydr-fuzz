@@ -21,8 +21,9 @@ args = "-l debug"
 target = "/sydr/parseURI_fuzz @@"
 
 [aflplusplus]
+rss_limit_mb = 8192
 target = "/afl/parseURI_fuzz"
-args = "-t 1000+ -i /corpus/parseURI"
+args = "-t 60000 -i /corpus/parseURI"
 
 [cov]
 target = "/coverage/parseURI_fuzz @@"
