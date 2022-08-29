@@ -20,7 +20,7 @@ target = "/out/x509_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-x /out/x509.dict -t 1000+ -i /openssl/fuzz/corpora/x509"
+args = "-x /out/x509.dict -t 1000 -i /openssl/fuzz/corpora/x509"
 target = "/out/x509_afl"
 
 [cov]

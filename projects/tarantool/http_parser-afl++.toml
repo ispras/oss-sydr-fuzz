@@ -20,7 +20,7 @@ target = "/http_parser_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_http_parser"
+args = "-t 1000 -i /corpus_http_parser"
 target = "/http_parser_afl"
 
 [cov]

@@ -20,7 +20,7 @@ target = "/csv_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_csv"
+args = "-t 1000 -i /corpus_csv"
 target = "/csv_afl"
 
 [cov]

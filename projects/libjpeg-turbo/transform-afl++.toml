@@ -20,7 +20,7 @@ target = "/transform_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_decompress"
+args = "-t 1000 -i /corpus_decompress"
 target = "/transform_afl"
 
 [cov]

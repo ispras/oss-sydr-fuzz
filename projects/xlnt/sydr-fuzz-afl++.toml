@@ -20,7 +20,7 @@ target = "/load_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus"
+args = "-t 1000 -i /corpus"
 target = "/load_afl"
 
 [cov]

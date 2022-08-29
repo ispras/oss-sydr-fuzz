@@ -20,7 +20,7 @@ target = "/sqlite3/sydrfuzz @@"
 jobs = 2
 
 [aflplusplus]
-args = "-x sql.dict -t 1000+ -i /corpus"
+args = "-x sql.dict -t 1000 -i /corpus"
 target = "/sqlite3/aflfuzz"
 
 [cov]

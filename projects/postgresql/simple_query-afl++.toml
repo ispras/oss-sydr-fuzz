@@ -20,7 +20,7 @@ target = "/out/simple_query_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-x sql.dict -t 1000+ -i /corpus"
+args = "-x sql.dict -t 1000 -i /corpus"
 target = "/out/simple_query_afl"
 
 [cov]

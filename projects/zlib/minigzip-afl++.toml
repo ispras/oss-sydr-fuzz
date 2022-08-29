@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/minigzip_fuzzer_sydr @@"
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus"
+args = "-t 1000 -i /corpus"
 target = "/minigzip_fuzzer_afl"
 
 [cov]
