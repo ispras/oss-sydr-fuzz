@@ -20,7 +20,7 @@ target = "/swim_proto_meta_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /corpus_swim_proto_meta"
+args = "-t 60000 -i /corpus_swim_proto_meta"
 target = "/swim_proto_meta_afl"
 
 [cov]

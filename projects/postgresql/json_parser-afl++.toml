@@ -20,7 +20,7 @@ target = "/out/json_parser_sydr @@"
 jobs = 4
 
 [aflplusplus]
-args = "-t 1000 -i /corpus_json"
+args = "-t 60000 -i /corpus_json"
 target = "/out/json_parser_afl"
 
 [cov]

@@ -20,7 +20,7 @@ target = "/xml_parse_fuzzer_US-ASCII_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-x /xml_parse_fuzzer_US-ASCII.dict -t 1000 -i /corpus"
+args = "-x /xml_parse_fuzzer_US-ASCII.dict -t 60000 -i /corpus"
 target = "/xml_parse_fuzzer_US-ASCII_afl"
 
 [cov]

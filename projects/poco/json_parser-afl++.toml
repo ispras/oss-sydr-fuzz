@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/json_parser_sydr @@"
 
 [aflplusplus]
-args = "-x json.dict -t 1000 -i /corpus_json"
+args = "-x json.dict -t 60000 -i /corpus_json"
 target = "/json_parser_afl"
 
 [cov]

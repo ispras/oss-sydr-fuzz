@@ -20,7 +20,7 @@ target = "/out/client_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /openssl/fuzz/corpora/client"
+args = "-t 60000 -i /openssl/fuzz/corpora/client"
 target = "/out/client_afl"
 
 [cov]

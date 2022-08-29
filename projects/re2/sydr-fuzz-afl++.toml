@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/re2_sydr/re2_sydr @@"
 
 [aflplusplus]
-args = "-t 1000 -i /corpus"
+args = "-t 60000 -i /corpus"
 target = "/re2_afl/re2_afl"
 
 [cov]

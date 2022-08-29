@@ -20,7 +20,7 @@ target = "/cbor_load_sydr @@"
 jobs = 4
 
 [aflplusplus]
-args = "-t 1000 -i /corpus"
+args = "-t 60000 -i /corpus"
 target = "/cbor_load_afl"
 
 [cov]

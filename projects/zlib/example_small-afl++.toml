@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/example_small_fuzzer_sydr @@"
 
 [aflplusplus]
-args = "-t 1000 -i /corpus"
+args = "-t 60000 -i /corpus"
 target = "/example_small_fuzzer_afl"
 
 [cov]
