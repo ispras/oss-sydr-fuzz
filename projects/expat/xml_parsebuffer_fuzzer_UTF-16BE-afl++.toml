@@ -20,7 +20,7 @@ target = "/xml_parsebuffer_fuzzer_UTF-16BE_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-x /xml_parsebuffer_fuzzer_UTF-16BE.dict -t 1000+ -i /corpus"
+args = "-x /xml_parsebuffer_fuzzer_UTF-16BE.dict -t 60000 -i /corpus"
 target = "/xml_parsebuffer_fuzzer_UTF-16BE_afl"
 
 [cov]
