@@ -106,6 +106,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/pytorch/pytorch/issues/77573> (PR: https://github.com/pytorch/pytorch/pull/79192)
     * <https://github.com/pytorch/pytorch/issues/77575> (PR: https://github.com/pytorch/pytorch/pull/79192)
     * <https://github.com/pytorch/pytorch/pull/77557>
+    * <https://github.com/pytorch/pytorch/pull/84343>
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: https://github.com/rizinorg/rizin/pull/2930)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: https://github.com/rizinorg/rizin/pull/2930)
