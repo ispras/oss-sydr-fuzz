@@ -116,8 +116,7 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	./main.o \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_cov/build/libtorchvision.a /pytorch_cov/build/lib/libbreakpad.a \
-	/pytorch_cov/build/lib/libbreakpad_common.a \
+	/vision_cov/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_cov/torch/lib/libqnnpack.a /pytorch_cov/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_cov/torch/lib/libnnpack.a /pytorch_cov/torch/lib/libXNNPACK.a \
@@ -159,8 +158,7 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	./main.o \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_cov/build/libtorchvision.a /pytorch_cov/build/lib/libbreakpad.a \
-	/pytorch_cov/build/lib/libbreakpad_common.a \
+	/vision_cov/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_cov/torch/lib/libqnnpack.a /pytorch_cov/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_cov/torch/lib/libnnpack.a /pytorch_cov/torch/lib/libXNNPACK.a \
@@ -206,8 +204,7 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	./main.o \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_cov/build/libtorchvision.a /pytorch_cov/build/lib/libbreakpad.a \
-	/pytorch_cov/build/lib/libbreakpad_common.a \
+	/vision_cov/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_cov/torch/lib/libqnnpack.a /pytorch_cov/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_cov/torch/lib/libnnpack.a /pytorch_cov/torch/lib/libXNNPACK.a \
@@ -251,8 +248,7 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	./main.o \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_cov/build/libtorchvision.a /pytorch_cov/build/lib/libbreakpad.a \
-	/pytorch_cov/build/lib/libbreakpad_common.a \
+	/vision_cov/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_cov/torch/lib/libqnnpack.a /pytorch_cov/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_cov/torch/lib/libnnpack.a /pytorch_cov/torch/lib/libXNNPACK.a \
