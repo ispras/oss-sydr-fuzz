@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/load_from_memory_sydr @@"
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_bmp"
+args = "-t 60000 -i /corpus_bmp"
 target = "/load_from_memory_afl"
 
 [cov]
