@@ -39,6 +39,12 @@ int main(int argc, char **argv) {
         return 0;
     } catch(const std::runtime_error &e) {
         return 0;
+    } catch(const std::out_of_range &e) {
+        std::string err = e.what();
+        if (err.find("Argument passed to at() was not in the map.") != std::string::npos) {
+            return 0;
+        }
+        abort();
     }
     return 0;
 }
