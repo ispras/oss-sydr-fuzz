@@ -84,6 +84,8 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://sourceforge.net/p/freeimage/bugs/349/>
     * <https://sourceforge.net/p/freeimage/bugs/350/>
     * <https://sourceforge.net/p/freeimage/bugs/351/>
+* image-rs:
+    * <https://github.com/image-rs/image/issues/1778>
 * Little-CMS:
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
