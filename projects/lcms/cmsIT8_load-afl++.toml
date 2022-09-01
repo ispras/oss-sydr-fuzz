@@ -21,7 +21,7 @@ jobs = 3
 
 [aflplusplus]
 target = "/lcms_afl/cmsIT8_load_fuzzer"
-args = "-t 1000+ -i /corpus"
+args = "-t 60000 -i /corpus"
 
 [cov]
 target = "/lcms_cov/cmsIT8_load_sydr @@"

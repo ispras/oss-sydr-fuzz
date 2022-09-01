@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/xml_parser_sydr @@"
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_xml"
+args = "-t 60000 -i /corpus_xml"
 target = "/xml_parser_afl"
 
 [cov]

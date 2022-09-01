@@ -20,7 +20,7 @@ target = "/compress_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_compress"
+args = "-t 60000 -i /corpus_compress"
 target = "/compress_afl"
 
 [cov]

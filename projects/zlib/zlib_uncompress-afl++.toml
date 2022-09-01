@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/zlib_uncompress_fuzzer_sydr @@"
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus"
+args = "-t 60000 -i /corpus"
 target = "/zlib_uncompress_fuzzer_afl"
 
 [cov]

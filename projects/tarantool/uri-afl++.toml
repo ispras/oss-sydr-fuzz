@@ -20,7 +20,7 @@ target = "/uri_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000+ -i /corpus_uri"
+args = "-t 60000 -i /corpus_uri"
 target = "/uri_afl"
 
 [cov]
