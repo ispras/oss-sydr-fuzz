@@ -15,26 +15,30 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder-python
+FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+
+MAINTAINER Ilya Yegorov (hkctkuy)
 
 # library build dependencies
 RUN apt-get update && \
     apt-get install -y \
       libxau-dev \
+      pip \
       pkg-config \
       rsync \
-      pip \
-      vim \
-      clang
+      subversion \
+      zip 
 
-RUN pip install coverage
+RUN pip install pyinstaller
 
 WORKDIR /
 
 RUN git clone https://github.com/python-pillow/Pillow
 RUN git clone https://github.com/python-pillow/pillow-wheels
 
-RUN /Pillow/Tests/oss-fuzz/build_dictionaries.sh
+RUN mkdir /out \
+    && export OUT=/out \
+    && /Pillow/Tests/oss-fuzz/build_dictionaries.sh
 
 COPY build_depends.sh /
 
@@ -58,9 +62,11 @@ WORKDIR /Pillow
 
 COPY build.sh /
 
-RUN /build.sh
+ RUN /build.sh
 
-RUN unzip /out/fuzz_font_seed_corpus.zip \
+ RUN unzip /out/fuzz_font_seed_corpus.zip \
     -d /out/fuzz_font_seed_corpus \
+    && rm -r /out/fuzz_font_seed_corpus.zip \
     && unzip /out/fuzz_pillow_seed_corpus.zip \
-    -d /out/fuzz_pillow_seed_corpus
+    -d /out/fuzz_pillow_seed_corpus \
+    && rm -r /out/fuzz_pillow_seed_corpus.zip
