@@ -33,8 +33,16 @@ Run fuzzing:
 
     # sydr-fuzz -c pillow.toml run
 
+Minimize corpus:
+
+    # sydr-fuzz -c pillow.toml cmin
+
 ### font
 
 Run fuzzing:
 
     # sydr-fuzz -c font.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c font.toml cmin
