@@ -32,6 +32,7 @@ external repositories.
 * expat
 * fmt
 * freeimage
+* goblin
 * image-rs
 * lcms
 * libcbor
