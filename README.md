@@ -85,6 +85,10 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://sourceforge.net/p/freeimage/bugs/349/>
     * <https://sourceforge.net/p/freeimage/bugs/350/>
     * <https://sourceforge.net/p/freeimage/bugs/351/>
+* goblin:
+    * <https://github.com/m4b/goblin/issues/328>
+    * <https://github.com/m4b/goblin/pull/329>
+    * <https://github.com/m4b/goblin/pull/330>
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778>
 * Little-CMS:
