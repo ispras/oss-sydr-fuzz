@@ -90,7 +90,7 @@ Feel free to support new fuzz targets. The workflow is following:
     * <https://github.com/m4b/goblin/pull/329>
     * <https://github.com/m4b/goblin/pull/330>
 * image-rs:
-    * <https://github.com/image-rs/image/issues/1778>
+    * <https://github.com/image-rs/image/issues/1778> (PR: https://github.com/image-rs/image/pull/1781)
 * Little-CMS:
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
