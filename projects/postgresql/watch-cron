@@ -1,2 +1,2 @@
-* * * * * find /tmp -mmin +1 -name 'query-sydr*' -exec rm -rf {} \;
+* * * * * find /tmp -mmin +10 -name 'query-sydr*' -exec rm -rf {} \;
 
