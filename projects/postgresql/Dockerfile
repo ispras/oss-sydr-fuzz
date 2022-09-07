@@ -49,5 +49,8 @@ RUN cp -r /postgresql/src/test/regress/sql/* .
 WORKDIR /
 
 # Set up cron to clear disk from garbage every minute.
-RUN printf "* * * * * find /tmp -mmin +10 -name 'query-sydr*' -exec rm -rf {} \;" \
-    > /var/spool/cron/crontabs/root
+COPY watch-cron /etc/cron.d/watch-cron
+RUN chmod 0644 /etc/cron.d/watch-cron
+RUN crontab /etc/cron.d/watch-cron
+
+ENTRYPOINT cron && /bin/bash
