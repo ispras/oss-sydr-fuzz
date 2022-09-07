@@ -11,7 +11,7 @@ RUN apt-get update && \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
                        libtool gnuplot binutils-dev
 
-RUN python3 -m pip install scipy numpy coverage
+RUN python3 -m pip install scipy numpy coverage toml
 
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
     mkdir /cmake && \
@@ -55,7 +55,6 @@ RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
     ldconfig
 
 RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd /afl-cov && \
-    git checkout 934541796068dfcdebbe0db84ebbf59798388063 && \
     make install -j $(nproc) && cd .. && rm -rf afl-cov
 
 ENV LLVM_CONFIG=llvm-config
