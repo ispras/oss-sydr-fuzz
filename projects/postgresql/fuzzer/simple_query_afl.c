@@ -121,7 +121,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   char base[512];
   char db_dir[512];
   pid_t pid = getpid();
-  sprintf(base, "query-db-%i", pid);
+  sprintf(base, "query-afl-db-%i", pid);
   strcpy(db_dir, "/tmp/");
   strcat(db_dir, base);
   DIR* dir = opendir(db_dir);
