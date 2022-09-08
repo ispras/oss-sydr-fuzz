@@ -1,2 +1,4 @@
 * * * * * find /tmp -mmin +10 -name 'query-sydr*' -exec rm -rf {} \;
+* * * * * find /tmp -mmin +10 -name 'query-afl*' -exec rm -rf {} \;
+* * * * * find /tmp -mmin +10 -name 'json-afl*' -exec rm -rf {} \;
 
