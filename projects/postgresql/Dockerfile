@@ -20,7 +20,9 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 MAINTAINER Andrey Fedotov
 
 # Install build dependencies.
-RUN apt-get update && apt-get install -y make libreadline-dev zlib1g-dev bison flex
+RUN apt-get update && apt-get install -y make libreadline-dev zlib1g-dev bison flex cron
+
+RUN systemctl enable cron
 
 # Clone target from GitHub.
 RUN git clone git://git.postgresql.org/git/postgresql.git
@@ -45,3 +47,10 @@ RUN unzip corpus_json.zip
 WORKDIR /corpus
 RUN cp -r /postgresql/src/test/regress/sql/* .
 WORKDIR /
+
+# Set up cron to clear disk from garbage every minute.
+COPY watch-cron /etc/cron.d/watch-cron
+RUN chmod 0644 /etc/cron.d/watch-cron
+RUN crontab /etc/cron.d/watch-cron
+
+ENTRYPOINT cron && /bin/bash

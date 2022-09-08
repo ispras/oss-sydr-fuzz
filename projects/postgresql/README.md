@@ -30,19 +30,6 @@ Collect and report coverage:
 
     # sydr-fuzz -c simple_query.toml cov-report
 
-## Cleanup Temporary Databases During Fuzzing
-
-New temporary databases are created for each Sydr run in `/tmp` directory. These
-databases may exhaust the disk space. We should remove old databases.
-
-Connect to docker:
-
-    $ sudo docker exec -it oss-sydr-fuzz-postgresql /bin/bash
-
-Run command that will minutely remove databases older than 10 minutes:
-
-    # watch -n 60 "find /tmp -mmin +10 -name 'query-sydr*' -exec rm -rf {} \;"
-
 ## Alternative Fuzz Targets
 
 PostgreSQL project has 2 fuzz targets.
