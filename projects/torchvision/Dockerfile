@@ -29,7 +29,7 @@ RUN apt-get update && apt-get upgrade -y && \
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
 RUN cd /pytorch_fuzz && \
-    git checkout bc2c6edaf163b1a1330e37a6e34caf8c553e4755 && \
+    git checkout 664058fa83f1d8eede5d66418abff6e20bd76ca8 && \
     git submodule update --init --recursive --jobs 0
 
 RUN git clone https://github.com/pytorch/vision.git vision_fuzz/

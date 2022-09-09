@@ -117,8 +117,7 @@ clang++ -g -O2 \
 	/pytorch_fuzz/torch/lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -163,8 +162,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	/pytorch_fuzz/torch/lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -210,8 +208,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	/pytorch_fuzz/torch/lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -256,8 +253,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	/pytorch_fuzz/torch/lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -357,8 +353,7 @@ afl-clang-fast++ -g -O2 -fsanitize=address,bounds,integer,undefined,null,float-d
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	/afl.o \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz_afl/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz_afl/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -404,8 +399,7 @@ afl-clang-fast++ -g -O2 -fsanitize=address,bounds,integer,undefined,null,float-d
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	/afl.o \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz_afl/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz_afl/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -452,8 +446,7 @@ afl-clang-fast++ -g -O2 -fsanitize=address,bounds,integer,undefined,null,float-d
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	/afl.o \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz_afl/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz_afl/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \
@@ -499,8 +492,7 @@ afl-clang-fast++ -g -O2 -fsanitize=address,bounds,integer,undefined,null,float-d
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	/afl.o \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	/vision_fuzz_afl/build/libtorchvision.a /pytorch_fuzz/build/lib/libbreakpad.a \
-	/pytorch_fuzz/build/lib/libbreakpad_common.a \
+	/vision_fuzz_afl/build/libtorchvision.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	/pytorch_fuzz/torch/lib/libqnnpack.a /pytorch_fuzz/torch/lib/libpytorch_qnnpack.a \
 	/pytorch_fuzz/torch/lib/libnnpack.a /pytorch_fuzz/torch/lib/libXNNPACK.a \

@@ -38,8 +38,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
     /pytorch_sydr/torch/lib/libtorch.a \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-    /vision_sydr/build/libtorchvision.a /pytorch_sydr/build/lib/libbreakpad.a \
-    /pytorch_sydr/build/lib/libbreakpad_common.a \
+    /vision_sydr/build/libtorchvision.a \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
     /pytorch_sydr/torch/lib/libqnnpack.a /pytorch_sydr/torch/lib/libpytorch_qnnpack.a \
     /pytorch_sydr/torch/lib/libnnpack.a /pytorch_sydr/torch/lib/libXNNPACK.a \
@@ -80,8 +79,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
     /pytorch_sydr/torch/lib/libtorch.a \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-    /vision_sydr/build/libtorchvision.a /pytorch_sydr/build/lib/libbreakpad.a \
-    /pytorch_sydr/build/lib/libbreakpad_common.a \
+    /vision_sydr/build/libtorchvision.a \
     -Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
     /pytorch_sydr/torch/lib/libqnnpack.a /pytorch_sydr/torch/lib/libpytorch_qnnpack.a \
     /pytorch_sydr/torch/lib/libnnpack.a /pytorch_sydr/torch/lib/libXNNPACK.a \
