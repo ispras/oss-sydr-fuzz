@@ -32,7 +32,7 @@ RUN git clone https://github.com/image-rs/image
 WORKDIR /image
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout e92caaacef38834df990bc7ee54034b91e1d383a
+RUN git checkout c24aecb954b0c9ae96ebdacd023140e323de2d75
 
 # Copy build script.
 COPY build.sh /
