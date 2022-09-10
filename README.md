@@ -76,6 +76,8 @@ Feel free to support new fuzz targets. The workflow is following:
 
 * Cairo:
     * <https://gitlab.freedesktop.org/cairo/cairo/-/issues/579>
+* exrs
+    * <https://github.com/johannesvollmer/exrs/pull/166>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
