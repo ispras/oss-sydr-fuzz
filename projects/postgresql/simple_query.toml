@@ -22,6 +22,7 @@ jobs = 2
 [libfuzzer]
 path = "/out/simple_query_fuzzer"
 args = "-jobs=4 -dict=sql.dict /corpus"
+set_cover_merge = true
 
 [cov]
 target = "/out/simple_query_cov @@"

@@ -23,3 +23,4 @@ jobs = 2
 path = "/fuzz_disasmnext"
 args = "/corpusnext"
 cmin = false
+set_cover_merge = true
