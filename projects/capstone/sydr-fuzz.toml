@@ -22,5 +22,4 @@ jobs = 2
 [libfuzzer]
 path = "/fuzz_disasmnext"
 args = "/corpusnext"
-cmin = false
 set_cover_merge = true
