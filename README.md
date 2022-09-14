@@ -52,6 +52,7 @@ external repositories.
 * rapidjson
 * re2
 * rizin
+* rust-regex
 * sqlite3
 * tarantool
 * tensorflow
