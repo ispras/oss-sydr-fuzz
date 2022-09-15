@@ -6,10 +6,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get -y install build-essential gcc-multilib g++-multilib git \
-                       wget curl unzip clang-11 vim lsb-release gdb zlib1g-dev \
+                       wget curl unzip clang-11 vim lsb-release zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
                        libtool gnuplot binutils-dev
+
+RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
+    cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
+    rm -rf gdb-*
 
 RUN python3 -m pip install scipy numpy coverage toml
 
