@@ -21,10 +21,6 @@ path = ".."
 members = ["."]
 
 [[bin]]
-name = "fuzz_regex_match"
-path = "fuzz_targets/fuzz_regex_match.rs"
-
-[[bin]]
 name = "sydr_regex_match"
 path = "fuzz_targets/sydr_regex_match.rs"
 
