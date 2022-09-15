@@ -35,19 +35,23 @@ WORKDIR /image
 RUN git checkout b35437696f4ccb39cd5250552f6cfe1734a27bcd
 
 # Copy build script.
-COPY build.sh /
+COPY build_fuzz.sh build_sydr.sh /
+
+COPY build-config/Cargo_fuzz.toml fuzz/Cargo.toml
+
+# Build fuzz targets.
+RUN ../build_fuzz.sh
+
+RUN rm -rf fuzz/target
 
 COPY sydr_script_*.rs fuzz/fuzzers/
 
-COPY build-config/Cargo.toml fuzz
+COPY build-config/Cargo_sydr.toml fuzz/Cargo.toml
 
-# Build fuzz targets.
-RUN ../build.sh
+WORKDIR fuzz
 
-#Update libfuzzer.
-RUN  scrpit=$(find /root/.cargo/registry/src/ -name update-libfuzzer.sh) && $scrpit 3c7960cba19ed926b8e86b4c619e81c0f7da4d15
-
-RUN ../build.sh
+# Build sydr targets.
+RUN /build_sydr.sh
 
 # Prepare corporas.
 RUN mkdir /corpus_bmp && find /image -name '*.bmp' -exec cp {} /corpus_bmp \; && \

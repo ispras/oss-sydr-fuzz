@@ -25,6 +25,9 @@ RUN rustup install nightly
 # Install cargo-fuzz
 RUN cargo install cargo-fuzz
 
+# Copy build script.
+COPY build_fuzz.sh build_sydr.sh /
+
 # Clone target from GitHub.
 RUN git clone https://github.com/m4b/goblin.git
 
@@ -33,15 +36,23 @@ WORKDIR /goblin
 # Checkout specified commit. It could be updated later.
 RUN git checkout 59ec2f3c57c53aa828b6a4cb4730d1efe3e43a05
 
-# Copy build script.
-COPY build.sh /
+COPY build-config/Cargo_fuzz.toml fuzz/Cargo.toml
+
+# Build fuzz targets.
+RUN ../build_fuzz.sh
+
+RUN rm -rf fuzz/target
+
+COPY build-config/Cargo_sydr.toml fuzz/Cargo.toml
 
 COPY sydr_*.rs fuzz/fuzz_targets/
 
-COPY build-config/Cargo.toml fuzz
+WORKDIR fuzz
 
-# Build fuzz targets.
-RUN ../build.sh
+# Build sydr targets.
+RUN /build_sydr.sh
+
+WORKDIR /
 
 #Create corpus
 RUN git clone https://github.com/JonathanSalwan/binary-samples /corpus && \
