@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-76 new bugs in
+77 new bugs in
 18 open source projects.
 
 * Cairo:
@@ -21,6 +21,7 @@
     * <https://github.com/m4b/goblin/issues/328>
     * <https://github.com/m4b/goblin/pull/329>
     * <https://github.com/m4b/goblin/pull/330>
+    * <https://github.com/m4b/goblin/pull/332>
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778> (PR: <https://github.com/image-rs/image/pull/1781>)
 * Little-CMS:
