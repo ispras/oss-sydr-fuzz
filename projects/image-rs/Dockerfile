@@ -37,8 +37,6 @@ RUN git checkout b35437696f4ccb39cd5250552f6cfe1734a27bcd
 # Copy build script.
 COPY build_fuzz.sh build_sydr.sh /
 
-COPY build-config/Cargo_fuzz.toml fuzz/Cargo.toml
-
 # Build fuzz targets.
 RUN ../build_fuzz.sh
 
@@ -46,7 +44,7 @@ RUN rm -rf fuzz/target
 
 COPY sydr_script_*.rs fuzz/fuzzers/
 
-COPY build-config/Cargo_sydr.toml fuzz/Cargo.toml
+COPY build-config/Cargo.toml fuzz/
 
 WORKDIR fuzz
 

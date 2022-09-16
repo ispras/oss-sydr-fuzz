@@ -36,14 +36,12 @@ WORKDIR /goblin
 # Checkout specified commit. It could be updated later.
 RUN git checkout 59ec2f3c57c53aa828b6a4cb4730d1efe3e43a05
 
-COPY build-config/Cargo_fuzz.toml fuzz/Cargo.toml
-
 # Build fuzz targets.
 RUN ../build_fuzz.sh
 
 RUN rm -rf fuzz/target
 
-COPY build-config/Cargo_sydr.toml fuzz/Cargo.toml
+COPY build-config/Cargo.toml fuzz/
 
 COPY sydr_*.rs fuzz/fuzz_targets/
 
