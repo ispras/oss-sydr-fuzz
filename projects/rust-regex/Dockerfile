@@ -34,13 +34,20 @@ WORKDIR /regex
 RUN git checkout 159a63c85eb77ec321301bc4c4ebfb90343edc2b
 
 # Copy build script.
-COPY build.sh /
+COPY build_fuzz.sh build_sydr.sh /
+
+# Build fuzz targets.
+RUN ../build_fuzz.sh
 
 COPY sydr_*.rs fuzz/fuzz_targets/
 
 COPY build-config/Cargo.toml fuzz
 
-# Build fuzz targets.
-RUN ../build.sh
+WORKDIR fuzz
+
+# Build sydr targets.
+RUN /build_sydr.sh
 
 COPY regexp.dict /
+
+WORKDIR /
