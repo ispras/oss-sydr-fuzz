@@ -49,10 +49,10 @@
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
-    * [rizinorg/rizin@05bbd14](https://github.com/rizinorg/rizin/commit/05bbd147caccc60162d6fba9baaaf24befa281cd) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
+    * [CVE-2022-36044](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-36044) ([rizinorg/rizin@05bbd14](https://github.com/rizinorg/rizin/commit/05bbd147caccc60162d6fba9baaaf24befa281cd), PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@e5ad689](https://github.com/rizinorg/rizin/commit/e5ad689fc9407ad6f3b53de80c7102c0b1f9d017) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@0e86b74](https://github.com/rizinorg/rizin/commit/0e86b74b1d18ca5689dec02976b43eeeac91cca0) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
-    * [rizinorg/rizin@556ca2f](https://github.com/rizinorg/rizin/commit/556ca2f9eef01ec0f4a76d1fbacfcf3a87a44810) ([radareorg/radare2@a665f7f](https://github.com/radareorg/radare2/commit/a665f7fef30325e014af979e69a16150f164c3a2), PR: <https://github.com/rizinorg/rizin/pull/2930>)
+    * [CVE-2022-36042](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-36042) ([rizinorg/rizin@556ca2f](https://github.com/rizinorg/rizin/commit/556ca2f9eef01ec0f4a76d1fbacfcf3a87a44810), [radareorg/radare2@a665f7f](https://github.com/radareorg/radare2/commit/a665f7fef30325e014af979e69a16150f164c3a2), PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@d4134cb](https://github.com/rizinorg/rizin/commit/d4134cb58c2504846320a1e4d56c9137cf95efc2) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * <https://github.com/rizinorg/rizin/issues/2935>
     * <https://github.com/rizinorg/rizin/issues/2936>
@@ -60,20 +60,20 @@
     * <https://github.com/rizinorg/rizin/issues/2953>
     * <https://github.com/rizinorg/rizin/issues/2954>
     * <https://github.com/rizinorg/rizin/issues/2955>
-    * <https://github.com/rizinorg/rizin/issues/2956>
+    * [CVE-2022-36041](https://nvd.nist.gov/vuln/detail/CVE-2022-36041) (<https://github.com/rizinorg/rizin/issues/2956>)
     * <https://github.com/rizinorg/rizin/issues/2957>
     * <https://github.com/rizinorg/rizin/issues/2958>
     * <https://github.com/rizinorg/rizin/issues/2959>
     * <https://github.com/rizinorg/rizin/issues/2960>
     * <https://github.com/rizinorg/rizin/issues/2961>
     * <https://github.com/rizinorg/rizin/issues/2962>
-    * <https://github.com/rizinorg/rizin/issues/2963>
-    * <https://github.com/rizinorg/rizin/issues/2964>
+    * [CVE-2022-36040](https://nvd.nist.gov/vuln/detail/CVE-2022-36040) (<https://github.com/rizinorg/rizin/issues/2963>)
+    * [CVE-2022-36043](https://nvd.nist.gov/vuln/detail/CVE-2022-36043) (<https://github.com/rizinorg/rizin/issues/2964>)
     * <https://github.com/rizinorg/rizin/issues/2965>
     * <https://github.com/rizinorg/rizin/issues/2966>
     * <https://github.com/rizinorg/rizin/issues/2967>
     * <https://github.com/rizinorg/rizin/issues/2968>
-    * <https://github.com/rizinorg/rizin/issues/2969>
+    * [CVE-2022-36039](https://nvd.nist.gov/vuln/detail/CVE-2022-36039) (<https://github.com/rizinorg/rizin/issues/2969>)
     * <https://github.com/rizinorg/rizin/issues/2970>
     * <https://github.com/rizinorg/rizin/issues/2971>
     * <https://github.com/rizinorg/rizin/issues/2972>
