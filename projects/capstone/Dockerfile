@@ -28,7 +28,7 @@ RUN git clone --branch next https://github.com/aquynh/capstone.git capstonenext
 
 # Checkout specified commit. It could be updated later.
 RUN cd capstonenext && \
-    git checkout 06a102f4dcc62d192dbd138d068235fd717375a7 && \
+    git checkout afb5575140dbf8405a8f6c3ec00ba1f954f668d0 && \
     cd ..
 
 # Copy build script.
@@ -36,3 +36,6 @@ COPY build.sh /
 
 # Build fuzz targets.
 RUN ./build.sh
+
+# Fix corpus by removing file with broken name.
+RUN find /corpusnext -name '*_issues*' -exec rm {} \; 
