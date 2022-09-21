@@ -1,0 +1,26 @@
+[package]
+name = "gdb-command-fuzz"
+version = "0.1.0"
+authors = ["Andrey Fedotov fedotoff@ispras.ru"]
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.gdb-command]
+path = ".."
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "sydr_from_gdb"
+path = "fuzz_targets/sydr_from_gdb.rs"
+
+[profile.release]
+debug = true
