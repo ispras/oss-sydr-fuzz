@@ -18,25 +18,18 @@
 #include "encode_png.h"
 #include "torch/script.h"
 #include "torch/torch.h"
-#include <unistd.h>
+#include "torch/types.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-  char name[] = "/tmp/torch-fuzz-XXXXXX";
-  char *dir = mktemp(name);
-  std::ofstream fp;
-  fp.open(dir, std::ios::out | std::ios::binary);
-  fp.write((char *)data, size);
-  fp.close();
 
   if (size <= 0) {
-    unlink(dir);
     return 0;
   }
 
   torch::Tensor input_data;
   try {
-    torch::load(input_data, dir);
   } catch (const c10::Error &e) {
+    torch::from_blob((void *)data, size, torch::kU8);
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
     if (err.find("PytorchStreamReader") != std::string::npos ||
@@ -44,25 +37,20 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         err.find("Expected") != std::string::npos ||
         err.find("false") != std::string::npos ||
         err.find("Unknown") != std::string::npos) {
-      unlink(dir);
       return 0;
     }
-    unlink(dir);
     abort();
   } catch (const std::runtime_error &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
-    unlink(dir);
     return 0;
   } catch (const torch::jit::ErrorReport &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
-    unlink(dir);
     return 0;
   }
 
   if (input_data.dim() != 3 || input_data.numel() <= 0) {
-    unlink(dir);
     return 0;
   }
 
@@ -78,14 +66,10 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     std::cout << "Catch exception: " << err << std::endl;
     if (err.find("The number of channels") != std::string::npos ||
         err.find("Input tensor") != std::string::npos) {
-      unlink(dir);
       return 0;
     }
-    unlink(dir);
     abort();
   }
-
-  unlink(dir);
 
   return 0;
 }
