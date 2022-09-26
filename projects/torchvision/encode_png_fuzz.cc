@@ -27,28 +27,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   }
 
   torch::Tensor input_data;
-  try {
-  } catch (const c10::Error &e) {
-    torch::from_blob((void *)data, size, torch::kU8);
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("PytorchStreamReader") != std::string::npos ||
-        err.find("Unpickler found") != std::string::npos ||
-        err.find("Expected") != std::string::npos ||
-        err.find("false") != std::string::npos ||
-        err.find("Unknown") != std::string::npos) {
-      return 0;
-    }
-    abort();
-  } catch (const std::runtime_error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    return 0;
-  } catch (const torch::jit::ErrorReport &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    return 0;
-  }
+  torch::from_blob((void *)data, size, torch::kU8);
 
   if (input_data.dim() != 3 || input_data.numel() <= 0) {
     return 0;

@@ -26,28 +26,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   }
 
   torch::Tensor input_data;
-  try {
-    torch::from_blob((void *)data, size, torch::kU8);
-  } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("PytorchStreamReader failed reading zip archive") !=
-        std::string::npos) {
-      return 0;
-    }
-    abort();
-  } catch (const std::exception &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    return 0;
-  } catch (const torch::jit::ErrorReport &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("Unknown type name") != std::string::npos) {
-      return 0;
-    }
-    abort();
-  }
+  torch::from_blob((void *)data, size, torch::kU8);
 
   if (input_data.dim() != 3 || input_data.numel() <= 0) {
     return 0;
