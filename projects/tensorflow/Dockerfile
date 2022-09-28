@@ -111,7 +111,7 @@ RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip &&
     /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
 
 # Increase timeout for forkserver spin up.
-ENV AFL_FORKSRV_INIT_TMOUT=60000
+ENV AFL_FORKSRV_INIT_TMOUT=120000
 
 # Set large bitmap size for afl-showmap operation.
 ENV AFL_MAP_SIZE=10000000
