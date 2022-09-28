@@ -18,4 +18,10 @@
 
 export OUT=/out
 export SRC=./
+export CC="clang" 
+export CFLAGS="-fsanitize=address,fuzzer-no-link -g" 
+export CXX="clang++" 
+export CXXFLAGS="-fsanitize=address,fuzzer-no-link -g"
+rm /usr/bin/x86_64-linux-gnu-gcc
+ln -s /usr/bin/clang /usr/bin/x86_64-linux-gnu-gcc
 ./Tests/oss-fuzz/build.sh
