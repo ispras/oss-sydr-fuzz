@@ -11,8 +11,15 @@ __AFL_FUZZ_INIT();
 #ifndef PLATFORM_WINDOWS
 #define STANDARD_TF_FUZZ_FUNCTION(FuzzerClass)                              \
    extern "C" int main() { \
+    __AFL_INIT(); \
     static FuzzerClass* fuzzer = new FuzzerClass();                         \
-    return fuzzer->Fuzz(0, 0);                                       \
+    uint8_t *data = __AFL_FUZZ_TESTCASE_BUF; \
+    while (__AFL_LOOP(1000)) \
+    { \
+        size_t size = __AFL_FUZZ_TESTCASE_LEN; \
+        fuzzer->Fuzz(data, size);	\
+    } \
+    return 0; \
   }
 #else
 // We don't compile this for Windows, MSVC doesn't like it as pywrap in Windows
@@ -117,18 +124,7 @@ class FuzzSession {
     // No return value from fuzzing:  Success is defined as "did not
     // crash".  The actual application results are irrelevant.    
 
-#ifdef __AFL_HAVE_MANUAL_CONTROL
-    __AFL_INIT();
-#endif
-
-    data = __AFL_FUZZ_TESTCASE_BUF;
-
-    while (__AFL_LOOP(1000))
-    {
-	size = __AFL_FUZZ_TESTCASE_LEN;
-	FuzzImpl(data, size);
-    }
-
+    FuzzImpl(data, size);
     return 0;
   }
 
