@@ -17,12 +17,8 @@
 
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-RUN apt-get update && apt-get install -y binutils-gold \
-        gnupg \
-        libgcc \
-        linux-headers \
-        make \
-        python
+RUN apt-get update && apt-get install -y make \
+        python3
 
 RUN git clone https://github.com/nodejs/node /node_sydr 
 
@@ -35,9 +31,10 @@ COPY v8_compile.cpp ./fuzz.cpp
 
 WORKDIR /
 
-COPY /node_sydr /node_cov
-COPY /node_sydr /node_libfuzzer
+RUN cp -r /node_sydr /node_cov
+RUN cp -r /node_sydr /node_libfuzzer
 
+COPY build.sh /
 RUN ./build.sh
 
-RUN mkdir /corpus && find node -name "*.js" | xargs -I {} cp {} /corpus
+RUN mkdir /corpus && find node_sydr -name "*.js" | xargs -I {} cp {} /corpus

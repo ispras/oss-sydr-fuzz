@@ -8,8 +8,8 @@
 
 // Entry point for LibFuzzer.
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
-{
-	std::string data_string( size);
+{	
+	std::string data_string(size);
 	// Initialize V8.
 	v8::V8::InitializeICUDefaultLocation(argv[0]);
 	v8::V8::InitializeExternalStartupData(argv[0]);

@@ -8,7 +8,7 @@ Node.js is an open-source, cross-platform JavaScript runtime environment.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/tinyxml2` directory:
+Unzip Sydr (`sydr.zip`) in `projects/nodejs` directory:
 
     $ unzip sydr.zip
 
