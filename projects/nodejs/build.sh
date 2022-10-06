@@ -22,7 +22,7 @@ export CXX=clang++
 # libFuzzer
 cd /node_libfuzzer
 
-CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
 CFLAGS=$CXXFLAGS
 LDFLAGS="-latomic $CXXFLAGS"
 
