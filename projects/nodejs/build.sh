@@ -22,16 +22,16 @@ export CXX=clang++
 # libFuzzer
 cd /node_libfuzzer
 
-./configure
-
 CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 CFLAGS=$CXXFLAGS
 LDFLAGS="-latomic $CXXFLAGS"
+
+./configure
 CXXFLAGS=$CXXFLAGS CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS make -j$(nproc) all
 
 ar -rcT static.a $(find . -name "*.o")
 
-$CXX $CXXFLAGS -pthread v8_compile.cpp -o /v8_compile \
+$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile \
     -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a
 
 # Sydr
@@ -42,14 +42,13 @@ CFLAGS="-g"
 CXXFLAGS="-g"
 
 ./configure
-
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS make -j$(nproc) all
 
 $CC $CFLAGS main.c -c -o main.o
 
 ar -rcT static.a $(find . -name "*.o")
 
-$CXX $CXXFLAGS -pthread v8_compile.cpp -o /v8_compile_sydr \
+$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_sydr \
     -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a
 
 # coverage
@@ -59,15 +58,14 @@ cd /node_cov
 CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
-./configure 
-
+./configure
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS  make -j$(nproc) all
 
 ar -rcT static.a $(find . -name "*.o")
 
 $CC $CFLAGS main.c -c -o main.o
 
-$CXX $CXXFLAGS -pthread v8_compile.cpp -o /v8_compile_cov \
+$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_cov \
     -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a
 
 

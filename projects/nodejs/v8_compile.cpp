@@ -9,10 +9,9 @@
 // Entry point for LibFuzzer.
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {	
-	std::string data_string(size);
 	// Initialize V8.
-	v8::V8::InitializeICUDefaultLocation(argv[0]);
-	v8::V8::InitializeExternalStartupData(argv[0]);
+	v8::V8::InitializeICUDefaultLocation("fuzz");
+	v8::V8::InitializeExternalStartupData("fuzz");
 	std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
 	v8::V8::InitializePlatform(platform.get());
 	v8::V8::Initialize();
@@ -47,10 +46,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 				goto exit;
 		}
 	}
-
-}
-
-
 // Dispose the isolate and tear down V8.
 exit:
 isolate->Dispose();
@@ -59,3 +54,5 @@ v8::V8::ShutdownPlatform();
 delete create_params.array_buffer_allocator;
 return 0;
 }
+
+
