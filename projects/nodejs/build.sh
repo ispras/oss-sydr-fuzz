@@ -41,9 +41,11 @@ cd /node_sydr
 CFLAGS="-g"
 CXXFLAGS="-g"
 
+./configure
+
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS make -j$(nproc) all
 
-$CC $CFLAGS /node/main.c -c -o main.o
+$CC $CFLAGS main.c -c -o main.o
 
 ar -rcT static.a $(find . -name "*.o")
 
@@ -57,11 +59,13 @@ cd /node_cov
 CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
+./configure 
+
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS  make -j$(nproc) all
 
 ar -rcT static.a $(find . -name "*.o")
 
-$CC $CFLAGS /node/main.c -c -o main.o
+$CC $CFLAGS main.c -c -o main.o
 
 $CXX $CXXFLAGS -pthread v8_compile.cpp -o /v8_compile_cov \
     -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a
