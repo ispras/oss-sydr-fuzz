@@ -20,7 +20,7 @@ target = "/node_sydr/v8_compile_sydr @@"
 
 [libfuzzer]
 path = "/node_libfuzzer/v8_compile"
-args = "/corpus -dict=js.dict"
+args = "/corpus -dict=/js.dict"
 
 [cov]
 target = "/node_cov/v8_compile_cov @@"

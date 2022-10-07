@@ -15,22 +15,24 @@
 # limitations under the License.
 #
 ################################################################################
+set -e
 
-export CC=clang
-export CXX=clang++
+CC=clang
+CXX=clang++
 
 # libFuzzer
 cd /node_libfuzzer
 
-CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=fuzzer-no-link,address"
 CFLAGS=$CXXFLAGS
 LDFLAGS="-latomic $CXXFLAGS"
 
 ./configure
-CXXFLAGS=$CXXFLAGS CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS make -j$(nproc) all
+CC=$CC CXX=$CXX CXXFLAGS=$CXXFLAGS CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS make -j48
 
 ar -rcT static.a $(find . -name "*.o")
 
+CXXFLAGS="-g -fsanitize=fuzzer,address"
 $CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile \
     -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a
 
@@ -40,32 +42,34 @@ cd /node_sydr
 
 CFLAGS="-g"
 CXXFLAGS="-g"
+LDFLAGS="-latomic"
 
 ./configure
-CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS make -j$(nproc) all
+CCC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS LDFLAGS=$LDFLAGS make -j48
 
 $CC $CFLAGS main.c -c -o main.o
 
 ar -rcT static.a $(find . -name "*.o")
 
 $CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_sydr \
-    -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a
+    -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a -ldl
 
 # coverage
-cd ..
-cd /node_cov
+#cd ..
+#cd /node_cov
 
-CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
-CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+#CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+#CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+#LDFLAGS="-latomic"
 
-./configure
-CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS  make -j$(nproc) all
+#./configure
+#CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS LDFLAGS=$LDFLAGS  make -j48
 
-ar -rcT static.a $(find . -name "*.o")
+#ar -rcT static.a $(find . -name "*.o")
 
-$CC $CFLAGS main.c -c -o main.o
+#$CC $CFLAGS main.c -c -o main.o
 
-$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_cov \
-    -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a
+#$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_cov \
+#   -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a -ldl
 
 

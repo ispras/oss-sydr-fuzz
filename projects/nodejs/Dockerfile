@@ -34,7 +34,7 @@ WORKDIR /
 RUN cp -r /node_sydr /node_cov
 RUN cp -r /node_sydr /node_libfuzzer
 
-COPY build.sh /
+COPY js.dict build.sh /
 RUN ./build.sh
 
 RUN mkdir /corpus && find node_sydr -name "*.js" | xargs -I {} cp {} /corpus
