@@ -20,21 +20,20 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 RUN apt-get update && apt-get install -y make \
         python3
 
-RUN git clone https://github.com/nodejs/node /node_sydr 
+RUN git clone https://github.com/nodejs/node /node_afl
 
-WORKDIR /node_sydr
+WORKDIR /node_afl
 
 RUN git checkout v16.x
 
-COPY main.c ./
-COPY v8_compile.cpp ./fuzz.cpp
+COPY v8_compile.cpp v8_compile_sydr.cpp ./
 
 WORKDIR /
 
-RUN cp -r /node_sydr /node_cov
-RUN cp -r /node_sydr /node_libfuzzer
+RUN cp -r /node_afl /node_cov
+RUN cp -r /node_afl /node_sydr
 
 COPY js.dict build.sh /
 RUN ./build.sh
 
-RUN mkdir /corpus && find node_sydr -name "*.js" | xargs -I {} cp {} /corpus
+RUN mkdir /corpus && find node_afl -type f -name "*.js" | xargs -I {} cp -r {} /corpus

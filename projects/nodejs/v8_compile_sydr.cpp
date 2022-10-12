@@ -1,6 +1,3 @@
-// Copyright 2015 the V8 project authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,11 +5,7 @@
 #include <fstream>
 #include "libplatform.h"
 #include "v8.h"
-__AFL_FUZZ_INIT();
 int main(int argc, char* argv[]) {
-  #ifdef __AFL_HAVE_MANUAL_CONTROL
-  __AFL_INIT();
-  #endif 
   // Initialize V8.
   v8::V8::InitializeICUDefaultLocation(argv[0]);
   v8::V8::InitializeExternalStartupData(argv[0]);
@@ -36,9 +29,20 @@ int main(int argc, char* argv[]) {
 
     // Enter the context for compiling and running the hello world script.
     v8::Context::Scope context_scope(context);
-    unsigned char *buffer = __AFL_FUZZ_TESTCASE_BUF;
-    while (__AFL_LOOP(10000)){
-      v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate, reinterpret_cast<const char*>(buffer)).ToLocalChecked(); 
+    {
+     std::string filename=argv[1];
+    std::ifstream is (filename);
+    if (is) {
+      is.seekg (0, is.end);
+      int length = is.tellg();
+      is.seekg (0, is.beg);
+
+      char * buffer = new char [length];
+      is.read (buffer, length);
+      buffer[length-1]='\0';
+      is.close();
+       v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate, buffer).ToLocalChecked();
+      delete[] buffer;
       v8::Local<v8::Value> result; 
       // Compile the source code.
       v8::Local<v8::Script> script; 
@@ -49,8 +53,10 @@ int main(int argc, char* argv[]) {
          script->Run(context).ToLocal(&result);
          if (result.IsEmpty())
 	     goto exit;
-      } 
-   } 
+                } 
+    }
+    
+  }
 
   // Dispose the isolate and tear down V8.
 exit:

@@ -18,9 +18,9 @@
 args = "-l debug"
 target = "/node_sydr/v8_compile_sydr @@"
 
-[libfuzzer]
-path = "/node_libfuzzer/v8_compile"
-args = "/corpus -dict=/js.dict"
+[aflplusplus]
+path = "/node_afl/v8_compile_afl"
+args = "-i /corpus -dict=/js.dict"
 
 [cov]
 target = "/node_cov/v8_compile_cov @@"

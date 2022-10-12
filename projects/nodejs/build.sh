@@ -15,61 +15,56 @@
 # limitations under the License.
 #
 ################################################################################
-set -e
+CC=afl-clang-fast
+CXX=afl-clang-fast++
 
-CC=clang
-CXX=clang++
+# afl
+cd /node_afl
 
-# libFuzzer
-cd /node_libfuzzer
-
-CXXFLAGS="-g -fsanitize=fuzzer-no-link,address"
+CXXFLAGS="-fsanitize=address,integer,bounds,null,float-divide-by-zero"
 CFLAGS=$CXXFLAGS
 LDFLAGS="-latomic $CXXFLAGS"
 
 ./configure
-CC=$CC CXX=$CXX CXXFLAGS=$CXXFLAGS CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS make -j48
+CC=$CC CXX=$CXX CXXFLAGS=$CXXFLAGS CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS make -j$(nproc)
 
 ar -rcT static.a $(find . -name "*.o")
 
-CXXFLAGS="-g -fsanitize=fuzzer,address"
-$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile \
-    -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a
+$CXX $CXXFLAGS -pthread v8_compile.cpp  -o ./v8_compile_afl -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
 
 # Sydr
 cd ..
 cd /node_sydr
 
+CC=clang
+CXX=clang++
 CFLAGS="-g"
 CXXFLAGS="-g"
 LDFLAGS="-latomic"
 
 ./configure
-CCC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS LDFLAGS=$LDFLAGS make -j48
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS LDFLAGS=$LDFLAGS make -j$(nproc)
 
-$CC $CFLAGS main.c -c -o main.o
+ar -rcT static.a $(find . -name "*.o")
+$CXX $CXXFLAGS -pthread v8_compile_sydr.cpp -o /v8_compile_sydr \
+    -I./deps/v8/include -I./deps/v8/include/libplatform  ./static.a -ldl
+# coverage
+cd ..
+cd /node_cov
+
+CC=clang
+CXX=clang++
+CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+LDFLAGS="-latomic $CXXFLAGS"
+
+./configure
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS LDFLAGS=$LDFLAGS  make -j$(nproc)
+
 
 ar -rcT static.a $(find . -name "*.o")
 
-$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_sydr \
-    -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a -ldl
-
-# coverage
-#cd ..
-#cd /node_cov
-
-#CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
-#CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
-#LDFLAGS="-latomic"
-
-#./configure
-#CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS LDFLAGS=$LDFLAGS  make -j48
-
-#ar -rcT static.a $(find . -name "*.o")
-
-#$CC $CFLAGS main.c -c -o main.o
-
-#$CXX $CXXFLAGS -pthread fuzz.cpp -o /v8_compile_cov \
-#   -I./deps/v8/include -I./deps/v8/include/libplatform main.o ./static.a -ldl
+$CXX $CXXFLAGS -pthread v8_compile_sydr.cpp -o /v8_compile_cov \
+   -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
 
 
