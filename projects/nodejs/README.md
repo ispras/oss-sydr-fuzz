@@ -22,11 +22,11 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run
+    # sydr-fuzz -C sydr_fuzz_afl++.toml run 
 
 Minimize corpus:
 
-    # sydr-fuzz cmin
+    # sydr-fuzz -C sydr_fuzz_afl++.toml cmin
 
 Collect coverage:
 
