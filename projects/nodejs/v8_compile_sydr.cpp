@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
         is.seekg(0, is.beg);
         char *buffer = new char[length+1];
         is.read(buffer, length);
-        buffer[length - 1] = '\0';
+        buffer[length] = '\0';
         is.close();
         v8::Local<v8::String> source =
             v8::String::NewFromUtf8(isolate, buffer).ToLocalChecked();
