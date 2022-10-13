@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     v8::Local<v8::Context> context = v8::Context::New(isolate);
     // Enter the context for compiling and running the hello world script.
     v8::Context::Scope context_scope(context);
+    unsigned char *buffer = __AFL_FUZZ_TESTCASE_BUF;
     while (__AFL_LOOP(10000)) {
       unsigned int len = __AFL_FUZZ_TESTCASE_LEN;
       const char *buf = calloc(len + 1, sizeof(char));
