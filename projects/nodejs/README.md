@@ -22,17 +22,17 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c sydr-fuzz-afl++.toml run
+    # sydr-fuzz -c v8_compile-afl++.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c sydr-fuzz-afl++.toml cmin
+    # sydr-fuzz -c v8_compile-afl++.toml cmin
 
 Collect coverage:
 
-    # sydr-fuzz -c sydr-fuzz-afl++.toml cov-export -- -format=lcov > nodejs.lcov
+    # sydr-fuzz -c v8_compile-afl++.toml cov-export -- -format=lcov > nodejs.lcov
     # genhtml -o nodejs nodejs.lcov
 
 Check security predicates:
 
-    # sydr-fuzz security
+    # sydr-fuzz -c v8_compile-afl++.toml security

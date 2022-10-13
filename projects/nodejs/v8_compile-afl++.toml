@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/v8_compile_sydr @@"
 
 [aflplusplus]
-path = "/v8_compile_afl"
+target = "/v8_compile_afl"
 args = "-i /corpus -dict=/js.dict"
 
 [cov]
