@@ -27,7 +27,7 @@ export LDFLAGS="-latomic $CXXFLAGS"
 ./configure
 make -j$(nproc)
 ar -rcT static.a $(find . -name "*.o")
-$CXX $CXXFLAGS -pthread v8_compile.cpp  -o ./v8_compile_afl -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
+$CXX $CXXFLAGS -pthread v8_compile.cpp -o /v8_compile_afl -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
 
 # Sydr
 cd ..
@@ -58,5 +58,3 @@ make -j$(nproc)
 ar -rcT static.a $(find . -name "*.o")
 $CXX $CXXFLAGS -pthread v8_compile_sydr.cpp -o /v8_compile_cov \
    -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
-
-

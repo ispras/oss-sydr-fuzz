@@ -16,11 +16,11 @@
 
 [sydr]
 args = "-l debug"
-target = "/node_sydr/v8_compile_sydr @@"
+target = "/v8_compile_sydr @@"
 
 [aflplusplus]
-path = "/node_afl/v8_compile_afl"
+path = "/v8_compile_afl"
 args = "-i /corpus -dict=/js.dict"
 
 [cov]
-target = "/node_cov/v8_compile_cov @@"
+target = "/v8_compile_cov @@"
