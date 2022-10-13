@@ -30,7 +30,7 @@ Minimize corpus:
 
 Collect coverage:
 
-    # sydr-fuzz cov-export -- -format=lcov > nodejs.lcov
+    # sydr-fuzz -C sydr_fuzz_afl++.toml cov-export -- -format=lcov > nodejs.lcov
     # genhtml -o nodejs nodejs.lcov
 
 Check security predicates:
