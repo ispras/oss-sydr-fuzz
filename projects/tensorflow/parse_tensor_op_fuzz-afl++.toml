@@ -22,7 +22,6 @@ target = "/sydr/parse_tensor_op_fuzz @@"
 
 [aflplusplus]
 rss_limit_mb = 8192
-ubsan_crash = true
 target = "/afl/parse_tensor_op_fuzz"
 args = "-t 60000 -i /corpus/parse_tensor_op"
 
