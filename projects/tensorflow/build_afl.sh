@@ -92,6 +92,9 @@ for bazel_target in ${FUZZERS}; do
   cp ${bazel_location} /afl/$fuzz_name
 done
 
+rm -f bazel-*
+rm -rf /root/.cache/bazel/_bazel_root
+
 export LDFLAGS="-g -fsanitize=address,undefined -fno-sanitize=vptr"
 export CFLAGS="-g -fsanitize=address,undefined -fno-sanitize=vptr"
 export CXXFLAGS="-g -fsanitize=address,undefined -fno-sanitize=vptr"
@@ -172,3 +175,4 @@ done
 
 # Finally, make sure we don't accidentally run with stuff from the bazel cache.
 rm -f bazel-*
+rm -rf /root/.cache/bazel/_bazel_root

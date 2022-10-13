@@ -89,6 +89,9 @@ for bazel_target in ${FUZZERS}; do
   cp ${bazel_location} /sydr/$fuzz_name
 done
 
+rm -f bazel-*
+rm -rf /root/.cache/bazel/_bazel_root
+
 echo "  write_to_bazelrc('import %workspace%/tools/bazel.rc')" >> configure.py
 yes "" | ./configure
 
@@ -149,3 +152,4 @@ done
 
 # Finally, make sure we don't accidentally run with stuff from the bazel cache.
 rm -f bazel-*
+rm -rf /root/.cache/bazel/_bazel_root
