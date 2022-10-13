@@ -20,7 +20,7 @@ target = "/v8_compile_sydr @@"
 
 [aflplusplus]
 target = "/v8_compile_afl"
-args = "-i /corpus -x /js.dict"
+args = "-t 60000 -i /corpus -x /js.dict"
 
 [cov]
 target = "/v8_compile_cov @@"
