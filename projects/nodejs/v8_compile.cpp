@@ -33,16 +33,17 @@ int main(int argc, char *argv[]) {
     v8::Local<v8::Context> context = v8::Context::New(isolate);
     // Enter the context for compiling and running the hello world script.
     v8::Context::Scope context_scope(context);
-    unsigned char *buffer = __AFL_FUZZ_TESTCASE_BUF;
     while (__AFL_LOOP(10000)) {
+      unsigned int len = __AFL_FUZZ_TESTCASE_LEN;
+      const char *buf = calloc(len + 1, sizeof(char));
+      memcpy(buf, buffer, len);
       v8::Local<v8::String> source =
-          v8::String::NewFromUtf8(isolate,
-                                  reinterpret_cast<const char *>(buffer))
-              .ToLocalChecked();
+          v8::String::NewFromUtf8(isolate, buf).ToLocalChecked();
       v8::Local<v8::Value> result;
       // Compile the source code.
       v8::Local<v8::Script> script;
       v8::Script::Compile(context, source).ToLocal(&script);
+      free(buf);
       if (script.IsEmpty())
         goto exit;
       else {

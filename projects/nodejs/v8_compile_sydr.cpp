@@ -28,12 +28,12 @@ int main(int argc, char *argv[]) {
     v8::Context::Scope context_scope(context);
     {
       std::string filename = argv[1];
-      std::ifstream is(filename);
+      std::ifstream is(filename, std::ios::binary);
       if (is) {
         is.seekg(0, is.end);
         int length = is.tellg();
         is.seekg(0, is.beg);
-        char *buffer = new char[length];
+        char *buffer = new char[length+1];
         is.read(buffer, length);
         buffer[length - 1] = '\0';
         is.close();
