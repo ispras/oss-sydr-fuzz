@@ -8,7 +8,7 @@ Libpcap provides a portable framework for low-level network monitoring.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/nodejs` directory:
+Unzip Sydr (`sydr.zip`) in `projects/libpcap` directory:
 
     $ unzip sydr.zip
 
