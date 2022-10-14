@@ -44,18 +44,14 @@ cmake -DCMAKE_CXX_COMPILER=afl-clang-fast++ \
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . --target OpenXLSX --config Release
 
 CXX="afl-clang-fast++"
-CXXFLAGS="-g -fsanitize=address,undefined"
+CXXFLAGS="-g -fsanitize=fuzzer,address,undefined"
 
 # Building Document fuzztarget
 $CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
     -I/openxlsx/OpenXLSX/external/zippy -I/openxlsx/OpenXLSX/external/nowide \
     -c /fuzzer.cc -o fuzzer.o
 
-$CXX $CXXFLAGS -std=c++17 -I/openxlsx/OpenXLSX -I./OpenXLSX \
-    -I/openxlsx/OpenXLSX/external/zippy -I/openxlsx/OpenXLSX/external/nowide \
-    -c /afl.cc -o afl.o
-
-$CXX $CXXFLAGS ./afl.o ./fuzzer.o ./output/libOpenXLSX.a -o /afl
+$CXX $CXXFLAGS ./fuzzer.o ./output/libOpenXLSX.a -o /afl
 
 
 # Build targets for Sydr
