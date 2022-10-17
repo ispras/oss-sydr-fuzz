@@ -29,7 +29,6 @@ RUN git checkout 3eb9c748e3ecd865203fb9946ea86d3c02b3f7d9
 # Copy build script and targets.
 COPY build.sh \
      fuzzer.cc \
-     afl.cc \
      sydr.cc \
      xlst.dict \
      /
