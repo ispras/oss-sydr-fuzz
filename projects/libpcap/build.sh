@@ -18,7 +18,7 @@ make -j`nproc`
 
 for target in pcap filter
 do
-        $CC $TARGET_CFLAGS -I ../ ../$FUZZ_TARGETS_DIR/fuzz_$target.c libpcap.a -o fuzz_$target 
+        $CC $TARGET_CFLAGS -I ../ ../$FUZZ_TARGETS_DIR/fuzz_$target.c libpcap.a -o fuzz_$target
 done
 
 make clean
@@ -38,7 +38,7 @@ make -j`nproc`
 
 for target in pcap filter
 do
-        $CC $TARGET_CFLAGS -I ../ ../$FUZZ_TARGETS_DIR/fuzz_$target.c libpcap.a -o fuzz_$target 
+        $CC $TARGET_CFLAGS -I ../ ../$FUZZ_TARGETS_DIR/fuzz_$target.c libpcap.a -o fuzz_$target
 done
 
 make clean
@@ -59,7 +59,7 @@ make -j`nproc`
 
 for target in pcap filter
 do
-        $CC $CFLAGS -I ../ ../load_sydr_$target.c libpcap.a -o load_sydr_$target 
+        $CC $CFLAGS -I ../ ../load_sydr_$target.c libpcap.a -o load_sydr_$target
 done
 
 make clean
@@ -80,7 +80,7 @@ make -j`nproc`
 
 for target in pcap filter
 do
-        $CC $CFLAGS -I ../ ../load_sydr_$target.c libpcap.a -o load_cover_$target 
+        $CC $CFLAGS -I /libpcap /libpcap/load_sydr_$target.c libpcap.a -o load_cover_$target
 done
 
 cd /libpcap
