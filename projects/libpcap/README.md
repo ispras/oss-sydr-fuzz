@@ -22,21 +22,26 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing with libfuzzer:
 
-    # sydr-fuzz -c sydr-fuzz-filter.toml run
+    # sydr-fuzz -c filter.toml run
 
 Run hybrid fuzzing with afl++:
 
-    # sydr-fuzz -c sydr-fuzz-filter-afl++.toml run
+    # sydr-fuzz -c filter-afl++.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c sydr-fuzz-filter.toml cmin
+    # sydr-fuzz -c filter.toml cmin
 
 Collect coverage:
 
-    # sydr-fuzz -c sydr-fuzz-filter.toml cov-export -- -format=lcov > libpcap.lcov
-    # genhtml -o libpcap libpcap.lcov
+    # sydr-fuzz -c filter.toml cov-export -- -format=lcov > filter.lcov
+    # genhtml -o filter-html filter.lcov
 
 Check security predicates:
 
-    # sydr-fuzz -c sydr-fuzz-filter.toml security
+    # sydr-fuzz -c filter.toml security
+
+Supported fuzz targets:
+
+    * filter
+    * pcap
