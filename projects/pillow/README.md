@@ -37,6 +37,10 @@ Minimize corpus:
 
     # sydr-fuzz -c pillow.toml cmin
 
+Get HTML coverage report:
+
+    # sydr-fuzz -c pillow.toml pycov html
+
 ### font
 
 Run fuzzing:
@@ -46,3 +50,7 @@ Run fuzzing:
 Minimize corpus:
 
     # sydr-fuzz -c font.toml cmin
+
+Get HTML coverage report:
+
+    # sydr-fuzz -c font.toml pycov html
