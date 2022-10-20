@@ -56,6 +56,6 @@ int main(int argc, char** argv)
                 ndpi_dpi2json(ndpi_info_mod, ndpi_flow, guessed_protocol, &csv_serializer);
         }
         ndpi_free_flow(ndpi_flow);
-
+        free(buffer);
         return 0;
 }

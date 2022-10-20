@@ -8,7 +8,7 @@ Open Source Deep Packet Inspection Software Toolkit
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/nDPI` directory:
+Unzip Sydr (`sydr.zip`) in `projects/ndpi` directory:
 
     $ unzip sydr.zip
 
@@ -39,4 +39,4 @@ Collect coverage:
 
 Check security predicates:
 
-    # sydr-fuzz -c process-packet.toml security
+    # sydr-fuzz -c sydr-fuzz-process-packet.toml security

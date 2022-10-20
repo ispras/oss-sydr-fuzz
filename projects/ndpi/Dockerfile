@@ -18,10 +18,16 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt install build-essential git gettext \
                       flex bison libtool autoconf automake pkg-config \
-                      libpcap-dev libjson-c-dev libnuma-dev libpcre2-dev \
+                      libnuma-dev libpcre2-dev \
 		      libmaxminddb-dev librrd-dev -y
 
+RUN git config --global http.proxy http://172.17.122.132:8080
+
+RUN git config --global http.sslVerify false
+
 RUN git clone https://github.com/ntop/nDPI.git
+RUN git clone --depth 1 https://github.com/json-c/json-c.git json-c
+ADD https://www.tcpdump.org/release/libpcap-1.9.1.tar.gz libpcap-1.9.1.tar.gz
 
 RUN mkdir corpus && mv nDPI/tests/pcap/* corpus
 
