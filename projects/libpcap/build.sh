@@ -28,6 +28,7 @@ cd /libpcap
 echo "Build targets for afl++."
 
 CC="afl-clang-fast"
+export AFL_LLVM_LAF_ALL=1
 CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
