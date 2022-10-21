@@ -32,31 +32,11 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   try {
     torch::Tensor out_tensor = vision::image::decode_jpeg(
         input_data, mode /* ImageReadMode */ );
-  } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("data precision") != std::string::npos ||
-        err.find("Unsupported marker type") != std::string::npos ||
-        err.find("Bogus") != std::string::npos ||
-        err.find("Invalid") != std::string::npos ||
-        err.find("Image is incomplete or truncated") != std::string::npos ||
-        err.find("Unsupported JPEG process") != std::string::npos ||
-        err.find("Didn't expect more than one scan") != std::string::npos ||
-        err.find("Not a JPEG file") != std::string::npos ||
-        err.find("JPEG datastream contains no image") != std::string::npos ||
-        err.find("Quantization table") != std::string::npos ||
-        err.find("Empty JPEG image") != std::string::npos ||
-        err.find("Huffman") != std::string::npos ||
-        err.find("Fractional sampling") != std::string::npos ||
-        err.find("Maximum supported image dimension") != std::string::npos ||
-        err.find("Sampling factors") != std::string::npos ||
-        err.find("The provided mode is not supported") != std::string::npos ||
-        err.find("Unsupported color conversion request") != std::string::npos ||
-        err.find("Corrupt JPEG data") != std::string::npos ||
-        err.find("unknown JFIF revision") != std::string::npos) {
-      return 0;
-    }
-    abort();
+  } catch (const std::runtime_error &e) {
+    return 0;
+  }
+  catch (const c10::Error &e) {
+    return 0;
   }
 
   return 0;

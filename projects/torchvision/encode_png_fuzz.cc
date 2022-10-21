@@ -37,18 +37,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   try {
     torch::load(input_data, dir);
   } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("PytorchStreamReader") != std::string::npos ||
-        err.find("Unpickler found") != std::string::npos ||
-        err.find("Expected") != std::string::npos ||
-        err.find("false") != std::string::npos ||
-        err.find("Unknown") != std::string::npos) {
-      unlink(dir);
-      return 0;
-    }
     unlink(dir);
-    abort();
+    return 0;
   } catch (const std::runtime_error &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
@@ -74,15 +64,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     torch::Tensor out_tensor = vision::image::encode_png(
         input_data, 6 /* compression level */ );
   } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("The number of channels") != std::string::npos ||
-        err.find("Input tensor") != std::string::npos) {
-      unlink(dir);
-      return 0;
-    }
     unlink(dir);
-    abort();
+    return 0;
   }
 
   unlink(dir);

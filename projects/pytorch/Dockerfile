@@ -34,6 +34,7 @@ COPY build_*.sh \
      *_fuzz.cc \
      *_sydr.cc \
      *.toml \
+     patch_exceptions.sh \
      /
 
 # Apply PyTorch fixes.
@@ -45,6 +46,10 @@ RUN cp miniz.* /pytorch_fuzz/third_party/miniz-2.0.8/.
 # Copy for different targets.
 RUN cp -r /pytorch_fuzz/ /pytorch_sydr/
 RUN cp -r /pytorch_fuzz/ /pytorch_cov/
+
+# Patch exceptions throwing to avoid unwanted crashes.
+RUN bash patch_exceptions.sh
+WORKDIR /
 
 # Build fuzz targets.
 RUN bash build_fuzz.sh
