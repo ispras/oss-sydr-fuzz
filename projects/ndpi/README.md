@@ -39,7 +39,7 @@ Collect coverage:
 
 Check security predicates:
 
-    # sydr-fuzz -c sydr-fuzz-process-packet.toml security
+    # sydr-fuzz -c process-packet.toml security
 
 ## Supported Targets
 
