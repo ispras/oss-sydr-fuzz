@@ -11,8 +11,8 @@ echo "Build targets for libfuzzer."
 export CC="clang"
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
-INCLUDE_DIR="../src/include"
-LIB_DIR="../src/lib/"
+INCLUDE_DIR="/nDPI/src/include"
+LIB_DIR="/nDPI/src/lib/"
 
 cd libpcap-1.9.1
 
@@ -77,6 +77,7 @@ cd /
 echo "Build targets for sydr."
 
 export CC="clang"
+export CFLAGS="-g"
 
 cd libpcap-1.9.1
 make clean
@@ -129,7 +130,7 @@ make -j`nproc`
 
 mkdir cover && cd cover
 
-$CC $CFLAGS -I $INCLUDE_DIR -I ../example ../load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a -lm -o load_cover_ndpi_reader
-$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_process_packet.c $LIB_DIR/libndpi.a -lm -o load_cover_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a -lm -o load_cover_ndpi_reader
+$CC $CFLAGS -I $INCLUDE_DIR /nDPI/load_sydr_process_packet.c $LIB_DIR/libndpi.a -lm -o load_cover_process_packet
 
 cd /nDPI
