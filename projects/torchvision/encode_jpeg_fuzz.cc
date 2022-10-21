@@ -36,29 +36,16 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   try {
     torch::load(input_data, dir);
   } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("PytorchStreamReader failed reading zip archive") !=
-        std::string::npos) {
-      unlink(dir);
-      return 0;
-    }
     unlink(dir);
-    abort();
+    return 0;
   } catch (const std::exception &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
     unlink(dir);
     return 0;
   } catch (const torch::jit::ErrorReport &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("Unknown type name") != std::string::npos) {
-      unlink(dir);
-      return 0;
-    }
     unlink(dir);
-    abort();
+    return 0;
   }
 
   if (input_data.dim() != 3 || input_data.numel() <= 0) {
@@ -70,16 +57,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     torch::Tensor out_tensor = vision::image::encode_jpeg(
         input_data, 100 /* quality level: 0-100 */ );
   } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("The number of channels should be") != std::string::npos ||
-        err.find("setStorage") != std::string::npos ||
-        err.find("expected") != std::string::npos) {
-      unlink(dir);
-      return 0;
-    }
     unlink(dir);
-    abort();
+    return 0;
   }
 
   unlink(dir);

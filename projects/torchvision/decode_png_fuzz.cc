@@ -34,16 +34,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     torch::Tensor out_tensor = vision::image::decode_png(
         input_data, mode /* ImageReadMode */ );
   } catch (const c10::Error &e) {
-    std::string err = e.what();
-    std::cout << "Catch exception: " << err << std::endl;
-    if (err.find("Content is not png!") != std::string::npos ||
-        err.find("Internal error") != std::string::npos ||
-        err.find("At most 8-bit PNG images are supported currently") !=
-            std::string::npos ||
-        err.find("Out of bound read") != std::string::npos) {
-      return 0;
-    }
-    abort();
+    return 0;
   }
 
   return 0;
