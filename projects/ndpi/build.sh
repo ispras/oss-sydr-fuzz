@@ -28,13 +28,13 @@ make install
 
 cd /nDPI
 
-./autogen.sh 
+./autogen.sh
 make -j`nproc`
 
 mkdir libfuzzer && cd libfuzzer
 
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a -ondpi-reader.toml fuzz_ndpi_reader
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a -o fuzz_process_packet
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
 
 cd /nDPI
 make clean
@@ -66,8 +66,8 @@ make -j`nproc`
 
 mkdir afl && cd afl
 
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a -o fuzz_ndpi_reader
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a -o fuzz_process_packet
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/afl/libjson-c.a -o fuzz_ndpi_reader
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/afl/libjson-c.a -o fuzz_process_packet
 
 cd /nDPI
 make clean
@@ -98,8 +98,8 @@ make -j`nproc`
 
 mkdir sydr && cd sydr
 
-$CC $CFLAGS -I $INCLUDE_DIR -I ../example ../load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a -lm -o load_sydr_ndpi_reader
-$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_process_packet.c $LIB_DIR/libndpi.a -lm -o load_sydr_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR -I ../example ../load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader
+$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_process_packet
 
 cd /nDPI
 make clean
@@ -125,12 +125,12 @@ make install
 
 cd /nDPI
 
-./autogen.sh 
+./autogen.sh
 make -j`nproc`
 
 mkdir cover && cd cover
 
-$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a -lm -o load_cover_ndpi_reader
-$CC $CFLAGS -I $INCLUDE_DIR /nDPI/load_sydr_process_packet.c $LIB_DIR/libndpi.a -lm -o load_cover_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader
+$CC $CFLAGS -I $INCLUDE_DIR /nDPI/load_sydr_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_process_packet
 
 cd /nDPI
