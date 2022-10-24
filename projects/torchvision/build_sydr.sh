@@ -176,7 +176,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-sydr/./.libs/libpng16.a \
-	/zlib-1.2.12-sydr/./libz.a \
+	/zlib_sydr/libz.a \
 	-o /decode_png_sydr
 
 # Build encode_jpeg_sydr target
@@ -264,5 +264,5 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-sydr/./.libs/libpng16.a \
-	/zlib-1.2.12-sydr/./libz.a \
+	/zlib_sydr/libz.a \
 	-o /encode_png_sydr
