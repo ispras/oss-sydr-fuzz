@@ -67,9 +67,9 @@ cd build/
 make -j$(nproc)
 
 cd /
-unzip zlib1212.zip
-mv zlib-1.2.12/ zlib-1.2.12-sydr/
-cd zlib-1.2.12-sydr/
+git clone https://github.com/madler/zlib.git zlib_sydr
+cd zlib_sydr
+git checkout v1.2.13
 CC=clang CXX=clang++ \
 	CFLAGS="-g" CXXFLAGS="-g" \
 	./configure
