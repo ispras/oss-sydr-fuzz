@@ -71,10 +71,9 @@ make -j$(nproc)
 
 # Build zlib
 cd /
-wget https://zlib.net/zlib1212.zip
-unzip zlib1212.zip
-mv zlib-1.2.12/ zlib-1.2.12-fuzz/
-cd zlib-1.2.12-fuzz/
+git clone https://github.com/madler/zlib.git zlib_fuzz
+cd zlib_fuzz
+git checkout v1.2.13
 CC=clang CXX=clang++ \
 	CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
 	CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
