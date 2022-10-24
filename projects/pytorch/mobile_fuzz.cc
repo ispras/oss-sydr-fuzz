@@ -46,13 +46,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     } catch(const std::runtime_error &e) {
         unlink(dir);
         return 0;
-    } catch(const std::out_of_range &e) {
-        std::string err = e.what();
-        unlink(dir);
-        if (err.find("Argument passed to at() was not in the map.") != std::string::npos) {
-            return 0;
-        }
-        abort();
     }
 
     unlink(dir);

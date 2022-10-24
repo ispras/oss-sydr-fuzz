@@ -34,7 +34,7 @@ RUN git clone https://github.com/m4b/goblin.git
 WORKDIR /goblin
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 761ffd8bbcc20960c2141507be503f176ade0932
+RUN git checkout d035559b991e631eae7aa91d89cde5e5e03e9cc6
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
