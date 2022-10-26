@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-80 new bugs in
+81 new bugs in
 18 open source projects.
 
 * Cairo:
@@ -83,6 +83,7 @@
     * <https://github.com/rizinorg/rizin/issues/2974>
     * <https://github.com/rizinorg/rizin/issues/3031>
     * <https://github.com/rizinorg/rizin/issues/3032>
+    * <https://github.com/rizinorg/rizin/issues/3128>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
