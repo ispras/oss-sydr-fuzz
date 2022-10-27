@@ -1,5 +1,4 @@
-# Copyright 2017 Google Inc.
-# Modifications copyright (C) 2022 ISP RAS
+# Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,28 +13,14 @@
 # limitations under the License.
 #
 ################################################################################
+[sydr]
+args = "-l debug -j2 --sym-stdin"
+target = "/load_url_sydr"
+jobs = 2
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+[libfuzzer]
+path = "/load_url_fuzzer"
+args = "-rss_limit_mb=8192 -timeout=30 -jobs=1000 -workers=4 /url_corpus"
 
-RUN apt-get update && apt-get install -y make \
-        python3
-
-RUN git clone https://github.com/nodejs/node /node_afl
-
-WORKDIR /node_afl
-
-RUN git checkout v16.x
-
-COPY v8_compile.cpp v8_compile_sydr.cpp ./
-
-WORKDIR /
-
-RUN cp -r /node_afl /node_cov
-RUN cp -r /node_afl /node_sydr
-RUN cp -r /node_afl /node_libfuzzer
-
-COPY js.dict build.sh build_url_corpus.sh sydr_main.cc /
-RUN ./build.sh
-RUN ./build_url_corpus.sh
-
-RUN mkdir /corpus && find node_afl -type f -name "*.js" | xargs -I {} cp -r {} /corpus
+[cov]
+target = "/load_url_cov @@"
