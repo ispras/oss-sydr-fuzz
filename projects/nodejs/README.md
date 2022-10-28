@@ -39,13 +39,13 @@ Check security predicates:
 
 ## Alternative Fuzz Targets
 
-nodejs projects has 2 alternative fuzz targets.
+Nodejs projects has 2 alternative fuzz targets.
 
-# fuzz\_env
+### fuzz\_env
 
     # sydr-fuzz -c env-sydr-fuzz.toml  run
 
-# fuzz\_url
+### fuzz\_url
 
     # sydr-fuzz -c url-sydr-fuzz.toml run
 
