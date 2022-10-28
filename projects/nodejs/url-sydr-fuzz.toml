@@ -14,8 +14,8 @@
 #
 ################################################################################
 [sydr]
-args = "-l debug -j2 --sym-stdin"
-target = "/load_url_sydr"
+args = "-l debug -j2"
+target = "/load_url_sydr @@"
 jobs = 2
 
 [libfuzzer]

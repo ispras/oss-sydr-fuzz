@@ -14,12 +14,12 @@
 #
 ################################################################################
 [sydr]
-args = "-l debug -j2 --sym-stdin"
-target = "/load_url_sydr"
+args = "-l debug -j2"
+target = "/load_url_sydr @@"
 jobs = 2
 
 [aflplusplus]
-target = "/load_url_afl"
+target = "/load_url_afl @@"
 args = "-t 60000 -i /url_corpus -x /js.dict"
 
 [cov]
