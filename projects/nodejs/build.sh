@@ -39,7 +39,7 @@ cd /node_afl
 
 export CC=afl-clang-fast
 export CXX=afl-clang-fast++
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,undefined,bounds,null,float-divide-by-zero"
 export CFLAGS=$CXXFLAGS
 export LDFLAGS="-latomic $CXXFLAGS"
 
@@ -49,7 +49,7 @@ ar -rcT static.a $(find . -name "*.o")
 
 $CXX $CXXFLAGS -pthread v8_compile.cpp -o /v8_compile_afl -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
 
-export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,undefined,bounds,null,float-divide-by-zero"
 $CXX $CXXFLAGS -pthread test/fuzzers/fuzz_env.cc -o /load_env_afl -DNODE_WANT_INTERNALS \
     -I./deps/v8/include -I./src/ -I./test/fuzzers/ -I./deps/uv/include/ static.a -ldl -latomic -fno-rtti
 $CXX $CXXFLAGS -pthread test/fuzzers/fuzz_url.cc -o /load_url_afl -DNODE_WANT_INTERNALS \
