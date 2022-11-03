@@ -32,3 +32,35 @@ CFLAGS="-g"
 $CC $CFLAGS /cjson/fuzzing/cjson_read_sydr.c -I. \
     -o /cjson_read_sydr \
     /cjson/build/libcjson.a
+
+cd ..
+rm -rf build
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS=OFF -DENABLE_CJSON_TEST=OFF \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_C_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+    ..
+make -j$(nproc)
+
+CC=clang
+CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+$CC $CFLAGS /cjson/fuzzing/cjson_read_sydr.c -I. \
+    -o /cjson_read_cov \
+    /cjson/build/libcjson.a
+
+cd ..
+rm -rf build
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS=OFF -DENABLE_CJSON_TEST=OFF \
+    -DCMAKE_C_COMPILER=afl-clang-fast \
+    -DCMAKE_C_FLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
+    ..
+make -j$(nproc)
+
+CC=afl-clang-fast
+CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+$CC $CFLAGS /cjson/fuzzing/cjson_read_fuzzer.c -I. \
+    -o /cjson_read_afl_fuzzer \
+    /cjson/build/libcjson.a

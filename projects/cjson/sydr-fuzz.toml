@@ -22,3 +22,10 @@ jobs = 2
 [libfuzzer]
 path = "/cjson_read_fuzzer"
 args = "-dict=/cjson/fuzzing/json.dict /corpus"
+
+[aflplusplus]
+target = "/cjson_read_afl_fuzzer"
+args = "-t 10000 -i /corpus -x /cjson/fuzzing/json.dict"
+
+[cov]
+target = "/cjson_read_cov @@"
