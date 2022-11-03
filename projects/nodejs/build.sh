@@ -20,8 +20,8 @@ cd /node_afl
 
 export CC=afl-clang-fast
 export CXX=afl-clang-fast++
-export CXXFLAGS="-fsanitize=address,integer,bounds,null,float-divide-by-zero"
-export CFLAGS=$CXXFLAGS
+export CXXFLAGS="-g -std=c++17 -fsanitize=address,integer,bounds,null,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
 export LDFLAGS="-latomic $CXXFLAGS"
 
 ./configure
@@ -36,7 +36,7 @@ cd /node_sydr
 export CC=clang
 export CXX=clang++
 export CFLAGS="-g"
-export CXXFLAGS="-g"
+export CXXFLAGS="-g -std=c++17"
 export LDFLAGS="-latomic"
 
 ./configure
@@ -49,8 +49,10 @@ $CXX $CXXFLAGS -pthread v8_compile_sydr.cpp -o /v8_compile_sydr \
 cd ..
 cd /node_cov
 
+export CC=clang
+export CXX=clang++
 export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-g -std=c++17 -fprofile-instr-generate -fcoverage-mapping"
 export LDFLAGS="-latomic $CXXFLAGS"
 
 ./configure
