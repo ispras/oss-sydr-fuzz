@@ -58,7 +58,6 @@ int main(int argc, char *argv[]) {
 exit:
   isolate->Dispose();
   v8::V8::Dispose();
-  v8::V8::ShutdownPlatform();
   delete create_params.array_buffer_allocator;
   return 0;
 }

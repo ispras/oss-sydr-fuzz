@@ -19,7 +19,7 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt-get install -y make cmake flex bison
 
-RUN git clone https://github.com/SweetVishnya/libpcap.git libpcap
+RUN git clone https://github.com/the-tcpdump-group/libpcap.git libpcap
 
 RUN git clone --depth=1 https://github.com/the-tcpdump-group/tcpdump.git tcpdump
 
@@ -27,7 +27,7 @@ RUN mkdir corpus && mv tcpdump/tests/*.pcap corpus/
 
 WORKDIR libpcap
 
-RUN git checkout 38185c896b55613294064cf2b2b282e376749730
+RUN git checkout 53e957753e67ea6c559f200bf64eb4039e888c48
 
 COPY build.sh load_sydr_filter.c load_sydr_pcap.c ./
 
