@@ -24,7 +24,7 @@ RUN git clone https://github.com/nodejs/node /node_afl
 
 WORKDIR /node_afl
 
-RUN git checkout v16.x
+RUN git checkout 86088ab78e8c3739f60627ddf21f65da7796450e
 
 COPY v8_compile.cpp v8_compile_sydr.cpp ./
 
