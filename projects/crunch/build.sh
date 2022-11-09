@@ -23,3 +23,6 @@ mkdir /corpus
 # add seed corpus.
 find $SRC -name "*.png" | grep -v crashers | \
      xargs -I {} cp {} /corpus
+
+mkdir /corpus_main
+ls /corpus | xargs -I {} echo '(echo -n a && cat /corpus/"{}") > /corpus_main/"{}"' | sh

@@ -39,3 +39,17 @@ Minimize corpus:
 Get HTML coverage report:
 
     # sydr-fuzz -c optimize_png.toml pycov html
+
+### main_single_file
+
+Run fuzzing:
+
+    # sydr-fuzz -c main_single_file.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c main_single_file.toml cmin
+
+Get HTML coverage report:
+
+    # sydr-fuzz -c main_single_file.toml pycov html
