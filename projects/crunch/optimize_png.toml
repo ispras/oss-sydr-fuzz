@@ -17,5 +17,5 @@
 exit-on-time=3600
 
 [atheris]
-path = "optimize_png.py"
+path = "/optimize_png.py"
 args = "/corpus -dict=png.dict"

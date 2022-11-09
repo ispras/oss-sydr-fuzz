@@ -20,7 +20,6 @@ import sys
 sys.path.append("/Crunch")
 
 import tempfile
-
 import atheris
 
 with atheris.instrument_imports():
@@ -33,8 +32,8 @@ with atheris.instrument_imports():
 
 
 def test_crunch_function_optimize_png_unoptimized_file(filename):
-    startpath = os.path.join(filename)
-    testpath = os.path.join(filename + "-crunch")
+    startpath = filename
+    testpath = filename + "-crunch"
     # cleanup any existing files from previous tests
     if os.path.exists(testpath):
         os.remove(testpath)
@@ -42,7 +41,7 @@ def test_crunch_function_optimize_png_unoptimized_file(filename):
 
     # check for optimized file following execution
     assert os.path.exists(testpath) is True
-    
+
     # cleanup optimized file produced by this test
     if os.path.exists(testpath):
         os.remove(testpath)
@@ -59,6 +58,7 @@ def TestOneInput(data):
     except CalledProcessError:
         pass
     os.remove(filename)
+
 
 def main():
     atheris.Setup(sys.argv, TestOneInput)

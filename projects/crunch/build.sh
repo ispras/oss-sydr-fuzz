@@ -17,10 +17,9 @@
 make build-dependencies
 make install-executable
 
-mkdir /corpus
-
 SRC="."
 
+mkdir /corpus
 # add seed corpus.
 find $SRC -name "*.png" | grep -v crashers | \
      xargs -I {} cp {} /corpus

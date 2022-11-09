@@ -29,9 +29,11 @@ WORKDIR /Crunch
 # Checkout specified commit. It could be updated later.
 RUN git checkout a343532e128bef8d49636b7044b012bf05824658
 
-COPY build.sh optimize_png.py ./
+COPY build.sh \
+     optimize_png.py \
+     /
 
-RUN chmod +x build.sh 
-RUN chmod +x optimize_png.py
+RUN chmod +x /build.sh 
+RUN chmod +x /optimize_png.py
 
 RUN ./build.sh
