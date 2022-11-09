@@ -41,5 +41,7 @@ WORKDIR /corpus
 
 # Prepare seed corpus.
 RUN cp -r /cjson/fuzzing/inputs/* .
+RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
+    cp /go-fuzz-corpus/json/corpus/* . && rm -rf /go-fuzz-corpus
 
 WORKDIR /
