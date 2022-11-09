@@ -1,0 +1,13 @@
+--- /opt/StandaloneFuzzTargetMain.c	2022-11-03 13:40:23.436944253 +0300
++++ /opt/StandaloneFuzzTargetMain.c	2022-11-03 13:39:41.369137551 +0300
+@@ -17,8 +17,8 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ 
+-extern int LLVMFuzzerTestOneInput(const unsigned char *data, size_t size);
+-__attribute__((weak)) extern int LLVMFuzzerInitialize(int *argc, char ***argv);
++extern "C" int LLVMFuzzerTestOneInput(const unsigned char *data, size_t size);
++__attribute__((weak)) extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv);
+ int main(int argc, char **argv) {
+   fprintf(stderr, "StandaloneFuzzTargetMain: running %d inputs\n", argc - 1);
+   if (LLVMFuzzerInitialize)

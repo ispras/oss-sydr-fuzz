@@ -20,7 +20,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/load_env_fuzzer"
-args = "-rss_limit_mb=8192 -timeout=30 -jobs=1000 -workers=4 /corpus" # corpus is too large now, merge does not end
+args = "-rss_limit_mb=8192 -timeout=30 -jobs=1000 -workers=4 /reduced_corpus"
 
 [cov]
 target = "/load_env_cov @@"
