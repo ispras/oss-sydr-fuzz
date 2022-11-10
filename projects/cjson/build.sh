@@ -64,3 +64,22 @@ CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-
 $CC $CFLAGS /cjson/fuzzing/cjson_read_fuzzer.c -I. \
     -o /cjson_read_afl_fuzzer \
     /cjson/build/libcjson.a
+
+export AFL_LLVM_CMPLOG=1
+cd ..
+rm -rf build
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS=OFF -DENABLE_CJSON_TEST=OFF \
+    -DCMAKE_C_COMPILER=afl-clang-fast \
+    -DCMAKE_C_FLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
+    ..
+make -j$(nproc)
+
+CC=afl-clang-fast
+CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+$CC $CFLAGS /cjson/fuzzing/cjson_read_fuzzer.c -I. \
+    -o /cjson_read_afl_fuzzer_cmplog \
+    /cjson/build/libcjson.a
+
+unset AFL_LLVM_CMPLOG

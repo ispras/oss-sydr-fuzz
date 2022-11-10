@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 target = "/cjson_read_afl_fuzzer"
-args = "-t 10000 -i /corpus -x /cjson/fuzzing/json.dict"
+args = "-t 10000 -i /corpus -x /cjson/fuzzing/json.dict -c /cjson_read_afl_fuzzer_cmplog -m none"
 
 [cov]
 target = "/cjson_read_cov @@"
