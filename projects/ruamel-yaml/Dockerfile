@@ -18,6 +18,9 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Ilya Yegorov (hkctkuy)
 
+# Clone repo for the corpus
+RUN git clone https://github.com/yaml/libyaml
+
 WORKDIR /ruamel-yaml
 
 COPY build.sh \
