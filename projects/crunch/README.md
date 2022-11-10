@@ -23,6 +23,7 @@ Change directory to `/fuzz`:
 ## Fuzz tagrets:
 
   * optimize_png
+  * main_single_file 
 
 ## Fuzzing
 
