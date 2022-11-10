@@ -34,8 +34,7 @@ RUN cp -r /node_afl /node_cov
 RUN cp -r /node_afl /node_sydr
 RUN cp -r /node_afl /node_libfuzzer
 
-COPY js.dict build.sh build_url_corpus.sh sydr_main_patch /
-RUN patch /opt/StandaloneFuzzTargetMain.c < /sydr_main_patch
+COPY js.dict build.sh build_url_corpus.sh /
 RUN ./build.sh
 RUN ./build_url_corpus.sh
 

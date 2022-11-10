@@ -70,9 +70,11 @@ make -j$(nproc)
 ar -rcT static.a $(find . -name "*.o")
 $CXX $CXXFLAGS -pthread v8_compile_sydr.cpp -o /v8_compile_sydr \
     -I./deps/v8/include -I./deps/v8/include/libplatform  ./static.a -ldl
-$CXX $CXXFLAGS -pthread /opt/StandaloneFuzzTargetMain.c test/fuzzers/fuzz_env.cc -o /load_env_sydr -DNODE_WANT_INTERNALS \
+
+$CC $CFLAGS -pthread /opt/StandaloneFuzzTargetMain.c -c
+$CXX $CXXFLAGS -pthread ./StandaloneFuzzTargetMain.o test/fuzzers/fuzz_env.cc -o /load_env_sydr -DNODE_WANT_INTERNALS \
     -I./deps/v8/include -I./src/ -I./test/fuzzers/ -I./deps/uv/include/ static.a -ldl -latomic -fno-rtti
-$CXX $CXXFLAGS -pthread /opt/StandaloneFuzzTargetMain.c test/fuzzers/fuzz_url.cc -o /load_url_sydr -DNODE_WANT_INTERNALS \
+$CXX $CXXFLAGS -pthread ./StandaloneFuzzTargetMain.o test/fuzzers/fuzz_url.cc -o /load_url_sydr -DNODE_WANT_INTERNALS \
     -I./deps/v8/include -I./src/ -I./test/fuzzers/ -I./deps/uv/include/ static.a -ldl -latomic -fno-rtti
 
 # coverage
@@ -90,7 +92,9 @@ make -j$(nproc)
 ar -rcT static.a $(find . -name "*.o")
 $CXX $CXXFLAGS -pthread v8_compile_sydr.cpp -o /v8_compile_cov \
     -I./deps/v8/include -I./deps/v8/include/libplatform ./static.a -ldl
-$CXX $CXXFLAGS -pthread /opt/StandaloneFuzzTargetMain.c test/fuzzers/fuzz_env.cc -o /load_env_cov -DNODE_WANT_INTERNALS \
+
+$CC $CFLAGS -pthread /opt/StandaloneFuzzTargetMain.c -c
+$CXX $CXXFLAGS -pthread ./StandaloneFuzzTargetMain.o test/fuzzers/fuzz_env.cc -o /load_env_cov -DNODE_WANT_INTERNALS \
     -I./deps/v8/include -I./src/ -I./test/fuzzers/ -I./deps/uv/include/ static.a -ldl -latomic -fno-rtti
-$CXX $CXXFLAGS -pthread /opt/StandaloneFuzzTargetMain.c test/fuzzers/fuzz_url.cc -o /load_url_cov -DNODE_WANT_INTERNALS \
+$CXX $CXXFLAGS -pthread ./StandaloneFuzzTargetMain.o test/fuzzers/fuzz_url.cc -o /load_url_cov -DNODE_WANT_INTERNALS \
     -I./deps/v8/include -I./src/ -I./test/fuzzers/ -I./deps/uv/include/ static.a -ldl -latomic -fno-rtti
