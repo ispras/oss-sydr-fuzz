@@ -29,5 +29,6 @@ COPY build.sh \
      main.c \
      *toml \
      collator_compare_fuzzer.cpp \
+     *_sydr.cpp \
      /
 RUN ./build.sh

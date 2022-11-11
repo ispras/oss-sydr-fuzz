@@ -16,7 +16,11 @@
 #
 ################################################################################
 
-mv /collator_compare_fuzzer.cpp /icu/icu4c/source/test/fuzzer/collator_compare_fuzzer.cpp
+# Fix bug in fuzztarget.
+cp /collator_compare_fuzzer.cpp /icu/icu4c/source/test/fuzzer/collator_compare_fuzzer.cpp
+
+# Copy enhanced Sydr targets.
+cp /*_sydr.cpp /icu/icu4c/source/test/fuzzer/.
 
 # Build libFuzzer targets.
 cp -r /icu /icu-fuzz
@@ -39,7 +43,7 @@ make -j$(nproc)
 $CXX $CXXFLAGS -std=c++11 -c ./icu4c/source/test/fuzzer/locale_util.cpp \
      -I./icu4c/source/test/fuzzer
 
-FUZZER_PATH=./icu4c/source/test/fuzzer
+FUZZER_PATH=/icu/icu4c/source/test/fuzzer
 FUZZERS=$FUZZER_PATH/*_fuzzer.cpp
 
 CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
@@ -71,6 +75,19 @@ for fuzzer in $FUZZERS; do
   file=${fuzzer:${#FUZZER_PATH}+1}
   $CXX $CXXFLAGS -std=c++11 \
     $fuzzer -o /${file/fuzzer.cpp/sydr} main.o locale_util.o \
+    -I./icu4c/source/common -I./icu4c/source/i18n -L./lib \
+    -licui18n -licuuc -licutu -licudata -lpthread
+done
+rm /break_iterator_sydr
+rm /collator_compare_sydr
+rm /converter_sydr
+rm /number_format_sydr
+rm /ucasemap_sydr
+SYDRTARGETS=$FUZZER_PATH/*_sydr.cpp
+for sydr in $SYDRTARGETS; do
+  file=${sydr:${#FUZZER_PATH}+1}
+  $CXX $CXXFLAGS -std=c++11 \
+    $sydr -o /${file/.cpp/} locale_util.o \
     -I./icu4c/source/common -I./icu4c/source/i18n -L./lib \
     -licui18n -licuuc -licutu -licudata -lpthread
 done
