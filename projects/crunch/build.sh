@@ -17,12 +17,10 @@
 make build-dependencies
 make install-executable
 
-SRC="."
-
 mkdir /corpus
 # add seed corpus.
-find $SRC -name "*.png" | grep -v crashers | \
+find . -name "*.png" | grep -v crashers | \
      xargs -I {} cp {} /corpus
 
 mkdir /corpus_main
-ls /corpus | xargs -I {} echo '(echo -n a && cat /corpus/"{}") > /corpus_main/"{}"' | sh
+ls /corpus | xargs -I {} sh -c '(echo -n a && cat /corpus/"{}") > /corpus_main/"{}"'

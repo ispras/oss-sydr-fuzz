@@ -34,8 +34,4 @@ COPY build.sh \
      main_single_file.py \
      /
 
-RUN chmod +x /build.sh 
-RUN chmod +x /optimize_png.py
-RUN chmod +x /main_single_file.py
-
 RUN /build.sh

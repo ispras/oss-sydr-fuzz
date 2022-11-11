@@ -2,6 +2,11 @@
 
 Crunch is a tool for lossy PNG image file optimization.
 
+## Fuzz tagrets:
+
+  * optimize_png
+  * main_single_file 
+
 ## Build Docker
 
     $ sudo docker build -t oss-sydr-fuzz-crunch .
@@ -19,13 +24,6 @@ Run docker:
 Change directory to `/fuzz`:
 
     # cd /fuzz
-
-## Fuzz tagrets:
-
-  * optimize_png
-  * main_single_file 
-
-## Fuzzing
 
 ### optimize_png
 
