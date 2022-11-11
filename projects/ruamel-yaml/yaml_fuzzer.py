@@ -15,15 +15,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""This fuzzer is an example of looking for weird exceptions in ruamel.yaml.
-While these do not necessarily indicate vulnerabilities, they often indicate
-other bugs in code.
-Two bugs found by this fuzzer include situations where ruamel.yaml tries
-inserting lists/dicts as *keys* in maps, which is invalid JSON and causes a
-ValueError to be raised. The worst consequences of this is likely
-denial-of-service for code that only expects a YAMLError to be raised; however,
-it may indicate more interesting parsing problems.
-"""
+################################################################################
 
 import atheris
 
@@ -35,12 +27,11 @@ with atheris.instrument_imports():
 # Suppress all warnings.
 warnings.simplefilter("ignore")
 
-ryaml = ruamel_yaml.YAML(typ="safe", pure=True)
-ryaml.allow_duplicate_keys = True
-
 
 @atheris.instrument_func
 def TestOneInput(input_bytes):
+  ryaml = ruamel_yaml.YAML(typ="safe", pure=True)
+  ryaml.allow_duplicate_keys = True
   fdp = atheris.FuzzedDataProvider(input_bytes)
   data = fdp.ConsumeUnicode(sys.maxsize)
 
