@@ -71,10 +71,9 @@ make -j$(nproc)
 
 # Build zlib
 cd /
-wget https://zlib.net/zlib1212.zip
-unzip zlib1212.zip
-mv zlib-1.2.12/ zlib-1.2.12-fuzz/
-cd zlib-1.2.12-fuzz/
+git clone https://github.com/madler/zlib.git zlib_fuzz
+cd zlib_fuzz
+git checkout v1.2.13
 CC=clang CXX=clang++ \
 	CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
 	CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
@@ -181,7 +180,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-fuzz/./.libs/libpng16.a \
-	/zlib-1.2.12-fuzz/./libz.a \
+	/zlib_fuzz/libz.a \
 	-o /decode_png_fuzz
 
 # Build encode_jpeg_fuzz target
@@ -272,7 +271,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-fuzz/./.libs/libpng16.a \
-	/zlib-1.2.12-fuzz/./libz.a \
+	/zlib_fuzz/libz.a \
 	-o /encode_png_fuzz
 
 # ------------------- Build AFL++ targets -------------------
@@ -307,9 +306,9 @@ make -j$(nproc)
 
 # Build zlib AFL
 cd /
-unzip zlib1212.zip
-mv zlib-1.2.12/ zlib-1.2.12-fuzz-afl/
-cd zlib-1.2.12-fuzz-afl/
+git clone https://github.com/madler/zlib.git zlib_fuzz_afl
+cd zlib_fuzz_afl
+git checkout v1.2.13
 CC=afl-clang-fast CXX=afl-clang-fast++ \
 	CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
 	CXXFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
@@ -418,7 +417,7 @@ afl-clang-fast++ -g -O2 -fsanitize=address,bounds,integer,undefined,null,float-d
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-fuzz-afl/./.libs/libpng16.a \
-	/zlib-1.2.12-fuzz-afl/./libz.a \
+	/zlib_fuzz_afl/libz.a \
 	-o /decode_png_fuzz_afl
 
 # Build encode_jpeg_fuzz_afl target
@@ -511,5 +510,5 @@ afl-clang-fast++ -g -O2 -fsanitize=address,bounds,integer,undefined,null,float-d
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-fuzz-afl/./.libs/libpng16.a \
-	/zlib-1.2.12-fuzz-afl/./libz.a \
+	/zlib_fuzz_afl/libz.a \
 	-o /encode_png_fuzz_afl

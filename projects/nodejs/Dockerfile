@@ -24,7 +24,7 @@ RUN git clone https://github.com/nodejs/node /node_afl
 
 WORKDIR /node_afl
 
-RUN git checkout v16.x
+RUN git checkout 86088ab78e8c3739f60627ddf21f65da7796450e
 
 COPY v8_compile.cpp v8_compile_sydr.cpp ./
 
@@ -32,8 +32,14 @@ WORKDIR /
 
 RUN cp -r /node_afl /node_cov
 RUN cp -r /node_afl /node_sydr
+RUN cp -r /node_afl /node_libfuzzer
 
-COPY js.dict build.sh /
+COPY js.dict build.sh build_url_corpus.sh /
 RUN ./build.sh
+RUN ./build_url_corpus.sh
 
 RUN mkdir /corpus && find node_afl -type f -name "*.js" | xargs -I {} cp -r {} /corpus
+RUN mkdir /reduced_corpus && cp /corpus/a* /reduced_corpus/ && \
+     cp /corpus/b* /reduced_corpus/ &&  cp /corpus/c* /reduced_corpus/ && \
+     cp /corpus/p* /reduced_corpus/ &&  cp /corpus/m* /reduced_corpus/ && \
+     cp /corpus/s* /reduced_corpus/

@@ -67,9 +67,9 @@ cd build/
 make -j$(nproc)
 
 cd /
-unzip zlib1212.zip
-mv zlib-1.2.12/ zlib-1.2.12-cov/
-cd zlib-1.2.12-cov/
+git clone https://github.com/madler/zlib.git zlib_cov
+cd zlib_cov
+git checkout v1.2.13
 CC=clang CXX=clang++ \
 	CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
 	CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
@@ -177,7 +177,7 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-cov/./.libs/libpng16.a \
-	/zlib-1.2.12-cov/./libz.a \
+	/zlib_cov/libz.a \
 	-o /decode_png_cov
 
 # Build encode_jpeg_cov target
@@ -267,5 +267,5 @@ clang++ -g -O2 -fprofile-instr-generate -fcoverage-mapping -std=gnu++14 -DNDEBUG
 	-Wl,--whole-archive,"/pytorch_cov/build/lib/libCaffe2_perfkernels_avx512.a" \
 	-Wl,--no-whole-archive \
 	/libpng-1.6.37-cov/./.libs/libpng16.a \
-	/zlib-1.2.12-cov/./libz.a \
+	/zlib_cov/libz.a \
 	-o /encode_png_cov

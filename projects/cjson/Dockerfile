@@ -29,7 +29,7 @@ RUN git clone https://github.com/DaveGamble/cJSON.git cjson
 WORKDIR cjson
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 203a0dec6ff06e3842fa23a1bc9825aecf56b381
+RUN git checkout b45f48e600671feade0b6bd65d1c69de7899f2be
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
 COPY build.sh cjson_read_sydr.c ./fuzzing/
@@ -41,5 +41,7 @@ WORKDIR /corpus
 
 # Prepare seed corpus.
 RUN cp -r /cjson/fuzzing/inputs/* .
+RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
+    cp /go-fuzz-corpus/json/corpus/* . && rm -rf /go-fuzz-corpus
 
 WORKDIR /

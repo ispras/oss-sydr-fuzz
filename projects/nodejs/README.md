@@ -36,3 +36,19 @@ Collect coverage:
 Check security predicates:
 
     # sydr-fuzz -c v8_compile-afl++.toml security
+
+## Alternative Fuzz Targets
+
+Nodejs projects has 2 alternative fuzz targets.
+
+### env
+
+    # sydr-fuzz -c env.toml run
+
+### url
+
+    # sydr-fuzz -c url.toml run
+
+or
+
+    # sydr-fuzz -c url-afl++.toml run

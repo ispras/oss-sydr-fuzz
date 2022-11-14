@@ -92,7 +92,7 @@ make -j$(nproc) all
 
 SRC="."
 
-$CC $CFLAGS -I. main.c -c -o main.o
+$CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 
 for f in $(find $SRC -name '*_fuzzer.cc'); do
     b=$(basename -s .cc $f)_sydr
@@ -119,7 +119,7 @@ make -j$(nproc) all
 
 SRC="."
 
-$CC $CFLAGS -I. main.c -c -o main.o
+$CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 
 for f in $(find $SRC -name '*_fuzzer.cc'); do
     b=$(basename -s .cc $f)_cov
