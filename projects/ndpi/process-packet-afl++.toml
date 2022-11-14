@@ -20,7 +20,7 @@ target = "/nDPI/sydr/load_sydr_process_packet @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /corpus"
+args = "-i /corpus -x /ndpi.dict"
 target = "/nDPI/afl/fuzz_process_packet"
 jobs= 8
 
