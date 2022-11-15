@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-82 new bugs in
-19 open source projects.
+83 new bugs in
+20 open source projects.
 
 * Cairo:
     * <https://gitlab.freedesktop.org/cairo/cairo/-/issues/579>
@@ -35,6 +35,8 @@
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
     * <https://github.com/pytorch/pytorch/issues/74798>
+* nDPI
+    * <https://github.com/ntop/nDPI/issues/1803>
 * OpenJPEG (OpenCV 3rdparty)
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
