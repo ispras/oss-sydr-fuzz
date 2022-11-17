@@ -20,7 +20,7 @@ target = "/nDPI/sydr/load_sydr_ndpi_reader @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /corpus -x /ndpi.dict"
+args = "-i /corpus -t 100000 -x /ndpi.dict"
 target = "/nDPI/afl/fuzz_ndpi_reader"
 jobs= 8
 
