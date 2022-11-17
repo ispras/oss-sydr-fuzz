@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/nDPI/libfuzzer/fuzz_process_packet"
-args = "-rss_limit_mb=8192 -max_len=4096 -timeout=10 -jobs=1000 -workers=4 /corpus"
+args = "-rss_limit_mb=8192 -max_len=4096 -dict=/ndpi.dict -jobs=1000 -workers=4 /corpus"
 
 [cov]
 target = "/nDPI/cover/load_cover_process_packet @@"
