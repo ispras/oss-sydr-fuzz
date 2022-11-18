@@ -33,11 +33,10 @@ CC=clang
 CXX=clang++
 
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS CC=$CC CXX=$CXX \
-  /bin/bash ./icu4c/source/runConfigureICU Linux \
+  ./icu4c/source/runConfigureICU Linux \
    --with-library-bits=64 --with-data-packaging=static --enable-static --disable-shared
 
 export ASAN_OPTIONS="detect_leaks=0"
-export UBSAN_OPTIONS="detect_leaks=0"
 
 make -j$(nproc)
 $CXX $CXXFLAGS -std=c++11 -c ./icu4c/source/test/fuzzer/locale_util.cpp \
@@ -64,7 +63,7 @@ CFLAGS="-g $DEFINES"
 CXXFLAGS="-g $DEFINES"
 
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS CC=$CC CXX=$CXX \
-  /bin/bash ./icu4c/source/runConfigureICU Linux \
+  ./icu4c/source/runConfigureICU Linux \
    --with-library-bits=64 --with-data-packaging=static --enable-static --disable-shared
 make -j$(nproc)
 $CXX $CXXFLAGS -std=c++11 -c ./icu4c/source/test/fuzzer/locale_util.cpp \
@@ -102,7 +101,7 @@ CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping $DEFINES"
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping $DEFINES"
 
 CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS CC=$CC CXX=$CXX \
-  /bin/bash ./icu4c/source/runConfigureICU Linux \
+  ./icu4c/source/runConfigureICU Linux \
    --with-library-bits=64 --with-data-packaging=static --enable-static --disable-shared
 make -j$(nproc)
 $CXX $CXXFLAGS -std=c++11 -c ./icu4c/source/test/fuzzer/locale_util.cpp \
