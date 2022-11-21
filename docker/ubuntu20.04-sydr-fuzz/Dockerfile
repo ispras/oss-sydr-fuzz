@@ -29,6 +29,8 @@ RUN curl https://sh.rustup.rs -o rustup.sh && chmod +x rustup.sh && \
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
+RUN cargo install casr
+
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip \
     && unzip ninja-linux.zip && mv ninja /usr/bin && rm ninja-linux.zip
 
