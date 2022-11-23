@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/load_from_memory_tiff_sydr @@"
 
 [aflplusplus]
-target = "/load_from_memory_tiff_afl"
+target = "/load_from_memory_tiff_afl @@"
 args = "-t 60000 -i /corpus_tiff"
 
 [cov]
