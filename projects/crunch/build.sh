@@ -22,5 +22,8 @@ mkdir /corpus
 find . -name "*.png" | grep -v crashers | \
      xargs -I {} cp {} /corpus
 
+# add corpus with all modes
 mkdir /corpus_main
-ls /corpus | xargs -I {} sh -c '(echo -n a && cat /corpus/"{}") > /corpus_main/"{}"'
+ls /corpus | xargs -I {} sh -c '(echo -n 0 && cat /corpus/"{}") > /corpus_main/"{}"'
+ls /corpus | xargs -I {} sh -c '(echo -n 1 && cat /corpus/"{}") > /corpus_main/gui-"{}"'
+ls /corpus | xargs -I {} sh -c '(echo -n 2 && cat /corpus/"{}") > /corpus_main/service-"{}"'

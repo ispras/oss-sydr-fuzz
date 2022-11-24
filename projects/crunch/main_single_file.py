@@ -61,7 +61,8 @@ def TestOneInput(data):
     # make unique file name for for parallel fuzzing
     (_, filename) = tempfile.mkstemp()
     f = open(filename, "wb")
-    f.write(data[1:])
+    if len(data) > 1:
+        f.write(data[1:])
     f.close()
     try:
         test_crunch_function_main_single_file(filename, mod)
