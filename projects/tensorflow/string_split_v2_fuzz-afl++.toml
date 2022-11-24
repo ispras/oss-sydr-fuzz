@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/string_split_v2_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/string_split_v2_fuzz"
 args = "-t 60000 -i /corpus/string_split_v2/"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/string_split_v2_fuzz @@"

@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/arg_def_case_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 args = "-t 60000 -i /corpus/arg_def_case"
 target = "/afl/arg_def_case_fuzz"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/arg_def_case_fuzz @@"
