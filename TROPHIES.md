@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-82 new bugs in
-19 open source projects.
+85 new bugs in
+22 open source projects.
 
 * Cairo:
     * <https://gitlab.freedesktop.org/cairo/cairo/-/issues/579>
@@ -27,6 +27,8 @@
     * <https://github.com/nodejs/node/issues/45297> (PR: <https://github.com/unicode-org/icu/pull/2248>)
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778> (PR: <https://github.com/image-rs/image/pull/1781>)
+* libpcap:
+    * <https://github.com/the-tcpdump-group/libpcap/issues/1134>
 * Little-CMS:
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
@@ -35,6 +37,8 @@
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
     * <https://github.com/pytorch/pytorch/issues/74798>
+* nDPI
+    * <https://github.com/ntop/nDPI/issues/1803>
 * OpenJPEG (OpenCV 3rdparty)
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
@@ -95,6 +99,8 @@
     * <https://github.com/pytorch/vision/pull/6456>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
+* V8 (Node.js dependency):
+    * <https://bugs.chromium.org/p/chromium/issues/detail?id=1382777> (<https://github.com/nodejs/node/issues/45283>)
 * xlnt:
     * <https://github.com/tfussell/xlnt/issues/592>
     * <https://github.com/tfussell/xlnt/issues/593>

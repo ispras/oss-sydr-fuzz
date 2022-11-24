@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright (C) 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,24 @@
 #
 ################################################################################
 
-[sydr]
-args = "-l debug -j2 -s 180"
-target = "/nDPI/sydr/load_sydr_process_packet @@"
-jobs = 2
+FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-[aflplusplus]
-args = "-i /corpus -t 100000 -x /ndpi.dict"
-target = "/nDPI/afl/fuzz_process_packet"
-jobs= 8
+MAINTAINER Ilya Yegorov (hkctkuy)
 
-[cov]
-target = "/nDPI/cover/load_cover_process_packet @@"
+# Install build dependencies.
+RUN apt install sudo
+
+# Clone target from GitHub.
+RUN git clone https://github.com/chrissimpkins/Crunch.git
+
+WORKDIR /Crunch
+
+# Checkout specified commit. It could be updated later.
+RUN git checkout a343532e128bef8d49636b7044b012bf05824658
+
+COPY build.sh \
+     optimize_png.py \
+     main_single_file.py \
+     /
+
+RUN /build.sh

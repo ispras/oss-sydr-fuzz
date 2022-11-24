@@ -1,5 +1,5 @@
-# Copyright 2022 ISP RAS
-#
+#!/bin/bash -eu
+# Copyright (C) 2022 ISP RAS
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,15 +14,16 @@
 #
 ################################################################################
 
-[sydr]
-args = "-l debug -j2 -s 180"
-target = "/nDPI/sydr/load_sydr_process_packet @@"
-jobs = 2
+make build-dependencies
+make install-executable
 
-[aflplusplus]
-args = "-i /corpus -t 100000 -x /ndpi.dict"
-target = "/nDPI/afl/fuzz_process_packet"
-jobs= 8
+mkdir /corpus
+# add seed corpus.
+find . -name "*.png" | grep -v crashers | \
+     xargs -I {} cp {} /corpus
 
-[cov]
-target = "/nDPI/cover/load_cover_process_packet @@"
+# add corpus with all modes
+mkdir /corpus_main
+ls /corpus | xargs -I {} sh -c '(echo -n 0 && cat /corpus/"{}") > /corpus_main/"{}"'
+ls /corpus | xargs -I {} sh -c '(echo -n 1 && cat /corpus/"{}") > /corpus_main/gui-"{}"'
+ls /corpus | xargs -I {} sh -c '(echo -n 2 && cat /corpus/"{}") > /corpus_main/service-"{}"'

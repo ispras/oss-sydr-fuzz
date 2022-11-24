@@ -14,15 +14,8 @@
 #
 ################################################################################
 
-[sydr]
-args = "-l debug -j2 -s 180"
-target = "/nDPI/sydr/load_sydr_process_packet @@"
-jobs = 2
+exit-on-time = 3600
 
-[aflplusplus]
-args = "-i /corpus -t 100000 -x /ndpi.dict"
-target = "/nDPI/afl/fuzz_process_packet"
-jobs= 8
-
-[cov]
-target = "/nDPI/cover/load_cover_process_packet @@"
+[atheris]
+path = "/optimize_png.py"
+args = "/corpus -dict=png.dict"

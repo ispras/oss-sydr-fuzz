@@ -30,7 +30,7 @@ WORKDIR /freeimage-svn/FreeImage/trunk/
 
 # Copy targets and build script.
 COPY build.sh ./
-COPY *_fuzzer.cc *_sydr.cc afl.cc \
+COPY *_fuzzer.cc *_sydr.cc \
      corpus_bmp.zip corpus_tiff.zip corpus_jpeg.zip /
 
 # Run build script.

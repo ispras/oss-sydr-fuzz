@@ -41,14 +41,14 @@ Check security predicates:
 
 Nodejs projects has 2 alternative fuzz targets.
 
-### fuzz\_env
+### env
 
-    # sydr-fuzz -c env-sydr-fuzz.toml  run
+    # sydr-fuzz -c env.toml run
 
-### fuzz\_url
+### url
 
-    # sydr-fuzz -c url-sydr-fuzz.toml run
+    # sydr-fuzz -c url.toml run
 
 or
 
-    # sydr-fuzz -c url-sydr-fuzz-afl++.toml run
+    # sydr-fuzz -c url-afl++.toml run

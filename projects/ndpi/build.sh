@@ -4,6 +4,7 @@ cd /
 tar -xvzf libpcap-1.9.1.tar.gz
 
 export AFL_LLVM_LAF_ALL=1
+export AFL_LLVM_DICT2FILE=/ndpi.dict
 
 #Build targets for libfuzzer
 echo "Build targets for libfuzzer."

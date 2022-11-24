@@ -76,20 +76,18 @@ CXX="afl-clang-fast++" CXXFLAGS="-g -fsanitize=address,bounds,integer,undefined,
 
 cd /
 CXX="afl-clang-fast++"
-CXXFLAGS="-fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -g"
-
-$CXX $CXXFLAGS -o afl.o -c afl.cc
+CXXFLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero -g"
 
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
-  afl.o load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_afl
 
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
-  afl.o load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_tiff_afl
 
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
-  afl.o transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /transform_combined_jpeg_afl
 
 # Build targets for llvm-cov
