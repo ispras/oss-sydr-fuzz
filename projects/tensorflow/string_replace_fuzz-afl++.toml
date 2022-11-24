@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/string_replace_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/string_replace_fuzz"
 args = "-t 60000 -i /corpus/string_replace"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/string_replace_fuzz @@"

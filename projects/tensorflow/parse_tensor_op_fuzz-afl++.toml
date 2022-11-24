@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/parse_tensor_op_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/parse_tensor_op_fuzz"
 args = "-t 60000 -i /corpus/parse_tensor_op"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/parse_tensor_op_fuzz @@"
