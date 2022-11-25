@@ -117,7 +117,7 @@ for fuzzer in $FUZZERS; do
 done
 
 # Prepare corpuses and dictinary.
-CORPUS=./icu4c/source/test/fuzzer/*_fuzzer_seed_corpus.txt
+CORPUS=$FUZZER_PATH/*_fuzzer_seed_corpus.txt
 for corpus in $CORPUS; do
     file=${corpus:${#FUZZER_PATH}+1}
     mkdir /${file/fuzzer_seed_corpus.txt/corpus}
