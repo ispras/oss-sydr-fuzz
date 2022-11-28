@@ -16,11 +16,11 @@
 
 [sydr]
 args = "-l debug"
-target = "/dump_sydr @@"
+target = "/message_deserialize_sydr @@"
 
 [libfuzzer]
-path = "/dump_fuzz"
-args = "-detect_leaks=0 -rss_limit_mb=30720 -timeout=300 -report_slow_units=350 /corpus_torch_script"
+path = "/message_deserialize_fuzz"
+args = "-detect_leaks=0 -rss_limit_mb=30720 -timeout=300 -report_slow_units=350 /corpus_message_deserialize"
 
 [cov]
-target = "/dump_cov @@"
+target = "/message_deserialize_cov @@"

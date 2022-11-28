@@ -18,34 +18,31 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Kirill Parhomenko
 
-# Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions 
-
 # Clone target from GitHub.
-RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
-RUN cd /pytorch_fuzz && \
+RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions && \
+    git clone https://github.com/pytorch/pytorch.git pytorch_fuzz && cd /pytorch_fuzz && \
     git checkout bc2c6edaf163b1a1330e37a6e34caf8c553e4755 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
 COPY build_*.sh \
-     *.patch \
-     miniz.* \
-     *_fuzz.cc \
-     *_sydr.cc \
-     *.toml \
-     patch_exceptions.sh \
-     /
+    *.patch \
+    miniz.* \
+    *_fuzz.cc \
+    main-impl.cc \
+    *.toml \
+    patch_exceptions.sh \
+    /
 
-# Apply PyTorch fixes.
+# Apply PyTorch fixes + copy for different targets.
 RUN cd /pytorch_fuzz && \
-    git apply /stoull.patch
-RUN rm /pytorch_fuzz/third_party/miniz-2.0.8/miniz.*
-RUN cp miniz.* /pytorch_fuzz/third_party/miniz-2.0.8/.
-
-# Copy for different targets.
-RUN cp -r /pytorch_fuzz/ /pytorch_sydr/
-RUN cp -r /pytorch_fuzz/ /pytorch_cov/
+    git apply /stoull.patch && \
+    git apply /schema_type_parser-stoll-1.patch && \
+    git apply /schema_type_parser-stoll-2.patch && \
+    rm /pytorch_fuzz/third_party/miniz-2.0.8/miniz.* && \
+    cp /miniz.* /pytorch_fuzz/third_party/miniz-2.0.8/. && \
+    cp -r /pytorch_fuzz/ /pytorch_sydr/ && \
+    cp -r /pytorch_fuzz/ /pytorch_cov/
 
 # Patch exceptions throwing to avoid unwanted crashes.
 RUN bash patch_exceptions.sh
@@ -56,4 +53,9 @@ RUN bash build_fuzz.sh
 RUN bash build_sydr.sh
 RUN bash build_cov.sh
 
-RUN mkdir corpus && find /pytorch_fuzz -name "*.pt" -exec cp {} ./corpus \;
+COPY ./ir_corpus.zip /
+COPY ./parser_corpus.zip /
+RUN mkdir corpus_torch_script && \
+    find /pytorch_fuzz -name "*.pt" -exec cp {} ./corpus_torch_script/ \; && \
+    unzip /ir_corpus.zip && \
+    unzip /parser_corpus.zip

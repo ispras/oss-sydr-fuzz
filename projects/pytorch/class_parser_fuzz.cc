@@ -14,27 +14,37 @@
 //
 // ###############################################################################
 
+#include <cstdlib>
+#include <exception>
 #include <sstream>
+#include <stdexcept>
 #include <string>
-#include <unistd.h>
 
-#include "torch/csrc/jit/api/module.h"
-#include "torch/csrc/jit/passes/metal_rewrite.h"
-#include "torch/csrc/jit/passes/vulkan_rewrite.h"
-#include "torch/csrc/jit/passes/xnnpack_rewrite.h"
-#include "torch/csrc/jit/serialization/export.h"
-#include "torch/csrc/jit/serialization/import.h"
-#include "torch/script.h"
+#include <ATen/core/jit_type.h>
+#include <c10/core/ScalarType.h>
+#include <torch/csrc/jit/backends/backend.h>
+#include <torch/csrc/jit/backends/backend_detail.h>
+#include <torch/csrc/jit/backends/backend_preprocess.h>
+#include <torch/csrc/jit/frontend/parser.h>
+#include <torch/csrc/jit/frontend/resolver.h>
+#include <torch/csrc/jit/ir/irparser.h>
+#include <torch/csrc/jit/mobile/nnc/aot_compiler.h>
+#include <torch/csrc/jit/passes/dead_code_elimination.h>
+#include <torch/csrc/jit/passes/freeze_module.h>
+#include <torch/csrc/jit/serialization/export.h>
+#include <torch/csrc/jit/serialization/import.h>
+#include <torch/csrc/jit/tensorexpr/graph_opt.h>
+#include <torch/csrc/jit/tensorexpr/kernel.h>
+#include <torch/csrc/jit/testing/file_check.h>
+#include <torch/script.h>
 
 extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-  std::stringstream ss;
-  std::copy((char *)data, (char *)data + size,
-            std::ostreambuf_iterator<char>(ss));
-  torch::jit::Module m;
   try {
-    m = torch::jit::load(ss);
+    const std::string input((const char *)data, size);
+    torch::jit::Parser p(std::make_shared<torch::jit::Source>(input));
+    const auto classDef = torch::jit::ClassDef(p.parseClass());
   } catch (const c10::Error &e) {
     return 0;
   } catch (const torch::jit::ErrorReport &e) {
@@ -42,8 +52,5 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   } catch (const std::runtime_error &e) {
     return 0;
   }
-
-  torch::jit::Module optimized_module = torch::jit::optimizeForMobile(m);
-
   return 0;
 }
