@@ -18,3 +18,4 @@ index 252b5e2370..6e76f3ccc6 100644
      if (shape_symbol) {
        L.expect(')');
        dim = -dim;
+
