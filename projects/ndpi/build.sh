@@ -36,6 +36,7 @@ mkdir libfuzzer && cd libfuzzer
 
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
 
 cd /nDPI
 make clean
@@ -69,6 +70,7 @@ mkdir afl && cd afl
 
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/afl/libjson-c.a -o fuzz_ndpi_reader
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/afl/libjson-c.a -o fuzz_process_packet
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/afl/libjson-c.a -o fuzz_quic_get_crypto_data
 
 cd /nDPI
 make clean
@@ -101,6 +103,7 @@ mkdir sydr && cd sydr
 
 $CC $CFLAGS -I $INCLUDE_DIR -I ../example ../load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader
 $CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_quic_get_crypto_data
 
 cd /nDPI
 make clean
@@ -133,5 +136,6 @@ mkdir cover && cd cover
 
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader
 $CC $CFLAGS -I $INCLUDE_DIR /nDPI/load_sydr_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_quic_get_crypto_data
 
 cd /nDPI
