@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-i /corpus -t 100000 -x /ndpi.dict"
-target = "/nDPI/afl/fuzz_ndpi_reader"
+target = "/nDPI/afl/fuzz_ndpi_reader @@"
 jobs= 8
 
 [cov]
