@@ -55,7 +55,10 @@ RUN bash build_cov.sh
 
 COPY ./ir_corpus.zip /
 COPY ./parser_corpus.zip /
+COPY ./corpus_message_deserialize.zip /
 RUN mkdir corpus_torch_script && \
     find /pytorch_fuzz -name "*.pt" -exec cp {} ./corpus_torch_script/ \; && \
     unzip /ir_corpus.zip && \
-    unzip /parser_corpus.zip
+    unzip /parser_corpus.zip && \
+    unzip /corpus_message_deserialize.zip
+
