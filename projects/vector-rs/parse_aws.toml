@@ -18,6 +18,6 @@ target = "/sydr/cov_aws"
 args= "--sym-stdin -l debug"
 
 [aflplusplus]
-path = "/fuzz/fuzz_aws"
+target = "/fuzz/fuzz_aws"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_aws"
 

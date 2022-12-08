@@ -18,6 +18,6 @@ target = "/sydr/cov_klog"
 args= "--sym-stdin -l debug"
 
 [aflplusplus]
-path = "/fuzz/fuzz_klog"
+target = "/fuzz/fuzz_klog"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_klog"
 

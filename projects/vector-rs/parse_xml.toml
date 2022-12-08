@@ -18,6 +18,6 @@ target = "/sydr/cov_xml"
 args= "--sym-stdin -l debug"
 
 [aflplusplus]
-path = "/fuzz/fuzz_xml"
+target = "/fuzz/fuzz_xml"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_xml -x /dict/xml.dict"
 

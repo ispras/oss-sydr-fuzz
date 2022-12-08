@@ -18,6 +18,6 @@ target = "/sydr/cov_json"
 args = "--sym-stdin -l debug"
 
 [aflplusplus]
-path = "/fuzz/fuzz_json"
+target = "/fuzz/fuzz_json"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_json -x /dict/json.dict"
 

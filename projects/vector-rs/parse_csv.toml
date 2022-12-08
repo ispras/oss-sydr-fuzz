@@ -18,6 +18,6 @@ target = "/sydr/cov_csv"
 args= "--sym-stdin -l debug"
 
 [aflplusplus]
-path = "/fuzz/fuzz_csv"
+target = "/fuzz/fuzz_csv"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_csv -x /dict/csv.dict"
 
