@@ -16,7 +16,7 @@
 [sydr]
 target = "/sydr/cov_xml"
 
-[libfuzzer]
+[aflplusplus]
 path = "/fuzz/fuzz_xml"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_xml -x /dict/xml.dict"
 

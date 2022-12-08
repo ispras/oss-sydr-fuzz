@@ -16,7 +16,7 @@
 [sydr]
 target = "/sydr/cov_json"
 
-[libfuzzer]
+[aflplusplus]
 path = "/fuzz/fuzz_json"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_json -x /dict/json.dict"
 

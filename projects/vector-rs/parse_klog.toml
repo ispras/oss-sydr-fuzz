@@ -16,7 +16,7 @@
 [sydr]
 target = "/sydr/cov_klog"
 
-[libfuzzer]
+[aflplusplus]
 path = "/fuzz/fuzz_klog"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_klog"
 
