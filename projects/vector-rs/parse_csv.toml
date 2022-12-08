@@ -15,6 +15,7 @@
 ################################################################################
 [sydr]
 target = "/sydr/cov_csv"
+args= "--sym-stdin -l debug"
 
 [aflplusplus]
 path = "/fuzz/fuzz_csv"
