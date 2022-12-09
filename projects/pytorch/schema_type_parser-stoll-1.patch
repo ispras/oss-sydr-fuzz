@@ -1,0 +1,21 @@
+diff --git a/torch/csrc/jit/frontend/schema_type_parser.cpp b/torch/csrc/jit/frontend/schema_type_parser.cpp
+index 252b5e2370..0b52a9987a 100644
+--- a/torch/csrc/jit/frontend/schema_type_parser.cpp
++++ b/torch/csrc/jit/frontend/schema_type_parser.cpp
+@@ -237,8 +237,14 @@ TypePtr SchemaTypeParser::parseRefinedTensor() {
+           const std::string& num = L.expect(TK_NUMBER).text();
+           // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
+           std::string::size_type num_len;
+-          auto stride = c10::stoll(num, &num_len);
+-          strides.push_back(stride);
++          try {
++            auto stride = c10::stoll(num, &num_len);
++            strides.push_back(stride);
++          } catch (const std::invalid_argument &e) {
++            throw ErrorReport(L.cur()) << "Stride value can't be converted to an int";
++          } catch (const std::out_of_range &e) {
++            throw ErrorReport(L.cur()) << "Stride is too big";
++          }
+         });
+         return;
+       }

@@ -28,6 +28,46 @@ Change directory to `/fuzz`:
 
 ### Fuzz Targets
 
+#### class_parser_fuzz
+
+Run hybrid fuzzing:
+
+    # sydr-fuzz -c class_parser.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c class_parser.toml cmin
+
+#### irparser_fuzz
+
+Run hybrid fuzzing:
+
+    # sydr-fuzz -c irparser.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c irparser.toml cmin
+
+#### jit_differential_fuzz
+
+Run hybrid fuzzing:
+
+    # sydr-fuzz -c jit_differential.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c jit_differential.toml cmin
+
+#### message_deserialize_fuzz
+
+Run hybrid fuzzing:
+
+    # sydr-fuzz -c message_deserialize.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c message_deserialize.toml cmin
+
 #### dump_fuzz
 
 Run hybrid fuzzing:
