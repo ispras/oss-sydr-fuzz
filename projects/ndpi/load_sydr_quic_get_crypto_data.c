@@ -1,4 +1,5 @@
 #include "ndpi_api.h"
+#include "fuzz_common_code.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -21,41 +22,31 @@ extern void process_chlo(struct ndpi_detection_module_struct *ndpi_struct,
 extern int is_version_with_tls(uint32_t version);
 
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
         const u_int8_t *crypto_data;
         uint64_t crypto_data_len;
         u_int32_t first_int, version = 0;
-        if(ndpi_info_mod == NULL) {
-                ndpi_info_mod = ndpi_init_detection_module(ndpi_enable_ja3_plus);
-                NDPI_PROTOCOL_BITMASK all;
-                NDPI_BITMASK_SET_ALL(all);
-                ndpi_set_protocol_detection_bitmask2(ndpi_info_mod, &all);
-#if 0
-                NDPI_PROTOCOL_BITMASK debug_bitmask;
-                NDPI_BITMASK_SET_ALL(debug_bitmask);
-                ndpi_set_log_level(ndpi_info_mod, 4);
-                ndpi_set_debug_bitmask(ndpi_info_mod, debug_bitmask);
-#endif
-                ndpi_finalize_initialization(ndpi_info_mod);
 
-                flow = ndpi_calloc(1, SIZEOF_FLOW_STRUCT);
-        }
+        fuzz_init_detection_module(&ndpi_info_mod, 0);
+        flow = ndpi_calloc(1, SIZEOF_FLOW_STRUCT);
 
         FILE *fd = fopen(argv[1], "rb");
-
         if (fd == NULL) return 1;
         fseek(fd, 0, SEEK_END);
-        int Size = ftell(fd);
+        size_t Size = ftell(fd);
         fseek(fd, 0, SEEK_SET);
 
         unsigned char* Data = (unsigned char*) malloc(sizeof(unsigned char) * Size);
         fread(Data, 1, Size, fd);
         fclose(fd);
 
-        if(Size < 4)
-                return 0;
 
+        if(Size < 4) {
+                free(Data);
+                return 0;
+        }
+        
         first_int = ntohl(*(u_int32_t *)Data);
         if((first_int % 4) == 0)
                 version = 0x00000001; /* v1 */
@@ -81,6 +72,6 @@ int main(int argc, char** argv)
         }
 
         ndpi_free_flow_data(flow);
-
+        free(Data);
         return 0;
 }

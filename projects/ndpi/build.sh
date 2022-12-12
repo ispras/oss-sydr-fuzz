@@ -34,9 +34,12 @@ make -j`nproc`
 
 mkdir libfuzzer && cd libfuzzer
 
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader_alloc_fail
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
+
+cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv . 
 
 cd /nDPI
 make clean
@@ -45,7 +48,7 @@ cd /
 #Build targets for afl++
 echo "Build targets for afl++."
 
-export CC="afl-clang-fast"
+export CC="afl-clang-lto"
 export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
@@ -68,9 +71,12 @@ make -j`nproc`
 
 mkdir afl && cd afl
 
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I ../example ../fuzz/fuzz_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/afl/libjson-c.a -o fuzz_ndpi_reader
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/afl/libjson-c.a -o fuzz_process_packet
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR ../fuzz/fuzz_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/afl/libjson-c.a -o fuzz_quic_get_crypto_data
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader_alloc_fail
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
+$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
+
+cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv . 
 
 cd /nDPI
 make clean
@@ -101,9 +107,12 @@ make -j`nproc`
 
 mkdir sydr && cd sydr
 
-$CC $CFLAGS -I $INCLUDE_DIR -I ../example ../load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader
-$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_process_packet
-$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_quic_get_crypto_data
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/load_sydr_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader_alloc_fail
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_quic_get_crypto_data
+
+cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv .
 
 cd /nDPI
 make clean
@@ -134,8 +143,11 @@ make -j`nproc`
 
 mkdir cover && cd cover
 
-$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c ../example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader
-$CC $CFLAGS -I $INCLUDE_DIR /nDPI/load_sydr_process_packet.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_process_packet
-$CC $CFLAGS -I $INCLUDE_DIR ../load_sydr_quic_get_crypto_data.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_quic_get_crypto_data
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/load_sydr_ndpi_reader.c /nDPI/example/libndpiReader.a $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader_alloc_fail
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_process_packet
+$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_quic_get_crypto_data
+
+cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv .
 
 cd /nDPI

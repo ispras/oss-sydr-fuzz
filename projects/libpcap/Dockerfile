@@ -27,7 +27,7 @@ RUN mkdir corpus && mv tcpdump/tests/*.pcap corpus/
 
 WORKDIR libpcap
 
-RUN git checkout 53e957753e67ea6c559f200bf64eb4039e888c48
+RUN git checkout cff41e58f2fcd2c2ee77e9e25c63813e879657e1
 
 COPY build.sh load_sydr_filter.c load_sydr_pcap.c ./
 

@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 ################################################################################
+exit_on_time = 7200
 
 [sydr]
 args = "-l debug -j2 -s 180"

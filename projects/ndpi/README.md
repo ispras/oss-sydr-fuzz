@@ -45,4 +45,5 @@ Check security predicates:
 
     * process-packet
     * ndpi-reader
+    * ndpi-reader-alloc-fail
     * quic_get_crypto_data

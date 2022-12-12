@@ -19,7 +19,7 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 RUN apt-get update && apt install build-essential git gettext \
                       flex bison libtool autoconf automake pkg-config \
                       libnuma-dev libpcre2-dev \
-		      libmaxminddb-dev librrd-dev -y
+		              libmaxminddb-dev librrd-dev -y
 
 RUN git clone https://github.com/ntop/nDPI.git
 RUN git clone --depth 1 https://github.com/json-c/json-c.git json-c
@@ -29,7 +29,7 @@ RUN mkdir corpus && mv nDPI/tests/pcap/* corpus
 
 WORKDIR nDPI
 
-RUN git checkout 63f349319f00abd29af03ebefc969caf17fa65e9
+RUN git checkout 5704e4c1425ae86f38f8eed9342ad98a58ff6665
 
 COPY build.sh load_sydr_process_packet.c load_sydr_ndpi_reader.c load_sydr_quic_get_crypto_data.c ./
 
