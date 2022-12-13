@@ -1,10 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "reader_util.h"
+#include "ndpi_api.h"
 
 #include <pcap/pcap.h>
-#include <ndpi_api.h>
-#include <reader_util.h>
+
+#include <errno.h>
+#include <stdint.h>
+#include <stdio.h>
 
 struct ndpi_workflow_prefs *prefs = NULL;
 struct ndpi_workflow *workflow = NULL;
@@ -22,8 +23,28 @@ int malloc_size_stats = 0;
 int max_malloc_bins = 0;
 struct ndpi_bin malloc_bins; /* unused */
 
-int main(int argc, char** argv)
+#ifdef ENABLE_MEM_ALLOC_FAILURES
+
+static int mem_alloc_state = 0;
+
+__attribute__((no_sanitize("integer")))
+static int fastrand ()
 {
+        if(!mem_alloc_state) return 1; /* No failures */
+        mem_alloc_state = (214013 * mem_alloc_state + 2531011);
+        return (mem_alloc_state >> 16) & 0x7FFF;
+}
+
+static void *malloc_wrapper(size_t size) {
+        return (fastrand () % 16) ? malloc (size) : NULL;
+}
+static void free_wrapper(void *freeable) {
+        free(freeable);
+}
+
+#endif
+
+int main(int argc, char **argv) {
         pcap_t * pkts;
         const u_char *pkt;
         struct pcap_pkthdr *header;
@@ -31,29 +52,32 @@ int main(int argc, char** argv)
         char errbuf[PCAP_ERRBUF_SIZE];
         NDPI_PROTOCOL_BITMASK all;
         u_int i;
-        if (prefs == NULL) {
-                prefs = calloc(sizeof(struct ndpi_workflow_prefs), 1);
-                if (prefs == NULL) {
-                //should not happen
-                return 1;
-                }
-                prefs->decode_tunnels = 1;
-                prefs->num_roots = 16;
-                prefs->max_ndpi_flows = 16 * 1024 * 1024;
-                prefs->quiet_mode = 0;
 
-                workflow = ndpi_workflow_init(prefs, NULL /* pcap handler will be set later */, 0, ndpi_serialization_format_json);
-                // enable all protocols
-                NDPI_BITMASK_SET_ALL(all);
-                ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &all);
-                memset(workflow->stats.protocol_counter, 0,
-                        sizeof(workflow->stats.protocol_counter));
-                memset(workflow->stats.protocol_counter_bytes, 0,
-                        sizeof(workflow->stats.protocol_counter_bytes));
-                memset(workflow->stats.protocol_flows, 0,
-                        sizeof(workflow->stats.protocol_flows));
-                ndpi_finalize_initialization(workflow->ndpi_struct);
-        }
+        prefs = calloc(sizeof(struct ndpi_workflow_prefs), 1);
+
+        prefs->decode_tunnels = 1;
+        prefs->num_roots = 16;
+        prefs->max_ndpi_flows = 16 * 1024 * 1024;
+        prefs->quiet_mode = 0;
+
+        workflow = ndpi_workflow_init(prefs, NULL /* pcap handler will be set later */, 0, ndpi_serialization_format_json);
+        // enable all protocols
+        NDPI_BITMASK_SET_ALL(all);
+        ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &all);
+
+        ndpi_load_protocols_file(workflow->ndpi_struct, "protos.txt");
+        ndpi_load_categories_file(workflow->ndpi_struct, "categories.txt", NULL);
+        ndpi_load_risk_domain_file(workflow->ndpi_struct, "risky_domains.txt");
+        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, "ja3_fingerprints.csv");
+        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, "sha1_fingerprints.csv");
+
+        memset(workflow->stats.protocol_counter, 0,
+                sizeof(workflow->stats.protocol_counter));
+        memset(workflow->stats.protocol_counter_bytes, 0,
+                sizeof(workflow->stats.protocol_counter_bytes));
+        memset(workflow->stats.protocol_flows, 0,
+                sizeof(workflow->stats.protocol_flows));
+        ndpi_finalize_initialization(workflow->ndpi_struct);
 
         pkts = pcap_open_offline(argv[1], errbuf);
         if (pkts == NULL) {
@@ -61,17 +85,37 @@ int main(int argc, char** argv)
         }
         if (ndpi_is_datalink_supported(pcap_datalink(pkts)) == 0)
         {
-                /* Do not fail if the datalink type is not supported (may happen often during fuzzing). */
+        /* Do not fail if the datalink type is not supported (may happen often during fuzzing). */
                 pcap_close(pkts);
                 return 0;
         }
 
         workflow->pcap_handle = pkts;
-        /* Init flow tree */
-        workflow->ndpi_flows_root = ndpi_calloc(workflow->prefs.num_roots, sizeof(void *));
 
         header = NULL;
         r = pcap_next_ex(pkts, &header, &pkt);
+
+#ifdef ENABLE_MEM_ALLOC_FAILURES
+        if (r < 0) {
+                pcap_close(pkts);
+                return 0;
+        }
+        mem_alloc_state = header->len;
+#endif
+
+#ifdef ENABLE_MEM_ALLOC_FAILURES
+        set_ndpi_malloc(malloc_wrapper);
+        set_ndpi_free(free_wrapper);
+        /* Don't fail memory allocations until init phase is done */
+#endif
+
+        /* Init flow tree */
+        workflow->ndpi_flows_root = ndpi_calloc(workflow->prefs.num_roots, sizeof(void *));
+        if(!workflow->ndpi_flows_root) {
+                pcap_close(pkts);
+                return 0;
+        }
+
         while (r > 0) {
                 /* allocate an exact size buffer to check overflows */
                 uint8_t *packet_checked = malloc(header->caplen);
@@ -92,5 +136,6 @@ int main(int argc, char** argv)
         for(i = 0; i < workflow->prefs.num_roots; i++)
                 ndpi_tdestroy(workflow->ndpi_flows_root[i], ndpi_flow_info_freer);
         ndpi_free(workflow->ndpi_flows_root);
+
         return 0;
 }

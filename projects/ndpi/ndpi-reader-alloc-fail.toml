@@ -13,15 +13,16 @@
 # limitations under the License.
 #
 ################################################################################
+exit_on_time = 7200
 
 [sydr]
-args = "-l debug -j2"
-target = "/libpcap/sydr/load_sydr_filter @@"
+args = "-l debug -j2 -s 180"
+target = "/nDPI/sydr/load_sydr_ndpi_reader_alloc_fail @@"
 jobs = 2
 
-[aflplusplus]
-args = "-t 1000 -i /corpus -G 4096"
-target = "/libpcap/afl/fuzz_filter @@"
+[libfuzzer]
+path = "/nDPI/libfuzzer/fuzz_ndpi_reader_alloc_fail"
+args = "-rss_limit_mb=8192 -max_len=4096 -dict=/ndpi.dict -jobs=1000 -workers=4 /corpus"
 
 [cov]
-target = "/libpcap/cover/load_cover_filter @@"
+target = "/nDPI/cover/load_cover_ndpi_reader_alloc_fail @@"
