@@ -66,7 +66,7 @@ make install
 
 cd /nDPI
 
-LDFLAGS="-lpcap" ./autogen.sh --with-only-libndpi
+./autogen.sh --with-only-libndpi
 make -j`nproc`
 
 mkdir afl && cd afl
