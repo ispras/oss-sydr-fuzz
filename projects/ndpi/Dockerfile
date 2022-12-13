@@ -19,7 +19,7 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 RUN apt-get update && apt install build-essential git gettext \
                       flex bison libtool autoconf automake pkg-config \
                       libnuma-dev libpcre2-dev \
-		              libmaxminddb-dev librrd-dev -y
+		      libmaxminddb-dev librrd-dev -y
 
 RUN git clone https://github.com/ntop/nDPI.git
 RUN git clone --depth 1 https://github.com/json-c/json-c.git json-c
