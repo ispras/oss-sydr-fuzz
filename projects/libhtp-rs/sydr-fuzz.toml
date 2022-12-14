@@ -22,6 +22,3 @@ target = "/sydr_fuzz_htp_rs @@"
 [libfuzzer]
 path = "/cargo_fuzz_htp_rs"
 args = "-rss_limit_mb=8192 -max_len=4096 -dict=/http.dict /corpus"
-
-[cov]
-target = "/cover_fuzz_htp_rs @@"

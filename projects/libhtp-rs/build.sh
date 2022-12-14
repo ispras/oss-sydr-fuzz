@@ -27,7 +27,9 @@ unset CARGO_BUILD_TARGET
 
 cd /libhtp-rs/sydr_and_cover/
 
+cargo clean
+
 export RUSTFLAGS="-C instrument-coverage"
 
 cargo build
-cp target/x86_64-unknown-linux-gnu/debug/sydr_htp_rs /cover_fuzz_htp_rs
+cp target/debug/sydr_htp_rs /cover_fuzz_htp_rs

@@ -22,6 +22,3 @@ target = "/sydr_fuzz_htp_rs @@"
 [aflplusplus]
 args = "-i /corpus -t 100000 -x /http.dict"
 target = " /afl_fuzz_htp_rs @@"
-
-[cov]
-target = "/cover_fuzz_htp_rs @@"
