@@ -17,7 +17,7 @@ export CARGO_BUILD_TARGET="x86_64-unknown-linux-gnu"
 cargo afl build
 cp target/x86_64-unknown-linux-gnu/debug/fuzz_htp_rs /afl_fuzz_htp_rs
 
-cd /libhtp-rs/sydr/
+cd /libhtp-rs/sydr_and_cover/
 
 export CARGO_BUILD_TARGET="x86_64-unknown-linux-gnu"
 cargo build
@@ -25,7 +25,7 @@ cp target/x86_64-unknown-linux-gnu/debug/sydr_htp_rs /sydr_fuzz_htp_rs
 
 unset CARGO_BUILD_TARGET
 
-cd /libhtp-rs/sydr/
+cd /libhtp-rs/sydr_and_cover/
 
 export RUSTFLAGS="-C instrument-coverage"
 

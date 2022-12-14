@@ -34,6 +34,6 @@ WORKDIR /
 
 COPY build.sh http.dict ./
 COPY afl/ /libhtp-rs/afl/
-COPY sydr/ /libhtp-rs/sydr/
+COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
 
 RUN bash build.sh
