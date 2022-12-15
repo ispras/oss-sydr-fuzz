@@ -9,7 +9,7 @@ index 252b5e2370..6e76f3ccc6 100644
 -    int64_t dim = c10::stoll(num, &num_len);
 +    int64_t dim = 0;
 +    try {
-+      c10::stoll(num, &num_len);
++      dim = c10::stoll(num, &num_len);
 +    } catch (const std::invalid_argument &e) {
 +      throw ErrorReport(L.cur()) << "Number can't be converted to an int";
 +    } catch (const std::out_of_range &e) {
