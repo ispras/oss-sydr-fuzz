@@ -24,8 +24,7 @@ RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-
     rm cmake-3.22.1-linux-x86_64.sh
 
 # Install Rust.
-RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly
---profile=minimal
+RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly --profile=minimal
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
