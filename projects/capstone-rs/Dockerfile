@@ -19,12 +19,6 @@ MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
 
-# Install nightly
-RUN rustup install nightly
-
-# Install cargo-fuzz
-RUN cargo install cargo-fuzz
-
 # Copy build script.
 COPY build_fuzz.sh build_sydr.sh /
 
