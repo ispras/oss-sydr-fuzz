@@ -19,12 +19,6 @@ MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
 
-# Install nightly
-RUN rustup install nightly
-
-# Install cargo-fuzz
-RUN cargo install cargo-fuzz
-
 # Clone target from GitHub.
 RUN git clone https://github.com/rust-lang/regex regex
 
