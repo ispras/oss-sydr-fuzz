@@ -16,12 +16,7 @@
 
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-RUN rustup install nightly
-RUN cargo install cargo-fuzz
-RUN cargo install afl
 RUN cargo install grcov
-
-RUN rustup component add llvm-tools-preview
 
 RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 
