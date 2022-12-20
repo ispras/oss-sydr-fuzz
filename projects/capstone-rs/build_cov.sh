@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-# Copyright 2021 Google LLC
+# Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
 # limitations under the License.
 #
 ################################################################################
+export RUSTFLAGS="-C instrument-coverage"
 
-cargo fuzz build -O
-cargo fuzz list | while read i; do
-    cp fuzz/target/x86_64-unknown-linux-gnu/release/$i /
-done
+cargo build
+cp /capstone-rs/capstone-rs/fuzz/target/debug/sydr_target_disasm_x86_64 /cov_target_disasm_x86_64

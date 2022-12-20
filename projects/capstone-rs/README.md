@@ -25,3 +25,8 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz -c target_disasm_x86_64.toml run
+
+Collect coverage:
+
+    # sydr-fuzz -c target_disasm_x86_64.toml cov-export -- -format=lcov > target_disasm_x86_64.lcov
+    # genhtml --ignore-errors source -o target_disasm_x86_64_html target_disasm_x86_64.lcov
