@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,13 +14,7 @@
 # limitations under the License.
 #
 ################################################################################
+export RUSTFLAGS="-C instrument-coverage"
 
-[sydr]
-target = "/sydr_from_gdb @@"
-
-[libfuzzer]
-path = "/from_gdb"
-args = "-rss_limit_mb=8192"
-
-[cov]
-target = "/cov_from_gdb @@"
+cargo build
+cp /gdb-command/fuzz/target/debug/sydr_from_gdb /cov_from_gdb
