@@ -28,7 +28,7 @@ WORKDIR /json
 RUN git checkout 94019a31c6036dc4ebb9afc44a214f950caf0d1f
 
 # Copy build script.
-COPY build_fuzz.sh build_sydr.sh /
+COPY build_cov.sh build_fuzz.sh build_sydr.sh /
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
@@ -42,6 +42,11 @@ WORKDIR fuzz
 # Build sydr targets.
 RUN /build_sydr.sh
 
+# Build cov targets.
+RUN cargo clean && /build_cov.sh
+
 COPY json.dict /
 
 WORKDIR /
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

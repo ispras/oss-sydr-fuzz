@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +14,7 @@
 # limitations under the License.
 #
 ################################################################################
+export RUSTFLAGS="-C instrument-coverage"
 
-[sydr]
-target = "/sydr_from_slice @@"
-
-[libfuzzer]
-path = "/from_slice"
-args = "-rss_limit_mb=8192 -dict=/json.dict"
-
-[cov]
-target = "/cov_from_slice @@"
-
+cargo build
+cp target/debug/sydr_from_slice /cov_from_slice

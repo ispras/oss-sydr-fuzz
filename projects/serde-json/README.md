@@ -26,3 +26,8 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz -c from_slice.toml run
+
+Collect coverage:
+
+    # sydr-fuzz -c from_slice.toml cov-export -- -format=lcov > from_slice.lcov
+    # genhtml --ignore-errors source -o from_slice_html from_slice.lcov
