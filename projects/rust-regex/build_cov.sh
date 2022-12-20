@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 ################################################################################
+export RUSTFLAGS="-C instrument-coverage"
 
 cargo build
-cp target/debug/sydr_regex_match /
+cp target/debug/sydr_regex_match /cov_regex_match
