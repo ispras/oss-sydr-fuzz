@@ -20,7 +20,7 @@ RUN apt-get update && \
     apt-get -y install curl
 
 # Copy build script.
-COPY build_fuzz.sh build_sydr.sh /
+COPY build_cov.sh build_fuzz.sh build_sydr.sh /
 
 # Clone target from GitHub.
 RUN git clone https://github.com/m4b/goblin.git
@@ -44,8 +44,13 @@ WORKDIR fuzz
 # Build sydr targets.
 RUN /build_sydr.sh
 
+# Build cov targets.
+RUN cargo clean && /build_cov.sh
+
 WORKDIR /
 
 #Create corpus
 RUN git clone https://github.com/JonathanSalwan/binary-samples /corpus && \
 rm -rf /corpus/anti-disassembler && rm /corpus/MIT_LICENSE && rm /corpus/README.md
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

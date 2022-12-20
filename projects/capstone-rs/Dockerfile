@@ -48,3 +48,5 @@ RUN /build_sydr.sh
 RUN cargo clean && /build_cov.sh
 
 WORKDIR /
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH
