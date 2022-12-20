@@ -27,6 +27,12 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c parse.toml run
 
+Collect coverage:
+
+    # sydr-fuzz -c parse.toml cov-export -- -format=lcov > parse.lcov
+    # genhtml --ignore-errors source -o parse_html parse.lcov
+
+
 ## Alternative Fuzz Targets
 
 goblin project has 2 fuzz targets.

@@ -20,3 +20,6 @@ target = "/sydr_parse @@"
 [libfuzzer]
 path = "/parse"
 args = "-rss_limit_mb=8192 /corpus"
+
+[cov]
+target = "/cov_parse @@"
