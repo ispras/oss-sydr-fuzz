@@ -15,5 +15,5 @@
 #
 ################################################################################
 
-cargo +nightly build
+cargo build
 cp target/debug/sydr_from_slice /
