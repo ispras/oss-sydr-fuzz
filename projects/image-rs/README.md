@@ -34,6 +34,11 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c tiff.toml run
 
+Collect coverage:
+
+    # sydr-fuzz -c tiff.toml cov-export -- -format=lcov > tiff.lcov
+    # genhtml --ignore-errors source -o tiff_html tiff.lcov
+
 ## Alternative Fuzz Targets
 
 Image-rs/image project has 12 fuzz targets.

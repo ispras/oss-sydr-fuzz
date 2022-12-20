@@ -22,3 +22,6 @@ jobs = 2
 [libfuzzer]
 path = "/fuzzer_script_ico"
 args = "-rss_limit_mb=8192 -jobs=4 /corpus_ico"
+
+[cov]
+target = "/cov_script_ico @@"
