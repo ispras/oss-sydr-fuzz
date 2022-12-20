@@ -30,3 +30,8 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz -c from_gdb.toml run
+
+Collect coverage:
+
+    # sydr-fuzz -c from_gdb.toml cov-export -- -format=lcov > from_gdb.lcov
+    # genhtml --ignore-errors source -o from_gdb_html from_gdb.lcov

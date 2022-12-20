@@ -15,5 +15,5 @@
 #
 ################################################################################
 
-cargo +nightly build
+cargo build
 cp /gdb-command/fuzz/target/debug/sydr_from_gdb /
