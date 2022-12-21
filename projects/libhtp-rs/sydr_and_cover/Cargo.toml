@@ -1,0 +1,19 @@
+[package]
+name = "htp-fuzz"
+version = "0.0.1"
+authors = ["Automatically generated"]
+publish = false
+
+[dependencies.htp]
+path = ".."
+
+[dependencies]
+chrono = "0.4.19"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "sydr_htp_rs"
+path = "targets/sydr_htp.rs"
