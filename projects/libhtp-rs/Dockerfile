@@ -16,8 +16,6 @@
 
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
-RUN cargo install grcov
-
 RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 
 WORKDIR /libhtp-rs
@@ -35,3 +33,5 @@ COPY afl/ /libhtp-rs/afl/
 COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
 
 RUN bash build.sh
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

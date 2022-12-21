@@ -5,7 +5,7 @@ cd /libhtp-rs/fuzz/
 export CARGO_BUILD_TARGET="x86_64-unknown-linux-gnu"
 export RUSTFLAGS="-C debug-assertions -C overflow_checks -C debuginfo=2"
 
-cargo +nightly fuzz build -O
+cargo fuzz build -O
 cp target/x86_64-unknown-linux-gnu/release/fuzz_htp_rs /cargo_fuzz_htp_rs
 
 unset RUSTFLAGS
