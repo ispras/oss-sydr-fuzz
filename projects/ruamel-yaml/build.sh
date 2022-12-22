@@ -16,9 +16,10 @@
 
 pip install testresources 
 pip install -U pip setuptools wheel
-pip install ruamel.yaml
+
+pip install .
 
 mkdir /corpus
-# add seed corpus.
+# Add seed corpus.
 find /libyaml -name "*.yaml" | grep -v crashers | \
      xargs -I {} cp {} /corpus

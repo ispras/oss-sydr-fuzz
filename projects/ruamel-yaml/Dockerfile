@@ -18,13 +18,12 @@ FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Ilya Yegorov (hkctkuy)
 
+RUN apt install -y mercurial
+
 # Clone repo for the corpus
 RUN git clone https://github.com/yaml/libyaml
 
-WORKDIR /libyaml
-
-# Checkout specified commit. It could be updated later.
-RUN git checkout acd6f6f014c25e46363e718381e0b35205df2d83
+RUN hg clone http://hg.code.sf.net/p/ruamel-yaml/code ruamel-yaml
 
 WORKDIR /ruamel-yaml
 
