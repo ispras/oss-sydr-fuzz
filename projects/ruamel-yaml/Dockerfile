@@ -21,13 +21,15 @@ MAINTAINER Ilya Yegorov (hkctkuy)
 # Clone repo for the corpus
 RUN git clone https://github.com/yaml/libyaml
 
+WORKDIR /libyaml
+
+# Checkout specified commit. It could be updated later.
+RUN git checkout acd6f6f014c25e46363e718381e0b35205df2d83
+
 WORKDIR /ruamel-yaml
 
 COPY build.sh \
      yaml_fuzzer.py \
      /
-
-RUN chmod +x /build.sh 
-RUN chmod +x /yaml_fuzzer.py
 
 RUN /build.sh

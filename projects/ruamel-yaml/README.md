@@ -8,7 +8,7 @@ ruamel.yaml is a YAML 1.2 loader/dumper package for Python
 
 ## Run Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/pillow` directory:
+Unzip Sydr (`sydr.zip`) in `projects/ruamel-yaml` directory:
 
     $ unzip sydr.zip
 
@@ -26,7 +26,7 @@ Change directory to `/fuzz`:
 
 ## Fuzzing
 
-### pillow
+### yaml
 
 Run fuzzing:
 
