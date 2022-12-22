@@ -18,7 +18,7 @@
 
 cd /pytorch_sydr
 # Build torch without sans
-MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 \
+MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 \
 	USE_DISTRIBUTED=1 USE_MPI=1 TP_BUILD_LIBUV=1 USE_TENSORPIPE=1 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 \
 	BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 \
 	CXXFLAGS='-fPIC -g' CFLAGS='-fPIC -g' \
@@ -27,7 +27,7 @@ MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MK
 cd build
 
 # Build class_parser_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -41,8 +41,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./class_parser_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -72,7 +70,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG ./class_parser_fuzz.o ./main-impl.o lib/lib
 	-o /class_parser_sydr
 
 # Build jit_differential_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -86,8 +84,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./jit_differential_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -117,7 +113,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG ./jit_differential_fuzz.o ./main-impl.o lib
 	-o /jit_differential_sydr
 
 # Build irparser_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -131,8 +127,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./irparser_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -162,7 +156,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG ./irparser_fuzz.o ./main-impl.o lib/libtorc
 	-o /irparser_sydr
 
 # Build message_deserialize_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -177,8 +171,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./message_deserialize_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -208,7 +200,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG ./message_deserialize_fuzz.o ./main-impl.o 
 	-o /message_deserialize_sydr
 
 # Build load_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -222,8 +214,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./load_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -253,7 +243,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG ./load_fuzz.o ./main-impl.o lib/libtorch.a 
 	-o /load_sydr
 
 # Build mobile_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -267,8 +257,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./mobile_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -298,7 +286,7 @@ clang++ -g -O2 -std=gnu++14 -DNDEBUG ./mobile_fuzz.o ./main-impl.o lib/libtorch.
 	-o /mobile_sydr
 
 # Build dump_sydr target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -312,8 +300,6 @@ clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ON
 clang++ -g -O2 -std=gnu++14 -DNDEBUG ./dump_fuzz.o ./main-impl.o lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_sydr/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \

@@ -18,7 +18,7 @@
 
 cd /pytorch_fuzz/
 # Build torch with sans
-MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 \
+MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MKL=1 \
 	USE_DISTRIBUTED=1 USE_MPI=0 TP_BUILD_LIBUV=1 USE_TENSORPIPE=1 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 \
 	BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 \
 	CXXFLAGS='-fPIC -g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero' \
@@ -28,7 +28,7 @@ MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=clang CXX=clang++ USE_STATIC_MK
 cd build
 
 # Build class_parser_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -47,8 +47,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -78,7 +76,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-o /class_parser_fuzz
 
 # Build jit_differential_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -97,8 +95,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -128,7 +124,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-o /jit_differential_fuzz
 
 # Build irparser_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -147,8 +143,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -178,7 +172,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-o /irparser_fuzz
 
 # Build message_deserialize_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -198,8 +192,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -229,7 +221,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-o /message_deserialize_fuzz
 
 # Build load_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -248,8 +240,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -279,7 +269,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-o /load_fuzz
 
 # Build mobile_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -298,8 +288,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \
@@ -329,7 +317,7 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	-o /mobile_fuzz
 
 # Build dump_fuzz target
-clang++ -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
+clang++ -DUSE_ITT=0 -DAT_PER_OPERATOR_HEADERS -DCPUINFO_SUPPORTED_PLATFORM=1 -DFMT_HEADER_ONLY=1 \
 	-DFXDIV_USE_INLINE_ASSEMBLY=0 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_MMAP=1 -DHAVE_SHM_OPEN=1 \
 	-DHAVE_SHM_UNLINK=1 -DMINIZ_DISABLE_ZIP_READER_CRC32_CHECKS -DNNP_CONVOLUTION_ONLY=0 \
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
@@ -348,8 +336,6 @@ clang++ -g -O2 -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-div
 	lib/libtorch.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch.a" -Wl,--no-whole-archive \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \
-	lib/libbreakpad.a \
-	lib/libbreakpad_common.a \
 	-Wl,--whole-archive,"/pytorch_fuzz/build/lib/libcaffe2_protos.a" -Wl,--no-whole-archive \
 	lib/libqnnpack.a \
 	lib/libpytorch_qnnpack.a \

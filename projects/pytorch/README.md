@@ -108,5 +108,4 @@ Minimize corpus:
 
 ## Applied patches
 
-* miniz.* – Updated miniz version to fix segmentation fault.
-* stoull.patch – Catch stoull exception to allow the fuzzer go deeper.
+* schema_type_parser-stoll.patch – Catch stull exceptions to allow the fuzzer go deeper.
