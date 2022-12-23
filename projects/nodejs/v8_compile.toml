@@ -13,14 +13,13 @@
 # limitations under the License.
 #
 ################################################################################
-
 [sydr]
 args = "-l debug"
 target = "/v8_compile_sydr @@"
 
-[aflplusplus]
-target = "/v8_compile_afl @@"
-args = "-t 60000 -i /corpus -x /js.dict"
+[libfuzzer]
+path = "/v8_compile_fuzzer"
+args = "-rss_limit_mb=8192 -jobs=1000 -dict=/js.dict /corpus"
 
 [cov]
 target = "/v8_compile_cov @@"
