@@ -46,5 +46,5 @@ for fuzzer in $(find $SRC -name 'fuzz_*.py'); do
 done
 
 # Collect corpus
-find Tests/images Tests/icc -print | zip -q $OUT/fuzz_pillow_seed_corpus.zip -@
-find Tests/fonts -print | zip -q $OUT/fuzz_font_seed_corpus.zip -@
+find Tests/images Tests/icc -print | xargs -I {} cp -r {} $OUT/fuzz_pillow_seed_corpus
+find Tests/fonts -print | xargs -I {} cp -r {} $OUT/fuzz_font_seed_corpus

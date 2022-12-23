@@ -64,11 +64,4 @@ COPY build.sh /
 
 RUN /build.sh
 
-RUN unzip /out/fuzz_font_seed_corpus.zip \
-    -d /out/fuzz_font_seed_corpus \
-    && rm /out/fuzz_font_seed_corpus.zip \
-    && unzip /out/fuzz_pillow_seed_corpus.zip \
-    -d /out/fuzz_pillow_seed_corpus \
-    && rm /out/fuzz_pillow_seed_corpus.zip
-
 RUN chmod +x /Pillow/Tests/oss-fuzz/fuzz_pillow.py /Pillow/Tests/oss-fuzz/fuzz_font.py
