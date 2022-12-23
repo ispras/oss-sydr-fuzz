@@ -26,9 +26,11 @@
 
 #include <ATen/core/jit_type.h>
 #include <c10/core/ScalarType.h>
+#include <c10d/ProcessGroupGloo.hpp>
 #include <c10d/TCPStore.hpp>
 #include <tensorpipe/core/message.h>
 #include <torch/csrc/distributed/autograd/context/container.h>
+#include <torch/csrc/distributed/autograd/context/context.h>
 #include <torch/csrc/distributed/rpc/profiler/remote_profiler_manager.h>
 #include <torch/csrc/distributed/rpc/profiler/server_process_global_profiler.h>
 #include <torch/csrc/distributed/rpc/request_callback_no_python.h>
@@ -120,27 +122,38 @@ MessageType GetMessageType(MessageType msgType) {
 std::shared_ptr<TensorPipeAgent> g_rpcAgent;
 
 int Init() {
+  const uint32_t numWorkers = 1;
+  const std::string masterNodeAddr = "127.0.0.1";
+
   static torch::distributed::autograd::DistAutogradContainer
       *autogradContainer =
           &torch::distributed::autograd::DistAutogradContainer::init(0);
 
-  c10d::TCPStoreOptions storeOpts{/* port */ 0,
-                                  /* isServer */ true, /* numWorkers */ 1,
+  // auto options = c10d::ProcessGroupGloo::Options::create();
+  // options->devices.push_back(
+  //     ::c10d::ProcessGroupGloo::createDeviceForHostname(masterNodeAddr));
+
+  c10d::TCPStoreOptions storeOpts{/* port */ 29500,
+                                  /* isServer */ true,
+                                  /* numWorkers */ numWorkers,
                                   /* waitWorkers */ true,
                                   /* timeout */ std::chrono::seconds(10)};
   c10::intrusive_ptr<c10d::Store> store =
-      c10::make_intrusive<c10d::TCPStore>("127.0.0.1", storeOpts);
+      c10::make_intrusive<c10d::TCPStore>(masterNodeAddr, storeOpts);
 
   TensorPipeRpcBackendOptions tensorpipeOpts(
       /*numWorkerThreads=*/1U,
       /*transports=*/c10::nullopt,
       /*channels=*/c10::nullopt,
-      /*rpc_timeout=*/30,
+      /*rpc_timeout=*/15,
       /*init_method=*/"unused");
-  auto g_rpcAgent = std::make_shared<TensorPipeAgent>(
-      store, "worker", 0, /*numWorkers*/ 1, tensorpipeOpts,
-      std::unordered_map<std::string, DeviceMap>{}, std::vector<c10::Device>{},
-      std::make_unique<RequestCallbackNoPython>());
+  g_rpcAgent = std::make_shared<TensorPipeAgent>(
+      /*store*/ store, /*selfName*/ "worker", /*selfId*/ 0,
+      /*numWorkers*/ numWorkers, /*opts*/ tensorpipeOpts,
+      /*reverseDeviceMaps*/ std::unordered_map<std::string, DeviceMap>{},
+      /*devices*/ std::vector<c10::Device>{},
+      /*cb*/ std::make_unique<RequestCallbackNoPython>());
+
   RpcAgent::setCurrentRpcAgent(g_rpcAgent);
 
   std::shared_ptr<TypeResolver> typeResolver =
@@ -155,45 +168,83 @@ int Init() {
         return c10::StrongTypePtr(nullptr,
                                   c10::TensorType::create(at::Tensor()));
       });
+
+  // std::shared_ptr<TypeResolver> typeResolver =
+  //     std::make_shared<TypeResolver>([&](const c10::QualifiedName &qn) {
+  //       auto typePtr = PythonRpcHandler::getInstance().parseTypeFromStr(
+  //           qn.qualifiedName());
+  //       return c10::StrongTypePtr(
+  //           PythonRpcHandler::getInstance().jitCompilationUnit(),
+  //           std::move(typePtr));
+  //     });
   g_rpcAgent->setTypeResolver(typeResolver);
+  g_rpcAgent->start();
+  g_rpcAgent->sync();
 
   return 1;
 }
 
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
+void ReadFile(char *file_path, char **out_buffer, int *file_size) {
+  FILE *fd = fopen(file_path, "rb");
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-  if (!RpcAgent::isCurrentRpcAgentSet()) {
-    Init();
-  }
+  if (fd == NULL)
+    throw std::runtime_error("File not found!");
 
-  if (size < 5) {
-    return 0;
-  }
+  fseek(fd, 0, SEEK_END);
+  int fsize = ftell(fd);
+  fseek(fd, 0, SEEK_SET);
 
-  MessageType msgType = GetMessageType((MessageType)(data[0] << 8 | data[1]));
-  int64_t mId = (uint64_t)data[2];
-  bool isResponse = (bool)data[3];
+  *file_size = fsize;
+
+  char *buffer = (char *)malloc(sizeof(char) * fsize);
+  fread(buffer, 1, fsize, fd);
+  fclose(fd);
+
+  *out_buffer = buffer;
+}
+
+void ConstructMessageAndSend(char *file_path) {
+  char *buffer;
+  int file_size;
+
+  ReadFile(file_path, &buffer, &file_size);
+
+  MessageType msgType =
+      GetMessageType((MessageType)(buffer[0] << 8 | buffer[1]));
+  int64_t mId = (uint64_t)buffer[2];
+  bool isResponse = (bool)buffer[3];
 
   at::Tensor t1 = torch::ones({16}, at::ScalarType::Int);
   at::Tensor t2 = torch::ones({16}, at::ScalarType::Float);
   std::vector<at::Tensor> tensors{t1, t2};
-  std::vector<char> payload(data + 4, data + size);
+  std::vector<char> payload(buffer + 4, buffer + file_size);
 
   auto msg = c10::make_intrusive<Message>(std::move(payload),
                                           std::move(tensors), msgType);
   msg->setId(mId);
 
-  try {
-    if (isResponse) {
-      MessageType msgTypeRes;
-      auto deserialized = deserializeResponse(*msg, msgTypeRes);
-    } else {
-      auto deserialized = deserializeRequest(*msg);
-    }
-  } catch (const c10::Error &e) {
-    return 0;
+  if (isResponse) {
+    throw std::runtime_error(
+        "Sending response messages is not supported by the reproducer!");
+    // torch::distributed::autograd::getMessageWithAutograd(
+    //     0, std::move(scriptRemoteCall).toMessage(),
+    //     std::move(scriptRemoteCall).toMessage()->type());
+  } else {
+    auto response = torch::distributed::autograd::sendMessageWithAutograd(
+        *g_rpcAgent, g_rpcAgent->getWorkerInfo("worker"), msg);
+    response->waitAndThrow();
   }
+}
+
+int main(int argc, char *argv[]) {
+  if (!RpcAgent::isCurrentRpcAgentSet()) {
+    Init();
+  }
+
+  ConstructMessageAndSend(argv[1]);
+
+  g_rpcAgent->join();
+  g_rpcAgent->shutdown();
 
   return 0;
 }

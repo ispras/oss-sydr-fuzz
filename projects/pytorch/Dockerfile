@@ -48,6 +48,9 @@ RUN bash build_fuzz.sh
 RUN bash build_sydr.sh
 RUN bash build_cov.sh
 
+# Build reproducer for RPC bugs
+RUN bash build_rpc_reproducer.sh
+
 COPY ./ir_corpus.zip /
 COPY ./parser_corpus.zip /
 COPY ./corpus_message_deserialize.zip /
