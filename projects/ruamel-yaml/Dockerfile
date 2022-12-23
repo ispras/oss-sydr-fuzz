@@ -27,6 +27,9 @@ RUN hg clone http://hg.code.sf.net/p/ruamel-yaml/code ruamel-yaml
 
 WORKDIR /ruamel-yaml
 
+# Checkout specified commit. It could be updated later.
+RUN hg checkout 54d2c5
+
 COPY build.sh \
      yaml_fuzzer.py \
      /
