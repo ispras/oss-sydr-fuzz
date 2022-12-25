@@ -14,7 +14,6 @@
 #
 ################################################################################
 
-
 FROM sweetvishnya/ubuntu20.04-sydr-fuzz
 
 RUN git clone https://github.com/PCRE2Project/pcre2
