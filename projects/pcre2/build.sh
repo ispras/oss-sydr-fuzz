@@ -1,13 +1,11 @@
-#Build target for libfuzzer
-
 echo '[x] Build target for libfuzzer'
 
-export CC="clang"
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+CC="clang"
+CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
 TARGET_FLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
 ./autogen.sh
-./configure --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
+./configure CC=$CC CFLAGS="$CFLAGS" --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
 make -j$(nproc)
 
 mkdir libfuzzer
@@ -21,7 +19,7 @@ echo '[x] Build target for afl++'
 export CC="afl-clang-lto"
 
 ./autogen.sh
-./configure --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
+./configure CC=$CC --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
 make -j$(nproc)
 
 mkdir afl
@@ -32,11 +30,11 @@ make clean
 
 echo '[x] Build target for sydr'
 
-export CC="clang"
-export CFLAGS="-g"
+CC="clang"
+CFLAGS="-g"
 
 ./autogen.sh
-./configure --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
+./configure CC=$CC CFLAGS="$CFLAGS" --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
 make -j$(nproc)
 
 mkdir sydr
@@ -47,11 +45,10 @@ make clean
 
 echo '[x] Build target for cover'
 
-export CC="clang"
-export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
 ./autogen.sh
-./configure --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
+./configure CC=$CC CFLAGS="$CFLAGS" --enable-fuzz-support --enable-never-backslash-C --with-match-limit=1000 --with-match-limit-depth=1000
 make -j$(nproc)
 
 mkdir cover
