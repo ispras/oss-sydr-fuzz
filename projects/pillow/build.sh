@@ -18,9 +18,9 @@
 
 export OUT=/out
 export SRC=./
-export CC="clang" 
-export CFLAGS="-fsanitize=address,fuzzer-no-link -g" 
-export CXX="clang++" 
+export CC="clang"
+export CFLAGS="-fsanitize=address,fuzzer-no-link -g"
+export CXX="clang++"
 export CXXFLAGS="-fsanitize=address,fuzzer-no-link -g"
 rm /usr/bin/x86_64-linux-gnu-gcc
 ln -s /usr/bin/clang /usr/bin/x86_64-linux-gnu-gcc
@@ -37,7 +37,7 @@ for fuzzer in $(find $SRC -name 'fuzz_*.py'); do
       --add-binary /usr/local/lib/liblcms2.so.2:. \
       --add-binary /usr/local/lib/libopenjp2.so.7:. \
       --add-binary /usr/local/lib/libpng16.so.16:. \
-      --add-binary /usr/local/lib/libtiff.so.5:. \
+      --add-binary /usr/local/lib/libtiff.so.6:. \
       --add-binary /usr/local/lib/libwebp.so.7:. \
       --add-binary /usr/local/lib/libwebpdemux.so.2:. \
       --add-binary /usr/local/lib/libwebpmux.so.3:. \

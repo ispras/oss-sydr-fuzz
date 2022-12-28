@@ -27,7 +27,7 @@ RUN apt-get update && \
       pkg-config \
       rsync \
       subversion \
-      zip 
+      zip
 
 RUN pip install pyinstaller
 
