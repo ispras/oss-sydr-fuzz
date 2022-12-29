@@ -98,6 +98,15 @@ Minimize corpus:
 
     # sydr-fuzz -c mobile.toml cmin
 
+#### rpc_reproducer
+
+These targets are used to double check the bugs found by rpc fuzzers (e.g. message_deserialize_fuzz).
+
+There are 2 build:
+
+1. Clean RPC reproducer without asan: `rpc_reproducer_nosan`
+2. RPC reproducer with asan: `rpc_reproducer_asan`
+
 ## Security predicates
 
     # sydr-fuzz -c <target_name>.toml security
@@ -108,5 +117,4 @@ Minimize corpus:
 
 ## Applied patches
 
-* miniz.* – Updated miniz version to fix segmentation fault.
-* stoull.patch – Catch stoull exception to allow the fuzzer go deeper.
+* schema_type_parser-stoll.patch – Catch stull exceptions to allow the fuzzer go deeper.
