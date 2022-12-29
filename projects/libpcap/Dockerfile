@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt-get install -y make cmake flex bison
 

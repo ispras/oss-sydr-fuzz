@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt install build-essential git gettext \
                       flex bison libtool autoconf automake pkg-config \

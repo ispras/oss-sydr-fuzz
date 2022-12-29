@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 # Set author of this docker container.
 MAINTAINER Andrey Fedotov

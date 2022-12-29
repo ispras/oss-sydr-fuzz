@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 
