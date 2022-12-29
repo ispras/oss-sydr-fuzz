@@ -26,7 +26,7 @@ export LDFLAGS="-latomic $CXXFLAGS"
 
 ./configure --with-ossfuzz
 make -j$(nproc)
-cp out/Release/load_env_fuzzer out/Release/load_url_fuzzer out/Release/v8_compile_fuzzer /
+cp out/Release/*_fuzzer /
 
 # afl
 cd /node_afl
@@ -39,7 +39,7 @@ export LDFLAGS="-latomic $CXXFLAGS"
 
 ./configure --with-ossfuzz
 make -j$(nproc)
-cp out/Release/load_env_afl out/Release/load_url_afl out/Release/v8_compile_afl /
+cp out/Release/*_afl /
 
 # Sydr
 cd /node_sydr
@@ -53,7 +53,7 @@ export LDFLAGS="-latomic"
 $CC $CFLAGS -pthread /opt/StandaloneFuzzTargetMain.c -c -o /StandaloneFuzzTargetMain.o
 ./configure --with-ossfuzz
 make -j$(nproc)
-cp out/Release/load_env_sydr out/Release/load_url_sydr out/Release/v8_compile_sydr /
+cp out/Release/*_sydr /
 
 # coverage
 cd /node_cov
@@ -67,4 +67,4 @@ export LDFLAGS="-latomic $CXXFLAGS"
 $CC $CFLAGS -pthread /opt/StandaloneFuzzTargetMain.c -c -o /StandaloneFuzzTargetMain.o
 ./configure --with-ossfuzz
 make -j$(nproc)
-cp out/Release/load_env_cov out/Release/load_url_cov out/Release/v8_compile_cov /
+cp out/Release/*_cov /
