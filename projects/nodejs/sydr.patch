@@ -1,0 +1,77 @@
+--- node.gyp	2022-12-23 18:09:16.272074952 +0300
++++ node_sydr.gyp	2022-12-24 15:24:54.684630524 +0300
+@@ -891,7 +891,7 @@
+       ],
+     }, # node_lib_target_name
+     { # fuzz_url
+-      'target_name': 'fuzz_url',
++      'target_name': 'load_url_sydr',
+       'type': 'executable',
+       'dependencies': [
+         '<(node_lib_target_name)',
+@@ -913,7 +913,7 @@
+       ],
+       'conditions': [
+         ['OS=="linux"', {
+-          'ldflags': [ '-fsanitize=fuzzer' ]
++          'ldflags': ['/StandaloneFuzzTargetMain.o -g -std=c++17 -ldl']
+         }],
+         # Ensure that ossfuzz flag has been set and that we are on Linux
+         [ 'OS!="linux" or ossfuzz!="true"', {
+@@ -922,7 +922,7 @@
+       ],
+     }, # fuzz_url
+     { # fuzz_env
+-      'target_name': 'fuzz_env',
++      'target_name': 'load_env_sydr',
+       'type': 'executable',
+       'dependencies': [
+         '<(node_lib_target_name)',
+@@ -952,7 +952,7 @@
+       ],
+       'conditions': [
+         ['OS=="linux"', {
+-          'ldflags': [ '-fsanitize=fuzzer' ]
++          'ldflags': ['/StandaloneFuzzTargetMain.o -g -std=c++17 -ldl']
+         }],
+         # Ensure that ossfuzz flag has been set and that we are on Linux
+         [ 'OS!="linux" or ossfuzz!="true"', {
+@@ -960,6 +960,38 @@
+         }],
+       ],
+     }, # fuzz_env
++    { # v8_compile
++      'target_name': 'v8_compile_sydr',
++      'type': 'executable',
++      'dependencies': [
++        '<(node_lib_target_name)',
++      ],
++      'includes': [
++        'node.gypi'
++      ],
++      'include_dirs': [
++        'src',
++        'deps/v8/include',
++      ],
++      'defines': [
++        'NODE_ARCH="<(target_arch)"',
++        'NODE_PLATFORM="<(OS)"',
++        'NODE_WANT_INTERNALS=1',
++      ],
++      'sources': [
++        'src/node_snapshot_stub.cc',
++        'test/fuzzers/v8_compile.cc',
++      ],
++      'conditions': [
++        ['OS=="linux"', {
++          'ldflags': ['/StandaloneFuzzTargetMain.o -g -std=c++17 -ldl']
++        }],
++        # Ensure that ossfuzz flag has been set and that we are on Linux
++        [ 'OS!="linux" or ossfuzz!="true"', {
++          'type': 'none',
++        }],
++      ],
++    }, # v8_compile
+     {
+       'target_name': 'cctest',
+       'type': 'executable',
