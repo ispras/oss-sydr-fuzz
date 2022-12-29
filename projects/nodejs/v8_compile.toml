@@ -19,7 +19,7 @@ target = "/v8_compile_sydr @@"
 
 [libfuzzer]
 path = "/v8_compile_fuzzer"
-args = "-rss_limit_mb=8192 -jobs=1000 -dict=/js.dict /corpus"
+args = "-detect_leaks=0 -rss_limit_mb=8192 -jobs=1000 -dict=/js.dict /corpus"
 
 [cov]
 target = "/v8_compile_cov @@"

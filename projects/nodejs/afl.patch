@@ -64,7 +64,7 @@
 +      ],
 +      'conditions': [
 +        ['OS=="linux"', {
-+          'ldflags': ['-g -std=c++17 -fsanitize=fuzzer,address,integer,undefined,bounds,null,float-divide-by-zero' ]
++          'ldflags': ['-g -std=c++17 -fsanitize=fuzzer,address,integer,undefined,bounds,null,float-divide-by-zero']
 +        }],
 +        # Ensure that ossfuzz flag has been set and that we are on Linux
 +        [ 'OS!="linux" or ossfuzz!="true"', {
