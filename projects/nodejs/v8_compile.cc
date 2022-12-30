@@ -9,23 +9,23 @@
 #include <cstring>
 #include <unistd.h>
 
-std::unique_ptr<v8::Platform> platform;
-v8::Isolate::CreateParams create_params;
-v8::Isolate *isolate;
-
 extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
   v8::V8::InitializeICUDefaultLocation((*argv)[0]);
   v8::V8::InitializeExternalStartupData((*argv)[0]);
-  platform = v8::platform::NewDefaultPlatform();
-  v8::V8::InitializePlatform(platform.get());
-  v8::V8::Initialize();
-  create_params.array_buffer_allocator =
-    v8::ArrayBuffer::Allocator::NewDefaultAllocator();
-  isolate = v8::Isolate::New(create_params);
   return 0;
 }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  static std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
+  v8::V8::InitializePlatform(platform.get());
+  v8::V8::Initialize();
+
+  static v8::Isolate::CreateParams create_params;
+  create_params.array_buffer_allocator =
+    v8::ArrayBuffer::Allocator::NewDefaultAllocator();
+
+  static v8::Isolate *isolate = v8::Isolate::New(create_params);
+
   v8::Isolate::Scope isolate_scope(isolate);
   v8::HandleScope handle_scope(isolate);
 
