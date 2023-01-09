@@ -1,5 +1,4 @@
-#!/bin/bash -eu
-# Copyright 2021 Google LLC
+# Copyright 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +14,12 @@
 #
 ################################################################################
 
-RUSTFLAGS="-C panic=abort" cargo fuzz build -O
-cargo fuzz list | while read i; do
-    cp fuzz/target/x86_64-unknown-linux-gnu/release/$i /
-done
+[sydr]
+target = "/sydr_parse_elf @@"
 
-cd ./fuzz-afl
-RUSTFLAGS="-C debuginfo=2 -C panic=abort" cargo afl build --release
-cp target/release/afl_parse /
-cp target/release/afl_parse_elf /
+[aflplusplus]
+target = "/afl_parse_elf"
+args = "-i /corpus"
 
+[cov]
+target = "/cov_parse_elf @@"
