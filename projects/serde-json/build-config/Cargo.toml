@@ -12,6 +12,11 @@ cargo-fuzz = true
 libfuzzer-sys = "0.4"
 serde_json = { path = ".." }
 
+[profile.release]
+debug = true
+panic = 'abort'
+overflow-checks = true
+
 [[bin]]
 name = "sydr_from_slice"
 path = "fuzz_targets/sydr_from_slice.rs"
