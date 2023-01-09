@@ -10,6 +10,8 @@ path = ".."
 
 [profile.release]
 debug = true
+panic = 'abort'
+overflow-checks = true
 
 # Prevent this from interfering with workspaces
 [workspace]
