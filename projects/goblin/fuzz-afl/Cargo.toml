@@ -1,7 +1,7 @@
 [package]
-name = "goblin-afl-fuzz"
+name = "goblin-fuzz-afl"
 version = "0.0.1"
-authors = ["Andrey Fedotov <fedotoff@ispras.com>"]
+authors = ["Andrey Fedotov <fedotoff@ispras.ru>"]
 edition = "2018"
 publish = false
 
