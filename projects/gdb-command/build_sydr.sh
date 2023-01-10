@@ -15,5 +15,5 @@
 #
 ################################################################################
 
-cargo build
-cp /gdb-command/fuzz/target/debug/sydr_from_gdb /
+cargo build --release
+cp /gdb-command/fuzz/target/release/sydr_from_gdb /
