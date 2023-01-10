@@ -15,5 +15,5 @@
 #
 ################################################################################
 
-cargo build
-cp target/debug/sydr_from_slice /
+cargo build --release
+cp target/release/sydr_from_slice /
