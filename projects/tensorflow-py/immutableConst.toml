@@ -17,5 +17,5 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/tensorflow/tensorflow/tensorflow_src/security/fuzzing/immutableConst_fuzz.py"
+path = "/tensorflow/tensorflow/security/fuzzing/immutableConst_fuzz.py"
 args = "-jobs=1000 -workers=4"

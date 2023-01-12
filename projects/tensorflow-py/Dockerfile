@@ -43,13 +43,12 @@ RUN curl -Lo /usr/bin/bazel \
     chmod +x /usr/bin/bazel
 
 RUN git clone --depth 1 https://github.com/tensorflow/tensorflow tensorflow
-
 WORKDIR /tensorflow
+RUN git checkout a154d01ba21b8ddf98635eb0c909e4439c910c4e
 
 COPY build.sh /
 
 RUN /build.sh
 
-RUN for file in `ls /tensorflow/tensorflow/tensorflow_src/security/fuzzing/*_fuzz.py`; do (echo "#!/usr/bin/env python3"; cat "$file") | sponge "$file"; done
-
-RUN chmod +x /tensorflow/tensorflow/tensorflow_src/security/fuzzing/*_fuzz.py
+RUN for file in `ls /tensorflow/tensorflow/security/fuzzing/*_fuzz.py`; do (echo "#!/usr/bin/env python3"; cat "$file") | sponge "$file"; done
+RUN chmod +x /tensorflow/tensorflow/security/fuzzing/*_fuzz.py
