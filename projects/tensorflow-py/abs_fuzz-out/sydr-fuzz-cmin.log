@@ -1,0 +1,11 @@
+[2023-01-12 14:35:34] [INFO] Original fuzzing corpus saved as /fuzz/abs_fuzz-out/corpus-old
+[2023-01-12 14:35:34] [INFO] Minimizing corpus /fuzz/abs_fuzz-out/corpus
+[2023-01-12 14:35:34] [INFO] Using LD_PRELOAD="/usr/local/lib/python3.8/dist-packages/asan_with_fuzzer.so"
+[2023-01-12 14:35:34] [INFO] Atheris environment: ASAN_OPTIONS=symbolize=0,detect_leaks=0,hard_rss_limit_mb=0,abort_on_error=1,malloc_context_size=0,allocator_may_return_null=1
+[2023-01-12 14:35:34] [INFO] Launching atheris: "/tensorflow/tensorflow/tensorflow_src/security/fuzzing/abs_fuzz.py" "-merge=1" "-artifact_prefix=/fuzz/abs_fuzz-out/crashes/" "-close_fd_mask=2" "-verbosity=2" "-detect_leaks=0" "/fuzz/abs_fuzz-out/corpus" "/fuzz/abs_fuzz-out/corpus-old"
+[2023-01-12 14:36:18] [INFO] MERGE-OUTER: 11 files, 0 in the initial corpus, 0 processed earlier
+[2023-01-12 14:36:18] [INFO] MERGE-OUTER: attempt 1
+[2023-01-12 14:37:03] [INFO] MERGE-OUTER: successful in 1 attempt(s)
+[2023-01-12 14:37:03] [INFO] MERGE-OUTER: the control file has 5287 bytes
+[2023-01-12 14:37:03] [INFO] MERGE-OUTER: consumed 0Mb (948Mb rss) to parse the control file
+[2023-01-12 14:37:03] [INFO] MERGE-OUTER: 9 new files with 371 new features added; 320 new coverage edges
