@@ -14,38 +14,30 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
-MAINTAINER Kirill Parhomenko
-
-# Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions 
+MAINTAINER Theodor Arsenij Larionov-Trichkine
 
 # Clone target from GitHub.
-RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
-RUN cd /pytorch_fuzz && \
-    git checkout bc2c6edaf163b1a1330e37a6e34caf8c553e4755 && \
+RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions && \
+    git clone https://github.com/pytorch/pytorch/ /pytorch_fuzz && cd /pytorch_fuzz && \
+    git checkout abc54f93145830b502400faa92bec86e05422fbd && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
 COPY build_*.sh \
-     *.patch \
-     miniz.* \
-     *_fuzz.cc \
-     *_sydr.cc \
-     *.toml \
-     patch_exceptions.sh \
-     /
+    *.patch \
+    *_fuzz.cc \
+    main-impl.cc \
+    *.toml \
+    patch_exceptions.sh \
+    /
 
-# Apply PyTorch fixes.
+# Apply PyTorch fixes + copy for different targets.
 RUN cd /pytorch_fuzz && \
-    git apply /stoull.patch
-RUN rm /pytorch_fuzz/third_party/miniz-2.0.8/miniz.*
-RUN cp miniz.* /pytorch_fuzz/third_party/miniz-2.0.8/.
-
-# Copy for different targets.
-RUN cp -r /pytorch_fuzz/ /pytorch_sydr/
-RUN cp -r /pytorch_fuzz/ /pytorch_cov/
+    git apply /schema_type_parser-stoll.patch && \
+    cp -r /pytorch_fuzz/ /pytorch_sydr/ && \
+    cp -r /pytorch_fuzz/ /pytorch_cov/
 
 # Patch exceptions throwing to avoid unwanted crashes.
 RUN bash patch_exceptions.sh
@@ -56,4 +48,14 @@ RUN bash build_fuzz.sh
 RUN bash build_sydr.sh
 RUN bash build_cov.sh
 
-RUN mkdir corpus && find /pytorch_fuzz -name "*.pt" -exec cp {} ./corpus \;
+# Build reproducer for RPC bugs
+RUN bash build_rpc_reproducer.sh
+
+COPY ./ir_corpus.zip /
+COPY ./parser_corpus.zip /
+COPY ./corpus_message_deserialize.zip /
+RUN mkdir corpus_torch_script && \
+    find /pytorch_fuzz -name "*.pt" -exec cp {} ./corpus_torch_script/ \; && \
+    unzip /ir_corpus.zip && \
+    unzip /parser_corpus.zip && \
+    unzip /corpus_message_deserialize.zip

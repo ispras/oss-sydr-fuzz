@@ -13,20 +13,14 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
 
-# Install nightly
-RUN rustup install nightly
-
-# Install cargo-fuzz
-RUN cargo install cargo-fuzz
-
 # Copy build script.
-COPY build_fuzz.sh build_sydr.sh /
+COPY build_cov.sh build_fuzz.sh build_sydr.sh /
 
 # Clone target from GitHub.
 RUN git clone https://github.com/anfedotoff/capstone-rs.git
@@ -50,4 +44,9 @@ WORKDIR fuzz
 # Build sydr targets.
 RUN /build_sydr.sh
 
+# Build sydr targets.
+RUN cargo clean && /build_cov.sh
+
 WORKDIR /
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

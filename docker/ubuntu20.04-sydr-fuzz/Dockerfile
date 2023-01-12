@@ -24,10 +24,17 @@ RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-
     rm cmake-3.22.1-linux-x86_64.sh
 
 # Install Rust.
-RUN curl https://sh.rustup.rs -o rustup.sh && chmod +x rustup.sh && \
-    ./rustup.sh -y && rm rustup.sh
+RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly --profile=minimal
 
 ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN cargo install cargo-fuzz
+
+RUN cargo install afl
+
+RUN rustup component add llvm-tools-preview
+
+RUN rustup component add rust-src --toolchain nightly
 
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip \
     && unzip ninja-linux.zip && mv ninja /usr/bin && rm ninja-linux.zip

@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt install build-essential git gettext \
                       flex bison libtool autoconf automake pkg-config \
@@ -29,9 +29,9 @@ RUN mkdir corpus && mv nDPI/tests/pcap/* corpus
 
 WORKDIR nDPI
 
-RUN git checkout 4231f4805965544994fa8d5b0d0ec56573c5f5d2
+RUN git checkout 5704e4c1425ae86f38f8eed9342ad98a58ff6665
 
-COPY build.sh load_sydr_process_packet.c load_sydr_ndpi_reader.c ./
+COPY build.sh load_sydr_process_packet.c load_sydr_ndpi_reader.c load_sydr_quic_get_crypto_data.c ./
 
 RUN ./build.sh
 

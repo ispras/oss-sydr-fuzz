@@ -12,45 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//###############################################################################
+// ###############################################################################
 
+#include <sstream>
+#include <string>
 #include <unistd.h>
 
-#include <string>
-#include <sstream>
-#include "torch/script.h"
 #include "torch/csrc/jit/api/module.h"
-#include <torch/csrc/jit/passes/metal_rewrite.h>
+#include "torch/csrc/jit/passes/metal_rewrite.h"
 #include "torch/csrc/jit/passes/vulkan_rewrite.h"
 #include "torch/csrc/jit/passes/xnnpack_rewrite.h"
-#include "torch/csrc/jit/serialization/import.h"
 #include "torch/csrc/jit/serialization/export.h"
+#include "torch/csrc/jit/serialization/import.h"
+#include "torch/script.h"
+
+extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-    char name[] = "/tmp/torch-fuzz-XXXXXX";
-    char *dir = mktemp(name);
-
-    std::ofstream fp;
-    fp.open(dir, std::ios::out | std::ios::binary);
-    fp.write((char *) data, size);
-    fp.close();
-    torch::jit::Module m;
-    try {
-        m = torch::jit::load(dir);
-    } catch (const c10::Error &e) {
-        unlink(dir);
-        return 0;
-    } catch (const torch::jit::ErrorReport &e) {
-        unlink(dir);
-        return 0;
-    } catch(const std::runtime_error &e) {
-        unlink(dir);
-        return 0;
-    }
-
-    unlink(dir);
- 
-    torch::jit::Module optimized_module = torch::jit::optimizeForMobile(m);
-    
+  std::stringstream ss;
+  std::copy((char *)data, (char *)data + size,
+            std::ostreambuf_iterator<char>(ss));
+  torch::jit::Module m;
+  try {
+    m = torch::jit::load(ss);
+  } catch (const c10::Error &e) {
     return 0;
+  } catch (const torch::jit::ErrorReport &e) {
+    return 0;
+  } catch (const std::runtime_error &e) {
+    return 0;
+  }
+
+  torch::jit::Module optimized_module = torch::jit::optimizeForMobile(m);
+
+  return 0;
 }

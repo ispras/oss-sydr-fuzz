@@ -1,0 +1,20 @@
+[package]
+name = "htp-fuzz"
+version = "0.0.1"
+authors = ["Automatically generated"]
+publish = false
+
+[dependencies.htp]
+path = ".."
+
+[dependencies]
+chrono = "0.4.19"
+afl = "*"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "fuzz_htp_rs"
+path = "fuzz_targets/fuzz_htp.rs"

@@ -22,3 +22,6 @@ jobs = 2
 [libfuzzer]
 path = "/fuzzer_script_tga"
 args = "-rss_limit_mb=8192 -jobs=4 /corpus_tga"
+
+[cov]
+target = "/cov_script_tga @@"

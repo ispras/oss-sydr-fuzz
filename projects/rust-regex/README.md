@@ -27,3 +27,8 @@ Change directory to `/fuzz`:
 Run hybrid fuzzing:
 
     # sydr-fuzz -c regex_match.toml run
+
+Collect coverage:
+
+    # sydr-fuzz -c regex_match.toml cov-export -- -format=lcov > regex_match.lcov
+    # genhtml --ignore-errors source -o regex_match_html regex_match.lcov

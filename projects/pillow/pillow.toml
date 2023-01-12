@@ -14,8 +14,8 @@
 #
 ################################################################################
 
-exit-on-time=3600
+exit-on-time = 3600
 
 [atheris]
 path = "/Pillow/Tests/oss-fuzz/fuzz_pillow.py"
-args = "/out/fuzz_pillow_seed_corpus/ -dict=/out/fuzz_pillow.dict"
+args = "/out/fuzz_pillow_seed_corpus/ -dict=/out/fuzz_pillow.dict -jobs=1000 -workers=4"

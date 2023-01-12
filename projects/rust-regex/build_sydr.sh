@@ -15,5 +15,5 @@
 #
 ################################################################################
 
-cargo +nightly build
-cp target/debug/sydr_regex_match /
+cargo build --release
+cp target/release/sydr_regex_match /

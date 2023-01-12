@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 1000 -i /corpus -G 4096"
-target = "/libpcap/afl/fuzz_filter"
+target = "/libpcap/afl/fuzz_filter @@"
 
 [cov]
 target = "/libpcap/cover/load_cover_filter @@"

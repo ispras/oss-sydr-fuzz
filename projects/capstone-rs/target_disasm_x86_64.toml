@@ -20,3 +20,6 @@ target = "/sydr_target_disasm_x86_64 @@"
 [libfuzzer]
 path = "/fuzz_target_disasm_x86_64"
 args = "-rss_limit_mb=8192"
+
+[cov]
+target = "/cov_target_disasm_x86_64 @@"

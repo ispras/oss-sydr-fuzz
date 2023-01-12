@@ -20,3 +20,6 @@ target = "/sydr_regex_match @@"
 [libfuzzer]
 path = "/fuzz_regex_match"
 args = "-rss_limit_mb=8192 -dict=/regexp.dict"
+
+[cov]
+target = "/cov_regex_match @@"

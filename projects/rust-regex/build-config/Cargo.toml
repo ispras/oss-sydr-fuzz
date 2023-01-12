@@ -27,6 +27,8 @@ path = "fuzz_targets/sydr_regex_match.rs"
 [profile.release]
 opt-level = 3
 debug = true
+panic = 'abort'
+overflow-checks = true
 
 [profile.dev]
 opt-level = 3

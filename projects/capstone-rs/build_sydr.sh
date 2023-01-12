@@ -15,5 +15,5 @@
 #
 ################################################################################
 
-cargo +nightly build
-cp /capstone-rs/capstone-rs/fuzz/target/debug/sydr_target_disasm_x86_64 /
+cargo build --release
+cp /capstone-rs/capstone-rs/fuzz/target/release/sydr_target_disasm_x86_64 /

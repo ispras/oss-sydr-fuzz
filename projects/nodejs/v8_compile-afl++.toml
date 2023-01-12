@@ -19,8 +19,9 @@ args = "-l debug"
 target = "/v8_compile_sydr @@"
 
 [aflplusplus]
-target = "/v8_compile_afl"
+target = "/v8_compile_afl @@"
 args = "-t 60000 -i /corpus -x /js.dict"
+detect_leaks = false
 
 [cov]
 target = "/v8_compile_cov @@"

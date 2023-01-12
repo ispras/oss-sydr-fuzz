@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 

@@ -15,6 +15,6 @@
 #
 ################################################################################
 
-cargo build
-cp /goblin/fuzz/target/debug/sydr_parse /
-cp /goblin/fuzz/target/debug/sydr_parse_elf /
+cargo build --release
+cp /goblin/fuzz/target/release/sydr_parse /
+cp /goblin/fuzz/target/release/sydr_parse_elf /

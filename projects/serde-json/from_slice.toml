@@ -20,3 +20,7 @@ target = "/sydr_from_slice @@"
 [libfuzzer]
 path = "/from_slice"
 args = "-rss_limit_mb=8192 -dict=/json.dict"
+
+[cov]
+target = "/cov_from_slice @@"
+

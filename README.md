@@ -45,20 +45,19 @@ The list of discovered bugs can be found [here](TROPHIES.md).
 
 ## Cite Us
 
-### Sydr: Cutting Edge Dynamic Symbolic Execution \[[paper](https://arxiv.org/abs/2011.09269)\] \[[video](https://www.ispras.ru/conf/2020/video/compiler-technology-11-december.mp4#t=6021)\] \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2020.pdf)\]
+### Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for Security Development Lifecycle \[[paper](https://arxiv.org/abs/2211.11595)\] \[[demo](https://vishnya.xyz/vishnyakov-isprasopen2022.webm)\] \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2022.pdf)\]
 
-Vishnyakov A., Fedotov A., Kuts D., Novikov A., Parygina D., Kobrin E., Logunova V., Belecky P., Kurmangaleev Sh. Sydr: Cutting Edge Dynamic Symbolic Execution. 2020 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2020, pp. 46-54. DOI: [10.1109/ISPRAS51486.2020.00014](https://doi.org/10.1109/ISPRAS51486.2020.00014)
+Vishnyakov A., Kuts D., Logunova V., Parygina D., Kobrin E., Savidov G., Fedotov A. Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for Security Development Lifecycle. 2022 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2022.
 
 ```
-@inproceedings{vishnyakov20,
-  title = {Sydr: Cutting Edge Dynamic Symbolic Execution},
-  author = {Vishnyakov, Alexey and Fedotov, Andrey and Kuts, Daniil and Novikov,
-            Alexander and Parygina, Darya and Kobrin, Eli and Logunova, Vlada
-            and Belecky, Pavel and Kurmangaleev, Shamil},
-  booktitle = {2020 Ivannikov ISPRAS Open Conference (ISPRAS)},
-  pages = {46--54},
-  year = {2020},
+@inproceedings{vishnyakov22-sydr-fuzz,
+  title = {{{Sydr-Fuzz}}: Continuous Hybrid Fuzzing and Dynamic Analysis for
+           Security Development Lifecycle},
+  author = {Vishnyakov, Alexey and Kuts, Daniil and Logunova, Vlada and
+            Parygina, Darya and Kobrin, Eli and Savidov, Georgy and Fedotov,
+            Andrey},
+  booktitle = {2022 Ivannikov ISPRAS Open Conference (ISPRAS)},
+  year = {2022},
   publisher = {IEEE},
-  doi = {10.1109/ISPRAS51486.2020.00014},
 }
 ```
