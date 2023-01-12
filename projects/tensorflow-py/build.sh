@@ -15,35 +15,21 @@
 # limitations under the License.
 #
 ################################################################################
-# if [[ -z "${CFLAGS}" ]]; then
-#     export ORIG_CFLAGS=""
-# else
-#     export ORIG_CFLAGS="$CFLAGS"
-# fi
-
-# if [[ -z "${CXXFLAGS}" ]]; then
-#     export ORIG_CXXFLAGS=""
-# else
-#     export ORIG_CXXFLAGS="$CXXFLAGS"
-# fi
 
 export CC="clang" 
 export CFLAGS="-fsanitize=address,fuzzer-no-link -g" 
 export CXX="clang++" 
 export CXXFLAGS="-fsanitize=address,fuzzer-no-link -g"
 python3 -m pip install numpy
-# export CFLAGS=$ORIG_CFLAGS
-# export CXXFLAGS=$ORIG_CXXFLAGS
 python3 -m pip install tf-nightly-cpu
-export SRC=""
 export OUT="tensorflow/tensorflow-out"
 
 # Rename to avoid the following: https://github.com/tensorflow/tensorflow/issues/40182
-mv $SRC/tensorflow/tensorflow $SRC/tensorflow/tensorflow_src
+mv /tensorflow/tensorflow /tensorflow/tensorflow_src
 
 # Build fuzzers into $OUT. These could be detected in other ways.
 
-for fuzzer in $(find $SRC -name '*_fuzz.py'); do
+for fuzzer in $(find / -name '*_fuzz.py'); do
   fuzzer_basename=$(basename -s .py $fuzzer)
   fuzzer_package=${fuzzer_basename}.pkg
 
@@ -57,4 +43,4 @@ LD_PRELOAD=ASAN_OPTIONS=\$ASAN_OPTIONS:symbolize=1:external_symbolizer_path=\$th
   chmod +x $OUT/$fuzzer_basename
 done
 
-mv $SRC/tensorflow/tensorflow_src $SRC/tensorflow/tensorflow
+mv /tensorflow/tensorflow_src /tensorflow/tensorflow

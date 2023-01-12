@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-exit-on-time=3600
+exit-on-time = 3600
 
 [atheris]
 path = "/tensorflow/tensorflow/tensorflow_src/security/fuzzing/immutableConst_fuzz.py"
