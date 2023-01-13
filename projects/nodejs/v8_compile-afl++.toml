@@ -22,7 +22,6 @@ target = "/v8_compile_sydr @@"
 target = "/v8_compile_afl"
 args = "-t 60000 -i /corpus -x /js.dict"
 detect_leaks = false
-cmin = false
 
 [cov]
 target = "/v8_compile_cov @@"
