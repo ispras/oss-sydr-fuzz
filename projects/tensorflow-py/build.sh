@@ -20,12 +20,19 @@ export CC="clang"
 export CFLAGS="-fsanitize=address,fuzzer-no-link -g" 
 export CXX="clang++" 
 export CXXFLAGS="-fsanitize=address,fuzzer-no-link -g"
-python3 -m pip install numpy
-python3 -m pip install tf-nightly-cpu
+python3 -m pip install numpy wheel packaging requests opt_einsum
+python3 -m pip install keras_preprocessing --no-deps
+# python3 -m pip install tf-nightly-cpu
 export OUT="tensorflow/tensorflow-out"
 
+# ./build_core.sh
+bazel clean --expunge
+bazel build --spawn_strategy=sandboxed //tensorflow/tools/pip_package:build_pip_package
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag /tmp/tensorflow_pkg
+python3 -m pip install /tmp/tensorflow_pkg/tf_nightly-2.12.0-cp38-cp38-linux_x86_64.whl
+
 # Rename to avoid the following: https://github.com/tensorflow/tensorflow/issues/40182
-mv /tensorflow/tensorflow /tensorflow/tensorflow_src
+# mv /tensorflow/tensorflow /tensorflow/tensorflow_src
 
 # Build fuzzers into $OUT. These could be detected in other ways.
 

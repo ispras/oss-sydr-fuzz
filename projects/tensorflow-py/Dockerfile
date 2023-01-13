@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
         rsync \
         vim \
+        moreutils \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -33,7 +34,7 @@ RUN python3 -m pip install --upgrade pyinstaller
 
 # Due to Bazel bug, need to symlink python3 to python
 # See https://github.com/bazelbuild/bazel/issues/8665
-RUN ln -s /usr/local/bin/python3 /usr/local/bin/python
+RUN ln -s /usr/bin/python3 /usr/local/bin/python
 
 # Install Bazelisk to keep bazel in sync with the version required by TensorFlow
 RUN curl -Lo /usr/bin/bazel \
@@ -49,6 +50,6 @@ COPY build.sh /
 
 RUN /build.sh
 
-COPY *_fuzz.py /tensorflow/tensorflow/tensorflow_src/security/fuzzing/
+RUN for file in `ls /tensorflow/tensorflow/tensorflow_src/security/fuzzing/*_fuzz.py`; do (echo "#!/usr/bin/env python3"; cat "$file") | sponge "$file"; done
 
 RUN chmod +x /tensorflow/tensorflow/tensorflow_src/security/fuzzing/*_fuzz.py
