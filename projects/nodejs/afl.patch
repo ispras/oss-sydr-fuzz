@@ -1,5 +1,5 @@
---- node.gyp	2022-12-23 18:09:16.272074952 +0300
-+++ node_afl.gyp	2022-12-24 15:25:06.124580821 +0300
+--- node.gyp	2023-01-13 17:19:02.673618865 +0300
++++ node_afl.gyp	2023-01-13 17:13:14.371372196 +0300
 @@ -891,7 +891,7 @@
        ],
      }, # node_lib_target_name
@@ -64,7 +64,7 @@
 +      ],
 +      'conditions': [
 +        ['OS=="linux"', {
-+          'ldflags': ['-g -std=c++17 -fsanitize=fuzzer,address,integer,undefined,bounds,null,float-divide-by-zero']
++          'ldflags': ['-g -std=c++17 -fsanitize=address,integer,undefined,bounds,null,float-divide-by-zero']
 +        }],
 +        # Ensure that ossfuzz flag has been set and that we are on Linux
 +        [ 'OS!="linux" or ossfuzz!="true"', {

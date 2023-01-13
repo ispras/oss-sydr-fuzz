@@ -1,5 +1,5 @@
---- node.gyp	2022-12-23 18:09:16.272074952 +0300
-+++ node_sydr.gyp	2022-12-24 15:24:54.684630524 +0300
+--- node.gyp	2023-01-13 17:19:02.673618865 +0300
++++ node_sydr.gyp	2023-01-13 17:14:02.783127701 +0300
 @@ -891,7 +891,7 @@
        ],
      }, # node_lib_target_name
@@ -64,7 +64,7 @@
 +      ],
 +      'conditions': [
 +        ['OS=="linux"', {
-+          'ldflags': ['/StandaloneFuzzTargetMain.o -g -std=c++17 -ldl']
++          'ldflags': ['-g -std=c++17']
 +        }],
 +        # Ensure that ossfuzz flag has been set and that we are on Linux
 +        [ 'OS!="linux" or ossfuzz!="true"', {

@@ -26,13 +26,15 @@ WORKDIR /node_afl
 
 RUN git checkout 86088ab78e8c3739f60627ddf21f65da7796450e
 
-COPY v8_compile.cc /node_afl/test/fuzzers/
-
 WORKDIR /
 
 RUN cp -r /node_afl /node_cov
 RUN cp -r /node_afl /node_sydr
 RUN cp -r /node_afl /node_libfuzzer
+
+COPY v8_compile.cc /node_afl/test/fuzzers
+COPY v8_compile_sydr.cc /node_sydr/test/fuzzers/v8_compile.cc
+COPY v8_compile_sydr.cc /node_cov/test/fuzzers/v8_compile.cc
 
 COPY *.patch /
 RUN patch /node_libfuzzer/node.gyp /libfuzzer.patch && \

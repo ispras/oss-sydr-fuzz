@@ -1,5 +1,5 @@
---- node.gyp	2022-12-23 18:09:16.272074952 +0300
-+++ node_libfuzzer.gyp	2022-12-24 15:25:16.028537759 +0300
+--- node.gyp	2023-01-13 17:19:02.673618865 +0300
++++ node_libfuzzer.gyp	2023-01-13 17:14:57.874849827 +0300
 @@ -891,7 +891,7 @@
        ],
      }, # node_lib_target_name
@@ -36,42 +36,3 @@
          }],
          # Ensure that ossfuzz flag has been set and that we are on Linux
          [ 'OS!="linux" or ossfuzz!="true"', {
-@@ -960,6 +960,38 @@
-         }],
-       ],
-     }, # fuzz_env
-+    { # v8_compile 
-+      'target_name': 'v8_compile_fuzzer',
-+      'type': 'executable',
-+      'dependencies': [
-+        '<(node_lib_target_name)',
-+      ],
-+      'includes': [
-+        'node.gypi'
-+      ],
-+      'include_dirs': [
-+        'src',
-+        'deps/v8/include',
-+      ],
-+      'defines': [
-+        'NODE_ARCH="<(target_arch)"',
-+        'NODE_PLATFORM="<(OS)"',
-+        'NODE_WANT_INTERNALS=1',
-+      ],
-+      'sources': [
-+        'src/node_snapshot_stub.cc',
-+        'test/fuzzers/v8_compile.cc',
-+      ],
-+      'conditions': [
-+        ['OS=="linux"', {
-+          'ldflags': ['-g -std=c++17 -fsanitize=fuzzer,address,integer,undefined,bounds,null,float-divide-by-zero' ]
-+        }],
-+        # Ensure that ossfuzz flag has been set and that we are on Linux
-+        [ 'OS!="linux" or ossfuzz!="true"', {
-+          'type': 'none',
-+        }],
-+      ],
-+    }, # v8_compile 
-     {
-       'target_name': 'cctest',
-       'type': 'executable',
