@@ -1,5 +1,5 @@
---- node.gyp	2022-12-23 18:09:16.272074952 +0300
-+++ node_cov.gyp	2022-12-24 15:25:25.668495819 +0300
+--- node.gyp	2023-01-13 17:25:55.159893966 +0300
++++ node_cov.gyp	2023-01-13 17:28:02.787339571 +0300
 @@ -891,7 +891,7 @@
        ],
      }, # node_lib_target_name
@@ -64,7 +64,7 @@
 +      ],
 +      'conditions': [
 +        ['OS=="linux"', {
-+          'ldflags': ['/StandaloneFuzzTargetMain.o -g -std=c++17 -fprofile-instr-generate -fcoverage-mapping -ldl']
++          'ldflags': ['-g -std=c++17 -fprofile-instr-generate -fcoverage-mapping']
 +        }],
 +        # Ensure that ossfuzz flag has been set and that we are on Linux
 +        [ 'OS!="linux" or ossfuzz!="true"', {

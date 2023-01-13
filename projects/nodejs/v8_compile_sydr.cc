@@ -1,21 +1,12 @@
-// Copyright 2015 the V8 project authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 #include "libplatform/libplatform.h"
 #include "v8.h"
 #include <fstream>
-#include <limits>
-#include <cstdlib>
-#include <cstring>
-#include <unistd.h>
-
-__AFL_FUZZ_INIT();
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char *argv[]) {
-#ifdef __AFL_HAVE_MANUAL_CONTROL
-  __AFL_INIT();
-#endif
-
   // Initialize V8.
   v8::V8::InitializeICUDefaultLocation(argv[0]);
   v8::V8::InitializeExternalStartupData(argv[0]);
@@ -32,6 +23,7 @@ int main(int argc, char *argv[]) {
 
   {
     v8::Isolate::Scope isolate_scope(isolate);
+
     // Create a stack-allocated handle scope.
     v8::HandleScope handle_scope(isolate);
 
@@ -40,29 +32,37 @@ int main(int argc, char *argv[]) {
 
     // Enter the context for compiling and running the hello world script.
     v8::Context::Scope context_scope(context);
-    unsigned char *buffer = __AFL_FUZZ_TESTCASE_BUF;
 
-    while (__AFL_LOOP(10000)) {
-      size_t len = __AFL_FUZZ_TESTCASE_LEN;
-      char *buf = (char*) calloc(len + 1, sizeof(char));
-      memcpy(buf, buffer, len);
+    {
+      std::string filename = argv[1];
+      std::ifstream is(filename, std::ios::binary);
+      if (is) {
+        is.seekg(0, is.end);
+        int length = is.tellg();
+        is.seekg(0, is.beg);
+        char *buffer = new char[length+1];
+        is.read(buffer, length);
+        buffer[length] = '\0';
+        is.close();
 
-      v8::Local<v8::String> source =
-          v8::String::NewFromUtf8(isolate, buf).ToLocalChecked();
-      v8::Local<v8::Value> result;
-      // Compile the source code.
-      v8::Local<v8::Script> script;
-      v8::Script::Compile(context, source).ToLocal(&script);
-      free(buf);
+        v8::Local<v8::String> source =
+            v8::String::NewFromUtf8(isolate, buffer).ToLocalChecked();
+        delete[] buffer;
+        v8::Local<v8::Value> result;
 
-      if (!script.IsEmpty()) {
-        script->Run(context).ToLocal(&result);
+        // Compile the source code.
+        v8::Local<v8::Script> script;
+        v8::Script::Compile(context, source).ToLocal(&script);
+
+	if (!script.IsEmpty()) {
+	  script->Run(context).ToLocal(&result);
+	}
       }
     }
   }
 
   v8::V8::Dispose();
   delete create_params.array_buffer_allocator;
-
+  
   return 0;
 }
