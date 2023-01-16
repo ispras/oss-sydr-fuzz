@@ -21,3 +21,5 @@ args= "--sym-stdin -l debug"
 target = "/fuzz/fuzz_xml"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_xml -x /dict/xml.dict"
 
+[cov]
+target = "/cov/cov_xml"

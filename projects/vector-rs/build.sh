@@ -15,21 +15,31 @@
 # limitations under the License.
 #
 ################################################################################
-mkdir /fuzz /sydr
+mkdir /fuzz /sydr /cov
 # afl
 cd /vector/lib/vrl/stdlib/fuzzing
-RUSTFLAGS="-Zsanitizer=address -C panic=abort" cargo afl build --bin fuzz_aws --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-Zsanitizer=address -C panic=abort" cargo afl build --bin fuzz_csv --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-Zsanitizer=address -C panic=abort" cargo afl build --bin fuzz_json --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-Zsanitizer=address -C panic=abort" cargo afl build --bin fuzz_klog --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-Zsanitizer=address -C panic=abort" cargo afl build --bin fuzz_xml --release --target x86_64-unknown-linux-gnu
+export RUSTFLAGS="-Zsanitizer=address -C panic=abort" 
+cargo afl build --bin fuzz_aws --release --target x86_64-unknown-linux-gnu
+cargo afl build --bin fuzz_csv --release --target x86_64-unknown-linux-gnu
+cargo afl build --bin fuzz_json --release --target x86_64-unknown-linux-gnu
+cargo afl build --bin fuzz_klog --release --target x86_64-unknown-linux-gnu
+cargo afl build --bin fuzz_xml --release --target x86_64-unknown-linux-gnu
 find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "fuzz_*" -exec cp {} /fuzz \;
 
 #sydr
-RUSTFLAGS="-C panic=abort" cargo build --bin cov_aws --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-C panic=abort" cargo build --bin cov_csv --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-C panic=abort" cargo build --bin cov_json --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-C panic=abort" cargo build --bin cov_klog --release --target x86_64-unknown-linux-gnu
-RUSTFLAGS="-C panic=abort" cargo build --bin cov_xml --release --target x86_64-unknown-linux-gnu
+export RUSTFLAGS="-C panic=abort" 
+cargo build --bin cov_aws --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_csv --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_json --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_klog --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_xml --release --target x86_64-unknown-linux-gnu
 find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "cov_*" -exec cp {} /sydr \;
 
+#cov 
+export RUSTFLAGS="-C panic=abort -C instrument-coverage"
+cargo build --bin cov_aws --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_csv --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_json --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_klog --release --target x86_64-unknown-linux-gnu
+cargo build --bin cov_xml --release --target x86_64-unknown-linux-gnu
+find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "cov_*" -exec cp {} /cov \;

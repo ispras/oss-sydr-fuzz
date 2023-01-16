@@ -21,3 +21,5 @@ args= "--sym-stdin -l debug"
 target = "/fuzz/fuzz_csv"
 args = "-i /vector/lib/vrl/stdlib/fuzzing/in_csv -x /dict/csv.dict"
 
+[cov]
+target = "/cov/cov_csv"
