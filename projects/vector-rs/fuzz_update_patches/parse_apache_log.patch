@@ -1,0 +1,5 @@
+--- vector/lib/vrl/stdlib/src/parse_apache_log.rs	2022-11-16 09:20:54.639790709 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/parse_apache_log.rs	2022-11-17 12:35:59.931484954 -0500
+@@ -8 +8 @@
+-fn parse_apache_log(
++pub fn parse_apache_log(

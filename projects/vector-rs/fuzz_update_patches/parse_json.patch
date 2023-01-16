@@ -1,0 +1,11 @@
+--- vector/lib/vrl/stdlib/src/parse_json.rs	2022-11-16 09:20:54.639790709 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/parse_json.rs	2022-11-16 09:47:45.944095843 -0500
+@@ -7,7 +7,7 @@
+ };
+ use vrl::prelude::*;
+ 
+-fn parse_json(value: Value) -> Resolved {
++pub fn parse_json(value: Value) -> Resolved {
+     let bytes = value.try_bytes()?;
+     let value = serde_json::from_slice::<'_, Value>(&bytes)
+         .map_err(|e| format!("unable to parse json: {}", e))?;

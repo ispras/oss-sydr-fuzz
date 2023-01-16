@@ -1,0 +1,68 @@
+[package]
+name = "parsejson"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+vrl-stdlib = { version = "0.1", path = ".."}
+vrl = { path = "../../vrl"}
+value = { path = "../../../value", default-features = false } 
+vector-common = {path = "../../../vector-common"}
+arbitrary = { version = "1", optional = true, features = ["derive"] }
+url = { version = "2", optional = true }
+afl = "0.12.12"
+syslog_loose = "*"
+[workspace]
+members = ["."]
+
+[profile.release]
+debug = true
+panic = 'abort'
+overflow-checks = true
+
+[[bin]]
+name = "fuzz_xml"
+path = "src/parse_xml.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "cov_xml"
+path = "src/cov_xml.rs"
+
+[[bin]]
+name = "fuzz_klog"
+path = "src/parse_klog.rs"
+
+[[bin]]
+name = "cov_klog"
+path = "src/cov_klog.rs"
+
+[[bin]]
+name = "fuzz_csv"
+path = "src/parse_csv.rs"
+
+[[bin]]
+name = "cov_csv"
+path = "src/cov_csv.rs"
+
+[[bin]]
+name = "fuzz_json"
+path = "src/parse_json.rs"
+
+[[bin]]
+name = "cov_json"
+path = "src/cov_json.rs"
+
+[[bin]]
+name = "fuzz_aws"
+path = "src/parse_aws.rs"
+
+[[bin]]
+name = "cov_aws"
+path = "src/cov_aws.rs"

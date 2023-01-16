@@ -31,10 +31,10 @@ COPY build.sh /
 # Clone target from GitHub.
 RUN git clone https://github.com/vectordotdev/vector --branch v0.25.0
 
-# Clone harness
-RUN git clone https://github.com/stasos24/vector fuzz_vector --branch oss-sydr-fuzz
-
-RUN cp -r fuzz_vector/lib/vrl/stdlib/fuzzing vector/lib/vrl/stdlib
+# Copy harness
+COPY fuzzing /vector/lib/vrl/stdlib/fuzzing
+RUN mkdir /fuzz_vector
+COPY fuzz_update_patches /fuzz_vector/fuzz_update_patches
 
 #Apply patches
 RUN patch -p0 < /fuzz_vector/fuzz_update_patches/parse_xml.patch && \
@@ -48,6 +48,7 @@ sed -i 's/0.4.19/=0.4.22/' /vector/lib/value/Cargo.toml
 WORKDIR vector
 
 RUN rm rust-toolchain.toml
+
 
 RUN /build.sh
 

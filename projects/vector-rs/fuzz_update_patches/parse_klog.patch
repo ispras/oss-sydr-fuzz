@@ -1,0 +1,5 @@
+--- vector/lib/vrl/stdlib/src/parse_klog.rs	2022-11-16 09:20:54.639790709 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/parse_klog.rs	2022-11-17 11:47:15.781035261 -0500
+@@ -9 +9 @@
+-fn parse_klog(bytes: Value) -> Resolved {
++pub fn parse_klog(bytes: Value) -> Resolved {

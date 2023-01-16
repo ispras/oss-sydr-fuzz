@@ -1,0 +1,25 @@
+@, NoLocalPart
+@example.com, NoLocalPart
+abc@, NoDomainPart
+abc, NoSignAt
+abc@def@example.com, TooAt
+.abc@example.com, LocalStartPeriod
+abc.@example.com, LocalEndPeriod
+abc@.example.com, DomainStartPeriod
+abc@example.com., DomainEndPeriod
+ab..cd@example.com, ConsecutivePeriod
+abc@example..com, ConsecutivePeriod
+a@example, NoPeriodDomain
+ab\c@example.com, WrongCharLocal('\\')
+"ab""c""def@example.com", WrongCharLocal('"')
+abc def@example.com, WrongCharLocal(' ')
+(comment)abc@example.com, WrongCharLocal('(')
+abc@[255.255.255.255], WrongCharDomain('[')
+abc@(example.com, WrongCharDomain('(')
+abc@x.y_y.z, WrongCharDomain('_')
+abc@-example.com, WrongStartLabel('-')
+abc@example-.com, WrongEndLabel('-')
+abc@x.-y.z, WrongStartLabel('-')
+abc@x.y-.z, WrongEndLabel('-')
+abcd€f@example.com, NoAscii(AsciiError { ch: '€' })
+abc@exámple.com, NoAscii(AsciiError { ch: 'á' } )

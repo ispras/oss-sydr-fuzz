@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+<id>tag:github.com,2008:/Florob/RustyXML/commits/master</id>
+<link type="text/html" rel="alternate" href="https://github.com/Florob/RustyXML/commits/master"/>
+<link type="application/atom+xml" rel="self" href="https://github.com/Florob/RustyXML/commits/master.atom"/>
+<title>Recent Commits to RustyXML:master</title>
+<updated>2013-11-27T17:40:47-08:00</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/8bbbb971aa68edea420dd884813b41b614b846b7</id>
+<link type="text/html" rel="alternate" href="https://github.com/Florob/RustyXML/commit/8bbbb971aa68edea420dd884813b41b614b846b7"/>
+<title>
+Adapt to Rust changes
+</title>
+<updated>2013-11-27T17:40:47-08:00</updated>
+<media:thumbnail height="30" width="30" url="https://1.gravatar.com/avatar/a7cfde681ee37a614fb83b44c3dbc137?d=https%3A%2F%2Fidenticons.github.com%2Fee981369817e3688a41520b7e7fee996.png&amp;r=x&amp;s=30"/>
+<author>
+<name>Florob</name>
+<uri>https://github.com/Florob</uri>
+</author>
+<content type="html">
+&lt;pre style='white-space:pre-wrap;width:81ex'>Adapt to Rust changes&lt;/pre>
+</content>
+</entry>
+</feed>
