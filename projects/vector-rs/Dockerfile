@@ -12,18 +12,10 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && \
     apt-get -y install curl
-
-# Install nightly
-RUN rustup install nightly 
-
-RUN rustup default nightly
-
-# Install cargo-fuzz
-RUN cargo install afl
 
 # Copy build script.
 COPY build.sh /
