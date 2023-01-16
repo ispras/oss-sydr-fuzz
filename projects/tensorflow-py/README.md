@@ -22,96 +22,96 @@ Change the directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c abs_fuzz.toml run
+    # sydr-fuzz -c abs.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c abs_fuzz.toml cmin
+    # sydr-fuzz -c abs.toml cmin
 
 Get HTML coverage report:
 
-    # sydr-fuzz -c abs_fuzz.toml pycov html
+    # sydr-fuzz -c abs.toml pycov html
 
 ## Alternative Fuzz Targets
 
 TensorFlow-py project has 10 fuzz targets.
 
-### abs_fuzz
+### abs
 
-    # sydr-fuzz -c abs_fuzz.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c abs_fuzz.toml pycov html
-
-### acos_fuzz
-
-    # sydr-fuzz -c acos_fuzz.toml run
+    # sydr-fuzz -c abs.toml run
 
 Collect and report coverage:
 
-    # sydr-fuzz -c acos_fuzz.toml pycov html
+    # sydr-fuzz -c abs.toml pycov html
 
-### acosh_fuzz
+### acos
 
-    # sydr-fuzz -c acosh_fuzz.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c acosh_fuzz.toml pycov html
-
-### add_fuzz
-
-    # sydr-fuzz -c add_fuzz.toml run
+    # sydr-fuzz -c acos.toml run
 
 Collect and report coverage:
 
-    # sydr-fuzz -c add_fuzz.toml pycov html
+    # sydr-fuzz -c acos.toml pycov html
 
-### constant_fuzz
+### acosh
 
-    # sydr-fuzz -c constant_fuzz.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c constant_fuzz.toml pycov html
-
-### dataFormatVecPermute_fuzz
-
-    # sydr-fuzz -c dataFormatVecPermute_fuzz.toml run
+    # sydr-fuzz -c acosh.toml run
 
 Collect and report coverage:
 
-    # sydr-fuzz -c dataFormatVecPermute_fuzz.toml pycov html
+    # sydr-fuzz -c acosh.toml pycov html
 
-### immutableConst_fuzz
+### add
 
-    # sydr-fuzz -c immutableConst_fuzz.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c immutableConst_fuzz.toml pycov html
-
-### raggedCountSparseOutput_fuzz
-
-    # sydr-fuzz -c raggedCountSparseOutput_fuzz.toml run
+    # sydr-fuzz -c add.toml run
 
 Collect and report coverage:
 
-    # sydr-fuzz -c raggedCountSparseOutput_fuzz.toml pycov html
+    # sydr-fuzz -c add.toml pycov html
 
-### sparseCountSparseOutput_fuzz
+### constant
 
-    # sydr-fuzz -c sparseCountSparseOutput_fuzz.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c sparseCountSparseOutput_fuzz.toml pycov html
-
-### tf2migration_fuzz
-
-    # sydr-fuzz -c tf2migration_fuzz.toml run
+    # sydr-fuzz -c constant.toml run
 
 Collect and report coverage:
 
-    # sydr-fuzz -c tf2migration_fuzz.toml pycov html
+    # sydr-fuzz -c constant.toml pycov html
+
+### dataFormatVecPermute
+
+    # sydr-fuzz -c dataFormatVecPermute.toml run
+
+Collect and report coverage:
+
+    # sydr-fuzz -c dataFormatVecPermute.toml pycov html
+
+### immutableConst
+
+    # sydr-fuzz -c immutableConst.toml run
+
+Collect and report coverage:
+
+    # sydr-fuzz -c immutableConst.toml pycov html
+
+### raggedCountSparseOutput
+
+    # sydr-fuzz -c raggedCountSparseOutput.toml run
+
+Collect and report coverage:
+
+    # sydr-fuzz -c raggedCountSparseOutput.toml pycov html
+
+### sparseCountSparseOutput
+
+    # sydr-fuzz -c sparseCountSparseOutput.toml run
+
+Collect and report coverage:
+
+    # sydr-fuzz -c sparseCountSparseOutput.toml pycov html
+
+### tf2migration
+
+    # sydr-fuzz -c tf2migration.toml run
+
+Collect and report coverage:
+
+    # sydr-fuzz -c tf2migration.toml pycov html
