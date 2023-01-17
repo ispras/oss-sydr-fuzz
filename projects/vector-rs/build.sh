@@ -45,4 +45,6 @@ cargo build --bin cov_xml --release --target x86_64-unknown-linux-gnu
 find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "cov_*" -exec cp {} /cov \;
 
 #Unzip corpus
+git clone https://github.com/stasos24/vector-rs-corpus/
+mv vector-rs-corpus/corpus.tar ./corpus.tar
 tar xvf corpus.tar
