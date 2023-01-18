@@ -1,0 +1,5 @@
+--- vector/lib/vrl/stdlib/src/parse_aws_alb_log.rs	2022-11-16 09:20:54.639790709 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/parse_aws_alb_log.rs	2022-11-17 11:45:06.749034514 -0500
+@@ -14 +14 @@
+-fn parse_aws_alb_log(bytes: Value) -> Resolved {
++pub fn parse_aws_alb_log(bytes: Value) -> Resolved {

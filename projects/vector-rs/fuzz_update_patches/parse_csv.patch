@@ -1,0 +1,5 @@
+--- vector/lib/vrl/stdlib/src/parse_csv.rs	2022-11-16 09:20:54.639790709 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/parse_csv.rs	2022-11-17 11:45:37.785034693 -0500
+@@ -5 +5 @@
+-fn parse_csv(csv_string: Value, delimiter: Value) -> Resolved {
++pub fn parse_csv(csv_string: Value, delimiter: Value) -> Resolved {

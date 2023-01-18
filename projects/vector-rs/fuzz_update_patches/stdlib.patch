@@ -1,0 +1,58 @@
+--- vector/lib/vrl/stdlib/src/lib.rs	2022-11-16 09:20:54.635790706 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/lib.rs	2022-11-16 09:41:29.675936802 -0500
+@@ -185,9 +185,9 @@
+ #[cfg(feature = "only_fields")]
+ mod only_fields;
+ #[cfg(feature = "parse_apache_log")]
+-mod parse_apache_log;
++pub mod parse_apache_log;
+ #[cfg(feature = "parse_aws_alb_log")]
+-mod parse_aws_alb_log;
++pub mod parse_aws_alb_log;
+ #[cfg(feature = "parse_aws_cloudwatch_log_subscription_message")]
+ mod parse_aws_cloudwatch_log_subscription_message;
+ #[cfg(feature = "parse_aws_vpc_flow_log")]
+@@ -197,7 +197,7 @@
+ #[cfg(feature = "parse_common_log")]
+ mod parse_common_log;
+ #[cfg(feature = "parse_csv")]
+-mod parse_csv;
++pub mod parse_csv;
+ #[cfg(feature = "parse_duration")]
+ mod parse_duration;
+ #[cfg(feature = "parse_glog")]
+@@ -209,11 +209,11 @@
+ #[cfg(feature = "parse_int")]
+ mod parse_int;
+ #[cfg(feature = "parse_json")]
+-mod parse_json;
++pub mod parse_json;
+ #[cfg(feature = "parse_key_value")]
+ mod parse_key_value;
+ #[cfg(feature = "parse_klog")]
+-mod parse_klog;
++pub mod parse_klog;
+ #[cfg(feature = "parse_linux_authorization")]
+ mod parse_linux_authorization;
+ #[cfg(feature = "parse_logfmt")]
+@@ -229,17 +229,17 @@
+ #[cfg(feature = "parse_ruby_hash")]
+ mod parse_ruby_hash;
+ #[cfg(feature = "parse_syslog")]
+-mod parse_syslog;
++pub mod parse_syslog;
+ #[cfg(feature = "parse_timestamp")]
+ mod parse_timestamp;
+ #[cfg(feature = "parse_tokens")]
+ mod parse_tokens;
+ #[cfg(feature = "parse_url")]
+-mod parse_url;
++pub mod parse_url;
+ #[cfg(feature = "parse_user_agent")]
+ mod parse_user_agent;
+ #[cfg(feature = "parse_xml")]
+-mod parse_xml;
++pub mod parse_xml;
+ #[cfg(feature = "push")]
+ mod push;
+ #[cfg(feature = "random_bytes")]

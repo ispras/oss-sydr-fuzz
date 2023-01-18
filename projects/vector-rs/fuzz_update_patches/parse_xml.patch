@@ -1,0 +1,24 @@
+--- vector/lib/vrl/stdlib/src/parse_xml.rs	2022-11-16 09:20:54.639790709 -0500
++++ fuzz_vector/lib/vrl/stdlib/src/parse_xml.rs	2022-11-17 12:08:21.595637770 -0500
+@@ -14,9 +14,9 @@
+-struct ParseOptions {
+-    trim: Option<Value>,
+-    include_attr: Option<Value>,
+-    attr_prefix: Option<Value>,
+-    text_key: Option<Value>,
+-    always_use_text_key: Option<Value>,
+-    parse_bool: Option<Value>,
+-    parse_null: Option<Value>,
+-    parse_number: Option<Value>,
++pub struct ParseOptions {
++    pub trim: Option<Value>,
++    pub include_attr: Option<Value>,
++    pub attr_prefix: Option<Value>,
++    pub text_key: Option<Value>,
++    pub always_use_text_key: Option<Value>,
++    pub parse_bool: Option<Value>,
++    pub parse_null: Option<Value>,
++    pub parse_number: Option<Value>,
+@@ -25 +25 @@
+-fn parse_xml(value: Value, options: ParseOptions) -> Resolved {
++pub fn parse_xml(value: Value, options: ParseOptions) -> Resolved {
