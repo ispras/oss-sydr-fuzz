@@ -37,14 +37,14 @@ Check security predicates:
 
     # sydr-fuzz -c fuzz_binascii_a2b.toml security
 Fuzzing harness list:
-fuzz_builtin_float - float(str)
-fuzz_builtin_int - int(str)
-fuzz_builtin_unicode - UTF8 encoder 
-fuzz_json_loads - JSON parser
-fuzz_sre_compile - Regex compiler
-fuzz_sre_match - Regex searcher
-fuzz_csv_reader - CSV reader
-fuzz_struct_unpack 
-fuzz_xml_parse - XML parser
-fuzz_binascii_a2b - Base64 encoder
-fuzz_codecs_encode - Encodings Encoder
++ fuzz_builtin_float - float(str)
++ fuzz_builtin_int - int(str)
++ fuzz_builtin_unicode - UTF8 encoder 
++ fuzz_json_loads - JSON parser
++ fuzz_sre_compile - Regex compiler
++ fuzz_sre_match - Regex searcher
++ fuzz_csv_reader - CSV reader
++ fuzz_struct_unpack 
++ fuzz_xml_parse - XML parser
++ fuzz_binascii_a2b - Base64 encoder
++ fuzz_codecs_encode - Encodings Encoder
