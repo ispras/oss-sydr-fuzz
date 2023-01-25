@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-98 new bugs in
-25 open source projects.
+97 new bugs in
+24 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -115,8 +115,6 @@
     * <https://github.com/pytorch/vision/pull/6456>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
-* V8 (Node.js dependency):
-    * <https://bugs.chromium.org/p/chromium/issues/detail?id=1382777> (<https://github.com/nodejs/node/issues/45283>)
 * xlnt:
     * <https://github.com/tfussell/xlnt/issues/592>
     * <https://github.com/tfussell/xlnt/issues/593>
