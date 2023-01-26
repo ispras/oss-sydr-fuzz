@@ -61,7 +61,6 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  v8::V8::Dispose();
   delete create_params.array_buffer_allocator;
   
   return 0;
