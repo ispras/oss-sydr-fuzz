@@ -102,3 +102,8 @@ Image-rs/image project has 12 fuzz targets.
 
     # cd /fuzz
     # sydr-fuzz -c webp.toml run
+
+### AFL++ fuzz targets
+
+    # cd /fuzz
+    # sydr-fuzz -c <name>-afl++.toml run
