@@ -19,7 +19,7 @@ target = "/sydr_script_exr @@"
 
 [aflplusplus]
 target = "/fuzz_exr"
-args = "-t 2000 -i /corpus_exr"
+args = "-t 2000+ -i /corpus_exr"
 
 [cov]
 target = "/cov_script_exr @@"
