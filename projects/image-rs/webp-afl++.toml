@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 4"
-target = "/sydr_script_jpeg @@"
-jobs = 2
+target = "/sydr_script_webp @@"
 
-[libfuzzer]
-path = "/fuzzer_script_jpeg"
-args = "-rss_limit_mb=8192 -jobs=4 /corpus_jpeg"
+[aflplusplus]
+target = "/fuzz_webp"
+args = "-t 2000+ -i /corpus_webp"
 
 [cov]
-target = "/cov_script_jpeg @@"
+target = "/cov_script_webp @@"

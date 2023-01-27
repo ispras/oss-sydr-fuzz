@@ -1,17 +1,16 @@
+extern crate afl;
 extern crate image;
 
-use std::env;
-use std::fs::File;
-use std::io::Read;
-use std::io::Cursor;
-use image::ImageResult;
 use image::codecs::openexr::*;
-use std::io::Seek;
-use std::convert::TryFrom;
+use image::io::Limits;
+use image::ColorType;
 use image::ImageDecoder;
 use image::ImageEncoder;
-use image::ColorType;
-use image::io::Limits;
+use image::ImageResult;
+use std::convert::TryFrom;
+use std::io::Cursor;
+use std::io::Read;
+use std::io::Seek;
 use std::io::Write;
 
 // "just dont panic"
@@ -62,17 +61,8 @@ fn roundtrip(bytes: &[u8]) -> ImageResult<()> {
     Ok(())
 }
 
-fn main() -> std::io::Result<()> {
-    let args: Vec<String> = env::args().collect();
-    if args.len() >= 2 {
-        let filename = &args[1];
-        let mut f = File::open(filename).expect("no file found");
-        let metadata = std::fs::metadata(filename).expect("unable to read metadata");
-        let mut data = vec![0; metadata.len() as usize];
-        f.read(&mut data).expect("buffer overflow");
+fn main() {
+    afl::fuzz(true, |data| {
         let _ = roundtrip(&data);
-    }
-
-    Ok(())
+    });
 }
-
