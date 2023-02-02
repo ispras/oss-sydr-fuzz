@@ -10,77 +10,23 @@ This project uses some performance related settings and you can tune this for yo
 
 ## Build Docker
 
-    $ sudo docker build -t oss-sydr-fuzz-pytorch .
+    # sudo docker build -t oss-sydr-fuzz-pytorch .
 
 ## Run Hybrid Fuzzing
 
 Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
 
-    $ unzip sydr.zip
+    # unzip sydr.zip
 
 Run Docker:
 
-    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash
+    # sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash
 
 Change directory to `/fuzz`:
 
     # cd /fuzz
 
-### Fuzz Targets
-
-#### class_parser_fuzz
-
-Run hybrid fuzzing:
-
-    # sydr-fuzz -c class_parser.toml run
-
-Minimize corpus:
-
-    # sydr-fuzz -c class_parser.toml cmin
-
-#### irparser_fuzz
-
-Run hybrid fuzzing:
-
-    # sydr-fuzz -c irparser.toml run
-
-Minimize corpus:
-
-    # sydr-fuzz -c irparser.toml cmin
-
-#### jit_differential_fuzz
-
-Run hybrid fuzzing:
-
-    # sydr-fuzz -c jit_differential.toml run
-
-Minimize corpus:
-
-    # sydr-fuzz -c jit_differential.toml cmin
-
-#### message_deserialize_fuzz
-
-Run hybrid fuzzing:
-
-    # sydr-fuzz -c message_deserialize.toml run
-
-Minimize corpus:
-
-    # sydr-fuzz -c message_deserialize.toml cmin
-
-#### dump_fuzz
-
-Run hybrid fuzzing:
-
-    # sydr-fuzz -c dump.toml run
-
-Minimize corpus:
-
-    # sydr-fuzz -c dump.toml cmin
-
-#### load_fuzz
-
-Run hybrid fuzzing:
+Run libFuzzer-based hybrid fuzzing:
 
     # sydr-fuzz -c load.toml run
 
@@ -88,17 +34,24 @@ Minimize corpus:
 
     # sydr-fuzz -c load.toml cmin
 
-#### mobile_fuzz
+Collect coverage:
 
-Run hybrid fuzzing:
+    # sydr-fuzz -c load.toml cov-export -- -format=lcov > load.lcov
+    # genhtml -o load_coverage load.lcov
 
-    # sydr-fuzz -c mobile.toml run
+Check security predicates:
 
-Minimize corpus:
+    # sydr-fuzz -c load.toml security
 
-    # sydr-fuzz -c mobile.toml cmin
+Crash analysis:
 
-#### rpc_reproducer
+    # sydr-fuzz -c load.toml casr
+
+To perform AFL-based hybrid fuzzing use *_afl.toml configuration files:
+
+    # sydr-fuzz -c load_afl.toml run
+
+### rpc_reproducer
 
 These targets are used to double check the bugs found by rpc fuzzers (e.g. message_deserialize_fuzz).
 
@@ -107,13 +60,15 @@ There are 2 build:
 1. Clean RPC reproducer without asan: `rpc_reproducer_nosan`
 2. RPC reproducer with asan: `rpc_reproducer_asan`
 
-## Security predicates
+## Supported Targets
 
-    # sydr-fuzz -c <target_name>.toml security
-
-## Crash analysis with Casr
-
-    # sydr-fuzz -c <target_name>.toml casr
+    * class_parser
+    * irparser
+    * jit_differential
+    * message_deserialize
+    * load
+    * mobile
+    * dump
 
 ## Applied patches
 
