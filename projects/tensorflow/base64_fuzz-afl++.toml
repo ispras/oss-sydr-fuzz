@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/base64_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/base64_fuzz"
 args = "-t 60000 -i /corpus/base64"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/base64_fuzz @@"

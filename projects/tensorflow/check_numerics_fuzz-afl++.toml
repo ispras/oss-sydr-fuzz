@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/check_numerics_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/check_numerics_fuzz"
 args = "-t 60000 -i /corpus/check_numerics"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/check_numerics_fuzz @@"

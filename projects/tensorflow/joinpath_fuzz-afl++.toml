@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/joinpath_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/joinpath_fuzz"
 args = "-t 60000 -i /corpus/joinpath"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/joinpath_fuzz @@"

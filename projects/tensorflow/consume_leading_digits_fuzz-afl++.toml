@@ -21,9 +21,10 @@ args = "-l debug"
 target = "/sydr/consume_leading_digits_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/consume_leading_digits_fuzz"
 args = "-t 60000 -i /corpus/consume_leading_digits"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 target = "/coverage/consume_leading_digits_fuzz @@"
