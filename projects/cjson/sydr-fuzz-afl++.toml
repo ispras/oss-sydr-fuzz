@@ -26,7 +26,7 @@ jobs = 4
 
 [[aflplusplus]]
 target = "/cjson_read_afl_fuzzer @@"
-args = "-t 10000 -i /corpus -x /cjson/fuzzing/json.dict -c /cjson_read_afl_fuzzer_cmplog -m none -l AT"
+args = "-t 10000 -x /cjson/fuzzing/json.dict -c /cjson_read_afl_fuzzer_cmplog -m none -l AT"
 jobs = 2
 
 [cov]
