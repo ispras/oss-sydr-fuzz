@@ -1,6 +1,6 @@
 # lighttpd
 
-lighttpd a secure, fast, compliant and very flexible web-server
+lighttpd is a secure, fast, compliant and very flexible web-server
 which has been optimized for high-performance environments. It has a very
 low memory footprint compared to other webservers and takes care of cpu-load.
 Its advanced feature-set (FastCGI, CGI, Auth, Output-Compression,
@@ -15,7 +15,11 @@ for every server that is suffering load problems.
 
 Run docker:
 
-    $ sudo docker run --rm -v `pwd`:/fuzz -it oss-sydr-fuzz-lighttpd /bin/bash
+    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-lighttpd /bin/bash
+
+Change directory to /fuzz:
+
+    # cd /fuzz
 
 Run hybrid fuzzing:
 
@@ -23,14 +27,11 @@ Run hybrid fuzzing:
 
 Minimize corpus:
 
-    # sydr-fuzz -merge=1 /corpus_minimized /corpus
+    # sydr-fuzz cmin
 
 Collect coverage:
 
-    # mkdir -p /coverage/raw && cd /coverage/raw
-    # for file in /corpus_minimized/*; do LLVM_PROFILE_FILE=./$(basename "$file").profraw sydr-fuzz "$file"; done
-    # cd .. && find raw/ > cov.lst
-    # llvm-profdata merge --input-files=cov.lst -o cov.profdata
+    # sydr-fuzz cov-report
 
 Get LCOV HTML coverage report:
 
