@@ -33,11 +33,23 @@ $CXX $CXXFLAGS fuzz_burl.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o l
 export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
+cd ..
+make clean
+./configure --without-pcre --enable-static
+make
+cd src
+
 $CC $CFLAGS -c /fuzz_burl_cov.c -I. -I../include
 $CXX $CXXFLAGS fuzz_burl_cov.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_cov
 
 export CXXFLAGS="-g"
 export CFLAGS="-g"
+
+cd ..
+make clean
+./configure --without-pcre --enable-static
+make
+cd src
 
 $CC $CFLAGS -c /fuzz_burl_cov.c -I. -I../include
 $CXX $CXXFLAGS fuzz_burl_cov.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_sydr
