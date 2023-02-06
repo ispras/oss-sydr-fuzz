@@ -16,7 +16,7 @@
 #
 ################################################################################
 
-./autogen.sh
+./autogen.sh 
 export CC=clang
 export CXX=clang++
 export CFLAGS="-fsanitize=fuzzer-no-link,address,undefined"
@@ -40,8 +40,8 @@ make clean
 make
 cd src
 
-$CC $CFLAGS -c /fuzz_burl_sydr.c -I. -I../include
-$CXX $CXXFLAGS fuzz_burl_sydr.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_cov
+$CC $CFLAGS -pthread /opt/StandaloneFuzzTargetMain.c -c -o /StandaloneFuzzTargetMain.o
+$CC $CFLAGS /fuzz_burl.c -I. -I../include /StandaloneFuzzTargetMain.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_cov
 
 export CXXFLAGS="-g"
 export CFLAGS="-g"
@@ -52,5 +52,5 @@ make clean
 make
 cd src
 
-$CC $CFLAGS -c /fuzz_burl_sydr.c -I. -I../include
-$CXX $CXXFLAGS fuzz_burl_sydr.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_sydr
+$CC $CFLAGS -pthread /opt/StandaloneFuzzTargetMain.c -c -o /StandaloneFuzzTargetMain.o
+$CC $CFLAGS /fuzz_burl.c -I. -I../include /StandaloneFuzzTargetMain.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_sydr
