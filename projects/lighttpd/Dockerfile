@@ -27,3 +27,5 @@ COPY build.sh /
 COPY fuzz_* /
 
 RUN /build.sh
+
+WORKDIR /
