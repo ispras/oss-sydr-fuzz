@@ -15,19 +15,19 @@
 # limitations under the License.
 #
 ################################################################################
-mkdir /fuzz /sydr /cov
+mkdir /fuzzer /sydr /cov
 # afl
 cd /vector/lib/vrl/stdlib/fuzzing
-export RUSTFLAGS="-Zsanitizer=address -C panic=abort" 
+export RUSTFLAGS="-Zsanitizer=address -C panic=abort"
 cargo afl build --bin fuzz_aws --release --target x86_64-unknown-linux-gnu
 cargo afl build --bin fuzz_csv --release --target x86_64-unknown-linux-gnu
 cargo afl build --bin fuzz_json --release --target x86_64-unknown-linux-gnu
 cargo afl build --bin fuzz_klog --release --target x86_64-unknown-linux-gnu
 cargo afl build --bin fuzz_xml --release --target x86_64-unknown-linux-gnu
-find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "fuzz_*" -exec cp {} /fuzz \;
+find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "fuzz_*" -exec cp {} /fuzzer \;
 
 #sydr
-export RUSTFLAGS="-C panic=abort" 
+export RUSTFLAGS="-C panic=abort"
 cargo build --bin cov_aws --release --target x86_64-unknown-linux-gnu
 cargo build --bin cov_csv --release --target x86_64-unknown-linux-gnu
 cargo build --bin cov_json --release --target x86_64-unknown-linux-gnu
@@ -35,7 +35,7 @@ cargo build --bin cov_klog --release --target x86_64-unknown-linux-gnu
 cargo build --bin cov_xml --release --target x86_64-unknown-linux-gnu
 find /vector/lib/vrl/stdlib/fuzzing/target/x86_64-unknown-linux-gnu/release -maxdepth 1 -perm /a+x -name "cov_*" -exec cp {} /sydr \;
 
-#cov 
+#cov
 export RUSTFLAGS="-C panic=abort -C instrument-coverage"
 cargo build --bin cov_aws --release --target x86_64-unknown-linux-gnu
 cargo build --bin cov_csv --release --target x86_64-unknown-linux-gnu
