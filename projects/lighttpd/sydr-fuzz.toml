@@ -20,7 +20,7 @@ target = "/fuzz_burl_sydr @@"
 
 [libfuzzer]
 path = "/fuzz_burl"
-args = "-close_fd_mask=3 /corpus"
+args = "/corpus"
 
 [cov]
 target = "/fuzz_burl_cov @@"
