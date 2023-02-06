@@ -21,8 +21,8 @@ limitations under the License.
 #include "burl.h"
 #include "buffer.h"
 
-void run_burl_normalize (buffer *psrc, buffer *ptmp, 
-						int flags, int line, const char *in, 
+void run_burl_normalize (buffer *psrc, buffer *ptmp,
+						int flags, int line, const char *in,
 						size_t in_len) {
     int qs;
     buffer_copy_string_len(psrc, in, in_len);
@@ -52,5 +52,5 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     buffer_free(psrc);
     buffer_free(ptmp);
     free(new_str);
-    return 0;     
+    return 0;
 }
