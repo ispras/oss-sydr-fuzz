@@ -16,28 +16,28 @@
 ################################################################################
 
 ./autogen.sh 
-CC=clang
-CXX=clang++
-CFLAGS="-fsanitize=fuzzer-nolink,address,undefined"
-CXXFLAGS="-fsanitize=fuzzer-nolink,address,undefined"
+export CC=clang
+export CXX=clang++
+export CFLAGS="-fsanitize=fuzzer-nolink,address,undefined"
+export CXXFLAGS="-fsanitize=fuzzer-nolink,address,undefined"
 ./configure --without-pcre --enable-static
 make
 cd src
 
-CFLAGS="-fsanitize=fuzzer,address,undefined"
-CXXFLAGS="-fsanitize=fuzzer,address,undefined"
+export CFLAGS="-fsanitize=fuzzer,address,undefined"
+export CXXFLAGS="-fsanitize=fuzzer,address,undefined"
 
 $CC $CFLAGS -c /fuzz_burl.c -I. -I../include
 $CXX $CXXFLAGS fuzz_burl.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl
 
-CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
-CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
 $CC $CFLAGS -c /fuzz_burl_cov.c -I. -I../include
 $CXX $CXXFLAGS fuzz_burl_cov.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_cov
 
-CXXFLAGS="-g"
-CFLAGS="-g"
+export CXXFLAGS="-g"
+export CFLAGS="-g"
 
 $CC $CFLAGS -c /fuzz_burl_cov.c -I. -I../include
 $CXX $CXXFLAGS fuzz_burl_cov.o lighttpd-burl.o lighttpd-buffer.o lighttpd-base64.o lighttpd-ck.o -o /fuzz_burl_sydr
