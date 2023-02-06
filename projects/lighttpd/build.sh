@@ -18,8 +18,8 @@
 ./autogen.sh 
 export CC=clang
 export CXX=clang++
-export CFLAGS="-fsanitize=fuzzer-nolink,address,undefined"
-export CXXFLAGS="-fsanitize=fuzzer-nolink,address,undefined"
+export CFLAGS="-fsanitize=fuzzer-no-link,address,undefined"
+export CXXFLAGS="-fsanitize=fuzzer-no-link,address,undefined"
 ./configure --without-pcre --enable-static
 make
 cd src
