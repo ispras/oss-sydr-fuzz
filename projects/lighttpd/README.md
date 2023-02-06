@@ -9,7 +9,7 @@ which has been optimized for high-performance environments.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/libjpeg` directory:
+Unzip Sydr (`sydr.zip`) in `projects/lighttpd` directory:
 
     $ unzip sydr.zip
 
