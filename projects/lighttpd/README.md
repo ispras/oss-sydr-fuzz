@@ -9,6 +9,10 @@ which has been optimized for high-performance environments.
 
 ## Run Hybrid Fuzzing
 
+Unzip Sydr (`sydr.zip`) in `projects/libjpeg` directory:
+
+    $ unzip sydr.zip
+
 Run docker:
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-lighttpd /bin/bash
