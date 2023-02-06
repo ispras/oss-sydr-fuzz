@@ -17,7 +17,7 @@
 #
 ################################################################################
 
-./autogen.sh 
+./autogen.sh
 export CC=clang
 export CXX=clang++
 export CFLAGS="-fsanitize=fuzzer-no-link,address,undefined"
