@@ -15,12 +15,15 @@
 ################################################################################
 
 FROM sydr/ubuntu20.04-sydr-fuzz
-RUN apt-get update && apt-get install -y libz-dev libpcre2-dev libtool pkg-config autoconf
+RUN apt-get update && apt-get install -y libz-dev libpcre2-dev libtool pkg-config autoconf && apt-get install unzip 
 RUN git init
 RUN git clone https://github.com/lighttpd/lighttpd1.4
 WORKDIR /lighttpd1.4
 RUN git checkout 3b72817950d8ecc56ac3df9f9911e79993f2a868
 
+COPY corpus.zip /
+RUN cd / && unzip /corpus.zip
 COPY build.sh /
 COPY fuzz_* /
+
 RUN /build.sh
