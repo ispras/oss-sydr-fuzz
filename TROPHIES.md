@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-98 new bugs in
+99 new bugs in
 24 open source projects.
 
 * audk:
@@ -40,6 +40,7 @@
     * <https://github.com/m4b/goblin/pull/333>
 * ICU (Node.js dependency):
     * <https://github.com/nodejs/node/issues/45297> (PR: <https://github.com/unicode-org/icu/pull/2248>)
+    * <https://unicode-org.atlassian.net/browse/ICU-22235>
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778> (PR: <https://github.com/image-rs/image/pull/1781>)
     * <https://github.com/image-rs/image-tiff/pull/200>
