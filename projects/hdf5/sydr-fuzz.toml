@@ -21,7 +21,7 @@ jobs=3
 
 [libfuzzer]
 path = "/h5_read_fuzzer"
-args = "-jobs=1000 -workers=3 /corpus"
+args = "-jobs=1000 -workers=1 /corpus"
 
 [cov]
 target = "/h5_read_cov @@"
