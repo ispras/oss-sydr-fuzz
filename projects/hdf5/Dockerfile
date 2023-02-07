@@ -31,5 +31,3 @@ RUN /build.sh
 WORKDIR /
 
 RUN unzip corpus.zip
-
-
