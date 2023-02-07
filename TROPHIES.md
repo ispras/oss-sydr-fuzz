@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-97 new bugs in
+98 new bugs in
 24 open source projects.
 
 * audk:
@@ -42,6 +42,7 @@
     * <https://github.com/nodejs/node/issues/45297> (PR: <https://github.com/unicode-org/icu/pull/2248>)
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778> (PR: <https://github.com/image-rs/image/pull/1781>)
+    * <https://github.com/image-rs/image-tiff/pull/200>
 * libpcap:
     * <https://github.com/the-tcpdump-group/libpcap/issues/1134>
 * Little-CMS:
