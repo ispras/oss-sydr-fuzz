@@ -24,4 +24,3 @@ target = "/h5_read_afl @@"
 
 [cov]
 target = "/h5_read_cov @@"
-
