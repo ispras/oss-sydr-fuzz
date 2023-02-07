@@ -17,7 +17,6 @@
 [sydr]
 args = "-l debug -j2"
 target = "/h5_read_sydr @@"
-jobs=3
 
 [libfuzzer]
 path = "/h5_read_fuzzer"
