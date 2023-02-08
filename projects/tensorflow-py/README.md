@@ -32,86 +32,26 @@ Get HTML coverage report:
 
     # sydr-fuzz -c abs.toml pycov html
 
-## Alternative Fuzz Targets
+## Supported Targets
 
-TensorFlow-py project has 10 fuzz targets.
-
-### abs
-
-    # sydr-fuzz -c abs.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c abs.toml pycov html
-
-### acos
-
-    # sydr-fuzz -c acos.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c acos.toml pycov html
-
-### acosh
-
-    # sydr-fuzz -c acosh.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c acosh.toml pycov html
-
-### add
-
-    # sydr-fuzz -c add.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c add.toml pycov html
-
-### constant
-
-    # sydr-fuzz -c constant.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c constant.toml pycov html
-
-### dataFormatVecPermute
-
-    # sydr-fuzz -c dataFormatVecPermute.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c dataFormatVecPermute.toml pycov html
-
-### immutableConst
-
-    # sydr-fuzz -c immutableConst.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c immutableConst.toml pycov html
-
-### raggedCountSparseOutput
-
-    # sydr-fuzz -c raggedCountSparseOutput.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c raggedCountSparseOutput.toml pycov html
-
-### sparseCountSparseOutput
-
-    # sydr-fuzz -c sparseCountSparseOutput.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c sparseCountSparseOutput.toml pycov html
-
-### tf2migration
-
-    # sydr-fuzz -c tf2migration.toml run
-
-Collect and report coverage:
-
-    # sydr-fuzz -c tf2migration.toml pycov html
+* abs
+* acos 
+* acosh
+* add
+* constant
+* dataFormatVecPermute
+* decode_png
+* decode_wav
+* encode_wav
+* immutableConst
+* raggedCountSparseOutput
+* sparseCountSparseOutput
+* string_decode_encode
+* string_split_join
+* string_upper_lower
+* tf2migration
+* load_model
+* rgb_to_greyscale
+* rgb_to_hsv
+* stack_dynamic_partitions
+* decode_image

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +16,24 @@
 #
 ################################################################################
 
-exit-on-time = 3600
+import atheris
 
-[atheris]
-path = "/tensorflow/tensorflow/security/fuzzing/raggedCountSparseOutput_fuzz.py"
-args = "-jobs=1000 -workers=4"
+with atheris.instrument_imports():
+    import sys
+    import warnings
+    import tensorflow as tf   
 
-[atheris.env]
-ASAN_OPTIONS = "detect_odr_violation=0"
+def TestOneInput(data):
+    try:
+        img = tf.io.decode_png(data)
+    except tf.errors.InvalidArgumentError:
+        pass
+
+
+def main():
+    atheris.Setup(sys.argv, TestOneInput)
+    atheris.Fuzz()
+
+
+if __name__ == "__main__":
+    main()

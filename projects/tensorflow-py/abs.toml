@@ -17,5 +17,8 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/tensorflow/tensorflow/tensorflow_src/security/fuzzing/abs_fuzz.py"
+path = "/tensorflow/tensorflow/security/fuzzing/abs_fuzz.py"
 args = "-jobs=1000 -workers=4"
+
+[atheris.env]
+ASAN_OPTIONS = "detect_odr_violation=0"

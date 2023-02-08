@@ -17,8 +17,9 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/tensorflow/tensorflow/security/fuzzing/raggedCountSparseOutput_fuzz.py"
-args = "-jobs=1000 -workers=4"
+path = "/decode_image.py"
+args = "/corpus/decode_bmp -rss_limit_mb=0 -jobs=1000 -workers=4"
 
 [atheris.env]
 ASAN_OPTIONS = "detect_odr_violation=0"
+

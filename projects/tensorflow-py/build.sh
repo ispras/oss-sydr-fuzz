@@ -17,35 +17,39 @@
 ################################################################################
 
 export CC="clang" 
-export CFLAGS="-fsanitize=address,fuzzer-no-link -g" 
+export CFLAGS="-fsanitize=fuzzer-no-link,address -g -shared-libasan" 
 export CXX="clang++" 
-export CXXFLAGS="-fsanitize=address,fuzzer-no-link -g"
+export CXXFLAGS="-fsanitize=fuzzer-no-link,address -g -shared-libasan"
+
+export LD_LIBRARY_PATH="$(dirname $(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1))"
+
+declare EXTRA_FLAGS="\
+$(
+for f in ${CFLAGS}; do
+    echo "--conlyopt=${f}" "--linkopt=${f}"
+done
+for f in ${CXXFLAGS}; do
+    echo "--cxxopt=${f}" "--linkopt=${f}"
+done
+)"
+
+sed -i -e 's/$(location @nasm\/\/:nasm) -f elf64/ASAN_OPTIONS=detect_leaks=0 $(location @nasm\/\/:nasm) -f elf64/' third_party/jpeg/jpeg.BUILD
+
 python3 -m pip install numpy wheel packaging requests opt_einsum
 python3 -m pip install keras_preprocessing --no-deps
-export OUT="tensorflow/tensorflow-out"
 
 bazel clean --expunge
-bazel build --spawn_strategy=sandboxed //tensorflow/tools/pip_package:build_pip_package
+bazel build \
+  --verbose_failures \
+  --jobs=$(nproc) \
+  --spawn_strategy=sandboxed \
+  --strip=never \
+  --copt="-DADDRESS_SANITIZER" \
+  --action_env="ASAN_OPTIONS=detect_leaks=0,detect_odr_violation=0" \
+  --action_env="LD_PRELOAD=$(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1)" \
+  ${EXTRA_FLAGS} \
+  -- //tensorflow/tools/pip_package:build_pip_package
+
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag /tmp/tensorflow_pkg
-python3 -m pip install /tmp/tensorflow_pkg/tf_nightly-2.12.0-cp38-cp38-linux_x86_64.whl
-
-# Rename to avoid the following: https://github.com/tensorflow/tensorflow/issues/40182
-mv /tensorflow/tensorflow /tensorflow/tensorflow_src
-
-# Build fuzzers into $OUT. These could be detected in other ways.
-
-for fuzzer in $(find / -name '*_fuzz.py'); do
-  fuzzer_basename=$(basename -s .py $fuzzer)
-  fuzzer_package=${fuzzer_basename}.pkg
-
-  pyinstaller --distpath $OUT --onefile --name $fuzzer_package $fuzzer
-
-  echo "#!/bin/sh
-# LLVMFuzzerTestOneInput for fuzzer detection.
-this_dir=\$(dirname \"\$0\")
-LD_PRELOAD=ASAN_OPTIONS=\$ASAN_OPTIONS:symbolize=1:external_symbolizer_path=\$this_dir/llvm-symbolizer:detect_leaks=0 \
-\$this_dir/$fuzzer_package \$@" > $OUT/$fuzzer_basename
-  chmod +x $OUT/$fuzzer_basename
-done
-
-mv /tensorflow/tensorflow_src /tensorflow/tensorflow
+WHL_PACKAGE=$(find /tmp/tensorflow_pkg/ -name 'tf_nightly*')
+python3 -m pip install ${WHL_PACKAGE}
