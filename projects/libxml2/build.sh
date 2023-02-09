@@ -16,11 +16,11 @@ autoconf -f
 #Build targets for libfuzzer
 echo "[x] Build targets for libfuzzer."
 
-export CC="clang"
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+CC="clang"
+CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
-./configure --without-python --disable-shared
+./configure CC=$CC CFLAGS="$CFLAGS" --without-python --disable-shared
 make -j$(nproc)
 
 mkdir libfuzzer
@@ -35,11 +35,11 @@ make clean
 #Build targets for afl++
 echo "[x] Build targets for afl++."
 
-export CC="afl-clang-lto"
-export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+CC="afl-clang-lto"
+CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
-./configure --without-python --disable-shared
+./configure CC=$CC CFLAGS="$CFLAGS" --without-python --disable-shared
 make -j$(nproc)
 
 mkdir afl++
@@ -55,11 +55,11 @@ make clean
 echo "[x] Build targets for afl++ with cmplog."
 
 export AFL_LLVM_CMPLOG=1
-export CC="afl-clang-lto"
-export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+CC="afl-clang-lto"
+CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
-./configure --without-python --disable-shared
+./configure CC=$CC CFLAGS="$CFLAGS" --without-python --disable-shared
 make -j$(nproc)
 
 mkdir afl++-cmplog
@@ -74,10 +74,10 @@ make clean
 #Build targets for sydr
 echo "[x] Build targets for sydr."
 
-export CC="clang"
-export CFLAGS="-g"
+CC="clang"
+CFLAGS="-g"
 
-./configure --without-python --disable-shared
+./configure CC=$CC CFLAGS="$CFLAGS" --without-python --disable-shared
 make -j$(nproc)
 
 mkdir sydr
@@ -92,10 +92,10 @@ make clean
 #Build targets for cover
 echo "[x] Build targets for cover"
 
-export CC="clang"
-export CFLAGS="-fprofile-instr-generate -fcoverage-mapping -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+CC="clang"
+CFLAGS="-fprofile-instr-generate -fcoverage-mapping -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
 
-./configure --without-python --disable-shared
+./configure CC=$CC CFLAGS="$CFLAGS" --without-python --disable-shared
 make -j$(nproc)
 
 mkdir cover
