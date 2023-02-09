@@ -1,0 +1,35 @@
+# Copyright 2023 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+exit_on_time = 7200
+
+[sydr]
+args = "-l debug -j2"
+target = "/libxml2/sydr/fuzz_xml @@"
+jobs = 3
+
+[[aflplusplus]]
+args = "-i /xml_corpus -t 20000 -x /libxml2/fuzz/xml.dict"
+target = "/libxml2/afl++/fuzz_xml @@"
+jobs = 4
+
+[[aflplusplus]]
+args = "-t 20000 -c /libxml2/afl++-cmplog/fuzz_xml -x /libxml2/fuzz/xml.dict -m none -l AT"
+target = "/libxml2/afl++/fuzz_xml @@"
+jobs = 2
+
+
+[cov]
+target = "/libxml2/cover/fuzz_xml @@"
