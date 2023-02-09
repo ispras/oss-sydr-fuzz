@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-101 new bugs in
+104 new bugs in
 25 open source projects.
 
 * audk:
@@ -11,16 +11,19 @@
 * edk2:
     * <https://github.com/tianocore/edk2/commit/35043a5ec05db6aa86b1b380416923fd1c3506e6>
 * edk2-platforms:
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/f3d7459d5bc6f54d71f5b8f0086f51860ac83c77>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/c072e628054708b26d38d0a266d2aeba5fb9e95d>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/dddd9b31608e4d0e47cb17a645ff4727b83a9b1c>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/f974472d111afc8fded2bc6c9b5a72feaf1a9f54>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/0450521c818f9634c312673204ad16a8d16e3570>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/6d772c91f060b72a2933f7fecf791cd4fdfc4cc8>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/5d82bc092567d89235f90035a65b3e48d3d6f6a9>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/833021f8bd63e26dbe753d21a8b08c19882949ff>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/d711d81b7946e4c01e1ace03f7273ccb5ab66187>
-    * <https://github.com/savvamitrofanov/edk2-platforms/commit/ebe4fae8ed6532fbc255d5a553a7d9d29dcf276e>
+    * <https://github.com/tianocore/edk2-platforms/commit/4d960003ca35dc4af756c0a38e83b68630a42a90>
+    * <https://github.com/tianocore/edk2-platforms/commit/22416dc7a93e39fa4e047ce59f6507e33c895d86>
+    * <https://github.com/tianocore/edk2-platforms/commit/0bea20a53a77ad8c844d6021ccd789dc2d6f369c>
+    * <https://github.com/tianocore/edk2-platforms/commit/d99e1597f899b397aaa8953180cf15a77954918e>
+    * <https://github.com/tianocore/edk2-platforms/commit/977ed7c49933f64fea84ca7c59b4dbf3a33c3420>
+    * <https://github.com/tianocore/edk2-platforms/commit/127af2995941808c6b7e8778a62171a8e5184bd5>
+    * <https://github.com/tianocore/edk2-platforms/commit/92065decc87e531c1701b6dd413fb52ef99a5b43>
+    * <https://github.com/tianocore/edk2-platforms/commit/d0cd979906f1645a6277bde0aeddc7303c9a1b46>
+    * <https://github.com/tianocore/edk2-platforms/commit/dc30a6213115d15a58cb2a967f0df3f48704f890>
+    * <https://github.com/tianocore/edk2-platforms/commit/1f5c4f7cab506e800b13ecd1898bcc13df5d524d>
+    * <https://github.com/tianocore/edk2-platforms/commit/0af4ed52a2e605761b4bcfdb3f10e5a8d9685931>
+    * <https://github.com/tianocore/edk2-platforms/commit/615afc82db9f3ff348dacf8a94d9bb588783964b>
+    * <https://github.com/tianocore/edk2-platforms/commit/878c4b13fb2fabd07c5db29ae465aeb2177ce744>
 * exrs
     * <https://github.com/johannesvollmer/exrs/pull/166>
 * FreeImage:
