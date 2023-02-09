@@ -23,13 +23,17 @@ jobs = 3
 [[aflplusplus]]
 args = "-i /html_corpus -t 10000 -x /libxml2/fuzz/html.dict"
 target = "/libxml2/afl++/fuzz_html @@"
-jobs = 4
+jobs = 2
+
+[[aflplusplus]]
+args = "-i /html_corpus -t 10000 -x /libxml2/fuzz/html.dict"
+target = "/libxml2/afl++-laf/fuzz_html @@"
+jobs = 2
 
 [[aflplusplus]]
 args = "-t 10000 -c /libxml2/afl++-cmplog/fuzz_html -x /libxml2/fuzz/html.dict -m none -l AT"
 target = "/libxml2/afl++/fuzz_html @@"
 jobs = 2
-
 
 [cov]
 target = "/libxml2/cover/fuzz_html @@"

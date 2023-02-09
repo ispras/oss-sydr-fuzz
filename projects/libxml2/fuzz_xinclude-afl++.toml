@@ -23,13 +23,17 @@ jobs = 3
 [[aflplusplus]]
 args = "-i /xinclude_corpus -t 20000 -x /libxml2/fuzz/xml.dict"
 target = "/libxml2/afl++/fuzz_xinclude @@"
-jobs = 4
+jobs = 2
+
+[[aflplusplus]]
+args = "-i /xinclude_corpus -t 20000 -x /libxml2/fuzz/xml.dict"
+target = "/libxml2/afl++-laf/fuzz_xinclude @@"
+jobs = 2
 
 [[aflplusplus]]
 args = "-t 20000 -c /libxml2/afl++-cmplog/fuzz_xinclude -x /libxml2/fuzz/xml.dict -m none -l AT"
 target = "/libxml2/afl++/fuzz_xinclude @@"
 jobs = 2
-
 
 [cov]
 target = "/libxml2/cover/fuzz_xinclude @@"

@@ -69,6 +69,25 @@ do
     afl-clang-lto $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-cmplog/fuzz_$target
 done
 
+#Build targets for afl++ with laf
+echo "[x] Build targets for afl++ with laf."
+
+export AFL_LLVM_LAF_ALL=1
+CC="afl-clang-lto"
+CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+
+./configure CC=$CC CFLAGS="$CFLAGS" --without-python --disable-shared
+make -j$(nproc)
+
+mkdir afl++-laf
+
+for target in xml html regexp schema uri xinclude xpath
+do
+    afl-clang-lto $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-laf/fuzz_$target
+done
+
+
 make clean
 
 #Build targets for sydr
