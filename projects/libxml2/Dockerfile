@@ -30,9 +30,9 @@ ADD https://raw.githubusercontent.com/google/fuzzing/master/dictionaries/url.dic
 RUN mkdir xml_corpus && find / -name "*.xml" -exec cp {} xml_corpus/ \;
 RUN mkdir html_corpus &&  find / -name "*.html" -exec cp {} html_corpus \;
 RUN mkdir schemas_corpus &&  find / -name "*.xsd" -exec cp {} schemas_corpus \;
-RUN mkdir xinclude_corpus && cp libxml2/test/XInclude/docs/* xinclude_corpus/ && \
-                             cp libxml2/test/XInclude/ents/* xinclude_corpus/ && \
-                             cp libxml2/test/XInclude/without-reader/* xinclude_corpus/ 
+RUN mkdir xinclude_corpus && cp libxml2/test/XInclude/docs/* \
+                             libxml2/test/XInclude/ents/* \
+                             libxml2/test/XInclude/without-reader/* xinclude_corpus/ 
 RUN mkdir xpath_corpus && cp libxml2/test/XPath/tests/*  xpath_corpus/
 RUN mkdir regexp_corpus && cp libxml2/fuzz/static_seed/regexp/* regexp_corpus
 RUN mkdir uri_corpus && cp libxml2/fuzz/static_seed/uri/* uri_corpus

@@ -1,6 +1,20 @@
-#!/bin/bash -eu
+# Copyright 2023 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
 
-cd /libxml2/
+#!/bin/bash -eu
 
 INCLUDE_DIR="/libxml2/include/"
 FUZZ_DIR="/libxml2/fuzz/"
@@ -27,7 +41,7 @@ mkdir libfuzzer
 
 for target in xml html regexp schema uri xinclude xpath
 do
-    clang $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o libfuzzer/fuzz_$target
+    $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o libfuzzer/fuzz_$target
 done
 
 make clean
@@ -46,7 +60,7 @@ mkdir afl++
 
 for target in xml html regexp schema uri xinclude xpath
 do
-    afl-clang-lto $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++/fuzz_$target
+    $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++/fuzz_$target
 done
 
 make clean
@@ -66,7 +80,7 @@ mkdir afl++-cmplog
 
 for target in xml html regexp schema uri xinclude xpath
 do
-    afl-clang-lto $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-cmplog/fuzz_$target
+    $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-cmplog/fuzz_$target
 done
 
 make clean
@@ -88,9 +102,8 @@ mkdir afl++-laf
 
 for target in xml html regexp schema uri xinclude xpath
 do
-    afl-clang-lto $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-laf/fuzz_$target
+    $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-laf/fuzz_$target
 done
-
 
 make clean
 
@@ -107,13 +120,13 @@ mkdir sydr
 
 for target in xml html regexp schema uri xinclude xpath
 do
-    clang $CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $STANDALONE_MAIN $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o sydr/fuzz_$target
+    $CC $CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $STANDALONE_MAIN $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o sydr/fuzz_$target
 done
 
 make clean
 
-#Build targets for cover
-echo "[x] Build targets for cover"
+#Build targets for coverage
+echo "[x] Build targets for coverage"
 
 CC="clang"
 CFLAGS="-fprofile-instr-generate -fcoverage-mapping -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
@@ -125,7 +138,7 @@ mkdir cover
 
 for target in xml html regexp schema uri xinclude xpath
 do
-    clang $CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $STANDALONE_MAIN $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o cover/fuzz_$target
+    $CC $CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $STANDALONE_MAIN $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o cover/fuzz_$target
 done
 
 make clean
