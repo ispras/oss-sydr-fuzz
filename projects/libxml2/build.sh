@@ -1,3 +1,5 @@
+#!/bin/bash -eu
+
 # Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,6 @@
 # limitations under the License.
 #
 ################################################################################
-
-#!/bin/bash -eu
 
 INCLUDE_DIR="/libxml2/include/"
 FUZZ_DIR="/libxml2/fuzz/"
