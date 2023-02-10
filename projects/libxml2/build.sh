@@ -69,6 +69,10 @@ do
     afl-clang-lto $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-cmplog/fuzz_$target
 done
 
+make clean
+
+unset AFL_LLVM_CMPLOG
+
 #Build targets for afl++ with laf
 echo "[x] Build targets for afl++ with laf."
 
