@@ -27,9 +27,9 @@ RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
 
 ADD https://raw.githubusercontent.com/google/fuzzing/master/dictionaries/url.dict /opt/
 
-RUN mkdir xml_corpus && find / -name "*.xml" -exec cp {} xml_corpus/ \;
+RUN mkdir xml_corpus && find / ! -name empty.xml ! -name iso_3166-3.xml -name "*.xml" -exec cp {} xml_corpus/ \;
 RUN mkdir html_corpus &&  find / -name "*.html" -exec cp {} html_corpus \;
-RUN mkdir schemas_corpus &&  find / -name "*.xsd" -exec cp {} schemas_corpus \;
+RUN mkdir schema_corpus &&  find / -name "*.xsd" -exec cp {} schema_corpus \;
 RUN mkdir xinclude_corpus && cp libxml2/test/XInclude/docs/* \
                              libxml2/test/XInclude/ents/* \
                              libxml2/test/XInclude/without-reader/* xinclude_corpus/ 

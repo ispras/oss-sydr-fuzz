@@ -22,14 +22,9 @@ target = "/libxml2/sydr/fuzz_uri @@"
 jobs = 3
 
 [[aflplusplus]]
-args = "-i /xml_corpus -t 2000 -x /opt/url.dict"
+args = "-i /uri_corpus -t 2000 -x /opt/url.dict"
 target = "/libxml2/afl++/fuzz_uri @@"
-jobs = 2
-
-[[aflplusplus]]
-args = "-i /xml_corpus -t 2000 -x /opt/url.dict"
-target = "/libxml2/afl++-laf/fuzz_uri @@"
-jobs = 2
+jobs = 4
 
 [[aflplusplus]]
 args = "-t 2000 -c /libxml2/afl++-cmplog/fuzz_uri -x /opt/url.dict -m none -l AT"

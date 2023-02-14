@@ -22,14 +22,9 @@ target = "/libxml2/sydr/fuzz_xpath @@"
 jobs = 3
 
 [[aflplusplus]]
-args = "-i /xml_corpus -t 20000 -x /libxml2/fuzz/xpath.dict"
+args = "-i /xpath_corpus -t 20000 -x /libxml2/fuzz/xpath.dict"
 target = "/libxml2/afl++/fuzz_xpath @@"
 jobs = 4
-
-[[aflplusplus]]
-args = "-i /xml_corpus -t 20000 -x /libxml2/fuzz/xpath.dict"
-target = "/libxml2/afl++-laf/fuzz_xpath @@"
-jobs = 2
 
 [[aflplusplus]]
 args = "-t 20000 -c /libxml2/afl++-cmplog/fuzz_xpath -x /libxml2/fuzz/xpath.dict -m none -l AT"

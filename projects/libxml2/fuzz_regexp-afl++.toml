@@ -24,12 +24,7 @@ jobs = 3
 [[aflplusplus]]
 args = "-i /regexp_corpus -t 5000 -x /libxml2/fuzz/regexp.dict"
 target = "/libxml2/afl++/fuzz_regexp @@"
-jobs = 2
-
-[[aflplusplus]]
-args = "-i /regexp_corpus -t 5000 -x /libxml2/fuzz/regexp.dict"
-target = "/libxml2/afl++-laf/fuzz_regexp @@"
-jobs = 2
+jobs = 4
 
 [[aflplusplus]]
 args = "-t 5000 -c /libxml2/afl++-cmplog/fuzz_regexp -x /libxml2/fuzz/regexp.dict -m none -l AT"

@@ -24,12 +24,7 @@ jobs = 3
 [[aflplusplus]]
 args = "-i /schema_corpus -t 20000 -x /libxml2/fuzz/schema.dict"
 target = "/libxml2/afl++/fuzz_schema @@"
-jobs = 2
-
-[[aflplusplus]]
-args = "-i /schema_corpus -t 20000 -x /libxml2/fuzz/schema.dict"
-target = "/libxml2/afl++-laf/fuzz_schema @@"
-jobs = 2
+jobs = 4
 
 [[aflplusplus]]
 args = "-t 20000 -c /libxml2/afl++-cmplog/fuzz_schema -x /libxml2/fuzz/schema.dict -m none -l AT"
