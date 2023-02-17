@@ -19,11 +19,6 @@ set -e
 
 cd /pytorch
 
-# Clean previous build
-python3 setup.py clean
-
-echo "Build directory clean"
-
 # Build PyTorch libraries.
 CC=clang
 CXX=clang++
