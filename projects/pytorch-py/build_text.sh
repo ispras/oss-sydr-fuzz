@@ -19,20 +19,12 @@ set -e
 
 cd /text
 
-ASAN_LIB=$(find /usr/local/lib -name 'asan_with_fuzzer.so')
-
-# Clean previous build
-ASAN_OPTIONS=detect_leaks=0 LD_PRELOAD=$ASAN_LIB \
-    CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS \
-    python3 setup.py clean
-
-echo "Build directory clean"
-
 # Build torchtext libraries.
 CC=clang
 CXX=clang++
 CFLAGS="-fPIC -g -fsanitize=fuzzer-no-link,address"
 CXXFLAGS=$CFLAGS
+ASAN_LIB=$(find /usr/local/lib -name 'asan_with_fuzzer.so')
 
 ASAN_OPTIONS=detect_leaks=0 LD_PRELOAD=$ASAN_LIB \
     CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS \
