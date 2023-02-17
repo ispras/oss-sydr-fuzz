@@ -32,17 +32,6 @@ Collect coverage:
 
     # sydr-fuzz -c load_fuzz.toml pycov html
 
-## Alternative Fuzz Targets
+## Supported Targets
 
-### load_fuzz
-
-    # sydr-fuzz -c load_fuzz.toml run
-
-Minimize corpus:
-
-    # sydr-fuzz -c load_fuzz.toml cmin
-
-Collect and report coverage:
-
-    # sydr-fuzz -c load_fuzz.toml pycov html
-
+    * load_fuzz
