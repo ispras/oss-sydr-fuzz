@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus_csv"
-target = "/csv_afl"
+target = "/csv_afl @@"
 
 [cov]
 target = "/csv_cov @@"

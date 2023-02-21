@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus_swim_proto_meta"
-target = "/swim_proto_meta_afl"
+target = "/swim_proto_meta_afl @@"
 
 [cov]
 target = "/swim_proto_meta_cov @@"

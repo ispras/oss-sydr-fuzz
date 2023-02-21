@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus_uri"
-target = "/uri_afl"
+target = "/uri_afl @@"
 
 [cov]
 target = "/uri_cov @@"

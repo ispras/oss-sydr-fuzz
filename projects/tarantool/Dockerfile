@@ -36,7 +36,7 @@ RUN git clone https://github.com/tarantool/tarantool
 WORKDIR tarantool
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 4572a5844c5fe6fb377203433c7a91a5c722fe22
+RUN git checkout 263d422af33d9cf100ca648b6ca3e00a0f6452cb
 
 RUN git submodule update --init --recursive
 
@@ -47,3 +47,8 @@ COPY build.sh main.c afl.cc test/fuzz/
 RUN test/fuzz/build.sh
 
 WORKDIR /
+
+# Unzip new corpus directories
+COPY corpus_datetime_parse_full.zip corpus_datetime_strptime.zip corpus_mp_datetime.zip /
+
+RUN unzip /corpus_datetime_parse_full.zip && unzip /corpus_datetime_strptime.zip && unzip /corpus_mp_datetime.zip

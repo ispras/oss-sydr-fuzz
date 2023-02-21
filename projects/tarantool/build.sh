@@ -92,8 +92,8 @@ done
 # Build the project for AFL++.
 CC=afl-clang-fast
 CXX=afl-clang-fast++
-CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 cmake_args=(
     # Specific to Tarantool
@@ -120,8 +120,6 @@ cmake_args=(
 )
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
-export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/afl.o"
-$CC $CFLAGS -c test/fuzz/afl.cc -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 for f in $(ls build/test/fuzz/*_fuzzer);
@@ -165,7 +163,7 @@ cmake_args=(
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
 export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
-$CC $CFLAGS -c test/fuzz/main.c -o $LIB_FUZZING_ENGINE
+$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 for f in $(ls build/test/fuzz/*_fuzzer);
@@ -207,7 +205,7 @@ cmake_args=(
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
 export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
-$CC $CFLAGS -c test/fuzz/main.c -o $LIB_FUZZING_ENGINE
+$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 for f in $(ls build/test/fuzz/*_fuzzer);
