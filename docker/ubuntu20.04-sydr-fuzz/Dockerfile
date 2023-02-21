@@ -84,4 +84,15 @@ RUN git clone https://github.com/google/atheris && cd atheris && pip3 install . 
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 
+# Install Go
+RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
+    chmod +x ./installer_linux && \
+    SHELL="bash" ./installer_linux -version=1.19 && \
+    rm -rf ./installer_linux
+
+ENV GOPATH=/root/go
+ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
+
+RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
+
 WORKDIR /
