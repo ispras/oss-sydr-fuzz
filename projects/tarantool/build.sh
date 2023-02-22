@@ -130,6 +130,44 @@ do
   cp $f /"$module"_afl
 done
 
+# Building cmplog instrumentation.
+export AFL_LLVM_CMPLOG=1
+cmake_args=(
+    # Specific to Tarantool
+    -DENABLE_BACKTRACE=OFF
+    -DENABLE_FUZZER=ON
+    -DOSS_FUZZ=OFF
+    -DENABLE_ASAN=ON
+    -DENABLE_UB_SANITIZER=ON
+    -DCMAKE_BUILD_TYPE=Release
+
+    # C compiler
+    -DCMAKE_C_COMPILER="${CC}"
+    -DCMAKE_C_FLAGS="${CFLAGS}"
+
+    # C++ compiler
+    -DCMAKE_CXX_COMPILER="${CXX}"
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}"
+
+    # Linker
+    -DCMAKE_LINKER="${LD}"
+    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}"
+    -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}"
+    -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
+)
+[[ -e build ]] && rm -rf build
+mkdir -p build/test/fuzz
+cmake "${cmake_args[@]}" -S . -B build
+make -j$(nproc) VERBOSE=1 -C build fuzzers
+for f in $(ls build/test/fuzz/*_fuzzer);
+do
+  name=$(basename $f);
+  module=$(echo $name | sed 's/_fuzzer//')
+  echo "Copying for AFL++ $module";
+  cp $f /"$module"_cmplog
+done
+unset AFL_LLVM_CMPLOG
+
 # Build the project for Sydr.
 CC=clang
 CXX=clang++

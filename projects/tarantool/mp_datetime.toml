@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/mp_datetime_fuzzer"
-args = "/corpus_mp_datetime"
+args = "/mp_datetime"
 
 [cov]
 target = "/mp_datetime_cov @@"

@@ -41,14 +41,16 @@ RUN git checkout 263d422af33d9cf100ca648b6ca3e00a0f6452cb
 RUN git submodule update --init --recursive
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh main.c afl.cc test/fuzz/
+COPY build.sh test/fuzz/
 
 # Build fuzz targets.
 RUN test/fuzz/build.sh
 
 WORKDIR /
 
-# Unzip new corpus directories
-COPY corpus_datetime_parse_full.zip corpus_datetime_strptime.zip corpus_mp_datetime.zip /
+# Get new corpus directories
+RUN git clone https://github.com/ligurio/tarantool-corpus && cd /tarantool-corpus && \
+    git checkout dc6a7b9c663df970d1071a1a40881b30c5f54d57 && cp -r mp_datetime/ datetime_strptime/ datetime_parse_full/ /
 
-RUN unzip /corpus_datetime_parse_full.zip && unzip /corpus_datetime_strptime.zip && unzip /corpus_mp_datetime.zip
+# Fix uri corpus directory
+RUN rm /corpus_uri/adc83b19e793491b1c6ea0fd8b46cd9f32e592fc

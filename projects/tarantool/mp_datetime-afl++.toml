@@ -19,8 +19,12 @@ args = "-l debug -j 2"
 target = "/mp_datetime_sydr @@"
 jobs = 2
 
-[aflplusplus]
-args = "-t 60000 -i /corpus_mp_datetime"
+[[aflplusplus]]
+args = "-t 60000 -i /mp_datetime"
+target = "/mp_datetime_afl @@"
+
+[[aflplusplus]]
+args = "-c /mp_datetime_cmplog -t 60000 -i /mp_datetime"
 target = "/mp_datetime_afl @@"
 
 [cov]
