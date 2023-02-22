@@ -39,8 +39,8 @@ RUN rustup component add rust-src --toolchain nightly
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip \
     && unzip ninja-linux.zip && mv ninja /usr/bin && rm ninja-linux.zip
 
-RUN git clone https://github.com/llvm/llvm-project.git && cd llvm-project && \
-    git checkout de5b16d8ca2d14ff0d9b6be9cf40566bc7eb5a01 && \
+RUN wget -q https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-14.0.6.tar.gz && \
+    tar xf llvmorg-*.tar.gz && rm llvmorg-*.tar.gz && cd llvm-project* && \
     mkdir build && cd build && \
     cmake \
         -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_COMPILER=clang-11 \
