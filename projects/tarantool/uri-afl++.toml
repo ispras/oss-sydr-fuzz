@@ -24,7 +24,7 @@ args = "-t 60000 -i /corpus_uri"
 target = "/uri_afl @@"
 
 [[aflplusplus]]
-args = "-c /uri_cmplog -t 60000 -i /corpus_uri"
+args = "-m none -l AT -c /uri_cmplog -t 60000 -i /corpus_uri"
 target = "/uri_afl @@"
 
 [cov]

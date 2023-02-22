@@ -50,7 +50,9 @@ WORKDIR /
 
 # Get new corpus directories
 RUN git clone https://github.com/ligurio/tarantool-corpus && cd /tarantool-corpus && \
-    git checkout dc6a7b9c663df970d1071a1a40881b30c5f54d57 && cp -r mp_datetime/ datetime_strptime/ datetime_parse_full/ /
+    git checkout dc6a7b9c663df970d1071a1a40881b30c5f54d57 && mv mp_datetime/ datetime_strptime/ datetime_parse_full/ /
+
+RUN rm -rf tarantool-corpus
 
 # Fix uri corpus directory
 RUN rm /corpus_uri/adc83b19e793491b1c6ea0fd8b46cd9f32e592fc

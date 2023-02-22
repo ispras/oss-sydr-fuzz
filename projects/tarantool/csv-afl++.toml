@@ -24,7 +24,7 @@ args = "-t 60000 -i /corpus_csv"
 target = "/csv_afl @@"
 
 [[aflplusplus]]
-args = "-c /csv_cmplog -t 60000 -i /corpus_csv"
+args = "-m none -l AT -c /csv_cmplog -t 60000 -i /corpus_csv"
 target = "/csv_afl @@"
 
 [cov]

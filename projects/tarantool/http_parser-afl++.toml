@@ -24,7 +24,7 @@ args = "-t 60000 -i /corpus_http_parser"
 target = "/http_parser_afl @@"
 
 [[aflplusplus]]
-args = "-c /http_parser_cmplog -t 60000 -i /corpus_http_parser"
+args = "-m none -l AT -c /http_parser_cmplog -t 60000 -i /corpus_http_parser"
 target = "/http_parser_afl @@"
 
 [cov]

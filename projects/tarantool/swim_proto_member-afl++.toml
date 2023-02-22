@@ -24,7 +24,7 @@ args = "-t 60000 -i /corpus_swim_proto_member"
 target = "/swim_proto_member_afl @@"
 
 [[aflplusplus]]
-args = "-c /swim_proto_member_cmplog -t 60000 -i /corpus_swim_proto_member"
+args = "-m none -l AT -c /swim_proto_member_cmplog -t 60000 -i /corpus_swim_proto_member"
 target = "/swim_proto_member_afl @@"
 
 [cov]

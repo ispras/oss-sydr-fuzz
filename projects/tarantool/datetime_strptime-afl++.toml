@@ -24,7 +24,7 @@ args = "-t 60000 -i /datetime_strptime"
 target = "/datetime_strptime_afl @@"
 
 [[aflplusplus]]
-args = "-c /datetime_strptime_cmplog -t 60000 -i /datetime_strptime"
+args = "-m none -l AT -c /datetime_strptime_cmplog -t 60000 -i /datetime_strptime"
 target = "/datetime_strptime_afl @@"
 
 [cov]

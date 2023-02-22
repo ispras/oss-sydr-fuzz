@@ -24,7 +24,7 @@ args = "-t 60000 -i /datetime_parse_full"
 target = "/datetime_parse_full_afl @@"
 
 [[aflplusplus]]
-args = "-c /datetime_parse_full_cmplog -t 60000 -i /datetime_parse_full"
+args = "-m none -l AT -c /datetime_parse_full_cmplog -t 60000 -i /datetime_parse_full"
 target = "/datetime_parse_full_afl @@"
 
 [cov]
