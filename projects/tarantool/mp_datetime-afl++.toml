@@ -16,16 +16,16 @@
 
 [sydr]
 args = "-l debug -j 2"
-target = "/uri_sydr @@"
+target = "/mp_datetime_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_uri"
-target = "/uri_afl @@"
+args = "-t 60000 -i /mp_datetime"
+target = "/mp_datetime_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /uri_cmplog -t 60000 -i /corpus_uri"
-target = "/uri_afl @@"
+args = "-m none -l AT -c /mp_datetime_cmplog -t 60000 -i /mp_datetime"
+target = "/mp_datetime_afl @@"
 
 [cov]
-target = "/uri_cov @@"
+target = "/mp_datetime_cov @@"

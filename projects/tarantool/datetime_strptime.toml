@@ -16,16 +16,12 @@
 
 [sydr]
 args = "-l debug -j 2"
-target = "/uri_sydr @@"
+target = "/datetime_strptime_sydr @@"
 jobs = 2
 
-[[aflplusplus]]
-args = "-t 60000 -i /corpus_uri"
-target = "/uri_afl @@"
-
-[[aflplusplus]]
-args = "-m none -l AT -c /uri_cmplog -t 60000 -i /corpus_uri"
-target = "/uri_afl @@"
+[libfuzzer]
+path = "/datetime_strptime_fuzzer"
+args = "/datetime_strptime"
 
 [cov]
-target = "/uri_cov @@"
+target = "/datetime_strptime_cov @@"

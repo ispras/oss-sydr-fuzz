@@ -16,16 +16,16 @@
 
 [sydr]
 args = "-l debug -j 2"
-target = "/uri_sydr @@"
+target = "/datetime_parse_full_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_uri"
-target = "/uri_afl @@"
+args = "-t 60000 -i /datetime_parse_full"
+target = "/datetime_parse_full_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /uri_cmplog -t 60000 -i /corpus_uri"
-target = "/uri_afl @@"
+args = "-m none -l AT -c /datetime_parse_full_cmplog -t 60000 -i /datetime_parse_full"
+target = "/datetime_parse_full_afl @@"
 
 [cov]
-target = "/uri_cov @@"
+target = "/datetime_parse_full_cov @@"
