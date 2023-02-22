@@ -27,6 +27,5 @@ target = "/datetime_strptime_afl @@"
 args = "-c /datetime_strptime_cmplog -t 60000 -i /datetime_strptime"
 target = "/datetime_strptime_afl @@"
 
-
 [cov]
 target = "/datetime_strptime_cov @@"
