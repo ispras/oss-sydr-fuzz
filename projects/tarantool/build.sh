@@ -56,7 +56,7 @@ cmake_args=(
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UB_SANITIZER=ON
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -102,7 +102,7 @@ cmake_args=(
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UB_SANITIZER=ON
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -139,7 +139,7 @@ cmake_args=(
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UB_SANITIZER=ON
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -180,7 +180,7 @@ cmake_args=(
     -DENABLE_BACKTRACE=OFF
     -DENABLE_FUZZER=ON
     -DOSS_FUZZ=ON
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
     -DENABLE_UB_SANITIZER=OFF
 
@@ -222,7 +222,7 @@ cmake_args=(
     -DENABLE_BACKTRACE=OFF
     -DENABLE_FUZZER=ON
     -DOSS_FUZZ=ON
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
     -DENABLE_UB_SANITIZER=OFF
 
