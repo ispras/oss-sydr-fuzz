@@ -37,15 +37,27 @@ Collect and report coverage:
 
 ## Alternative Fuzz Targets
 
-Tarantool project has 5 fuzz targets.
+Tarantool project has 8 fuzz targets.
 
 ### csv
 
     # sydr-fuzz -c csv.toml run
+    
+### datetime_parse_full
+
+    # sydr-fuzz -c datetime_parse_full.toml run
+    
+### datetime_strptime
+
+    # sydr-fuzz -c datetime_strptime.toml run
 
 ### http_parser
 
     # sydr-fuzz -c http_parser.toml run
+    
+### mp_datetime
+
+    # sydr-fuzz -c mp_datetime.toml run
 
 ### uri
 
