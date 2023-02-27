@@ -16,7 +16,7 @@ func FuzzWebp(data []byte) int {
     if err != nil {
        return 0
     }
-    if cfg.Width*cfg.Height > 1e6 {
+    if cfg.Width*cfg.Height > 4000000 {
        return 0
     }
     if _, err := webp.Decode(bytes.NewReader(data)); err != nil {
@@ -30,7 +30,7 @@ func FuzzTiff(data []byte) int {
     if err != nil {
         return 0
     }
-    if cfg.Width*cfg.Height > 1e6 {
+    if cfg.Width*cfg.Height > 4000000 {
         return 0
     }
     img, err := tiff.Decode(bytes.NewReader(data))
@@ -50,7 +50,7 @@ func FuzzPng(data []byte) int {
     if err != nil {
         return 0
     }
-    if cfg.Width*cfg.Height > 1e6 {
+    if cfg.Width*cfg.Height > 4000000 {
         return 0
     }
     img, err := png.Decode(bytes.NewReader(data))
@@ -82,7 +82,7 @@ func FuzzJpeg(data []byte) int {
     if err != nil {
         return 0
     }
-    if cfg.Width*cfg.Height > 1e6 {
+    if cfg.Width*cfg.Height > 4000000 {
         return 0
     }
     img, err := jpeg.Decode(bytes.NewReader(data))
@@ -111,7 +111,7 @@ func FuzzGif(data []byte) int {
     if err != nil {
         return 0
     }
-    if cfg.Width*cfg.Height > 1e6 {
+    if cfg.Width*cfg.Height > 4000000 {
         return 0
     }
     img, err := gif.Decode(bytes.NewReader(data))

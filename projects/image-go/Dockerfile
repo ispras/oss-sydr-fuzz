@@ -1,5 +1,4 @@
-# Copyright 2021 Google LLC
-# Modifications copyright (C) 2021 ISP RAS
+# Copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +22,8 @@ RUN git clone --depth=1 https://github.com/dvyukov/go-fuzz-corpus.git
 
 WORKDIR image
 
+RUN git checkout 1b7441254c9a43adda43ffcf12d7add0f1df0191
+
 RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 
 COPY fuzz.go build.sh ./
@@ -40,4 +41,3 @@ COPY sydr_jpeg.go cmd/sydr_jpeg/main.go
 COPY sydr_gif.go cmd/sydr_gif/main.go
 
 RUN ./build.sh
-
