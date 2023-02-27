@@ -41,3 +41,7 @@ COPY sydr_jpeg.go cmd/sydr_jpeg/main.go
 COPY sydr_gif.go cmd/sydr_gif/main.go
 
 RUN ./build.sh
+
+WORKDIR /
+
+COPY *.dict /

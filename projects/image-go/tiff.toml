@@ -19,4 +19,4 @@ target = "/image/cmd/sydr_tiff/sydr_tiff @@"
 
 [libfuzzer]
 path = "/image/fuzz_tiff"
-args = "-rss_limit_mb=8192 /go-fuzz-corpus/tiff/corpus"
+args = "-dict=/tiff.dict -rss_limit_mb=8192 /go-fuzz-corpus/tiff/corpus"

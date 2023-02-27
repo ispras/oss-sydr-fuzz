@@ -19,4 +19,4 @@ target = "/image/cmd/sydr_webp/sydr_webp @@"
 
 [libfuzzer]
 path = "/image/fuzz_webp"
-args = "-rss_limit_mb=8192 /go-fuzz-corpus/webp/corpus"
+args = "-dict=/webp.dict -rss_limit_mb=8192 /go-fuzz-corpus/webp/corpus"
