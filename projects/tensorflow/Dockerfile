@@ -65,12 +65,15 @@ RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
 
 COPY *.patch *.sh /
 
-RUN cd /tensorflow_afl && CONFIG=libfuzzer /build_all.sh
+COPY afl_driver.cc /
+
+RUN cd /tensorflow_afl && CONFIG=afl /build_all.sh
 
 #RUN cd /tensorflow_afl && /build_afl.sh
 #
 #RUN cd /tensorflow_fuzz && /build_fuzz.sh
 #
+#COPY fuzz_session.h /tensorflow/tensorflow/core/kernel/fuzzing/
 #RUN cd /tensorflow_cov && /build_cov.sh
 #
 #COPY fuzz_session.h /tensorflow/tensorflow/core/kernel/fuzzing/

@@ -62,7 +62,7 @@ bazel build $BUILD_ARGS -- ${FUZZ_TEST_BINARIES[*]} ${FUZZTEST_EXTRA_TARGETS:-}
 # The scripts will be named:
 # {binary_name}@{fuzztest_entrypoint}
 for fuzz_main_file in $FUZZ_TEST_BINARIES_OUT_PATHS; do
-  FUZZ_TESTS=$($fuzz_main_file --list_fuzz_tests)
+  FUZZ_TESTS=$(UBSAN_OPTIONS="halt_on_error=0,abort_on_error=0" $fuzz_main_file --list_fuzz_tests)
   cp ${fuzz_main_file} $OUT/
   fuzz_basename=$(basename $fuzz_main_file)
   chmod -x $OUT/$fuzz_basename

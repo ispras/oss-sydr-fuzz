@@ -81,50 +81,13 @@ flags_to_bazel_flags()
 
 # libFuzzer
 if [[ ${CONFIG} = "libfuzzer" ]]; then
-#
-#export CC=clang
-#export CXX=clang++
-#export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,integer,null,bounds"
-#export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,integer,null,bounds"
-#export SANITIZERS="address undefined"
 export FUZZING_ENGINE="libfuzzer"
-
-# AFL version in oss-fuzz does not support LLVMFuzzerRunDriver. It must be updated first.
-#if [ "$FUZZING_ENGINE" = "afl" ]; then
-#  echo "build:oss-fuzz --linkopt=${LIB_FUZZING_ENGINE}"
-#fi
 fi # libFuzzer
 
-## AFL++
-#if [[ ${CONFIG} = "afl" ]]; then
-#
-#export CC=afl-clang-fast
-#export CXX=afl-clang-fast++
-#export CFLAGS="-g -fsanitize=address,undefined,integer,null,bounds"
-#export CXXFLAGS="-g -fsanitize=address,undefined,integer,null,bounds"
-#export SANITIZERS="address undefined"
-#
-#fi # AFL++
-#
-## Sydr
-#if [[ ${CONFIG} = "sydr" ]]; then
-#
-#export CC=clang
-#export CXX=clang++
-#export CFLAGS="-g"
-#export CXXFLAGS="-g"
-#
-#fi # Sydr
-#
-## Coverage
-#if [[ ${CONFIG} = "coverage" ]]; then
-#
-#export CC=clang
-#export CXX=clang++
-#export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-#export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-#
-#fi # Coverage
+# AFL++
+if [[ ${CONFIG} = "afl" ]]; then
+export FUZZING_ENGINE="afl"
+fi # AFL++
 
 echo "
 build:${CONFIG} --copt=-DFUZZTEST_COMPATIBILITY_MODE
@@ -143,12 +106,16 @@ for flag in $CXXFLAGS; do
   echo "$(flags_to_bazel_flags "--linkopt" $flag)"
 done
 
-for f in ${SANITIZERS}; do
+for f in ${SANITIZERS:-}; do
   if [[ ${f} = "undefined" ]]; then
     echo "build:${CONFIG} --linkopt=$(find $(llvm-config --libdir) -name libclang_rt.ubsan_standalone_cxx-x86_64.a | head -1)"
   fi
 done
 
-if [[ "${FUZZING_ENGINE}" = "libfuzzer" ]]; then
+if [[ "${FUZZING_ENGINE:-}" = "libfuzzer" ]]; then
   echo "build:${CONFIG} --linkopt=$(find $(llvm-config --libdir) -name libclang_rt.fuzzer_no_main-x86_64.a | head -1)"
+fi
+
+if [[ "${FUZZING_ENGINE:-}" = "afl" ]]; then
+  echo "build:${CONFIG} --linkopt=/afl_driver.o"
 fi
