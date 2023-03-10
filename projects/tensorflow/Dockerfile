@@ -55,65 +55,48 @@ ENV JAVA_HOME=/usr/lib/jvm/java-15-openjdk-amd64
 # it fails after installing java due to jazzer env variables missing
 RUN install_java.sh || true
 
-# Tensorflow version is release 2.8
+# Tensorflow version is release 2.12
 
 WORKDIR /
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_afl.sh /
-COPY fuzz_session_afl.h /tensorflow/tensorflow/core/kernels/fuzzing/fuzz_session.h
+RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
+    cd tensorflow_afl && git checkout 0d8efc960d2874c2f56eed8690d132763a92a33c && \
+    cd / && cp -r tensorflow_afl tensorflow_fuzz && \
+    cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
 
-RUN bash /build_afl.sh
-WORKDIR /
-RUN rm -rf /tensorflow
+COPY *.patch *.sh /
 
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_fuzz.sh /
+RUN cd /tensorflow_afl && CONFIG=libfuzzer /build_all.sh
 
-RUN bash /build_fuzz.sh
-WORKDIR /
-RUN rm -rf tensorflow
-
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_sydr.sh /
-COPY fuzz_session.h /tensorflow/tensorflow/core/kernels/fuzzing/
-
-RUN bash /build_sydr.sh
-WORKDIR /
-RUN rm -rf tensorflow
-
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_cov.sh /
-
-RUN bash /build_cov.sh
-RUN cp -r tensorflow/core/kernels/fuzzing/corpus /
-RUN cp -r tensorflow/core/kernels/fuzzing/dictionaries /
-
-COPY arg_def_case.zip base64.zip check_numerics.zip cleanpath.zip consume_leading_digits.zip decode_compressed.zip \
-     encode_base64.zip encode_jpeg.zip example_proto_fast_parsing.zip joinpath.zip one_hot.zip parse_tensor_op.zip \
-     parseURI.zip status_group.zip status.zip stringprintf.zip string_replace.zip tstring.zip /
-
-WORKDIR /corpus
-RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip && unzip /cleanpath.zip && \
-    unzip /consume_leading_digits.zip && unzip /decode_compressed.zip && unzip /encode_base64.zip && \
-    unzip /encode_jpeg.zip && unzip /example_proto_fast_parsing.zip && unzip /joinpath.zip && \
-    unzip /one_hot.zip && unzip /parse_tensor_op.zip && unzip /parseURI.zip && unzip /status_group.zip && \
-    unzip /status.zip && unzip /stringprintf.zip && unzip /string_replace.zip && unzip /tstring.zip && \
-    rm /arg_def_case.zip /base64.zip /check_numerics.zip /cleanpath.zip /consume_leading_digits.zip /decode_compressed.zip \
-    /encode_base64.zip /encode_jpeg.zip /example_proto_fast_parsing.zip /joinpath.zip /one_hot.zip /parse_tensor_op.zip \
-    /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
-
-# Increase timeout for forkserver spin up.
-ENV AFL_FORKSRV_INIT_TMOUT=1200000
-
-# Set large bitmap size for afl-showmap operation.
-ENV AFL_MAP_SIZE=10000000
+#RUN cd /tensorflow_afl && /build_afl.sh
+#
+#RUN cd /tensorflow_fuzz && /build_fuzz.sh
+#
+#RUN cd /tensorflow_cov && /build_cov.sh
+#
+#COPY fuzz_session.h /tensorflow/tensorflow/core/kernel/fuzzing/
+#RUN cd /tensorflow_sydr && /build_sydr.sh
+#
+#RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/corpus /
+#RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/dictionaries /
+#
+#COPY arg_def_case.zip base64.zip check_numerics.zip cleanpath.zip consume_leading_digits.zip decode_compressed.zip \
+#     encode_base64.zip encode_jpeg.zip example_proto_fast_parsing.zip joinpath.zip one_hot.zip parse_tensor_op.zip \
+#     parseURI.zip status_group.zip status.zip stringprintf.zip string_replace.zip tstring.zip /
+#
+#WORKDIR /corpus
+#RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip && unzip /cleanpath.zip && \
+#    unzip /consume_leading_digits.zip && unzip /decode_compressed.zip && unzip /encode_base64.zip && \
+#    unzip /encode_jpeg.zip && unzip /example_proto_fast_parsing.zip && unzip /joinpath.zip && \
+#    unzip /one_hot.zip && unzip /parse_tensor_op.zip && unzip /parseURI.zip && unzip /status_group.zip && \
+#    unzip /status.zip && unzip /stringprintf.zip && unzip /string_replace.zip && unzip /tstring.zip && \
+#    rm /arg_def_case.zip /base64.zip /check_numerics.zip /cleanpath.zip /consume_leading_digits.zip /decode_compressed.zip \
+#    /encode_base64.zip /encode_jpeg.zip /example_proto_fast_parsing.zip /joinpath.zip /one_hot.zip /parse_tensor_op.zip \
+#    /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
+#
+## Increase timeout for forkserver spin up.
+#ENV AFL_FORKSRV_INIT_TMOUT=1200000
+#
+## Set large bitmap size for afl-showmap operation.
+#ENV AFL_MAP_SIZE=10000000
 
 WORKDIR /
