@@ -53,3 +53,4 @@ bazel build \
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag /tmp/tensorflow_pkg
 WHL_PACKAGE=$(find /tmp/tensorflow_pkg/ -name 'tf_nightly*')
 python3 -m pip install ${WHL_PACKAGE}
+

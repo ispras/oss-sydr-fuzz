@@ -32,8 +32,6 @@ RUN python3 -m pip install --upgrade pip
 
 RUN python3 -m pip install --upgrade pyinstaller
 
-RUN pip3 install opencv-python
-
 # Due to Bazel bug, need to symlink python3 to python
 # See https://github.com/bazelbuild/bazel/issues/8665
 RUN ln -s /usr/bin/python3 /usr/local/bin/python
@@ -53,6 +51,8 @@ COPY build.sh /
 
 RUN /build.sh
 
+# Create hard link to the asan_with_fuzzer.so to run targets, because tensorflow is
+# built with shared libasan.
 RUN mkdir /ld_path && ln $(find /usr/local/lib/ -name 'asan_with_fuzzer.so') /ld_path/libclang_rt.asan-x86_64.so
 
 ENV LD_LIBRARY_PATH /ld_path
@@ -73,3 +73,4 @@ RUN cd /corpus && \
 
 # Prepare dictionaries
 RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/dictionaries /dicts 
+

@@ -35,23 +35,23 @@ Get HTML coverage report:
 ## Supported Targets
 
 * abs
-* acos 
 * acosh
+* acos
 * add
 * constant
 * dataFormatVecPermute
+* decode_image
 * decode_png
 * decode_wav
 * encode_wav
 * immutableConst
+* load_model
 * raggedCountSparseOutput
+* rgb_to_greyscale
+* rgb_to_hsv
 * sparseCountSparseOutput
+* stack_dynamic_partitions
 * string_decode_encode
 * string_split_join
 * string_upper_lower
 * tf2migration
-* load_model
-* rgb_to_greyscale
-* rgb_to_hsv
-* stack_dynamic_partitions
-* decode_image
