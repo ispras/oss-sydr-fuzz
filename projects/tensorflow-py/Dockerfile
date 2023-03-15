@@ -73,4 +73,3 @@ RUN cd /corpus && \
 
 # Prepare dictionaries
 RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/dictionaries /dicts 
-

@@ -22,4 +22,3 @@ args = "/corpus/decode_png -rss_limit_mb=0 -dict=/dicts/decode_png.dict -jobs=10
 
 [atheris.env]
 ASAN_OPTIONS="detect_odr_violation=0"
-

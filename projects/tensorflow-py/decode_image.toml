@@ -22,4 +22,3 @@ args = "/corpus/decode_bmp -rss_limit_mb=0 -jobs=1000 -workers=4"
 
 [atheris.env]
 ASAN_OPTIONS = "detect_odr_violation=0"
-
