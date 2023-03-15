@@ -17,7 +17,7 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/tensorflow/tensorflow/security/fuzzing/raggedCountSparseOutput_fuzz.py"
+path = "/rgb_to_hsv.py"
 args = "-jobs=1000 -workers=4"
 
 [atheris.env]

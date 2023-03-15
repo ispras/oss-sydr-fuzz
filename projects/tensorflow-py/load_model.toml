@@ -17,8 +17,8 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/tensorflow/tensorflow/security/fuzzing/raggedCountSparseOutput_fuzz.py"
-args = "-jobs=1000 -workers=4"
+path = "/load_model.py"
+args = "/corpus/load_model -jobs=1000 -workers=4"
 
 [atheris.env]
 ASAN_OPTIONS = "detect_odr_violation=0"

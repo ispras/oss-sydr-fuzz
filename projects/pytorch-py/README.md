@@ -34,4 +34,4 @@ Collect coverage:
 
 ## Supported Targets
 
-    * load_fuzz
+* load_fuzz
