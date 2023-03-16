@@ -1,58 +1,20 @@
 #!/bin/bash -x
-
-# Script for generating fuzztest.bazelrc.
-
-set -euf -o pipefail
-
-echo "### DO NOT EDIT. Generated file.
+# Copyright 2022 Google LLC
+# Modifications copyright (C) 2023 ISP RAS
 #
-# To regenerate, run the following from your project's workspace:
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-#  bazel run @com_google_fuzztest//bazel:setup_configs > fuzztest.bazelrc
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
-# And don't forget to add the following to your project's .bazelrc:
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
-#  try-import %workspace%/fuzztest.bazelrc
-"
-
-echo "
-### Common options.
-#
-# Do not use directly.
-# Link with Address Sanitizer (ASAN).
-build:fuzztest-common --linkopt=-fsanitize=address
-# Standard define for \"ifdef-ing\" any fuzz test specific code.
-build:fuzztest-common --copt=-DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-# In fuzz tests, we want to catch assertion violations even in optimized builds.
-build:fuzztest-common --copt=-UNDEBUG
-# Enable libc++ assertions.
-# See https://libcxx.llvm.org/UsingLibcxx.html#enabling-the-safe-libc-mode
-build:fuzztest-common --copt=-D_LIBCPP_ENABLE_ASSERTIONS=1
-"
-
-echo "
-### FuzzTest build configuration.
-#
-# Use with: --config=fuzztest
-build:fuzztest --config=fuzztest-common
-# Link statically.
-build:fuzztest --dynamic_mode=off
-# We rely on the following flag instead of the compiler provided
-# __has_feature(address_sanitizer) to know that we have an ASAN build even in
-# the uninstrumented runtime.
-build:fuzztest --copt=-DADDRESS_SANITIZER
-"
-
-FUZZTEST_FILTER="fuzztest/.*"
-
-echo "# We apply coverage tracking and ASAN instrumentation to everything but the
-# FuzzTest framework itself (including GoogleTest and GoogleMock).
-build:fuzztest --per_file_copt=+//,-${FUZZTEST_FILTER},-googletest/.*,-googlemock/.*@-fsanitize=address,-fsanitize-coverage=inline-8bit-counters,-fsanitize-coverage=trace-cmp
-"
-
-# Do not use the extra configurations below, unless you know what you're doing.
-
-EXTRA_CONFIGS="${EXTRA_CONFIGS:-none}"
+################################################################################
 
 flags_to_bazel_flags()
 {
@@ -79,16 +41,6 @@ flags_to_bazel_flags()
   fi
 }
 
-# libFuzzer
-if [[ ${CONFIG} = "libfuzzer" ]]; then
-export FUZZING_ENGINE="libfuzzer"
-fi # libFuzzer
-
-# AFL++
-if [[ ${CONFIG} = "afl" ]]; then
-export FUZZING_ENGINE="afl"
-fi # AFL++
-
 echo "
 build:${CONFIG} --copt=-DFUZZTEST_COMPATIBILITY_MODE
 build:${CONFIG} --dynamic_mode=off
@@ -112,10 +64,4 @@ for f in ${SANITIZERS:-}; do
   fi
 done
 
-if [[ "${FUZZING_ENGINE:-}" = "libfuzzer" ]]; then
-  echo "build:${CONFIG} --linkopt=$(find $(llvm-config --libdir) -name libclang_rt.fuzzer_no_main-x86_64.a | head -1)"
-fi
-
-if [[ "${FUZZING_ENGINE:-}" = "afl" ]]; then
-  echo "build:${CONFIG} --linkopt=/afl_driver.o"
-fi
+echo "build:${CONFIG} --linkopt=${FUZZING_ENGINE}"

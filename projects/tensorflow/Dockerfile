@@ -1,5 +1,5 @@
 # Copyright 2018 Google Inc.
-# Modifications copyright (C) 2021 ISP RAS
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,26 +17,7 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-COPY main.c afl.cc /
-COPY install_java.sh /usr/local/bin/
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        python \
-        curl \
-        rsync \
-        gdb \
-        pip \
-        lld \
-        && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
 RUN python3 -m pip install numpy
-
-# Install Bazel through Bazelisk, which automatically fetches the latest Bazel version.
-ENV BAZELISK_VERSION=1.9.0
-RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v$BAZELISK_VERSION/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
-    chmod +x /usr/local/bin/bazel
 
 # Due to Bazel bug, need to symlink python3 to python
 # See https://github.com/bazelbuild/bazel/issues/8665
@@ -48,12 +29,14 @@ RUN curl -Lo /usr/bin/bazel \
         && \
     chmod +x /usr/bin/bazel
 
+COPY *.patch *.sh *.cc /
+
+ENV JAVA_HOME /usr/lib/jvm/java-15-openjdk-amd64
+# it fails after installing java due to jazzer env variables missing
+RUN /install_java.sh || true
+
 # Setup the environment.
 ENV TF_CPP_MIN_LOG_LEVEL=3
-
-ENV JAVA_HOME=/usr/lib/jvm/java-15-openjdk-amd64
-# it fails after installing java due to jazzer env variables missing
-RUN install_java.sh || true
 
 # Tensorflow version is release 2.12
 
@@ -63,11 +46,14 @@ RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
     cd / && cp -r tensorflow_afl tensorflow_fuzz && \
     cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
 
-COPY *.patch *.sh /
+COPY fuzz_session.h /tensorflow_sydr/tensorflow/core/kernels/fuzzing/fuzz_session.h
+COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session.h
+COPY fuzz_session_afl.h /tensorflow_afl/tensorflow/core/kernels/fuzzing/fuzz_session.h
 
-COPY afl_driver.cc /
-
-RUN cd /tensorflow_afl && CONFIG=afl /build_all.sh
+RUN cd /tensorflow_afl && CONFIG=afl /build.sh
+RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
+RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
+RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
 #RUN cd /tensorflow_afl && /build_afl.sh
 #

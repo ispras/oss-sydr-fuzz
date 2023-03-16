@@ -1,4 +1,4 @@
-// Copyright 2021 ISP RAS
+// Copyright 2023 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
 
-int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
-
-int main(int argc, char** argv)
+extern "C" int LLVMFuzzerRunDriver(int *argc, char **argv,
+		  int (*UserCb)(const uint8_t *data, size_t size))
 {
-  FILE* fd = fopen(argv[1], "rb");
-  if (!fd) return 1;
-  fseek(fd, 0, SEEK_END);
-  long fsize = ftell(fd);
-  fseek(fd, 0, SEEK_SET);
-  char* buffer = (char*)malloc(fsize);
-  fread(buffer, 1, fsize, fd);
-  fclose(fd);
-  return LLVMFuzzerTestOneInput((const uint8_t*)buffer, fsize);
+    FILE *f = fopen(argv[1], "r");
+    fseek(f, 0, SEEK_END);
+    size_t len = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    unsigned char *buf = (unsigned char*)malloc(len);
+    size_t n_read = fread(buf, 1, len, f);
+    fclose(f);
+    UserCb(buf, len);
+    free(buf);
+    return 0;
 }

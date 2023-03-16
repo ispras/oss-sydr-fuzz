@@ -1,5 +1,6 @@
 #!/bin/bash -eu
 # Copyright 2022 Google LLC
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +34,7 @@ else
   TARGET_FOLDER=${FUZZTEST_TARGET_FOLDER}
 fi
 
-BUILD_ARGS="--config=${CONFIG} --subcommands"
+BUILD_ARGS="--config=${CONFIG}"
 if [[ ${FUZZTEST_EXTRA_ARGS:-"unset"} != "unset" ]];
 then
   BUILD_ARGS="$BUILD_ARGS ${FUZZTEST_EXTRA_ARGS}"
@@ -62,19 +63,22 @@ bazel build $BUILD_ARGS -- ${FUZZ_TEST_BINARIES[*]} ${FUZZTEST_EXTRA_TARGETS:-}
 # The scripts will be named:
 # {binary_name}@{fuzztest_entrypoint}
 for fuzz_main_file in $FUZZ_TEST_BINARIES_OUT_PATHS; do
-  FUZZ_TESTS=$(UBSAN_OPTIONS="halt_on_error=0,abort_on_error=0" $fuzz_main_file --list_fuzz_tests)
   cp ${fuzz_main_file} $OUT/
-  fuzz_basename=$(basename $fuzz_main_file)
-  chmod -x $OUT/$fuzz_basename
-  for fuzz_entrypoint in $FUZZ_TESTS; do
-    TARGET_FUZZER="${fuzz_basename}@$fuzz_entrypoint"
+  if [[ $CONFIG = "libfuzzer" ]]
+  then
+    FUZZ_TESTS=$($fuzz_main_file --list_fuzz_tests)
+    fuzz_basename=$(basename $fuzz_main_file)
+    chmod -x $OUT/$fuzz_basename
+    for fuzz_entrypoint in $FUZZ_TESTS; do
+      TARGET_FUZZER="${fuzz_basename}@$fuzz_entrypoint"
 
-    # Write executer script
-    echo "#!/bin/sh
+      # Write executer script
+      echo "#!/bin/sh
 # LLVMFuzzerTestOneInput for fuzzer detection.
 this_dir=\$(dirname \"\$0\")
 chmod +x \$this_dir/$fuzz_basename
 \$this_dir/$fuzz_basename --fuzz=$fuzz_entrypoint -- \$@" > $OUT/$TARGET_FUZZER
-    chmod +x $OUT/$TARGET_FUZZER
-  done
+      chmod +x $OUT/$TARGET_FUZZER
+    done
+  fi
 done
