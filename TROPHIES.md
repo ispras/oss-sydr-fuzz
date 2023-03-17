@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-109 new bugs in
-25 open source projects.
+111 new bugs in
+26 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -41,6 +41,8 @@
     * <https://github.com/m4b/goblin/pull/330>
     * <https://github.com/m4b/goblin/pull/332>
     * <https://github.com/m4b/goblin/pull/333>
+* golang/image
+    * <https://github.com/golang/image/pull/14>
 * hdf5:
     * <https://github.com/HDFGroup/hdf5/issues/2432>
 * ICU (Node.js dependency):
@@ -82,7 +84,8 @@
     * <https://github.com/pytorch/pytorch/pull/94297>
     * <https://github.com/pytorch/pytorch/pull/94298>
     * <https://github.com/pytorch/pytorch/pull/94300>
-    * <https://github.com/pytorch/pytorch/pull/95221>
+    * <https://github.com/pytorch/pytorch/issues/95061> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
+    * <https://github.com/pytorch/pytorch/issues/95062> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
