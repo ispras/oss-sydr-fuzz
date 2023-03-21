@@ -21,6 +21,12 @@
 extern "C" int LLVMFuzzerRunDriver(int *argc, char ***argv,
                   int (*UserCb)(const uint8_t *data, size_t size))
 {
+    __AFL_FUZZ_INIT();
+
+    #ifdef __AFL_HAVE_MANUAL_CONTROL
+        __AFL_INIT();
+    #endif
+
     uint8_t *data = __AFL_FUZZ_TESTCASE_BUF;
 
     while (__AFL_LOOP(1000))
