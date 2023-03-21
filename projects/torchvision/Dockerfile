@@ -20,7 +20,7 @@ MAINTAINER Kirill Parhomenko
 
 # Install build dependencies.
 RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi \
-    typing_extensions 
+    typing_extensions
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y \
@@ -72,6 +72,10 @@ RUN bash build_cov.sh
 
 # Copy corpus and tensor
 RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
+
+# Remove empty files from corpus.
+RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
+
 RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && mkdir /jpeg_tensor/ && mkdir /png_tensor/
 RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && cp -rn /fuzzing-corpus/png/*/* /png_corpus/
 
