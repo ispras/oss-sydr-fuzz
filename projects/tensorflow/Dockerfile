@@ -1,5 +1,5 @@
 # Copyright 2018 Google Inc.
-# Modifications copyright (C) 2021 ISP RAS
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,26 +17,9 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-COPY main.c afl.cc /
-COPY install_java.sh /usr/local/bin/
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        python \
-        curl \
-        rsync \
-        gdb \
-        pip \
-        lld \
-        && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y install rsync
 
 RUN python3 -m pip install numpy
-
-# Install Bazel through Bazelisk, which automatically fetches the latest Bazel version.
-ENV BAZELISK_VERSION=1.9.0
-RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v$BAZELISK_VERSION/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
-    chmod +x /usr/local/bin/bazel
 
 # Due to Bazel bug, need to symlink python3 to python
 # See https://github.com/bazelbuild/bazel/issues/8665
@@ -48,72 +31,49 @@ RUN curl -Lo /usr/bin/bazel \
         && \
     chmod +x /usr/bin/bazel
 
+COPY *.patch *.sh *.cc *.c /
+
+ENV JAVA_HOME /usr/lib/jvm/java-15-openjdk-amd64
+# it fails after installing java due to jazzer env variables missing
+RUN /install_java.sh || true
+
 # Setup the environment.
 ENV TF_CPP_MIN_LOG_LEVEL=3
 
-ENV JAVA_HOME=/usr/lib/jvm/java-15-openjdk-amd64
-# it fails after installing java due to jazzer env variables missing
-RUN install_java.sh || true
-
-# Tensorflow version is release 2.8
+# Tensorflow version is release 2.12
 
 WORKDIR /
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_afl.sh /
-COPY fuzz_session_afl.h /tensorflow/tensorflow/core/kernels/fuzzing/fuzz_session.h
+RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
+    cd tensorflow_afl && git checkout 0d8efc960d2874c2f56eed8690d132763a92a33c && \
+    cd / && cp -r tensorflow_afl tensorflow_fuzz && \
+    cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
 
-RUN bash /build_afl.sh
-WORKDIR /
-RUN rm -rf /tensorflow
+COPY fuzz_session.h /tensorflow_sydr/tensorflow/core/kernels/fuzzing/fuzz_session.h
+COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session.h
+COPY fuzz_session_afl.h /tensorflow_afl/tensorflow/core/kernels/fuzzing/fuzz_session.h
 
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_fuzz.sh /
+RUN cd /tensorflow_afl && CONFIG=afl /build.sh
+RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
+RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
+RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
-RUN bash /build_fuzz.sh
-WORKDIR /
-RUN rm -rf tensorflow
+# Fix coverage paths.
+RUN /fix_cov.sh
 
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_sydr.sh /
-COPY fuzz_session.h /tensorflow/tensorflow/core/kernels/fuzzing/
+# Prepare corporas and dictionaries.
 
-RUN bash /build_sydr.sh
-WORKDIR /
-RUN rm -rf tensorflow
+RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/corpus /
+RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/dictionaries /
 
-RUN git clone https://github.com/tensorflow/tensorflow tensorflow
-WORKDIR /tensorflow
-RUN git checkout e994fb9c3ad250d38fd07511aaa445eda728f9af
-COPY build_cov.sh /
-
-RUN bash /build_cov.sh
-RUN cp -r tensorflow/core/kernels/fuzzing/corpus /
-RUN cp -r tensorflow/core/kernels/fuzzing/dictionaries /
-
-COPY arg_def_case.zip base64.zip check_numerics.zip cleanpath.zip consume_leading_digits.zip decode_compressed.zip \
-     encode_base64.zip encode_jpeg.zip example_proto_fast_parsing.zip joinpath.zip one_hot.zip parse_tensor_op.zip \
-     parseURI.zip status_group.zip status.zip stringprintf.zip string_replace.zip tstring.zip /
+COPY corpus/*.zip /
 
 WORKDIR /corpus
-RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip && unzip /cleanpath.zip && \
-    unzip /consume_leading_digits.zip && unzip /decode_compressed.zip && unzip /encode_base64.zip && \
-    unzip /encode_jpeg.zip && unzip /example_proto_fast_parsing.zip && unzip /joinpath.zip && \
-    unzip /one_hot.zip && unzip /parse_tensor_op.zip && unzip /parseURI.zip && unzip /status_group.zip && \
-    unzip /status.zip && unzip /stringprintf.zip && unzip /string_replace.zip && unzip /tstring.zip && \
-    rm /arg_def_case.zip /base64.zip /check_numerics.zip /cleanpath.zip /consume_leading_digits.zip /decode_compressed.zip \
-    /encode_base64.zip /encode_jpeg.zip /example_proto_fast_parsing.zip /joinpath.zip /one_hot.zip /parse_tensor_op.zip \
-    /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
+RUN find / -maxdepth 1 -name '*.zip' -exec bash -c "unzip {} && rm {}" \;
 
 # Increase timeout for forkserver spin up.
 ENV AFL_FORKSRV_INIT_TMOUT=1200000
 
 # Set large bitmap size for afl-showmap operation.
-ENV AFL_MAP_SIZE=10000000
+ENV AFL_MAP_SIZE=100000000
 
 WORKDIR /

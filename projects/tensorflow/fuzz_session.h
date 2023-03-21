@@ -68,7 +68,7 @@ class FuzzSession {
   // can't be put into the constructor.
   Status InitIfNeeded() {
     if (initialized_) {
-      return Status::OK();
+      return OkStatus();
     }
     initialized_ = true;
 
@@ -121,7 +121,7 @@ class FuzzSession {
     long fsize = ftell(fd);
     fseek(fd, 0, SEEK_SET);
     char *buffer = (char *)malloc(fsize);
-    fread(buffer, 1, fsize, fd);
+    size_t sz = fread(buffer, 1, fsize, fd);
     fclose(fd);
 
     FuzzImpl((const uint8_t *)buffer, fsize);

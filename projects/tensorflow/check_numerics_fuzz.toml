@@ -26,4 +26,4 @@ path = "/fuzzer/check_numerics_fuzz"
 args = "-rss_limit_mb=8192 /corpus/check_numerics"
 
 [cov]
-target = "/coverage/check_numerics_fuzz @@"
+target = "/cov/check_numerics_fuzz @@"

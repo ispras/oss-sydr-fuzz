@@ -1,4 +1,4 @@
-// Copyright 2021 ISP RAS
+// Copyright 2023 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
-int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
+int
+main(int argc, char **argv) {
+#if defined(FUZZER) && defined(TARGET)
+    size_t len = strlen("--fuzz=") + strlen(TARGET) + 1;
+    char *target_arg = calloc(len, sizeof(*target_arg));
+    snprintf(target_arg, len, "--fuzz=%s", TARGET);
+ 
+    char **args = calloc(argc + 2, sizeof(*args));
+    args[0] = FUZZER;
+    args[1] = target_arg;
+    args[2] = "--";
+    for (size_t i = 1, j = 3; i < argc; ++i, ++j) {
+        args[j] = argv[i];
+    }
 
-int main(int argc, char** argv)
-{
-  FILE* fd = fopen(argv[1], "rb");
-  if (!fd) return 1;
-  fseek(fd, 0, SEEK_END);
-  long fsize = ftell(fd);
-  fseek(fd, 0, SEEK_SET);
-  char* buffer = (char*)malloc(fsize);
-  fread(buffer, 1, fsize, fd);
-  fclose(fd);
-  return LLVMFuzzerTestOneInput((const uint8_t*)buffer, fsize);
+    execv(FUZZER, args);
+#endif
+    free(target_arg);
+    free(args);
+    return 0;
 }

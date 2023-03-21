@@ -26,4 +26,4 @@ path = "/fuzzer/one_hot_fuzz"
 args = "-rss_limit_mb=8192 /corpus/one_hot"
 
 [cov]
-target = "/coverage/one_hot_fuzz @@"
+target = "/cov/one_hot_fuzz @@"

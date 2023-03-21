@@ -23,8 +23,9 @@ target = "/sydr/decode_csv_fuzz @@"
 [aflplusplus]
 target = "/afl/decode_csv_fuzz"
 args = "-t 60000 -i /corpus/decode_csv"
+
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/coverage/decode_csv_fuzz @@"
+target = "/cov/decode_csv_fuzz @@"

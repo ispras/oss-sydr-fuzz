@@ -26,4 +26,4 @@ path = "/fuzzer/decode_compressed_fuzz"
 args = "-rss_limit_mb=8192 /corpus/decode_compressed"
 
 [cov]
-target = "/coverage/decode_compressed_fuzz @@"
+target = "/cov/decode_compressed_fuzz @@"

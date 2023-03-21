@@ -23,8 +23,9 @@ target = "/sydr/decode_json_example_fuzz @@"
 [aflplusplus]
 target = "/afl/decode_json_example_fuzz"
 args = "-t 60000 -x /dictionaries/decode_json_example.dict -i /corpus/decode_json_example/"
+
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/coverage/decode_json_example_fuzz @@"
+target = "/cov/decode_json_example_fuzz @@"

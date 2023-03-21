@@ -26,4 +26,4 @@ path = "/fuzzer/encode_jpeg_fuzz"
 args = "-rss_limit_mb=8192 /corpus/encode_jpeg"
 
 [cov]
-target = "/coverage/encode_jpeg_fuzz @@"
+target = "/cov/encode_jpeg_fuzz @@"
