@@ -31,7 +31,6 @@ RUN bk clone -r1.3714 http://bk.ntp.org/ntp-dev
 
 COPY build.sh patch.diff ./
 
-RUN chmod +x build.sh
 RUN ./build.sh
 
 WORKDIR /
