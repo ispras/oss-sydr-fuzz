@@ -26,4 +26,4 @@ path = "/fuzzer/decode_wav_fuzz"
 args = "-rss_limit_mb=8192 -dict=/dictionaries/decode_wav.dict /corpus/decode_wav/"
 
 [cov]
-target = "/coverage/decode_wav_fuzz @@"
+target = "/cov/decode_wav_fuzz @@"

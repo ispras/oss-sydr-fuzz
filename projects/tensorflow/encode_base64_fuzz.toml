@@ -26,4 +26,4 @@ path = "/fuzzer/encode_base64_fuzz"
 args = "-rss_limit_mb=8192 /corpus/encode_base64"
 
 [cov]
-target = "/coverage/encode_base64_fuzz @@"
+target = "/cov/encode_base64_fuzz @@"

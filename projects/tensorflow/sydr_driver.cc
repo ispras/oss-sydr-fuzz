@@ -18,10 +18,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
-extern "C" int LLVMFuzzerRunDriver(int *argc, char **argv,
+extern "C" int LLVMFuzzerRunDriver(int *argc, char ***argv,
 		  int (*UserCb)(const uint8_t *data, size_t size))
 {
-    FILE *f = fopen(argv[1], "r");
+    FILE *f = fopen((*argv)[*argc - 1], "r");
     fseek(f, 0, SEEK_END);
     size_t len = ftell(f);
     fseek(f, 0, SEEK_SET);

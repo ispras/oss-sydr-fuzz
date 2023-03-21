@@ -17,6 +17,8 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
+RUN apt-get update && apt-get -y install rsync
+
 RUN python3 -m pip install numpy
 
 # Due to Bazel bug, need to symlink python3 to python
@@ -29,7 +31,7 @@ RUN curl -Lo /usr/bin/bazel \
         && \
     chmod +x /usr/bin/bazel
 
-COPY *.patch *.sh *.cc /
+COPY *.patch *.sh *.cc *.c /
 
 ENV JAVA_HOME /usr/lib/jvm/java-15-openjdk-amd64
 # it fails after installing java due to jazzer env variables missing
@@ -55,37 +57,23 @@ RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
 RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
 RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
-#RUN cd /tensorflow_afl && /build_afl.sh
-#
-#RUN cd /tensorflow_fuzz && /build_fuzz.sh
-#
-#COPY fuzz_session.h /tensorflow/tensorflow/core/kernel/fuzzing/
-#RUN cd /tensorflow_cov && /build_cov.sh
-#
-#COPY fuzz_session.h /tensorflow/tensorflow/core/kernel/fuzzing/
-#RUN cd /tensorflow_sydr && /build_sydr.sh
-#
-#RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/corpus /
-#RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/dictionaries /
-#
-#COPY arg_def_case.zip base64.zip check_numerics.zip cleanpath.zip consume_leading_digits.zip decode_compressed.zip \
-#     encode_base64.zip encode_jpeg.zip example_proto_fast_parsing.zip joinpath.zip one_hot.zip parse_tensor_op.zip \
-#     parseURI.zip status_group.zip status.zip stringprintf.zip string_replace.zip tstring.zip /
-#
-#WORKDIR /corpus
-#RUN unzip /arg_def_case.zip && unzip /base64.zip && unzip /check_numerics.zip && unzip /cleanpath.zip && \
-#    unzip /consume_leading_digits.zip && unzip /decode_compressed.zip && unzip /encode_base64.zip && \
-#    unzip /encode_jpeg.zip && unzip /example_proto_fast_parsing.zip && unzip /joinpath.zip && \
-#    unzip /one_hot.zip && unzip /parse_tensor_op.zip && unzip /parseURI.zip && unzip /status_group.zip && \
-#    unzip /status.zip && unzip /stringprintf.zip && unzip /string_replace.zip && unzip /tstring.zip && \
-#    rm /arg_def_case.zip /base64.zip /check_numerics.zip /cleanpath.zip /consume_leading_digits.zip /decode_compressed.zip \
-#    /encode_base64.zip /encode_jpeg.zip /example_proto_fast_parsing.zip /joinpath.zip /one_hot.zip /parse_tensor_op.zip \
-#    /parseURI.zip /status_group.zip /status.zip /stringprintf.zip /string_replace.zip /tstring.zip
-#
-## Increase timeout for forkserver spin up.
-#ENV AFL_FORKSRV_INIT_TMOUT=1200000
-#
-## Set large bitmap size for afl-showmap operation.
-#ENV AFL_MAP_SIZE=10000000
+# Fix coverage paths.
+RUN /fix_cov.sh
+
+# Prepare corporas and dictionaries.
+
+RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/corpus /
+RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/dictionaries /
+
+COPY corpus/*.zip /
+
+WORKDIR /corpus
+RUN find / -maxdepth 1 -name '*.zip' -exec bash -c "unzip {} && rm {}" \;
+
+# Increase timeout for forkserver spin up.
+ENV AFL_FORKSRV_INIT_TMOUT=1200000
+
+# Set large bitmap size for afl-showmap operation.
+ENV AFL_MAP_SIZE=100000000
 
 WORKDIR /

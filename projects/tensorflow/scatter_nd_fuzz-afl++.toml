@@ -23,8 +23,9 @@ target = "/sydr/scatter_nd_fuzz @@"
 [aflplusplus]
 target = "/afl/scatter_nd_fuzz"
 args = "-t 60000 -i /corpus/scatter_nd"
+
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/coverage/scatter_nd_fuzz @@"
+target = "/cov/scatter_nd_fuzz @@"

@@ -18,10 +18,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+__AFL_FUZZ_INIT();
+
 extern "C" int LLVMFuzzerRunDriver(int *argc, char ***argv,
                   int (*UserCb)(const uint8_t *data, size_t size))
 {
-    __AFL_FUZZ_INIT();
 
 #ifdef __AFL_HAVE_MANUAL_CONTROL
     __AFL_INIT();

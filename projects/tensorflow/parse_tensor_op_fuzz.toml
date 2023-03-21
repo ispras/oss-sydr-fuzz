@@ -26,4 +26,4 @@ path = "/fuzzer/parse_tensor_op_fuzz"
 args = "-rss_limit_mb=8192 /corpus/parse_tensor_op"
 
 [cov]
-target = "/coverage/parse_tensor_op_fuzz @@"
+target = "/cov/parse_tensor_op_fuzz @@"

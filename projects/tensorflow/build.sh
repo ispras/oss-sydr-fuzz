@@ -127,3 +127,9 @@ for bazel_target in ${FUZZERS}; do
   bazel_location="bazel-bin/${bazel_target/:/\/}"
   cp ${bazel_location} $OUT/$fuzz_name
 done
+
+if [[ $CONFIG != "coverage" ]]
+then
+  rm -f bazel-*
+  rm -rf /root/.cache/bazel/_bazel_root
+fi

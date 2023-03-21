@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/string_replace_fuzz @@"
+target = "/sydr/string_replace_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [libfuzzer]
 set_cover_merge=true
-path = "/fuzzer/string_replace_fuzz"
+path = "/fuzzer/string_replace_fuzz_run"
 args = "-rss_limit_mb=8192 /corpus/string_replace"
 
 [cov]
-target = "/coverage/string_replace_fuzz @@"
+target = "/cov/string_replace_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
