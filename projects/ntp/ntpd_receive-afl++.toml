@@ -20,7 +20,7 @@ target = "/ntpd_receive_sydr @@"
 jobs = 2
 
 [aflplusplus]
-target = "ntpd_receive_aflplusplus"
+target = "/ntpd_receive_aflplusplus @@"
 args = "-t 60000 -i /corpus"
 jobs = 6
 

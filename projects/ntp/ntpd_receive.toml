@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/ntpd_receive_libfuzzer"
-args = "-rss_limit_mb=0 /corpus"
+args = "-rss_limit_mb=8192 /corpus"
 
 [cov]
 target = "/ntpd_receive_coverage @@"

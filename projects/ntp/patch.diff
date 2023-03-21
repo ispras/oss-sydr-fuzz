@@ -56,8 +56,8 @@ index 7c3fdd4..190a373 100644
  	 * Create the sockets
  	 */
  	BLOCKIO();
-+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-+	create_sockets(4123);
++#if 1
++	create_sockets(getpid());
 +#else
  	create_sockets(NTP_PORT);
 +#endif
