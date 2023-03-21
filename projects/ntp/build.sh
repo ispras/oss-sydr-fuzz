@@ -62,4 +62,3 @@ make clean
 ./configure --enable-fuzztargets
 make -j$(nproc)
 cp tests/fuzz/fuzz_ntpd_receive /ntpd_receive_coverage
-
