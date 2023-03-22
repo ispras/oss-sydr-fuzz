@@ -79,7 +79,7 @@ cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 
 # Archive and copy to $OUT seed corpus if the build succeeded.
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -122,7 +122,7 @@ cmake_args=(
 mkdir -p build/test/fuzz
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -204,7 +204,7 @@ export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
 $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -246,7 +246,7 @@ export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
 $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
