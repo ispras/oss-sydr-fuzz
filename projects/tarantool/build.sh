@@ -41,6 +41,8 @@ find / -name "libunwind*.so*" -exec rm {} \;
 
 cd /tarantool
 
+patch -p1 < /tarantool/test/fuzz/fix-condition-ubsan.patch
+
 # Avoid compilation issue due to some unused variables. They are in fact
 # not unused, but the compilers are complaining.
 sed -i 's/total = 0;/total = 0;(void)total;/g' ./src/lib/core/crash.c
