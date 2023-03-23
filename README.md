@@ -47,7 +47,7 @@ The list of discovered bugs can be found [here](TROPHIES.md).
 
 ### Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for Security Development Lifecycle \[[paper](https://arxiv.org/abs/2211.11595)\] \[[demo](https://vishnya.xyz/vishnyakov-isprasopen2022.webm)\] \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2022.pdf)\]
 
-Vishnyakov A., Kuts D., Logunova V., Parygina D., Kobrin E., Savidov G., Fedotov A. Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for Security Development Lifecycle. 2022 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2022.
+Vishnyakov A., Kuts D., Logunova V., Parygina D., Kobrin E., Savidov G., Fedotov A. Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for Security Development Lifecycle. 2022 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2022, pp. 111-123. DOI: [10.1109/ISPRAS57371.2022.10076861](https://www.doi.org/10.1109/ISPRAS57371.2022.10076861)
 
 ```
 @inproceedings{vishnyakov22-sydr-fuzz,
@@ -57,7 +57,9 @@ Vishnyakov A., Kuts D., Logunova V., Parygina D., Kobrin E., Savidov G., Fedotov
             Parygina, Darya and Kobrin, Eli and Savidov, Georgy and Fedotov,
             Andrey},
   booktitle = {2022 Ivannikov ISPRAS Open Conference (ISPRAS)},
+  pages = {111--123},
   year = {2022},
   publisher = {IEEE},
+  doi = {10.1109/ISPRAS57371.2022.10076861},
 }
 ```
