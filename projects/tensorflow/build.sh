@@ -68,6 +68,9 @@ fi
 mkdir $OUT
 git apply --ignore-space-change --ignore-whitespace /fuzz_patch.patch
 
+# Download patched fuzztest to escape enabling fuzztest signal handlers.
+git apply --ignore-space-change --ignore-whitespace /fuzztest.patch
+
 find tensorflow/ -name "BUILD" -exec sed -i 's/tf_cc_fuzz_test/tf_oss_fuzz_fuzztest/g' {} \;
 
 # Overwrite compiler flags that break the oss-fuzz build

@@ -44,7 +44,7 @@ ENV TF_CPP_MIN_LOG_LEVEL=3
 
 WORKDIR /
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
-    cd tensorflow_afl && git checkout 0d8efc960d2874c2f56eed8690d132763a92a33c && \
+    cd tensorflow_afl && git checkout 0db597d0d758aba578783b5bf46c889700a45085 && \
     cd / && cp -r tensorflow_afl tensorflow_fuzz && \
     cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
 

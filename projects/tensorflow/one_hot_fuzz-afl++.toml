@@ -18,13 +18,14 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/one_hot_fuzz"
+target = "/sydr/one_hot_fuzz @@"
 
 [aflplusplus]
 target = "/afl/one_hot_fuzz"
 args = "-t 60000 -i /corpus/one_hot"
+
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/cov/one_hot_fuzz"
+target = "/cov/one_hot_fuzz @@"
