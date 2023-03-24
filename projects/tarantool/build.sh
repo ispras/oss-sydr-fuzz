@@ -202,8 +202,10 @@ cmake_args=(
 )
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
-export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
+# Workaround to build libprotobuf-mutator fuzz targets.
+# They crash with StandaloneFuzzTargetMain.c
+# So, we get libFuzzer without instrumentation.
+export LIB_FUZZING_ENGINE="-fsanitize=fuzzer"
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
@@ -244,8 +246,6 @@ cmake_args=(
 )
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
-export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
