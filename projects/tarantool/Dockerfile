@@ -36,12 +36,12 @@ RUN git clone https://github.com/tarantool/tarantool
 WORKDIR tarantool
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 263d422af33d9cf100ca648b6ca3e00a0f6452cb
+RUN git checkout f05e683c4994baa3786822bfdb7982baaa300838
 
 RUN git submodule update --init --recursive
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh test/fuzz/
+COPY fix-condition-ubsan.patch build.sh test/fuzz/
 
 # Build fuzz targets.
 RUN test/fuzz/build.sh

@@ -1,0 +1,13 @@
+diff --git a/test/fuzz/CMakeLists.txt b/test/fuzz/CMakeLists.txt
+index a082b735a..c1aabdb0a 100644
+--- a/test/fuzz/CMakeLists.txt
++++ b/test/fuzz/CMakeLists.txt
+@@ -97,7 +97,7 @@ include(ProtobufMutator)
+ 
+ # UndefinedBehaviorSanitizer is not supported in LuaJIT.
+ # See https://github.com/tarantool/tarantool/issues/8473
+-if (NOT ENABLE_UB_SANITIZER)
++if (NOT (ENABLE_UB_SANITIZER AND OSS_FUZZ))
+     add_subdirectory(luaL_loadbuffer)
+ endif()
+ 

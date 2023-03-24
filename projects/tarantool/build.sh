@@ -41,6 +41,8 @@ find / -name "libunwind*.so*" -exec rm {} \;
 
 cd /tarantool
 
+patch -p1 < /tarantool/test/fuzz/fix-condition-ubsan.patch
+
 # Avoid compilation issue due to some unused variables. They are in fact
 # not unused, but the compilers are complaining.
 sed -i 's/total = 0;/total = 0;(void)total;/g' ./src/lib/core/crash.c
@@ -79,7 +81,7 @@ cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
 
 # Archive and copy to $OUT seed corpus if the build succeeded.
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -122,7 +124,7 @@ cmake_args=(
 mkdir -p build/test/fuzz
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -159,7 +161,7 @@ cmake_args=(
 mkdir -p build/test/fuzz
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -200,11 +202,13 @@ cmake_args=(
 )
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
-export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
+# Workaround to build libprotobuf-mutator fuzz targets.
+# They crash with StandaloneFuzzTargetMain.c
+# So, we get libFuzzer without instrumentation.
+export LIB_FUZZING_ENGINE="-fsanitize=fuzzer"
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
@@ -242,11 +246,9 @@ cmake_args=(
 )
 [[ -e build ]] && rm -rf build
 mkdir -p build/test/fuzz
-export LIB_FUZZING_ENGINE="$PWD/build/test/fuzz/main.o"
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o $LIB_FUZZING_ENGINE
 cmake "${cmake_args[@]}" -S . -B build
 make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(ls build/test/fuzz/*_fuzzer);
+for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_fuzzer//')
