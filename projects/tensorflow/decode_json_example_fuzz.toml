@@ -26,4 +26,4 @@ path = "/fuzzer/decode_json_example_fuzz"
 args = "-rss_limit_mb=8192 -dict=/dictionaries/decode_json_example.dict /corpus/decode_json_example/"
 
 [cov]
-target = "/coverage/decode_json_example_fuzz @@"
+target = "/cov/decode_json_example_fuzz @@"

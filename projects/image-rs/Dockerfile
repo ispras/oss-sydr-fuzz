@@ -55,6 +55,10 @@ RUN cargo clean && /build_cov.sh
 # Prepare corporas.
 WORKDIR /
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git
+
+# Remove empty files from corpus.
+RUN find go-fuzz-corpus -type f -size 0c | xargs -I {} rm {}
+
 RUN cp -r /go-fuzz-corpus/bmp/corpus /corpus_bmp && \
     cp -r /go-fuzz-corpus/gif/corpus /corpus_gif && \
     mkdir /corpus_hdr && find /image -name '*.hdr' -exec cp {} /corpus_hdr \; && \

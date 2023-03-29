@@ -21,9 +21,11 @@ args = "-l debug"
 target = "/sydr/decode_compressed_fuzz @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 target = "/afl/decode_compressed_fuzz"
 args = "-t 60000 -i /corpus/decode_compressed"
 
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
+
 [cov]
-target = "/coverage/decode_compressed_fuzz @@"
+target = "/cov/decode_compressed_fuzz @@"

@@ -26,4 +26,4 @@ path = "/fuzzer/example_proto_fast_parsing_fuzz"
 args = "-rss_limit_mb=8192 /corpus/example_proto_fast_parsing"
 
 [cov]
-target = "/coverage/example_proto_fast_parsing_fuzz @@"
+target = "/cov/example_proto_fast_parsing_fuzz @@"

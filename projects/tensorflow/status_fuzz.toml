@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/status_fuzz @@"
+target = "/sydr/status_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [libfuzzer]
 set_cover_merge=true
-path = "/fuzzer/status_fuzz"
+path = "/fuzzer/status_fuzz_run"
 args = "-rss_limit_mb=8192 /corpus/status"
 
 [cov]
-target = "/coverage/status_fuzz @@"
+target = "/cov/status_fuzz --fuzz=CC_FUZZING.FuzzTest @@"

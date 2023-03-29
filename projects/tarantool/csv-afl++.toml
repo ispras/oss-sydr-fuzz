@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +19,13 @@ args = "-l debug -j 2"
 target = "/csv_sydr @@"
 jobs = 2
 
-[aflplusplus]
+[[aflplusplus]]
 args = "-t 60000 -i /corpus_csv"
-target = "/csv_afl"
+target = "/csv_afl @@"
+
+[[aflplusplus]]
+args = "-m none -l AT -c /csv_cmplog -t 60000 -i /corpus_csv"
+target = "/csv_afl @@"
 
 [cov]
 target = "/csv_cov @@"

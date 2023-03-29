@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/tstring_fuzz @@"
+target = "/sydr/tstring_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
-target = "/afl/tstring_fuzz"
+target = "/afl/tstring_fuzz --fuzz=CC_FUZZING.FuzzTest"
 args = "-t 60000 -i /corpus/tstring"
 
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
+
 [cov]
-target = "/coverage/tstring_fuzz @@"
+target = "/cov/tstring_fuzz --fuzz=CC_FUZZING.FuzzTest @@"

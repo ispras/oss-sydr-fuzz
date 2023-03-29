@@ -36,14 +36,22 @@ RUN git clone https://github.com/tarantool/tarantool
 WORKDIR tarantool
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 4572a5844c5fe6fb377203433c7a91a5c722fe22
+RUN git checkout fe041aad9fed63764fa4aba1209f8b07e64b3422
 
 RUN git submodule update --init --recursive
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh main.c afl.cc test/fuzz/
+COPY fix-condition-ubsan.patch build.sh test/fuzz/
 
 # Build fuzz targets.
 RUN test/fuzz/build.sh
 
 WORKDIR /
+
+# Get new corpus directories
+RUN git clone https://github.com/ligurio/tarantool-corpus && cd /tarantool-corpus && \
+    git checkout dc6a7b9c663df970d1071a1a40881b30c5f54d57 && mv mp_datetime/ datetime_strptime/ datetime_parse_full/ / && \
+	cd .. && rm -rf tarantool-corpus
+
+# Fix uri corpus directory
+RUN rm /corpus_uri/adc83b19e793491b1c6ea0fd8b46cd9f32e592fc

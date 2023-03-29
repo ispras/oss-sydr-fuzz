@@ -26,4 +26,4 @@ path = "/fuzzer/decode_csv_fuzz"
 args = "-rss_limit_mb=8192 /corpus/decode_csv"
 
 [cov]
-target = "/coverage/decode_csv_fuzz @@"
+target = "/cov/decode_csv_fuzz @@"

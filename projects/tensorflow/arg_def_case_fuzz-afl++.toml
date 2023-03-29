@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/arg_def_case_fuzz @@"
+target = "/sydr/arg_def_case_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
-rss_limit_mb = 8192
 args = "-t 60000 -i /corpus/arg_def_case"
-target = "/afl/arg_def_case_fuzz"
+target = "/afl/arg_def_case_fuzz --fuzz=CC_FUZZING.FuzzTest"
+
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/coverage/arg_def_case_fuzz @@"
+target = "/cov/arg_def_case_fuzz --fuzz=CC_FUZZING.FuzzTest @@"

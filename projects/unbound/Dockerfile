@@ -21,7 +21,7 @@ MAINTAINER Andrey Fedotov
 # Install build dependencies.
 RUN apt-get update
 
-RUN apt-get install -y make libtool libssl-dev libexpat-dev wget
+RUN apt-get install -y make libtool libssl-dev libexpat-dev wget bison
 
 RUN git clone https://github.com/NLnetLabs/unbound unbound
 
