@@ -18,4 +18,4 @@ exit-on-time = 3600
 
 [atheris]
 path = "/fuzz/fuzz_msgpack.g.py"
-args = "/corpus_msgpack.g -jobs=1000 -workers=4"
+args = "/corpus_msgpack -jobs=1000 -workers=4"
