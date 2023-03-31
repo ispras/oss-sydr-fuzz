@@ -16,22 +16,23 @@
 ################################################################################
 
 import atheris
-
-with atheris.instrument_imports():
-    import msgspec
-    import warnings
-    import sys
+import msgspec
+import warnings
+import sys
 
 warnings.simplefilter("ignore")
 
 @atheris.instrument_func
 def TestOneInput(input_bytes):
+    fdp = atheris.FuzzedDataProvider(input_bytes)
+    data = fdp.ConsumeUnicode(sys.maxsize)
     try:
-        msgspec.toml.decode(input_bytes)
+        msgspec.toml.decode(data)
     except msgspec.MsgspecError:
-        return
+        return -1
 
 def main():
+    atheris.instrument_all()
     atheris.Setup(sys.argv, TestOneInput)
     atheris.Fuzz()
 

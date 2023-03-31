@@ -26,10 +26,12 @@ warnings.simplefilter("ignore")
 
 @atheris.instrument_func
 def TestOneInput(input_bytes):
+    fdp = atheris.FuzzedDataProvider(input_bytes)
+    data = fdp.ConsumeUnicode(sys.maxsize)
     try:
-        msgspec.json.decode(input_bytes)
-    except msgspec.MsgspecError:
-        return
+        msgspec.json.decode(data)
+    except (msgspec.MsgspecError, UnicodeEncodeError, RecursionError):
+        return -1
 
 def main():
     atheris.Setup(sys.argv, TestOneInput)

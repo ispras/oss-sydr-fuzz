@@ -18,9 +18,7 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Ivan Kapranov
 
-RUN pip install tomli tomli-w
-
-RUN git clone https://github.com/jcrist/msgspec.git
+RUN pip install tomli tomli-w pyyaml
 
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git && mkdir corpus_json && cp /go-fuzz-corpus/json/corpus/* corpus_json/
 
@@ -30,10 +28,12 @@ RUN git clone https://github.com/BurntSushi/toml-test.git && mkdir corpus_toml &
 
 RUN git clone https://github.com/shamaton/msgpack.git && mkdir corpus_msgpack && cp /msgpack/testdata/crashers/* corpus_msgpack/
 
-COPY fuzz_json.py fuzz_toml.py fuzz_yaml.py fuzz_msgpack.py build.sh /fuzz/
+RUN git clone https://github.com/jcrist/msgspec.git
 
-WORKDIR /fuzz/
+WORKDIR /msgspec
 
-RUN ./build.sh
+RUN git checkout 3f16f49743c39e04dced3e3d687d11e1d7572a63
 
-WORKDIR /
+COPY fuzz_*.py build.sh /
+
+RUN /build.sh

@@ -14,9 +14,6 @@
 #
 ################################################################################
 
-cd /msgspec/
-
-
 pip install testresources
 pip install -U pip setuptools wheel
 

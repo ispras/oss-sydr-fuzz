@@ -26,10 +26,12 @@ warnings.simplefilter("ignore")
 
 @atheris.instrument_func
 def TestOneInput(input_bytes):
+    if len(input_bytes) < 1:
+        return -1
     try:
         msgspec.msgpack.decode(input_bytes)
-    except msgspec.MsgspecError:
-        return
+    except (msgspec.MsgspecError, TypeError, UnicodeDecodeError):
+        return -1
 
 def main():
     atheris.Setup(sys.argv, TestOneInput)
