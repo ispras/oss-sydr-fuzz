@@ -20,7 +20,7 @@ target = "/sql_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000"
+args = "-t 60000 -i /corpus_sql"
 target = "/sql_afl @@"
 
 [[aflplusplus]]
