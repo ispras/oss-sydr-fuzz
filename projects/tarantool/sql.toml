@@ -16,20 +16,12 @@
 
 [sydr]
 args = "-l debug -j 2"
-target = "/luaL_loadbuffer_sydr @@"
+target = "/sql_sydr @@"
 jobs = 2
 
-[[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_loadbuffer"
-target = "/luaL_loadbuffer_afl @@"
-[aflplusplus.env]
-AFL_MAP_SIZE = "10000000"
-
-[[aflplusplus]]
-args = "-m none -l AT -c /luaL_loadbuffer_cmplog -t 60000"
-target = "/luaL_loadbuffer_afl @@"
-[aflplusplus.env]
-AFL_MAP_SIZE = "10000000"
+[libfuzzer]
+path = "/sql_fuzzer"
+args = "/corpus_sql"
 
 [cov]
-target = "/luaL_loadbuffer_cov @@"
+target = "/sql_cov @@"
