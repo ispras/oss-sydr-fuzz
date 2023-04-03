@@ -28,6 +28,8 @@ AFL_MAP_SIZE = "10000000"
 [[aflplusplus]]
 args = "-m none -l AT -c /luaL_loadbuffer_cmplog -t 60000"
 target = "/luaL_loadbuffer_afl @@"
+[aflplusplus.env]
+AFL_MAP_SIZE = "10000000"
 
 [cov]
 target = "/luaL_loadbuffer_cov @@"

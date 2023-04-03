@@ -41,7 +41,7 @@ RUN git checkout abb172a245a80e51a81b545f8d5d34cc21023271
 RUN git submodule update --init --recursive
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY fix-condition-ubsan.patch build.sh test/fuzz/
+COPY *.patch build.sh test/fuzz/
 
 # Build fuzz targets.
 RUN test/fuzz/build.sh

@@ -22,10 +22,14 @@ jobs = 2
 [[aflplusplus]]
 args = "-t 60000 -i /corpus_sql"
 target = "/sql_afl @@"
+[aflplusplus.env]
+AFL_MAP_SIZE = "10000000"
 
 [[aflplusplus]]
 args = "-m none -l AT -c /sql_cmplog -t 60000"
 target = "/sql_afl @@"
+[aflplusplus.env]
+AFL_MAP_SIZE = "10000000"
 
 [cov]
 target = "/sql_cov @@"
