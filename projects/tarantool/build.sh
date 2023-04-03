@@ -170,8 +170,6 @@ do
 done
 unset AFL_LLVM_CMPLOG
 
-patch -p1 < /tarantool/test/fuzz/fix-sydr-asan.patch
-
 # Build the project for Sydr.
 CC=clang
 CXX=clang++
