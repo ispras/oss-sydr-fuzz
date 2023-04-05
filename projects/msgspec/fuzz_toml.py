@@ -17,6 +17,7 @@
 
 import atheris
 import msgspec
+import tomli
 import warnings
 import sys
 

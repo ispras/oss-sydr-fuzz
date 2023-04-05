@@ -17,4 +17,22 @@
 pip install testresources
 pip install -U pip setuptools wheel
 
+cd /tomli
+
+pip3 install . 
+
+cd /yaml-0.2.5
+
+CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" ./configure
+
+make install -j`nproc`
+
+cd /PyYAML-5.3.1
+
+CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" python3 setup.py --with-libyaml install
+
+pip3 install --ignore-installed .
+
+cd /msgspec
+
 MSGSPEC_DEBUG=1 CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" LDSHARED="clang -shared" pip3 install .

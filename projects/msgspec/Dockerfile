@@ -18,7 +18,7 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Ivan Kapranov
 
-RUN pip install tomli tomli-w pyyaml
+RUN pip install flit
 
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git && mkdir corpus_json && cp /go-fuzz-corpus/json/corpus/* corpus_json/
 
@@ -29,6 +29,16 @@ RUN git clone https://github.com/BurntSushi/toml-test.git && mkdir corpus_toml &
 RUN git clone https://github.com/shamaton/msgpack.git && mkdir corpus_msgpack && cp /msgpack/testdata/crashers/* corpus_msgpack/
 
 RUN git clone https://github.com/jcrist/msgspec.git
+
+RUN git clone https://github.com/hukkin/tomli.git
+
+ADD https://pyyaml.org/download/pyyaml/PyYAML-5.3.1.tar.gz /
+
+ADD http://pyyaml.org/download/libyaml/yaml-0.2.5.tar.gz /
+
+RUN tar -xvf yaml-0.2.5.tar.gz &&  rm yaml-0.2.5.tar.gz
+
+RUN tar -xvf PyYAML-5.3.1.tar.gz && rm PyYAML-5.3.1.tar.gz
 
 WORKDIR /msgspec
 
