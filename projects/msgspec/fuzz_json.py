@@ -31,7 +31,7 @@ def TestOneInput(input_bytes):
     try:
         msgspec.json.decode(data)
     except (msgspec.MsgspecError, UnicodeEncodeError, RecursionError):
-        return -1
+        return
 
 def main():
     atheris.Setup(sys.argv, TestOneInput)

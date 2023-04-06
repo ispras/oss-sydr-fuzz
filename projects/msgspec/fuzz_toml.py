@@ -32,7 +32,7 @@ def TestOneInput(input_bytes):
     try:
         msgspec.toml.decode(data)
     except msgspec.MsgspecError:
-        return -1
+        return
 
 def main():
     atheris.Setup(sys.argv, TestOneInput)
