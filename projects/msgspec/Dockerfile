@@ -44,6 +44,6 @@ WORKDIR /msgspec
 
 RUN git checkout 3f16f49743c39e04dced3e3d687d11e1d7572a63
 
-COPY fuzz_*.py build.sh /
+COPY *.dict fuzz_*.py build.sh /
 
 RUN /build.sh
