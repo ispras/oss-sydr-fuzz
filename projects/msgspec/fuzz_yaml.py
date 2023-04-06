@@ -16,9 +16,12 @@
 ################################################################################
 
 import atheris
-import msgspec
-import warnings
-import sys
+
+with atheris.instrument_imports():
+    import msgspec
+    import yaml
+    import warnings
+    import sys
 
 warnings.simplefilter("ignore")
 
@@ -32,7 +35,6 @@ def TestOneInput(input_bytes):
         return -1
 
 def main():
-    atheris.instrument_all()
     atheris.Setup(sys.argv, TestOneInput)
     atheris.Fuzz()
 
