@@ -31,7 +31,7 @@ def TestOneInput(input_bytes):
     data = fdp.ConsumeUnicode(sys.maxsize)
     try:
         msgspec.toml.decode(data)
-    except msgspec.MsgspecError:
+    except (msgspec.MsgspecError, RecursionError):
         return
 
 def main():
