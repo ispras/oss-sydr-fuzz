@@ -30,7 +30,7 @@ def TestOneInput(input_bytes):
         return
     try:
         msgspec.msgpack.decode(input_bytes)
-    except (msgspec.MsgspecError, TypeError, UnicodeDecodeError, RecursiveError):
+    except (msgspec.MsgspecError, TypeError, UnicodeDecodeError, RecursionError):
         return
 
 def main():
