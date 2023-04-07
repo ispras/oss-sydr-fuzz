@@ -42,7 +42,7 @@ RUN tar -xvf PyYAML-5.3.1.tar.gz && rm PyYAML-5.3.1.tar.gz
 
 WORKDIR /msgspec
 
-RUN git checkout 3f16f49743c39e04dced3e3d687d11e1d7572a63
+RUN git checkout 403902c208e06081aa832dbdd978f3e2ad50342d
 
 COPY *.dict fuzz_*.py build.sh /
 
