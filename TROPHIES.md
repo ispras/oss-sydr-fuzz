@@ -24,7 +24,7 @@
     * <https://github.com/tianocore/edk2-platforms/commit/0af4ed52a2e605761b4bcfdb3f10e5a8d9685931>
     * <https://github.com/tianocore/edk2-platforms/commit/615afc82db9f3ff348dacf8a94d9bb588783964b>
     * <https://github.com/tianocore/edk2-platforms/commit/878c4b13fb2fabd07c5db29ae465aeb2177ce744>
-* exrs
+* exrs:
     * <https://github.com/johannesvollmer/exrs/pull/166>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
@@ -58,13 +58,15 @@
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
     * <https://github.com/mm2/Little-CMS/issues/333>
-* miniz
+* miniz:
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
     * <https://github.com/pytorch/pytorch/issues/74798>
-* nDPI
+* msgspec:
+    * <https://github.com/jcrist/msgspec/issues/366>
+* nDPI:
     * <https://github.com/ntop/nDPI/issues/1803>
-* OpenJPEG (OpenCV 3rdparty)
+* OpenJPEG (OpenCV 3rdparty):
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
     * <https://github.com/troldal/OpenXLSX/issues/140>
@@ -128,7 +130,7 @@
 * TensorFlow:
     * <https://github.com/tensorflow/tensorflow/pull/56455>
     * <https://github.com/tensorflow/tensorflow/pull/60082>
-* Torchvision
+* Torchvision:
     * <https://github.com/pytorch/vision/pull/6456>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
