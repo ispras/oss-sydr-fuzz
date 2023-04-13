@@ -44,7 +44,7 @@
 * golang/image
     * <https://github.com/golang/image/pull/14>
 * hdf5:
-    * <https://github.com/HDFGroup/hdf5/issues/2432>
+    * <https://github.com/HDFGroup/hdf5/issues/2432> (PR: <https://github.com/HDFGroup/hdf5/pull/2691>)
 * ICU (Node.js dependency):
     * <https://github.com/nodejs/node/issues/45297> (PR: <https://github.com/unicode-org/icu/pull/2248>)
     * <https://unicode-org.atlassian.net/browse/ICU-22235>
