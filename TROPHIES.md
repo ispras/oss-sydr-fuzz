@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-113 new bugs in
+114 new bugs in
 27 open source projects.
 
 * audk:
@@ -58,6 +58,7 @@
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
     * <https://github.com/mm2/Little-CMS/issues/333>
+    * <https://github.com/mm2/Little-CMS/pull/376>
 * miniz:
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
