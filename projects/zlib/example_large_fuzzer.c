@@ -41,8 +41,8 @@ int test_large_deflate(unsigned char *compr, size_t comprLen,
   /* At this point, uncompr is still mostly zeroes, so it should compress
    * very well:
    */
-  c_stream.next_in = uncompr;
-  c_stream.avail_in = (unsigned int)uncomprLen;
+  c_stream.next_in = (Bytef *)data;
+  c_stream.avail_in = (unsigned int)dataLen;
   err = deflate(&c_stream, Z_NO_FLUSH);
   CHECK_ERR(err, "deflate large 1");
   if (c_stream.avail_in != 0) {
