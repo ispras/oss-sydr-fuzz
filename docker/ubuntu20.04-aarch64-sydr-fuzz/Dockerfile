@@ -9,7 +9,7 @@ RUN apt-get update && \
         gcc-multilib-arm-linux-gnueabi g++-multilib-arm-linux-gnueabi \
         libglib2.0-dev libtool python-dev python3-pip lsb-release pkg-config \
         vim curl lcov gnuplot wget unzip m4 software-properties-common \
-        zlib1g-dev git texinfo bison
+        zlib1g-dev git texinfo bison zip htop psutils
 
 # Add gcc repository
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
