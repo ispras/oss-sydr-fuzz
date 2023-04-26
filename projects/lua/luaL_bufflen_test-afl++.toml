@@ -24,8 +24,8 @@ args = "-t 60000 -i /corpus_luaL_bufflen"
 target = "/luaL_bufflen_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_bufflen_test_cmplog -t 60000 -i /corpus_luaL_bufflen"
-target = "/luaL_bufflen_test_afl @@"
+args = "-m none -l AT -c /luaL_bufflen_cmplog -t 60000 -i /corpus_luaL_bufflen"
+target = "/luaL_bufflen_afl @@"
 
 [cov]
-target = "/luaL_bufflen_test_cov @@"
+target = "/luaL_bufflen_cov @@"
