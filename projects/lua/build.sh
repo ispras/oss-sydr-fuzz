@@ -70,8 +70,9 @@ done
 # Build the project for AFL++.
 CC=afl-clang-fast
 CXX=afl-clang-fast++
-CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+LDFLAGS=""
 
 cmake_args=(
     -DUSE_LUA=ON
