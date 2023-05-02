@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-115 new bugs in
+116 new bugs in
 27 open source projects.
 
 * audk:
@@ -35,6 +35,7 @@
     * <https://sourceforge.net/p/freeimage/bugs/349/>
     * <https://sourceforge.net/p/freeimage/bugs/350/>
     * <https://sourceforge.net/p/freeimage/bugs/351/>
+    * <https://sourceforge.net/p/freeimage/patches/158/>
 * goblin:
     * <https://github.com/m4b/goblin/issues/328>
     * <https://github.com/m4b/goblin/pull/329>
