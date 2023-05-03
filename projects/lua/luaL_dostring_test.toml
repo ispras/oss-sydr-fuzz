@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/luaL_dostring_test"
-args = "/corpus_luaL_dostring"
+args = "-dict=/luaL_dostring.dict /corpus_luaL_dostring"
 
 [cov]
 target = "/luaL_dostring_cov @@"

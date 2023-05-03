@@ -20,11 +20,11 @@ target = "/luaL_dostring_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_dostring"
+args = "-t 60000 -i /corpus_luaL_dostring -x /luaL_dostring.dict -x /afl++.dict"
 target = "/luaL_dostring_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_dostring_cmplog -t 60000 -i /corpus_luaL_dostring"
+args = "-m none -l AT -c /luaL_dostring_cmplog -t 60000 -i /corpus_luaL_dostring -x /luaL_dostring.dict -x /afl++.dict"
 target = "/luaL_dostring_afl @@"
 
 [cov]

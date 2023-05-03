@@ -65,6 +65,7 @@ do
   echo "Copying for $module";
   cp $f /
   [[ -e $corpus_dir ]] && cp -r $corpus_dir /corpus_$module
+  [[ -e $corpus_dir.dict ]] && cp $corpus_dir.dict /$module.dict
 done
 
 # Build the project for AFL++.
@@ -73,7 +74,8 @@ CXX=afl-clang-fast++
 CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 LDFLAGS=""
-
+export AFL_LLVM_DICT2FILE=/afl++.dict
+export AFL_LLVM_DICT2FILE_NO_MAIN=1
 cmake_args=(
     -DUSE_LUA=ON
     -DLUA_VERSION=e15f1f2bb7a38a3c94519294d031e48508d65006
@@ -107,6 +109,8 @@ do
   echo "Copying for AFL++ $module";
   cp $f /"$module"_afl
 done
+unset AFL_LLVM_DICT2FILE
+unset AFL_LLVM_DICT2FILE_NO_MAIN
 
 # Building cmplog instrumentation.
 export AFL_LLVM_CMPLOG=1

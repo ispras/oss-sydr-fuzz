@@ -20,11 +20,11 @@ target = "/luaL_loadbufferx_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_loadbufferx"
+args = "-t 60000 -i /corpus_luaL_loadbufferx -x /luaL_loadbufferx.dict -x /afl++.dict"
 target = "/luaL_loadbufferx_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_loadbufferx_cmplog -t 60000 -i /corpus_luaL_loadbufferx"
+args = "-m none -l AT -c /luaL_loadbufferx_cmplog -t 60000 -i /corpus_luaL_loadbufferx -x /luaL_loadbufferx.dict -x /afl++.dict"
 target = "/luaL_loadbufferx_afl @@"
 
 [cov]

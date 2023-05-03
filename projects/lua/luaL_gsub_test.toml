@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/luaL_gsub_test"
-args = "/corpus_luaL_gsub"
+args = "-dict=/luaL_gsub.dict /corpus_luaL_gsub"
 
 [cov]
 target = "/luaL_gsub_cov @@"

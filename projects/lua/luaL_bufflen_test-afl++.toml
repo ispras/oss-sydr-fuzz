@@ -20,11 +20,11 @@ target = "/luaL_bufflen_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_bufflen"
+args = "-t 60000 -i /corpus_luaL_bufflen -x /luaL_bufflen.dict -x /afl++.dict"
 target = "/luaL_bufflen_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_bufflen_cmplog -t 60000 -i /corpus_luaL_bufflen"
+args = "-m none -l AT -c /luaL_bufflen_cmplog -t 60000 -i /corpus_luaL_bufflen -x /luaL_bufflen.dict -x /afl++.dict"
 target = "/luaL_bufflen_afl @@"
 
 [cov]

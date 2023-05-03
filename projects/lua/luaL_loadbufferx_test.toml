@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/luaL_loadbufferx_test"
-args = "/corpus_luaL_loadbufferx"
+args = "-dict=/luaL_loadbufferx.dict /corpus_luaL_loadbufferx"
 
 [cov]
 target = "/luaL_loadbufferx_cov @@"

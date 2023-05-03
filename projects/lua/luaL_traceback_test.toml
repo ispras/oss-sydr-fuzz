@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/luaL_traceback_test"
-args = "/corpus_luaL_traceback"
+args = "-dict=/luaL_traceback.dict /corpus_luaL_traceback"
 
 [cov]
 target = "/luaL_traceback_cov @@"
