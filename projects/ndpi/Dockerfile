@@ -25,11 +25,11 @@ RUN git clone https://github.com/ntop/nDPI.git
 RUN git clone --depth 1 https://github.com/json-c/json-c.git json-c
 ADD https://www.tcpdump.org/release/libpcap-1.9.1.tar.gz libpcap-1.9.1.tar.gz
 
-RUN mkdir corpus && mv nDPI/tests/pcap/* corpus
+RUN mkdir corpus && mv nDPI/tests/cfgs/default/pcap/* corpus
 
 WORKDIR nDPI
 
-RUN git checkout 5704e4c1425ae86f38f8eed9342ad98a58ff6665
+RUN git checkout bb370f5ef0817d46791ba3091297c329e3d01211
 
 COPY build.sh load_sydr_process_packet.c load_sydr_ndpi_reader.c load_sydr_quic_get_crypto_data.c ./
 
