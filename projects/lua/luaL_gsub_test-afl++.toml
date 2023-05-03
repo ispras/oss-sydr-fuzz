@@ -20,11 +20,11 @@ target = "/luaL_gsub_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_gsub -x /afl++.dict"
+args = "-t 60000 -i /corpus_luaL_gsub -x /luaL_gsub.dict -x /afl++.dict"
 target = "/luaL_gsub_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_gsub_cmplog -t 60000 -i /corpus_luaL_gsub -x /afl++.dict"
+args = "-m none -l AT -c /luaL_gsub_cmplog -t 60000 -i /corpus_luaL_gsub -x /luaL_gsub.dict -x /afl++.dict"
 target = "/luaL_gsub_afl @@"
 
 [cov]

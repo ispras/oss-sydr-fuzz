@@ -20,11 +20,11 @@ target = "/luaL_traceback_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_traceback -x /afl++.dict"
+args = "-t 60000 -i /corpus_luaL_traceback -x /luaL_traceback.dict -x /afl++.dict"
 target = "/luaL_traceback_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_traceback_cmplog -t 60000 -i /corpus_luaL_traceback -x /afl++.dict"
+args = "-m none -l AT -c /luaL_traceback_cmplog -t 60000 -i /corpus_luaL_traceback -x /luaL_traceback.dict -x /afl++.dict"
 target = "/luaL_traceback_afl @@"
 
 [cov]

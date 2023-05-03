@@ -16,12 +16,12 @@
 
 [sydr]
 args = "-l debug -j 2"
-target = "/luaL_loadbuffer_sydr @@"
+target = "/luaL_loadbuffer_proto_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/luaL_loadbuffer_test"
-args = "/corpus_luaL_loadbuffer"
+path = "/luaL_loadbuffer_proto_test"
+args = "-dict=/luaL_loadbuffer_proto.dict /corpus_luaL_loadbuffer_proto"
 
 [cov]
-target = "/luaL_loadbuffer_cov @@"
+target = "/luaL_loadbuffer_proto_cov @@"

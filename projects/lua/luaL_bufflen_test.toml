@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/luaL_bufflen_test"
-args = "/corpus_luaL_bufflen"
+args = "-dict=/luaL_bufflen.dict /corpus_luaL_bufflen"
 
 [cov]
 target = "/luaL_bufflen_cov @@"

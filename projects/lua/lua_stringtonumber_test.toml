@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/lua_stringtonumber_test"
-args = "/corpus_lua_stringtonumber"
+args = "-dict=/lua_stringtonumber.dict /corpus_lua_stringtonumber"
 
 [cov]
 target = "/lua_stringtonumber_cov @@"
