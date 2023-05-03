@@ -20,11 +20,11 @@ target = "/lua_stringtonumber_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_lua_stringtonumber"
+args = "-t 60000 -i /corpus_lua_stringtonumber -x /afl++.dict"
 target = "/lua_stringtonumber_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /lua_stringtonumber_cmplog -t 60000 -i /corpus_lua_stringtonumber"
+args = "-m none -l AT -c /lua_stringtonumber_cmplog -t 60000 -i /corpus_lua_stringtonumber -x /afl++.dict"
 target = "/lua_stringtonumber_afl @@"
 
 [cov]

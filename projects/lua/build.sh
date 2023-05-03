@@ -73,6 +73,8 @@ CXX=afl-clang-fast++
 CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 LDFLAGS=""
+export AFL_LLVM_DICT2FILE=/afl++.dict
+export AFL_LLVM_DICT2FILE_NO_MAIN=1
 
 cmake_args=(
     -DUSE_LUA=ON
