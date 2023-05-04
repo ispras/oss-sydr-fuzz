@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/datetime_strptime_fuzzer"
-args = "/datetime_strptime"
+args = "/datetime_strptime -dict=/datetime_strptime_fuzzer.dict"
 
 [cov]
 target = "/datetime_strptime_cov @@"

@@ -20,11 +20,11 @@ target = "/swim_proto_meta_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_swim_proto_meta"
+args = "-t 60000 -i /corpus_swim_proto_meta -x /swim_proto_meta_fuzzer.dict"
 target = "/swim_proto_meta_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /swim_proto_meta_cmplog -t 60000 -i /corpus_swim_proto_meta"
+args = "-m none -l AT -c /swim_proto_meta_cmplog -t 60000 -i /corpus_swim_proto_meta -x /swim_proto_meta_fuzzer.dict"
 target = "/swim_proto_meta_afl @@"
 
 [cov]

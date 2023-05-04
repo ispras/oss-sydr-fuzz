@@ -84,6 +84,8 @@ do
   echo "Copying for $module";
   cp $f /
   [[ -e $corpus_dir ]] && cp -r $corpus_dir /corpus_$module
+  dict_path="test/static/${name}.dict"
+  [[ -e $dict_path ]] && cp $dict_path /
 done
 
 # Build the project for AFL++.
