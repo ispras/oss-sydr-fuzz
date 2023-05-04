@@ -30,9 +30,8 @@ RUN git clone https://github.com/ligurio/lua-c-api-tests testdir
 
 WORKDIR testdir
 
-# TODO: update commit after PR merge.
 # Checkout specified commit. It could be updated later.
-RUN git checkout 0839df9c5852bb2567cefbe498c437350310bc4a
+RUN git checkout 365d59c1f02109b5d22d79a0b2a2cb97961ff262
 
 # Clone corpus from GitHub.
 RUN git clone --depth 1 https://github.com/ligurio/lua-c-api-corpus corpus
