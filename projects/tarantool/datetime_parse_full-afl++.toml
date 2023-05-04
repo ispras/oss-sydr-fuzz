@@ -20,11 +20,11 @@ target = "/datetime_parse_full_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /datetime_parse_full"
+args = "-t 60000 -i /datetime_parse_full -x /datetime_parse_full_fuzzer.dict"
 target = "/datetime_parse_full_afl @@"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /datetime_parse_full_cmplog -t 60000 -i /datetime_parse_full"
+args = "-m none -l AT -c /datetime_parse_full_cmplog -t 60000 -i /datetime_parse_full -x /datetime_parse_full_fuzzer.dict"
 target = "/datetime_parse_full_afl @@"
 
 [cov]

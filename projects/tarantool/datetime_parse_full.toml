@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/datetime_parse_full_fuzzer"
-args = "/datetime_parse_full"
+args = "/datetime_parse_full -dict=/datetime_parse_full_fuzzer.dict"
 
 [cov]
 target = "/datetime_parse_full_cov @@"
