@@ -211,7 +211,6 @@ cmake_args=(
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
     -DENABLE_UBSAN=OFF
-    -DENABLE_DEBUG=ON
     -DENABLE_COV=ON
 
     # C compiler
