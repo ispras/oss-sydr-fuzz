@@ -82,6 +82,7 @@ cmake_args=(
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UBSAN=ON
+    -DENABLE_COV=OFF
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -120,6 +121,7 @@ cmake_args=(
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UBSAN=ON
+    -DENABLE_COV=OFF
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -163,6 +165,7 @@ cmake_args=(
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
     -DENABLE_UBSAN=OFF
+    -DENABLE_COV=OFF
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -195,6 +198,8 @@ do
 done
 
 # Build the project for llvm-cov.
+CC=clang
+CXX=clang++
 CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 LDFLAGS=""
@@ -206,6 +211,8 @@ cmake_args=(
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
     -DENABLE_UBSAN=OFF
+    -DENABLE_DEBUG=ON
+    -DENABLE_COV=ON
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
