@@ -36,7 +36,7 @@ RUN git clone https://github.com/tarantool/tarantool
 WORKDIR tarantool
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout da2745971f432e6445740efc88bc5fdd3459aee6
+RUN git checkout ae02f0cd37af634db9ed2b3aed3e0604b34120ec
 
 RUN git submodule update --init --recursive
 
