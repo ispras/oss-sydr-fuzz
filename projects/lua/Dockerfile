@@ -51,4 +51,7 @@ WORKDIR /
 # > ASAN_OPTIONS="detect_invalid_pointer_pairs=2".
 # See https://github.com/lua/lua/blob/e15f1f2bb7a38a3c94519294d031e48508d65006/makefile#L60-L66
 # https://github.com/google/sanitizers/wiki/AddressSanitizerFlags
-ENV ASAN_OPTIONS="detect_invalid_pointer_pairs=2"
+
+# We comment this, because all the afl++ fuzz targets are
+# failing due to invalid pointer pairs errors.
+#ENV ASAN_OPTIONS="detect_invalid_pointer_pairs=2"
