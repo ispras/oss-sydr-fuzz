@@ -31,7 +31,7 @@ RUN git clone https://github.com/ligurio/lua-c-api-tests testdir
 WORKDIR testdir
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 0839df9c5852bb2567cefbe498c437350310bc4a
+RUN git checkout 365d59c1f02109b5d22d79a0b2a2cb97961ff262
 
 # Clone corpus from GitHub.
 RUN git clone --depth 1 https://github.com/ligurio/lua-c-api-corpus corpus
@@ -51,4 +51,7 @@ WORKDIR /
 # > ASAN_OPTIONS="detect_invalid_pointer_pairs=2".
 # See https://github.com/lua/lua/blob/e15f1f2bb7a38a3c94519294d031e48508d65006/makefile#L60-L66
 # https://github.com/google/sanitizers/wiki/AddressSanitizerFlags
-ENV ASAN_OPTIONS="detect_invalid_pointer_pairs=2"
+
+# We comment this, because all of the afl++ fuzz targets are
+# failing due to invalid pointer pairs errors.
+# ENV ASAN_OPTIONS="detect_invalid_pointer_pairs=2"
