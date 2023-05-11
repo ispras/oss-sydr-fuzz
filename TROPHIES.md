@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-116 new bugs in
+117 new bugs in
 27 open source projects.
 
 * audk:
@@ -130,6 +130,7 @@
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
+    * <https://github.com/tarantool/tarantool/pull/8640>
 * TensorFlow:
     * <https://github.com/tensorflow/tensorflow/pull/56455>
     * <https://github.com/tensorflow/tensorflow/pull/60082>
