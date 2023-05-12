@@ -22,18 +22,13 @@ RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch/ /pytorch
 RUN cd /pytorch && \
-    git checkout abc54f93145830b502400faa92bec86e05422fbd && \
+    git checkout d56e1b2f674ac8667d5f58329569a628f1636b81 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
 COPY *.sh \
-     *.patch \
      *.cc \
      /
-
-# Apply PyTorch fixes. 
-RUN cd /pytorch && \
-    git apply /schema_type_parser-stoll.patch
 
 # Patch exceptions throwing to avoid unwanted crashes.
 RUN ./patch_exceptions.sh
