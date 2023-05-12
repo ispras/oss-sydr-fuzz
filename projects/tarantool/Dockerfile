@@ -36,7 +36,7 @@ RUN git clone https://github.com/tarantool/tarantool
 WORKDIR tarantool
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 96706b7b7e860f23ee59913e347f9b5fd306b662
+RUN git checkout 3a220dadf9ff820c65398f767b2441808fd6b563
 
 RUN git submodule update --init --recursive
 
@@ -50,5 +50,5 @@ WORKDIR /
 
 # Get new corpus directories
 RUN git clone https://github.com/ligurio/tarantool-corpus && cd /tarantool-corpus && \
-    git checkout dc6a7b9c663df970d1071a1a40881b30c5f54d57 && mv mp_datetime/ datetime_strptime/ datetime_parse_full/ / && \
+    git checkout 4e2e6c8c1533f8c6989d10b34cae6b9081d4a707 && mv mp_datetime/ datetime_strptime/ datetime_parse_full/ / && \
 	cd .. && rm -rf tarantool-corpus
