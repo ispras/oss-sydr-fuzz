@@ -15,7 +15,7 @@ RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
     cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
     rm -rf gdb-*
 
-RUN python3 -m pip install scipy numpy coverage toml concurrencytest psutil
+RUN python3 -m pip install coverage toml concurrencytest psutil
 
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
     mkdir /cmake && \

@@ -45,7 +45,7 @@ RUN ln -s /usr/bin/clang-14 /usr/bin/clang && \
     ln -s /usr/bin/llvm-config-14 /usr/bin/llvm-config && \
     ln -s /usr/bin/llvm-symbolizer-14 /usr/bin/llvm-symbolizer
 
-RUN python3 -m pip install scipy numpy coverage toml concurrencytest psutil
+RUN python3 -m pip install coverage toml concurrencytest psutil
 
 # Install Cmake
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.23.0/cmake-3.23.0-linux-aarch64.sh && \
