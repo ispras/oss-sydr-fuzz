@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-117 new bugs in
+118 new bugs in
 27 open source projects.
 
 * audk:
@@ -69,6 +69,7 @@
     * <https://github.com/jcrist/msgspec/issues/366>
 * nDPI:
     * <https://github.com/ntop/nDPI/issues/1803>
+    * <https://github.com/ntop/nDPI/pull/1980>
 * OpenJPEG (OpenCV 3rdparty):
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
