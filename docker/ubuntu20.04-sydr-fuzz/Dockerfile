@@ -1,7 +1,5 @@
 FROM ubuntu:20.04
 
-MAINTAINER Alexey Vishnyakov
-
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -24,10 +22,17 @@ RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-
     rm cmake-3.22.1-linux-x86_64.sh
 
 # Install Rust.
-RUN curl https://sh.rustup.rs -o rustup.sh && chmod +x rustup.sh && \
-    ./rustup.sh -y && rm rustup.sh
+RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly --profile=minimal
 
 ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN cargo install cargo-fuzz
+
+RUN cargo install afl
+
+RUN rustup component add llvm-tools-preview
+
+RUN rustup component add rust-src --toolchain nightly
 
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip \
     && unzip ninja-linux.zip && mv ninja /usr/bin && rm ninja-linux.zip
@@ -70,11 +75,9 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
-ENV PATH=$PATH:/fuzz/sydr
-
-RUN git clone https://github.com/google/atheris && cd atheris && pip3 install . && cd .. && rm -rf atheris
-
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
+
+RUN git clone https://github.com/ispras/casr && cargo install casr
 
 WORKDIR /

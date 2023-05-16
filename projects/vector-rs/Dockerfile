@@ -34,7 +34,11 @@ patch -p0 < /fuzz_vector/fuzz_update_patches/parse_json.patch && \
 patch -p0 < /fuzz_vector/fuzz_update_patches/parse_csv.patch && \
 patch -p0 < /fuzz_vector/fuzz_update_patches/parse_klog.patch && \
 patch -p0 < /fuzz_vector/fuzz_update_patches/parse_aws.patch && \
+<<<<<<< HEAD
 patch -p0 < /fuzz_vector/fuzz_update_patches/stdlib.patch && \ 
+=======
+patch -p0 < /fuzz_vector/fuzz_update_patches/stdlib.patch && \
+>>>>>>> 95014df7e63a8cc6f70201b9f2deb88f35ee340d
 sed -i 's/0.4.19/=0.4.22/' /vector/lib/value/Cargo.toml
 # Build targets.
 WORKDIR vector
@@ -46,3 +50,9 @@ RUN /build.sh
 
 #Copy dictionaries
 COPY dict /dict
+<<<<<<< HEAD
+=======
+
+# Rust toolchain first
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH
+>>>>>>> 95014df7e63a8cc6f70201b9f2deb88f35ee340d

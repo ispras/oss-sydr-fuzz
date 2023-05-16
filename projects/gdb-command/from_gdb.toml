@@ -20,3 +20,6 @@ target = "/sydr_from_gdb @@"
 [libfuzzer]
 path = "/from_gdb"
 args = "-rss_limit_mb=8192"
+
+[cov]
+target = "/cov_from_gdb @@"

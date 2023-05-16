@@ -15,17 +15,22 @@
 #
 ###############################################################################
 FROM sydr/ubuntu20.04-sydr-fuzz
-RUN apt-get update
-RUN apt-get install -y build-essential libncursesw5-dev \
-	libreadline-dev libssl-dev libgdbm-dev \
-	libc6-dev libsqlite3-dev tk-dev libbz2-dev \
-	zlib1g-dev libffi-dev
 
-RUN git clone https://github.com/python/cpython /cpython3
+RUN apt-get update \
+    && apt-get install -y libncursesw5-dev \
+    libreadline-dev libssl-dev libgdbm-dev \
+    libsqlite3-dev tk-dev libbz2-dev 
+
+RUN git clone https://github.com/python/cpython /cpython3 
+
 WORKDIR /cpython3
+
 COPY main.c build.sh /cpython3/
+
 COPY fuzzer.c fuzz_tests.txt /cpython3/Modules/_xxtestfuzz/
-RUN OUT="/fuzz" /cpython3/build.sh
-RUN OUT="/cov" /cpython3/build.sh
-RUN OUT="/sydr" /cpython3/build.sh
-RUN git clone https://github.com/dvyukov/go-fuzz-corpus  /corpus
+
+RUN OUT="/fuzzer" /cpython3/build.sh \
+    && OUT="/cov" /cpython3/build.sh \
+    && OUT="/sydr" /cpython3/build.sh \  
+    && git clone https://github.com/dvyukov/go-fuzz-corpus /corpus
+

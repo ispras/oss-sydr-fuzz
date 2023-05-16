@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 COPY main.c afl.cc /
 COPY install_java.sh /usr/local/bin/

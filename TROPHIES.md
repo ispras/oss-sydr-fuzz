@@ -1,11 +1,26 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-85 new bugs in
-22 open source projects.
+98 new bugs in
+25 open source projects.
 
+* audk:
+    * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
 * Cairo:
     * <https://gitlab.freedesktop.org/cairo/cairo/-/issues/579>
+* edk2:
+    * <https://github.com/tianocore/edk2/commit/35043a5ec05db6aa86b1b380416923fd1c3506e6>
+* edk2-platforms:
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/f3d7459d5bc6f54d71f5b8f0086f51860ac83c77>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/c072e628054708b26d38d0a266d2aeba5fb9e95d>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/dddd9b31608e4d0e47cb17a645ff4727b83a9b1c>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/f974472d111afc8fded2bc6c9b5a72feaf1a9f54>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/0450521c818f9634c312673204ad16a8d16e3570>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/6d772c91f060b72a2933f7fecf791cd4fdfc4cc8>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/5d82bc092567d89235f90035a65b3e48d3d6f6a9>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/833021f8bd63e26dbe753d21a8b08c19882949ff>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/d711d81b7946e4c01e1ace03f7273ccb5ab66187>
+    * <https://github.com/savvamitrofanov/edk2-platforms/commit/ebe4fae8ed6532fbc255d5a553a7d9d29dcf276e>
 * exrs
     * <https://github.com/johannesvollmer/exrs/pull/166>
 * FreeImage:
@@ -54,6 +69,7 @@
     * <https://github.com/pytorch/pytorch/issues/77575> (PR: <https://github.com/pytorch/pytorch/pull/79192>)
     * <https://github.com/pytorch/pytorch/pull/77557>
     * <https://github.com/pytorch/pytorch/pull/84343>
+    * <https://github.com/pytorch/pytorch/pull/91401>
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)

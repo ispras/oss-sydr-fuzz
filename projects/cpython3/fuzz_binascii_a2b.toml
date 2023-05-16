@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 [sydr]
 args = "-l debug"
-target = "/sydr/fuzz_binascii_a2b @@"
+path = "/sydr/fuzz_binascii_a2b @@"
 
 [libfuzzer]
-target = "/fuzz/fuzz_binascii_a2b"
-args = "/corpus/parse/corpus"
+path = "/fuzzer/fuzz_binascii_a2b"
+args = "/corpus/parser/corpus"
 
 [cov]
-target = "/cov/fuzz_binascii_a2b @@"
+path = "/cov/fuzz_binascii_a2b @@"

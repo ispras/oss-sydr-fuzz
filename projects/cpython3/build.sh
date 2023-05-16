@@ -20,16 +20,19 @@ export ASAN_OPTIONS="detect_leaks=0"
 export MSAN_OPTIONS="halt_on_error=0:exitcode=0:report_umrs=0"
 CC="clang"
 CXX="clang++"
+
 # Remove -pthread from CFLAGS, this trips up ./configure
 # which thinks pthreads are available without any CLI flags
 CFLAGS=${CFLAGS//"-pthread"/}
 CFLAGS="${CFLAGS} -UNDEBUG -O1 -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+
 # Ensure assert statements are enabled. It may help identify problems
 # earlier if those fire.
-if [[ $OUT == "/fuzz" ]]
+if [[ $OUT == "/fuzzer" ]]
 then
     FUZZFLAGS="integer,undefined,bounds,null,float-divide-by-zero"
     CFLAGS="${CFLAGS} -fsanitize=fuzzer-no-link,${FUZZFLAGS}"
+
 elif [[ $OUT == "/cov" ]]
 then
     CFLAGS="${CFLAGS} -fprofile-instr-generate -fcoverage-mapping"
@@ -40,23 +43,23 @@ CC=$CC CXX=$CXX CXXFLAGS=$CFLAGS CFLAGS=$CFLAGS LDFLAGS=$CFLAGS ./configure  -pr
 # We use altinstall to avoid having the Makefile create symlinks
 make -j$(nproc) altinstall
 echo "BUILDED"
-if [[ $OUT == "/fuzz" ]]
+
+FUZZ_DIR=Modules/_xxtestfuzz
+
+if [[ $OUT != "/fuzzer" ]]
 then
+    $CC $CFLAGS -c /cpython3/main.c -o main.o
+    MAIN_OBJ="/cpython3/main.o"
+else
     CFLAGS="-fsanitize=fuzzer,$FUZZFLAGS"
 fi
 
-FUZZ_DIR=Modules/_xxtestfuzz
 for fuzz_test in $(cat $FUZZ_DIR/fuzz_tests.txt)
 do
   # Build (but don't link) the fuzzing stub with a C compiler
   $CC $CFLAGS  $("$OUT/bin/"python*-config --cflags) $FUZZ_DIR/fuzzer.c \
     -D _Py_FUZZ_ONE -D _Py_FUZZ_$fuzz_test -c -Wno-unused-function \
-    -o /cpython3/$fuzz_test.o libpython3.*.a
-  if [[ $OUT != "/fuzz" ]]
-  then
-      $CC $CFLAGS -c /cpython3/main.c -o main.o
-      MAIN_OBJ="/cpython3/main.o"
-  fi 
+    -o /cpython3/$fuzz_test.o $OUT/lib/libpython3.*.a
   # Link with C++ compiler to appease libfuzzer
   $CXX $CFLAGS -rdynamic $MAIN_OBJ /cpython3/$fuzz_test.o -o "${OUT}"/$fuzz_test \
     $("$OUT/bin/"python*-config --ldflags --embed)

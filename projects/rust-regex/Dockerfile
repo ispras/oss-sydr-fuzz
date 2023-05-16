@@ -13,17 +13,11 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
-
-# Install nightly
-RUN rustup install nightly
-
-# Install cargo-fuzz
-RUN cargo install cargo-fuzz
 
 # Clone target from GitHub.
 RUN git clone https://github.com/rust-lang/regex regex
@@ -34,7 +28,7 @@ WORKDIR /regex
 RUN git checkout 159a63c85eb77ec321301bc4c4ebfb90343edc2b
 
 # Copy build script.
-COPY build_fuzz.sh build_sydr.sh /
+COPY build_cov.sh build_fuzz.sh build_sydr.sh /
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
@@ -48,6 +42,11 @@ WORKDIR fuzz
 # Build sydr targets.
 RUN /build_sydr.sh
 
+# Build cov targets.
+RUN cargo clean && /build_cov.sh
+
 COPY regexp.dict /
 
 WORKDIR /
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

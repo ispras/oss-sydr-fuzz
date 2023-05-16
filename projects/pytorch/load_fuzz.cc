@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//###############################################################################
+// ###############################################################################
 
 #include <sstream>
 #include <string>
@@ -31,29 +31,22 @@
 #include <torch/csrc/jit/tensorexpr/kernel.h>
 #include <torch/script.h>
 
+extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
+
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-    char name[] = "/tmp/torch-fuzz-XXXXXX";
-    char *dir = mktemp(name);
+  std::stringstream ss;
+  std::copy((char *)data, (char *)data + size,
+            std::ostreambuf_iterator<char>(ss));
 
-    std::ofstream fp;
-    fp.open(dir, std::ios::out | std::ios::binary);
-    fp.write((char *) data, size);
-    fp.close();
-
-    try {
-        auto m = torch::jit::load(dir);
-    } catch (const c10::Error &e) {
-        unlink(dir);
-        return 0;
-    } catch (const torch::jit::ErrorReport &e) {
-        unlink(dir);
-        return 0;
-    } catch(const std::runtime_error &e) {
-        unlink(dir);
-        return 0;
-    }
-
-    unlink(dir);
-
+  try {
+    auto m = torch::jit::load(ss);
+  } catch (const c10::Error &e) {
     return 0;
+  } catch (const torch::jit::ErrorReport &e) {
+    return 0;
+  } catch (const std::runtime_error &e) {
+    return 0;
+  }
+
+  return 0;
 }

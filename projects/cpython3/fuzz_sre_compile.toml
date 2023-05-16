@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 [sydr]
 args = "-l debug"
-target = "/sydr/fuzz_sre_compile @@"
+path = "/sydr/fuzz_sre_compile @@"
 
 [libfuzzer]
-target = "/fuzz/fuzz_sre_compile"
-args = "/corpus/parse/corpus"
+path = "/fuzzer/fuzz_sre_compile"
+args = "--dict=/cpython3/Modules/_xxtestfuzz/dictionaries/fuzz_sre_compile.dict /cpython3/Modules/__xtestfuzz/fuzz_sre_compile_corpus/"
 
 [cov]
-target = "/cov/fuzz_sre_compile @@"
+path = "/cov/fuzz_sre_compile @@"

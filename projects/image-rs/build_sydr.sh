@@ -15,16 +15,16 @@
 #
 ################################################################################
 
-cargo build
-cp /image/fuzz/target/debug/sydr_script_bmp /
-cp /image/fuzz/target/debug/sydr_script_exr /
-cp /image/fuzz/target/debug/sydr_script_gif /
-cp /image/fuzz/target/debug/sydr_script_guess /
-cp /image/fuzz/target/debug/sydr_script_hdr /
-cp /image/fuzz/target/debug/sydr_script_ico /
-cp /image/fuzz/target/debug/sydr_script_jpeg /
-cp /image/fuzz/target/debug/sydr_script_png /
-cp /image/fuzz/target/debug/sydr_script_pnm /
-cp /image/fuzz/target/debug/sydr_script_tga /
-cp /image/fuzz/target/debug/sydr_script_tiff /
-cp /image/fuzz/target/debug/sydr_script_webp /
+cargo build --release
+cp /image/fuzz/target/release/sydr_script_bmp /
+cp /image/fuzz/target/release/sydr_script_exr /
+cp /image/fuzz/target/release/sydr_script_gif /
+cp /image/fuzz/target/release/sydr_script_guess /
+cp /image/fuzz/target/release/sydr_script_hdr /
+cp /image/fuzz/target/release/sydr_script_ico /
+cp /image/fuzz/target/release/sydr_script_jpeg /
+cp /image/fuzz/target/release/sydr_script_png /
+cp /image/fuzz/target/release/sydr_script_pnm /
+cp /image/fuzz/target/release/sydr_script_tga /
+cp /image/fuzz/target/release/sydr_script_tiff /
+cp /image/fuzz/target/release/sydr_script_webp /

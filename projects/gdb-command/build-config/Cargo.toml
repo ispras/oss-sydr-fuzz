@@ -24,3 +24,5 @@ path = "fuzz_targets/sydr_from_gdb.rs"
 
 [profile.release]
 debug = true
+panic = 'abort'
+overflow-checks = true

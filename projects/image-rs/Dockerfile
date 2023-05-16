@@ -14,17 +14,11 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
-
-# Install nightly
-RUN rustup install nightly
-
-# Install cargo-fuzz
-RUN cargo install cargo-fuzz
 
 # Clone target from GitHub.
 RUN git clone https://github.com/image-rs/image
@@ -35,7 +29,7 @@ WORKDIR /image
 RUN git checkout b35437696f4ccb39cd5250552f6cfe1734a27bcd
 
 # Copy build script.
-COPY build_fuzz.sh build_sydr.sh /
+COPY build_cov.sh build_fuzz.sh build_sydr.sh /
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
@@ -51,6 +45,9 @@ WORKDIR fuzz
 # Build sydr targets.
 RUN /build_sydr.sh
 
+# Build cov targets.
+RUN cargo clean && /build_cov.sh
+
 # Prepare corporas.
 RUN mkdir /corpus_bmp && find /image -name '*.bmp' -exec cp {} /corpus_bmp \; && \
     mkdir /corpus_gif && find /image -name '*.gif' -exec cp {} /corpus_gif \; && \
@@ -63,3 +60,5 @@ RUN mkdir /corpus_bmp && find /image -name '*.bmp' -exec cp {} /corpus_bmp \; &&
     mkdir /corpus_tiff && find /image -name '*.tiff' -exec cp {} /corpus_tiff \; && \
     mkdir /corpus_webp && find /image -name '*.webp' -exec cp {} /corpus_webp \; && \
     cp -r /image/tests/images/exr /corpus_exr
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

@@ -13,20 +13,14 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sweetvishnya/ubuntu20.04-sydr-fuzz
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Andrey Fedotov
 RUN apt-get update && \
     apt-get -y install curl
 
-# Install nightly
-RUN rustup install nightly
-
-# Install cargo-fuzz
-RUN cargo install cargo-fuzz
-
 # Copy build script.
-COPY build_fuzz.sh build_sydr.sh /
+COPY build_cov.sh build_fuzz.sh build_sydr.sh /
 
 # Clone target from GitHub.
 RUN git clone https://github.com/m4b/goblin.git
@@ -34,7 +28,9 @@ RUN git clone https://github.com/m4b/goblin.git
 WORKDIR /goblin
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout d035559b991e631eae7aa91d89cde5e5e03e9cc6
+RUN git checkout 5b2929291751e845b0b685979b6f655f5640dd29
+
+COPY fuzz-afl /goblin/fuzz-afl
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
@@ -50,8 +46,13 @@ WORKDIR fuzz
 # Build sydr targets.
 RUN /build_sydr.sh
 
+# Build cov targets.
+RUN cargo clean && /build_cov.sh
+
 WORKDIR /
 
 #Create corpus
 RUN git clone https://github.com/JonathanSalwan/binary-samples /corpus && \
 rm -rf /corpus/anti-disassembler && rm /corpus/MIT_LICENSE && rm /corpus/README.md
+
+ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH
