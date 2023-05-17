@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-114 new bugs in
+118 new bugs in
 27 open source projects.
 
 * audk:
@@ -35,12 +35,14 @@
     * <https://sourceforge.net/p/freeimage/bugs/349/>
     * <https://sourceforge.net/p/freeimage/bugs/350/>
     * <https://sourceforge.net/p/freeimage/bugs/351/>
+    * <https://sourceforge.net/p/freeimage/patches/158/>
 * goblin:
     * <https://github.com/m4b/goblin/issues/328>
     * <https://github.com/m4b/goblin/pull/329>
     * <https://github.com/m4b/goblin/pull/330>
     * <https://github.com/m4b/goblin/pull/332>
     * <https://github.com/m4b/goblin/pull/333>
+    * <https://github.com/m4b/goblin/pull/368>
 * golang/image
     * <https://github.com/golang/image/pull/14>
 * hdf5:
@@ -67,6 +69,7 @@
     * <https://github.com/jcrist/msgspec/issues/366>
 * nDPI:
     * <https://github.com/ntop/nDPI/issues/1803>
+    * <https://github.com/ntop/nDPI/pull/1980>
 * OpenJPEG (OpenCV 3rdparty):
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
@@ -128,6 +131,7 @@
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
+    * <https://github.com/tarantool/tarantool/pull/8640>
 * TensorFlow:
     * <https://github.com/tensorflow/tensorflow/pull/56455>
     * <https://github.com/tensorflow/tensorflow/pull/60082>

@@ -1,5 +1,4 @@
-# Copyright 2021 Google LLC
-# Modifications copyright (C) 2021 ISP RAS
+# Copyright 2023 Sergey Bronnikov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +16,7 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-MAINTAINER Alexey Vishnyakov
+MAINTAINER Sergey Bronnikov
 
 # Install build dependencies.
 RUN apt-get update && apt-get install -y \
@@ -26,29 +25,33 @@ RUN apt-get update && apt-get install -y \
 	libreadline-dev libncurses5-dev libssl-dev \
 	libunwind-dev luajit wget curl
 
-RUN wget https://github.com/unicode-org/icu/archive/refs/tags/cldr/2021-08-25.tar.gz && \
-    tar xzvf ./2021-08-25.tar.gz && \
-    mv ./icu-cldr-2021-08-25/icu4c /icu
-
 # Clone target from GitHub.
-RUN git clone https://github.com/tarantool/tarantool
+RUN git clone https://github.com/ligurio/lua-c-api-tests testdir
 
-WORKDIR tarantool
+WORKDIR testdir
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 3a220dadf9ff820c65398f767b2441808fd6b563
+RUN git checkout e004ff762d71b4ad5cf7a78a700cce79bae7c66f
 
-RUN git submodule update --init --recursive
+# Clone corpus from GitHub.
+RUN git clone --depth 1 https://github.com/ligurio/lua-c-api-corpus corpus
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY *.patch build.sh test/fuzz/
+COPY build.sh testdir/
 
 # Build fuzz targets.
-RUN test/fuzz/build.sh
+RUN testdir/build.sh
 
 WORKDIR /
 
-# Get new corpus directories
-RUN git clone https://github.com/ligurio/tarantool-corpus && cd /tarantool-corpus && \
-    git checkout 4e2e6c8c1533f8c6989d10b34cae6b9081d4a707 && mv mp_datetime/ datetime_strptime/ datetime_parse_full/ / && \
-	cd .. && rm -rf tarantool-corpus
+# Developers of PUC Rio Lua team left a comment regarding used ASAN options:
+# > The following options help detect "undefined behavior"s that seldom
+# > create problems; some are only available in newer gcc versions. To
+# > use some of them, we also have to define an environment variable
+# > ASAN_OPTIONS="detect_invalid_pointer_pairs=2".
+# See https://github.com/lua/lua/blob/e15f1f2bb7a38a3c94519294d031e48508d65006/makefile#L60-L66
+# https://github.com/google/sanitizers/wiki/AddressSanitizerFlags
+
+# We comment this, because all of the afl++ fuzz targets are
+# failing due to invalid pointer pairs errors.
+# ENV ASAN_OPTIONS="detect_invalid_pointer_pairs=2"

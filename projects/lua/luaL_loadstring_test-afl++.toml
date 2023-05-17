@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2023 Sergey Bronnikov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 [sydr]
 args = "-l debug -j 2"
-target = "/swim_proto_member_sydr @@"
+target = "/luaL_loadstring_sydr @@"
 jobs = 2
 
-[libfuzzer]
-path = "/swim_proto_member_fuzzer"
-args = "/corpus_swim_proto_member -dict=/swim_proto_member_fuzzer.dict"
+[[aflplusplus]]
+args = "-t 60000 -i /corpus_luaL_loadstring -x /afl++.dict"
+target = "/luaL_loadstring_afl @@"
+
+[[aflplusplus]]
+args = "-m none -l AT -c /luaL_loadstring_cmplog -t 60000 -i /corpus_luaL_loadstring -x /afl++.dict"
+target = "/luaL_loadstring_afl @@"
 
 [cov]
-target = "/swim_proto_member_cov @@"
+target = "/luaL_loadstring_cov @@"

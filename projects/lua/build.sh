@@ -1,6 +1,8 @@
 #!/bin/bash -eu
+#
 # Copyright 2021 Google LLC
 # Modifications copyright (C) 2021 ISP RAS
+# Modifications copyright (C) 2023 Sergey Bronnikov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,38 +23,17 @@ CXX=clang++
 CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
-# build ICU for linking statically.
-cd /icu/source
-./configure --disable-shared --enable-static --disable-layoutex \
-  --disable-tests --disable-samples --with-data-packaging=static
-make install -j$(nproc)
-
-# Ugly ugly hack to get static linking to work for icu.
-cd lib
-ls *.a | xargs -n1 ar x
-rm *.a
-ar r libicu.a *.{ao,o}
-ln -s $PWD/libicu.a /usr/lib/x86_64-linux-gnu/libicudata.a
-ln -s $PWD/libicu.a /usr/lib/x86_64-linux-gnu/libicuuc.a
-ln -s $PWD/libicu.a /usr/lib/x86_64-linux-gnu/libicui18n.a
-
-# remove dynamic libraries of libunwind to force static linking
-find / -name "libunwind*.so*" -exec rm {} \;
-
-cd /tarantool
-
-patch -p1 < /tarantool/test/fuzz/fix-condition-ubsan.patch
+cd /testdir
 
 : ${LD:="${CXX}"}
 : ${LDFLAGS:="${CXXFLAGS}"}  # to make sure we link with sanitizer runtime
 
 cmake_args=(
-    # Specific to Tarantool
-    -DENABLE_BACKTRACE=OFF
-    -DENABLE_FUZZER=ON
+    -DUSE_LUA=ON
+    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
-    -DENABLE_UB_SANITIZER=ON
+    -DENABLE_UBSAN=ON
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -70,22 +51,21 @@ cmake_args=(
     -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
 )
 
-# Build the project and fuzzers.
+# Build fuzzers.
 [[ -e build ]] && rm -rf build
-cmake "${cmake_args[@]}" -S . -B build
-make -j$(nproc) VERBOSE=1 -C build fuzzers
+cmake "${cmake_args[@]}" -S . -B build -G Ninja
+cmake --build build --parallel
 
 # Archive and copy to $OUT seed corpus if the build succeeded.
-for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
+for f in $(find build/tests/ -name '*_test' -type f);
 do
   name=$(basename $f);
-  module=$(echo $name | sed 's/_fuzzer//')
-  corpus_dir="test/static/corpus/$module"
+  module=$(echo $name | sed 's/_test//')
+  corpus_dir="corpus/$module"
   echo "Copying for $module";
   cp $f /
   [[ -e $corpus_dir ]] && cp -r $corpus_dir /corpus_$module
-  dict_path="test/static/${name}.dict"
-  [[ -e $dict_path ]] && cp $dict_path /
+  [[ -e $corpus_dir.dict ]] && cp $corpus_dir.dict /$module.dict
 done
 
 # Build the project for AFL++.
@@ -93,14 +73,15 @@ CC=afl-clang-fast
 CXX=afl-clang-fast++
 CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-
+LDFLAGS=""
+export AFL_LLVM_DICT2FILE=/afl++.dict
+export AFL_LLVM_DICT2FILE_NO_MAIN=1
 cmake_args=(
-    # Specific to Tarantool
-    -DENABLE_BACKTRACE=OFF
-    -DENABLE_FUZZER=ON
+    -DUSE_LUA=ON
+    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
-    -DENABLE_UB_SANITIZER=ON
+    -DENABLE_UBSAN=ON
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -118,26 +99,27 @@ cmake_args=(
     -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
 )
 [[ -e build ]] && rm -rf build
-mkdir -p build/test/fuzz
+mkdir -p build/tests
 cmake "${cmake_args[@]}" -S . -B build
-make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
+cmake --build build --parallel
+for f in $(find build/tests/ -name '*_test' -type f);
 do
   name=$(basename $f);
-  module=$(echo $name | sed 's/_fuzzer//')
+  module=$(echo $name | sed 's/_test//')
   echo "Copying for AFL++ $module";
   cp $f /"$module"_afl
 done
+unset AFL_LLVM_DICT2FILE
+unset AFL_LLVM_DICT2FILE_NO_MAIN
 
 # Building cmplog instrumentation.
 export AFL_LLVM_CMPLOG=1
 cmake_args=(
-    # Specific to Tarantool
-    -DENABLE_BACKTRACE=OFF
-    -DENABLE_FUZZER=ON
+    -DUSE_LUA=ON
+    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
-    -DENABLE_UB_SANITIZER=ON
+    -DENABLE_UBSAN=ON
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -155,13 +137,13 @@ cmake_args=(
     -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
 )
 [[ -e build ]] && rm -rf build
-mkdir -p build/test/fuzz
+mkdir -p build/tests
 cmake "${cmake_args[@]}" -S . -B build
-make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
+cmake --build build --parallel
+for f in $(find build/tests/ -name '*_test' -type f);
 do
   name=$(basename $f);
-  module=$(echo $name | sed 's/_fuzzer//')
+  module=$(echo $name | sed 's/_test//')
   echo "Copying for AFL++ $module";
   cp $f /"$module"_cmplog
 done
@@ -175,13 +157,12 @@ CXXFLAGS="-g"
 LDFLAGS=""
 
 cmake_args=(
-    # Specific to Tarantool
-    -DENABLE_BACKTRACE=OFF
-    -DENABLE_FUZZER=ON
+    -DUSE_LUA=ON
+    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
-    -DENABLE_UB_SANITIZER=OFF
+    -DENABLE_UBSAN=OFF
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -198,34 +179,36 @@ cmake_args=(
     -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
 )
 [[ -e build ]] && rm -rf build
-mkdir -p build/test/fuzz
+mkdir -p build/tests
 # Workaround to build libprotobuf-mutator fuzz targets.
 # They crash with StandaloneFuzzTargetMain.c
 # So, we get libFuzzer without instrumentation.
 export LIB_FUZZING_ENGINE="-fsanitize=fuzzer"
 cmake "${cmake_args[@]}" -S . -B build
-make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
+cmake --build build --parallel
+for f in $(find build/tests/ -name '*_test' -type f);
 do
   name=$(basename $f);
-  module=$(echo $name | sed 's/_fuzzer//')
+  module=$(echo $name | sed 's/_test//')
   echo "Copying for Sydr $module";
   cp $f /"$module"_sydr
 done
 
 # Build the project for llvm-cov.
+CC=clang
+CXX=clang++
 CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 LDFLAGS=""
 
 cmake_args=(
-    # Specific to Tarantool
-    -DENABLE_BACKTRACE=OFF
-    -DENABLE_FUZZER=ON
+    -DUSE_LUA=ON
+    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
-    -DENABLE_UB_SANITIZER=OFF
+    -DENABLE_UBSAN=OFF
+    -DENABLE_COV=ON
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -242,13 +225,13 @@ cmake_args=(
     -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
 )
 [[ -e build ]] && rm -rf build
-mkdir -p build/test/fuzz
+mkdir -p build/tests
 cmake "${cmake_args[@]}" -S . -B build
-make -j$(nproc) VERBOSE=1 -C build fuzzers
-for f in $(find build/test/fuzz/ -name '*_fuzzer' -type f);
+cmake --build build --parallel
+for f in $(find build/tests/ -name '*_test' -type f);
 do
   name=$(basename $f);
-  module=$(echo $name | sed 's/_fuzzer//')
+  module=$(echo $name | sed 's/_test//')
   echo "Copying for llvm-cov $module";
   cp $f /"$module"_cov
 done

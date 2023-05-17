@@ -9,7 +9,7 @@ RUN apt-get update && \
         gcc-multilib-arm-linux-gnueabi g++-multilib-arm-linux-gnueabi \
         libglib2.0-dev libtool python-dev python3-pip lsb-release pkg-config \
         vim curl lcov gnuplot wget unzip m4 software-properties-common \
-        zlib1g-dev git texinfo bison
+        zlib1g-dev git texinfo bison zip htop psutils
 
 # Add gcc repository
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -45,7 +45,7 @@ RUN ln -s /usr/bin/clang-14 /usr/bin/clang && \
     ln -s /usr/bin/llvm-config-14 /usr/bin/llvm-config && \
     ln -s /usr/bin/llvm-symbolizer-14 /usr/bin/llvm-symbolizer
 
-RUN python3 -m pip install scipy numpy coverage toml concurrencytest psutil
+RUN python3 -m pip install coverage toml concurrencytest psutil
 
 # Install Cmake
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.23.0/cmake-3.23.0-linux-aarch64.sh && \
