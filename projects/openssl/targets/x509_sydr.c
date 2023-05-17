@@ -64,6 +64,7 @@ int main(int argc, char** argv)
   fread(buffer, 1, fsize, fd);
   fclose(fd);
   int ret = FuzzerTestOneInput((const uint8_t*)buffer, fsize);
+  free(buffer);
   FuzzerCleanup();
   return ret;
 }
