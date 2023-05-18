@@ -62,5 +62,7 @@ int main(int argc, char** argv)
   char* buffer = (char*)malloc(fsize);
   fread(buffer, 1, fsize, fd);
   fclose(fd);
-  return FuzzerTestOneInput((const uint8_t*)buffer, fsize);
+  int ret = FuzzerTestOneInput((const uint8_t*)buffer, fsize);
+  free(buffer); 
+  return ret;
 }
