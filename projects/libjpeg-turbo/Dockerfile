@@ -20,7 +20,7 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 MAINTAINER Andrey Fedotov
 
 # Install build dependencies.
-RUN apt-get update && apt-get install -y make yasm cmake
+RUN apt-get update && apt-get install -y make yasm
 
 # Clone target from GitHub.
 RUN git clone https://github.com/libjpeg-turbo/libjpeg-turbo
