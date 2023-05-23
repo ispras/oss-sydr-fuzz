@@ -1,0 +1,3 @@
+[jazzer]
+path = "/out/IdempotenceFuzzer"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=4096 /out/corpus -dict=/out/IdempotenceFuzzer.dict"

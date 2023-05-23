@@ -95,4 +95,26 @@ ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
+# Install JDK & Jazzer
+
+ENV JAVA_HOME=/usr/lib/jvm/java-15-openjdk-amd64
+ENV JVM_LD_LIBRARY_PATH=$JAVA_HOME/lib/server
+ENV PATH=$PATH:$JAVA_HOME/bin
+ENV JAZZER_API_PATH="/usr/local/lib/jazzer_standalone_deploy.jar"
+ENV BAZELISK_VERSION 1.9.0
+
+RUN curl --silent -L -O \
+    https://download.java.net/java/GA/jdk15.0.2/0d1cfde4252546c6931946de8db48ee2/7/GPL/openjdk-15.0.2_linux-x64_bin.tar.gz && \
+    mkdir -p $JAVA_HOME
+RUN tar -xz --strip-components=1 -f openjdk-15.0.2_linux-x64_bin.tar.gz --directory $JAVA_HOME
+RUN rm -f openjdk-15.0.2_linux-x64_bin.tar.gz
+RUN rm -rf $JAVA_HOME/jmods $JAVA_HOME/lib/src.zip
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v$BAZELISK_VERSION/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
+    chmod +x /usr/local/bin/bazel
+RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
+    bazel build --java_runtime_version=local_jdk_15 -c opt \
+    --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
+    cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar $JAZZER_API_PATH && \
+    cp -L ./bazel-out/k8-opt/bin/launcher/jazzer /usr/local/bin/ && cd .. && rm -rf jazzer
+
 WORKDIR /
