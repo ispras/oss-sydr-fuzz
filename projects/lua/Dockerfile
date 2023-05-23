@@ -31,7 +31,7 @@ RUN git clone https://github.com/ligurio/lua-c-api-tests testdir
 WORKDIR testdir
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout e004ff762d71b4ad5cf7a78a700cce79bae7c66f
+RUN git checkout 2b14a933ce4ef9b193b7366fccabd0a6955e7e25
 
 # Clone corpus from GitHub.
 RUN git clone --depth 1 https://github.com/ligurio/lua-c-api-corpus corpus
