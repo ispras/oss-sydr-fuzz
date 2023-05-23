@@ -48,7 +48,7 @@ RUN ln -s /usr/bin/clang-14 /usr/bin/clang && \
 RUN python3 -m pip install coverage toml concurrencytest psutil
 
 # Install Cmake
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.23.0/cmake-3.23.0-linux-aarch64.sh && \
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-aarch64.sh && \
     mkdir /cmake && \
     bash cmake-*.sh --prefix=/cmake --exclude-subdir --skip-license && \
     ln -s /cmake/bin/cmake /bin/cmake && \
