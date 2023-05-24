@@ -15,5 +15,7 @@
 ################################################################################
 
 [jazzer]
-path = "/out/DenylistFuzzer"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=4096 /out/corpus -dict=/out/DenylistFuzzer.dict"
+path = "/usr/local/bin/jazzer"
+agent_path = "/usr/local/lib/jazzer_standalone_deploy.jar"
+target_class = "DenylistFuzzer"
+args = "--cp=/out/:/out/gson-2.8.6.jar:/out/json-sanitizer.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 /out/corpus -dict=/out/DenylistFuzzer.dict"

@@ -21,10 +21,10 @@ OUT=/out
 wget https://dlcdn.apache.org/maven/maven-3/3.9.2/binaries/apache-maven-3.9.2-bin.tar.gz
 tar -xvf apache-maven-3.9.2-bin.tar.gz
 mv apache-maven-3.9.2 /opt/
-M2_HOME='/opt/apache-maven-3.9.2'
-export PATH="$PATH:/$M2_HOME/bin"
+export PATH="$PATH:/opt/apache-maven-3.9.2/bin"
 
 # Build the json-sanitizer jar.
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 CURRENT_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate \
 -Dexpression=project.version -q -DforceStdout)
 mvn package
@@ -51,22 +51,4 @@ for fuzzer in $(find $SRC -maxdepth 1 -name '*Fuzzer.java'); do
   fuzzer_basename=$(basename -s .java $fuzzer)
   javac -cp $BUILD_CLASSPATH $fuzzer
   mv $SRC/$fuzzer_basename.class $OUT/
-
-  # Create execution wrapper.
-  echo "#!/bin/bash
-# LLVMFuzzerTestOneInput for fuzzer detection.
-this_dir=\$(dirname \"\$0\")
-if [[ \"\$@\" =~ (^| )-runs=[0-9]+($| ) ]]; then
-  mem_settings='-Xmx1900m:-Xss900k'
-else
-  mem_settings='-Xmx2048m:-Xss1024k'
-fi
-LD_LIBRARY_PATH=\"$JVM_LD_LIBRARY_PATH\":\$this_dir \
-/usr/local/bin/jazzer \
---cp=$RUNTIME_CLASSPATH \
---target_class=$fuzzer_basename \
---agent_path=$JAZZER_API_PATH \
---jvm_args=\"\$mem_settings\" \
-\$@" > $OUT/$fuzzer_basename
-  chmod +x $OUT/$fuzzer_basename
 done

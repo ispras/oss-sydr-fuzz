@@ -9,7 +9,7 @@ RUN apt-get update && \
                        wget curl unzip clang-11 vim lsb-release zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
-                       libtool gnuplot binutils-dev zip htop psutils
+                       libtool gnuplot binutils-dev zip htop psutils openjdk-17-jdk
 
 RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
     cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
@@ -97,22 +97,13 @@ RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-f
 
 # Install JDK & Jazzer
 
-ENV JAVA_HOME=/usr/lib/jvm/java-15-openjdk-amd64
-ENV JVM_LD_LIBRARY_PATH=$JAVA_HOME/lib/server
-ENV PATH=$PATH:$JAVA_HOME/bin
+ENV PATH=$PATH:/usr/lib/jvm/java-17-openjdk-amd64/bin
 ENV JAZZER_API_PATH="/usr/local/lib/jazzer_standalone_deploy.jar"
-ENV BAZELISK_VERSION 1.9.0
 
-RUN curl --silent -L -O \
-    https://download.java.net/java/GA/jdk15.0.2/0d1cfde4252546c6931946de8db48ee2/7/GPL/openjdk-15.0.2_linux-x64_bin.tar.gz && \
-    mkdir -p $JAVA_HOME
-RUN tar -xz --strip-components=1 -f openjdk-15.0.2_linux-x64_bin.tar.gz --directory $JAVA_HOME
-RUN rm -f openjdk-15.0.2_linux-x64_bin.tar.gz
-RUN rm -rf $JAVA_HOME/jmods $JAVA_HOME/lib/src.zip
-RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v$BAZELISK_VERSION/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
-    bazel build --java_runtime_version=local_jdk_15 -c opt \
+    bazel build --java_runtime_version=local_jdk_17 -c opt \
     --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
     cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar $JAZZER_API_PATH && \
     cp -L ./bazel-out/k8-opt/bin/launcher/jazzer /usr/local/bin/ && cd .. && rm -rf jazzer
