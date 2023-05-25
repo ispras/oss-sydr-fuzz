@@ -29,7 +29,7 @@ RUN mkdir corpus && mv nDPI/tests/cfgs/default/pcap/* corpus
 
 WORKDIR nDPI
 
-RUN git checkout bb370f5ef0817d46791ba3091297c329e3d01211
+RUN git checkout 334b43579e2b1aa4bffa11c4014c4e1fd0b60ba5
 
 COPY build.sh load_sydr_process_packet.c load_sydr_ndpi_reader.c load_sydr_quic_get_crypto_data.c ./
 
