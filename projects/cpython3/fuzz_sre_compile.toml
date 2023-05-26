@@ -15,12 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
-path = "/sydr/fuzz_sre_compile @@"
+target = "/sydr/fuzz_sre_compile @@"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_sre_compile"
-args = "--dict=/cpython3/Modules/_xxtestfuzz/dictionaries/fuzz_sre_compile.dict /cpython3/Modules/__xtestfuzz/fuzz_sre_compile_corpus/"
+args = "-rss_limit_mb=8192 -dict=/fuzz_sre_compile.dict /fuzz_sre_compile_corpus"
 
 [cov]
-path = "/cov/fuzz_sre_compile @@"
+target = "/cov/fuzz_sre_compile @@"

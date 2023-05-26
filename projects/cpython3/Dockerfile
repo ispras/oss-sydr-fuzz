@@ -21,16 +21,19 @@ RUN apt-get update \
     libreadline-dev libssl-dev libgdbm-dev \
     libsqlite3-dev tk-dev libbz2-dev 
 
-RUN git clone https://github.com/python/cpython /cpython3 
+RUN git clone https://github.com/python/cpython /cpython3 && \
+    cd /cpython3 && git checkout 46857d0b2a2ac6aeb6dcce2bf2c92ddf4abe7496
 
 WORKDIR /cpython3
 
-COPY main.c build.sh /cpython3/
-
+COPY build.sh .
+COPY *.c /
 COPY fuzzer.c fuzz_tests.txt /cpython3/Modules/_xxtestfuzz/
 
-RUN OUT="/fuzzer" /cpython3/build.sh \
-    && OUT="/cov" /cpython3/build.sh \
-    && OUT="/sydr" /cpython3/build.sh \  
-    && git clone https://github.com/dvyukov/go-fuzz-corpus /corpus
+RUN OUT="/fuzzer" /cpython3/build.sh
+RUN OUT="/sydr" /cpython3/build.sh
+RUN OUT="/cov" /cpython3/build.sh
 
+RUN git clone https://github.com/dvyukov/go-fuzz-corpus /corpus
+RUN cp /cpython3/Modules/_xxtestfuzz/dictionaries/*.dict /
+RUN cp -r /cpython3/Modules/_xxtestfuzz/*_corpus /

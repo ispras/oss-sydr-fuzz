@@ -15,12 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
-path = "/sydr/fuzz_csv_reader @@"
+target = "/sydr/fuzz_csv_reader @@"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_csv_reader"
-args = "/corpus/csv/corpus"
+args = "-rss_limit_mb=8192 /fuzz_csv_reader_corpus /corpus/csv/corpus"
 
 [cov]
-path = "/cov/fuzz_csv_reader @@"
+target = "/cov/fuzz_csv_reader @@"

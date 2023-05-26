@@ -15,12 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
-path = "/sydr/fuzz_struct_unpack @@"
+target = "/sydr/fuzz_struct_unpack @@"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_struct_unpack"
-args = "/cpython3/Modules/__xtestfuzz/fuzz_struct_unpack_corpus/"
+args = "-rss_limit_mb=8192 /fuzz_struct_unpack_corpus"
 
 [cov]
-path = "/cov/fuzz_struct_unpack @@"
+target = "/cov/fuzz_struct_unpack @@"

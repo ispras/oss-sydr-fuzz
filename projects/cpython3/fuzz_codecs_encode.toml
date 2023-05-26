@@ -15,12 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
-path = "/sydr/fuzz_codecs_encode @@"
+target = "/sydr/fuzz_codecs_encode @@"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_codecs_encode"
-args = "/corpus/parser/corpus"
+args = "-rss_limit_mb=8192 /corpus/parser/corpus"
 
 [cov]
-path = "/cov/fuzz_codecs_encode @@"
+target = "/cov/fuzz_codecs_encode @@"

@@ -15,12 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
-path = "/sydr/fuzz_xml_parse @@"
+target = "/sydr/fuzz_xml_parse @@"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_xml_parse"
-args = "/corpus/xml/corpus"
+args = "-rss_limit_mb=8192 /corpus/xml/corpus"
 
 [cov]
-path = "/cov/fuzz_xml_parse @@"
+target = "/cov/fuzz_xml_parse @@"

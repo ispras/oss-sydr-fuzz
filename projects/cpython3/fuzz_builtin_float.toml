@@ -15,12 +15,11 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
-path = "/sydr/fuzz_builtin_float @@"
+target = "/sydr/fuzz_builtin_float @@"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_builtin_float"
-args = "/corpus/parser/corpus"
+args = "-rss_limit_mb=8192 /corpus/parser/corpus"
 
 [cov]
-path = "/cov/fuzz_builtin_float @@"
+target = "/cov/fuzz_builtin_float @@"
