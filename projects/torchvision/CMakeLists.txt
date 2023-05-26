@@ -122,10 +122,20 @@ include_directories(torchvision/csrc/io/image)
 include_directories(torchvision/csrc/io/image/cpu)
 include_directories(${TORCH_INCLUDE_DIRS})
 
-add_executable(decode_jpeg ${CMAKE_SOURCE_DIR}/decode_jpeg.cc) 
-target_link_libraries(decode_jpeg PRIVATE ${PROJECT_NAME})
-add_dependencies(decode_jpeg ${PROJECT_NAME})
-target_link_libraries(decode_jpeg PRIVATE ${ENGINE})
+set(FUZZ_TARGETS
+  decode_jpeg
+  decode_png
+  encode_jpeg
+  encode_png
+)
+
+foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
+  add_executable(${FUZZ_TARGET}_${SUFFIX} ${CMAKE_SOURCE_DIR}/${FUZZ_TARGET}.cc) 
+  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PRIVATE ${PROJECT_NAME})
+  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PRIVATE ${ZLIB_LIBRARY})
+  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PRIVATE ${ENGINE})
+  add_dependencies(${FUZZ_TARGET}_${SUFFIX} ${PROJECT_NAME})
+endforeach()
 
 set(TORCHVISION_CMAKECONFIG_INSTALL_DIR "share/cmake/TorchVision" CACHE STRING "install path for TorchVisionConfig.cmake")
 
