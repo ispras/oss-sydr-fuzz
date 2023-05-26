@@ -21,7 +21,8 @@ target = "/v8_compile_sydr @@"
 [aflplusplus]
 target = "/v8_compile_afl"
 args = "-t 60000 -i /corpus -x /js.dict"
-detect_leaks = false
+[aflplusplus.env]
+ASAN_OPTIONS = "detect_leaks=0"
 
 [cov]
 target = "/v8_compile_cov @@"

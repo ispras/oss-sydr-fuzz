@@ -26,4 +26,4 @@ path = "/fuzzer/scatter_nd_fuzz"
 args = "-rss_limit_mb=8192 /corpus/scatter_nd"
 
 [cov]
-target = "/coverage/scatter_nd_fuzz @@"
+target = "/cov/scatter_nd_fuzz @@"

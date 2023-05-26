@@ -1,0 +1,73 @@
+[package]
+name = "image-fuzz-afl"
+version = "0.0.1"
+authors = ["HeroicKatora"]
+publish = false
+
+[dependencies.image]
+path = ".."
+
+[dependencies.afl]
+version = "0.12.8"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "fuzz_pnm"
+path = "fuzzers/fuzz_pnm.rs"
+
+[[bin]]
+name = "reproduce_pnm"
+path = "reproducers/reproduce_pnm.rs"
+
+[[bin]]
+name = "fuzz_webp"
+path = "fuzzers/fuzz_webp.rs"
+
+[[bin]]
+name = "reproduce_webp"
+path = "reproducers/reproduce_webp.rs"
+
+[[bin]]
+name = "fuzz_bmp"
+path = "fuzzers/fuzz_bmp.rs"
+
+
+[[bin]]
+name = "fuzz_exr"
+path = "fuzzers/fuzz_exr.rs"
+
+[[bin]]
+name = "fuzz_gif"
+path = "fuzzers/fuzz_gif.rs"
+
+[[bin]]
+name = "fuzz_guess"
+path = "fuzzers/fuzz_guess.rs"
+
+[[bin]]
+name = "fuzz_hdr"
+path = "fuzzers/fuzz_hdr.rs"
+
+[[bin]]
+name = "fuzz_ico"
+path = "fuzzers/fuzz_ico.rs"
+
+
+[[bin]]
+name = "fuzz_jpeg"
+path = "fuzzers/fuzz_jpeg.rs"
+
+[[bin]]
+name = "fuzz_png"
+path = "fuzzers/fuzz_png.rs"
+
+[[bin]]
+name = "fuzz_tga"
+path = "fuzzers/fuzz_tga.rs"
+
+[[bin]]
+name = "fuzz_tiff"
+path = "fuzzers/fuzz_tiff.rs"

@@ -26,10 +26,14 @@ RUN git clone https://github.com/image-rs/image
 WORKDIR /image
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout b35437696f4ccb39cd5250552f6cfe1734a27bcd
+RUN git checkout 099a4fe08d77f3fe526e0dfae616dcb80911f332
 
 # Copy build script.
 COPY build_cov.sh build_fuzz.sh build_sydr.sh /
+
+# Copy AFL++ targets.
+COPY fuzz-afl/Cargo.toml fuzz-afl/
+COPY fuzz-afl/fuzzers/* fuzz-afl/fuzzers/
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
@@ -49,16 +53,22 @@ RUN /build_sydr.sh
 RUN cargo clean && /build_cov.sh
 
 # Prepare corporas.
-RUN mkdir /corpus_bmp && find /image -name '*.bmp' -exec cp {} /corpus_bmp \; && \
-    mkdir /corpus_gif && find /image -name '*.gif' -exec cp {} /corpus_gif \; && \
+WORKDIR /
+RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git
+
+# Remove empty files from corpus.
+RUN find go-fuzz-corpus -type f -size 0c | xargs -I {} rm {}
+
+RUN cp -r /go-fuzz-corpus/bmp/corpus /corpus_bmp && \
+    cp -r /go-fuzz-corpus/gif/corpus /corpus_gif && \
     mkdir /corpus_hdr && find /image -name '*.hdr' -exec cp {} /corpus_hdr \; && \
     mkdir /corpus_ico && find /image -name '*.ico' -exec cp {} /corpus_ico \; && \
-    mkdir /corpus_jpg && find /image -name '*.jpg' -exec cp {} /corpus_jpg \; && \
-    mkdir /corpus_png && find /image -name '*.png' -exec cp {} /corpus_png \; && \
-    mkdir /corpus_pnm && find /image -name '*.pnm' -exec cp {} /corpus_pnm \; && \
+    cp -r /go-fuzz-corpus/jpeg/corpus /corpus_jpeg && \
+    cp -r /go-fuzz-corpus/png/corpus /corpus_png && \
+    cp -r /image/fuzz-afl/in/pnm /corpus_pnm && \
     mkdir /corpus_tga && find /image -name '*.tga' -exec cp {} /corpus_tga \; && \
-    mkdir /corpus_tiff && find /image -name '*.tiff' -exec cp {} /corpus_tiff \; && \
-    mkdir /corpus_webp && find /image -name '*.webp' -exec cp {} /corpus_webp \; && \
+    cp -r /go-fuzz-corpus/tiff/corpus /corpus_tiff && \
+    cp -r /image/fuzz-afl/in/webp /corpus_webp && \
     cp -r /image/tests/images/exr /corpus_exr
 
 ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH

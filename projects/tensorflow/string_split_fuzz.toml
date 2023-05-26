@@ -26,4 +26,4 @@ path = "/fuzzer/string_split_fuzz"
 args = "-rss_limit_mb=8192 /corpus/string_split"
 
 [cov]
-target = "/coverage/string_split_fuzz @@"
+target = "/cov/string_split_fuzz @@"

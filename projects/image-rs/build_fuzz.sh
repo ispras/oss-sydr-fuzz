@@ -19,3 +19,7 @@ RUSTFLAGS="-C panic=abort" cargo fuzz build -O
 cargo fuzz list | while read i; do
     cp fuzz/target/x86_64-unknown-linux-gnu/release/$i /
 done
+cd ./fuzz-afl
+
+RUSTFLAGS="-C debuginfo=2 -C panic=abort" cargo afl build --release
+find ./target/release/ -maxdepth 1 -name 'fuzz_*' -type f -executable -exec cp {} / \;

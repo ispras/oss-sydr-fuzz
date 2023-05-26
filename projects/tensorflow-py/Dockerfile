@@ -42,7 +42,8 @@ RUN curl -Lo /usr/bin/bazel \
         && \
     chmod +x /usr/bin/bazel
 
-RUN git clone --depth 1 https://github.com/tensorflow/tensorflow tensorflow
+RUN git clone https://github.com/tensorflow/tensorflow tensorflow && \
+    cd tensorflow && git checkout 6621be46794781c2ecdb0fa1db52b5544ccdfbcb
 
 WORKDIR /tensorflow
 
@@ -50,6 +51,25 @@ COPY build.sh /
 
 RUN /build.sh
 
-RUN for file in `ls /tensorflow/tensorflow/tensorflow_src/security/fuzzing/*_fuzz.py`; do (echo "#!/usr/bin/env python3"; cat "$file") | sponge "$file"; done
+# Create hard link to the asan_with_fuzzer.so to run targets, because tensorflow is
+# built with shared libasan.
+RUN mkdir /ld_path && ln $(find /usr/local/lib/ -name 'asan_with_fuzzer.so') /ld_path/libclang_rt.asan-x86_64.so
 
-RUN chmod +x /tensorflow/tensorflow/tensorflow_src/security/fuzzing/*_fuzz.py
+ENV LD_LIBRARY_PATH /ld_path
+
+RUN for file in `ls /tensorflow/tensorflow/security/fuzzing/*_fuzz.py`; do (echo "#!/usr/bin/env python3"; cat "$file") | sponge "$file"; done
+
+RUN chmod +x /tensorflow/tensorflow/security/fuzzing/*_fuzz.py
+
+WORKDIR /
+
+COPY *.py *.zip /
+
+# Prepare initial corporas.
+RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/corpus /
+
+RUN cd /corpus && \
+    unzip /encode_wav.zip && unzip /load_model.zip
+
+# Prepare dictionaries
+RUN cp -r /tensorflow/tensorflow/core/kernels/fuzzing/dictionaries /dicts 

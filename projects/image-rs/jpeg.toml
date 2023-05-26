@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzzer_script_jpeg"
-args = "-rss_limit_mb=8192 -jobs=4 /corpus_jpg"
+args = "-rss_limit_mb=8192 -jobs=4 /corpus_jpeg"
 
 [cov]
 target = "/cov_script_jpeg @@"

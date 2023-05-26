@@ -11,7 +11,7 @@ static ndpi_serializer csv_serializer = {};
 int main(int argc, char **argv) {
         uint8_t protocol_was_guessed;
 
-        fuzz_init_detection_module(&ndpi_info_mod, 0);
+        fuzz_init_detection_module(&ndpi_info_mod);
         ndpi_init_serializer(&json_serializer, ndpi_serialization_format_json);
         ndpi_init_serializer(&csv_serializer, ndpi_serialization_format_csv);
 

@@ -8,3 +8,4 @@ crash-*
 oom-*
 slow-*
 *.swp
+*-out/

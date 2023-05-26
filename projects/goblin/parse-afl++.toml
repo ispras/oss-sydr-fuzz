@@ -18,8 +18,8 @@
 target = "/sydr_parse @@"
 
 [aflplusplus]
-target = "/afl_parse"
-args = "-i /corpus"
+target = "/goblin/fuzz-afl/target/release/afl_parse"
+args = "-t 2000+ -i /corpus"
 
 [cov]
 target = "/cov_parse @@"

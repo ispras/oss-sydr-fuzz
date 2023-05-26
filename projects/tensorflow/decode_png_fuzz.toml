@@ -26,4 +26,4 @@ path = "/fuzzer/decode_png_fuzz"
 args = "-dict=/dictionaries/decode_png.dict -rss_limit_mb=8192 /corpus/decode_png/"
 
 [cov]
-target = "/coverage/decode_png_fuzz @@"
+target = "/cov/decode_png_fuzz @@"
