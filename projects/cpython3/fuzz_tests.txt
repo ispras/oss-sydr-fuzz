@@ -1,0 +1,11 @@
+fuzz_binascii_a2b
+fuzz_builtin_float
+fuzz_builtin_int
+fuzz_builtin_unicode
+fuzz_codecs_encode
+fuzz_csv_reader
+fuzz_json_loads
+fuzz_sre_compile
+fuzz_sre_match
+fuzz_struct_unpack
+fuzz_xml_parse
