@@ -15,11 +15,13 @@
 ################################################################################
 
 [sydr]
-target = "/sydr/fuzz_json_loads @@"
+target = "/sydr/fuzz_csv_reader @@"
 
-[libfuzzer]
-path = "/fuzzer/fuzz_json_loads"
-args = "-rss_limit_mb=8192 -dict=/fuzz_json_loads.dict /fuzz_json_loads_corpus /corpus/json/corpus"
+[aflplusplus]
+target = "/afl/fuzz_csv_reader @@"
+args = "-i /corpus/csv/corpus"
+[aflplusplus.env]
+AFL_IGNORE_PROBLEMS="1"
 
 [cov]
-target = "/cov/fuzz_json_loads @@"
+target = "/cov/fuzz_csv_reader @@"

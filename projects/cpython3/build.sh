@@ -26,7 +26,7 @@ CXX="clang++"
 # Remove -pthread from CFLAGS, this trips up ./configure
 # which thinks pthreads are available without any CLI flags
 CFLAGS=${CFLAGS//"-pthread"/}
-CFLAGS="${CFLAGS} -UNDEBUG -O1 -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+CFLAGS="${CFLAGS} -UNDEBUG -g -O1 -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
 
 # Ensure assert statements are enabled. It may help identify problems
 # earlier if those fire.
@@ -34,6 +34,12 @@ if [[ $OUT == "/fuzzer" ]]
 then
     FUZZFLAGS="integer,undefined,bounds,null,float-divide-by-zero"
     CFLAGS="${CFLAGS} -fsanitize=fuzzer-no-link,${FUZZFLAGS}"
+elif [[ $OUT == "/afl" ]]
+then
+    FUZZFLAGS="integer,undefined,bounds,null,float-divide-by-zero"
+    CFLAGS="${CFLAGS} -fsanitize=${FUZZFLAGS}"
+    CC="afl-clang-fast"
+    CXX="afl-clang-fast++"
 elif [[ $OUT == "/cov" ]]
 then
     CFLAGS="${CFLAGS} -fprofile-instr-generate -fcoverage-mapping"
@@ -47,11 +53,12 @@ echo "BUILDED"
 
 FUZZ_DIR=Modules/_xxtestfuzz
 
-if [[ $OUT != "/fuzzer" ]]
+if [[ $OUT == "/cov" ]]
 then
     $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o main.o
     MAIN_OBJ="/cpython3/main.o"
-else
+elif [[ $OUT == "/fuzzer" || $OUT == "/afl" ]]
+then
     CFLAGS="-fsanitize=fuzzer,$FUZZFLAGS"
 fi
 

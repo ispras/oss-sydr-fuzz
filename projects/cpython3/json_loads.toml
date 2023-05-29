@@ -15,11 +15,11 @@
 ################################################################################
 
 [sydr]
-target = "/sydr/fuzz_csv_reader @@"
+target = "/sydr/fuzz_json_loads @@"
 
 [libfuzzer]
-path = "/fuzzer/fuzz_csv_reader"
-args = "-rss_limit_mb=8192 /fuzz_csv_reader_corpus /corpus/csv/corpus"
+path = "/fuzzer/fuzz_json_loads"
+args = "-rss_limit_mb=8192 -dict=/fuzz_json_loads.dict /corpus/json/corpus"
 
 [cov]
-target = "/cov/fuzz_csv_reader @@"
+target = "/cov/fuzz_json_loads @@"

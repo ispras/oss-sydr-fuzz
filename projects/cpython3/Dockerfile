@@ -30,10 +30,20 @@ COPY build.sh .
 COPY *.c /
 COPY fuzzer.c fuzz_tests.txt /cpython3/Modules/_xxtestfuzz/
 
+# Some AFL-targets are failed to build
+ENV AFL_IGNORE_PROBLEMS=1
+
+# Build targets
 RUN OUT="/fuzzer" /cpython3/build.sh
+RUN OUT="/afl" /cpython3/build.sh
 RUN OUT="/sydr" /cpython3/build.sh
 RUN OUT="/cov" /cpython3/build.sh
 
+# Prepare fuzzing corpuses
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus /corpus
 RUN cp /cpython3/Modules/_xxtestfuzz/dictionaries/*.dict /
 RUN cp -r /cpython3/Modules/_xxtestfuzz/*_corpus /
+RUN mv /fuzz_csv_reader_corpus/* /corpus/csv/corpus/ && rm -rf /fuzz_csv_reader_corpus
+RUN mv /fuzz_json_loads_corpus/* /corpus/json/corpus/ && rm -rf /fuzz_json_loads_corpus
+
+ENV AFL_MAP_SIZE=10000000
