@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 #
 # Copyright 2023 ISP RAS
 #
@@ -16,6 +16,8 @@
 #
 ################################################################################
 
+for CONFIG in $CONFIGS; do
+
 if [[ $CONFIG = "libfuzzer" ]]
 then
   export SUFFIX="fuzz"
@@ -24,6 +26,7 @@ then
   export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
   export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
+  export BUILD_SAVERS="OFF"
 fi
 
 if [[ $CONFIG = "afl" ]]
@@ -33,8 +36,8 @@ then
   export CXX=afl-clang-fast++
   export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
   export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
-  export ENGINE="/afl.o"
-  $CXX $CXXFLAGS -c -o $ENGINE /afl.cc
+  export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
+  export BUILD_SAVERS="OFF"
 fi
 
 if [[ $CONFIG = "sydr" ]]
@@ -45,6 +48,7 @@ then
   export CFLAGS="-g"
   export CXXFLAGS="-g"
   export ENGINE="/StandaloneFuzzTargetMain.o"
+  export BUILD_SAVERS="ON"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
 fi
 
@@ -53,9 +57,10 @@ then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g"
-  export CXXFLAGS="-g"
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
   export ENGINE="/StandaloneFuzzTargetMain.o"
+  export BUILD_SAVERS="OFF"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
 fi
 
@@ -102,7 +107,7 @@ Torch_DIR=/pytorch_$SUFFIX/ \
       cmake \
       -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
       -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-      -DENGINE=$ENGINE -DSUFFIX=$SUFFIX \
+      -DENGINE=$ENGINE -DSUFFIX=$SUFFIX -DBUILD_SAVERS=${BUILD_SAVERS:-} \
       -DJPEG_LIBRARY=/libjpeg-turbo-2.1.3-$SUFFIX/build/libjpeg.a \
       -DPNG_LIBRARY=/libpng-1.6.37-$SUFFIX/build/libpng.a \
       -DZLIB_LIBRARY=/zlib_$SUFFIX/libz.a \
@@ -113,4 +118,35 @@ Torch_DIR=/pytorch_$SUFFIX/ \
       -S . -B build/
 cd build/
 cmake --build . -j$(nproc)
+cmake --install .
 
+done
+
+# Generate tensors from corpus
+
+cd /
+
+for filename in /jpeg_corpus/*; do 
+    if ./save_jpeg "$filename"; then
+        mv /jpeg_corpus/*.tensor /jpeg_tensor/
+    fi
+done
+
+for filename in /png_corpus/*; do 
+    if ./save_png "$filename"; then
+        mv /png_corpus/*.tensor /png_tensor/
+    fi
+done
+
+# Write \x00 to start of each image file
+for filename in /png_corpus/*.png; do
+    [ -e "$filename" ] || continue
+    printf "\x00" | cat - $filename > ${filename}_input
+    rm $filename
+done
+
+for filename in /jpeg_corpus/*.jp*g; do
+    [ -e "$filename" ] || continue
+    printf "\x00" | cat - $filename > ${filename}_input
+    rm $filename
+done

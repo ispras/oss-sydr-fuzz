@@ -16,6 +16,8 @@
 #
 ################################################################################
 
+for CONFIG in $CONFIGS; do
+
 if [[ $CONFIG = "libfuzzer" ]]
 then
   export SUFFIX="fuzz" 
@@ -30,8 +32,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=fuzzer,undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=fuzzer,undefined,address,bounds,integer,null"
+  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
+  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
 fi
 
 if [[ $CONFIG = "sydr" ]]
@@ -57,8 +59,8 @@ cd /pytorch_$SUFFIX
 MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
         USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=1 BUILD_TEST=0 \
         BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 \
-        CXXFLAGS="$CXXFLAGS" \
-        CFLAGS="$CFLAGS" \
+        CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" \
+	CMAKE_THREAD_LIBS_INIT="$(find /usr/lib -name 'libpthread.so*' | head -1)" \
         python3 setup.py build
 
 # Patch PyTorch headers to build torchvision with clang
@@ -78,3 +80,5 @@ echo "#endif" >> /pytorch_$SUFFIX/torch/include/torch/csrc/api/include/torch/typ
 sed -i '1 i\#define TYPES' /pytorch_$SUFFIX/torch/csrc/api/include/torch/types.h
 sed -i '1 i\#ifndef TYPES' /pytorch_$SUFFIX/torch/csrc/api/include/torch/types.h
 echo "#endif" >> /pytorch_$SUFFIX/torch/csrc/api/include/torch/types.h
+
+done

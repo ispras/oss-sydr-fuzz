@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/encode_jpeg_sydr @@"
 
 [aflplusplus]
-target = "/encode_jpeg_fuzz_afl"
+target = "/encode_jpeg_afl @@"
 args = "-i /jpeg_tensor/ -t 5000+"
 jobs = 3
 

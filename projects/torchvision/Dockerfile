@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,16 +29,12 @@ RUN apt-get update && apt-get upgrade -y && \
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
 RUN cd /pytorch_fuzz && \
-    git checkout 664058fa83f1d8eede5d66418abff6e20bd76ca8 && \
+    git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
     git submodule update --init --recursive --jobs 0
 
 RUN git clone https://github.com/pytorch/vision.git vision_fuzz/
 RUN cd /vision_fuzz && \
-    git checkout c3ec69482a5b9359306c58f0f5c587e1b3bb11cb
-
-## Patch torchvision CMakeLists to build static
-#RUN sed -i 's/add_library(${PROJECT_NAME} SHARED ${ALL_SOURCES})/add_library(${PROJECT_NAME} STATIC ${ALL_SOURCES})/' /vision_fuzz/CMakeLists.txt && \
-#    sed -i 's/target_link_libraries(${PROJECT_NAME} PRIVATE ${TORCH_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES})/add_definitions(-DJPEG_FOUND -DPNG_FOUND)/' /vision_fuzz/CMakeLists.txt
+    git checkout 9d0a93eee90bf7c401b74ebf9c8be80346254f15
 
 # Install OpenCV
 RUN cd / && mkdir cv && cd cv/ && \
@@ -49,17 +45,29 @@ RUN cd / && mkdir cv && cd cv/ && \
     make install && cd /
 
 # Copy torch for different instrumentations.
-RUN cp -r /pytorch_fuzz/ /pytroch_afl/
+RUN cp -r /pytorch_fuzz/ /pytorch_afl/
 RUN cp -r /pytorch_fuzz/ /pytorch_sydr/
 RUN cp -r /pytorch_fuzz/ /pytorch_cov/
 
 # Build torch libraries.
 COPY build_torch.sh /
-RUN CONFIG="libfuzzer" /build_torch.sh
+RUN CONFIGS="libfuzzer afl sydr coverage" /build_torch.sh
 
-# Copy build script and targets.
-COPY CMakeLists.txt *.cc /vision_fuzz/
-COPY build_vision.sh  /
+# Copy corpus and tensor
+RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
+
+# Remove empty files from corpus.
+RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
+
+RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && \
+    mkdir /jpeg_tensor/ && mkdir /png_tensor/
+RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && \
+    cp -rn /fuzzing-corpus/png/*/* /png_corpus/
+
+# Copy build script, targets and patch vision build.
+COPY *.cc /vision_fuzz/
+COPY build_vision.sh CMakeLists.patch /
+RUN cd /vision_fuzz && git apply /CMakeLists.patch
 
 # Copy vision for different instrumentations.
 RUN cp -r /vision_fuzz/ /vision_afl/
@@ -67,15 +75,4 @@ RUN cp -r /vision_fuzz/ /vision_sydr/
 RUN cp -r /vision_fuzz/ /vision_cov/
 
 # Build torchvision
-RUN CONFIG="libfuzzer" /build_vision.sh
-
-## Copy corpus and tensor
-#RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
-#
-## Remove empty files from corpus.
-#RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
-#
-#RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && mkdir /jpeg_tensor/ && mkdir /png_tensor/
-#RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && cp -rn /fuzzing-corpus/png/*/* /png_corpus/
-#
-#RUN bash build_corpus.sh
+RUN CONFIGS="libfuzzer afl sydr coverage" /build_vision.sh
