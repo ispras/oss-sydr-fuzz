@@ -42,7 +42,7 @@ FUZZER_JARS=gson-2.8.6.jar
 
 # Build fuzzers in $OUT.
 ALL_JARS="$PROJECT_JARS $FUZZER_JARS"
-BUILD_CLASSPATH=$(echo $ALL_JARS | xargs printf -- "$OUT/%s:"):$JAZZER_API_PATH
+BUILD_CLASSPATH=$(echo $ALL_JARS | xargs printf -- "$OUT/%s:"):/usr/local/lib/jazzer_standalone_deploy.jar
 
 # All jars and class files lie in the same directory as the fuzzer at runtime.
 RUNTIME_CLASSPATH=$(echo $ALL_JARS | xargs printf -- "\$this_dir/%s:"):.:\$this_dir
