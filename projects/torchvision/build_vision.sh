@@ -24,7 +24,7 @@ then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
   export BUILD_SAVERS="OFF"
 fi
@@ -35,7 +35,7 @@ then
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
   export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
+  export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null -std=c++17"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
 fi
@@ -46,7 +46,7 @@ then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g"
-  export CXXFLAGS="-g"
+  export CXXFLAGS="-g -std=c++17"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   export BUILD_SAVERS="ON"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -58,7 +58,7 @@ then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   export BUILD_SAVERS="OFF"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
