@@ -1,0 +1,89 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 85b878307c..1e0840a9c1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -6,6 +6,7 @@ file(STRINGS version.txt TORCHVISION_VERSION)
+ option(WITH_CUDA "Enable CUDA support" OFF)
+ option(WITH_PNG "Enable features requiring LibPNG." ON)
+ option(WITH_JPEG "Enable features requiring LibJPEG." ON)
++option(WITH_ZLIB "Enable features requiring libZLIB." ON)
+ option(USE_PYTHON "Link to Python when building" OFF)
+ 
+ if(WITH_CUDA)
+@@ -32,6 +33,11 @@ if (WITH_JPEG)
+     find_package(JPEG REQUIRED)
+ endif()
+ 
++if (WITH_ZLIB)
++    add_definitions(-DZLIB_FOUND)
++    find_package(ZLIB REQUIRED)
++endif()
++
+ if (USE_PYTHON)
+   add_definitions(-DUSE_PYTHON)
+   find_package(Python3 REQUIRED COMPONENTS Development)
+@@ -89,15 +95,19 @@ FOREACH(DIR ${ALLOW_LISTED})
+     file(GLOB ALL_SOURCES ${ALL_SOURCES} ${DIR}/*.*)
+ ENDFOREACH()
+ 
+-add_library(${PROJECT_NAME} SHARED ${ALL_SOURCES})
+-target_link_libraries(${PROJECT_NAME} PRIVATE ${TORCH_LIBRARIES})
++add_library(${PROJECT_NAME} STATIC ${ALL_SOURCES})
++target_link_libraries(${PROJECT_NAME} PUBLIC ${TORCH_LIBRARIES})
+ 
+ if (WITH_PNG)
+-    target_link_libraries(${PROJECT_NAME} PRIVATE ${PNG_LIBRARY})
++  target_link_libraries(${PROJECT_NAME} PUBLIC ${PNG_LIBRARY})
+ endif()
+ 
+ if (WITH_JPEG)
+-    target_link_libraries(${PROJECT_NAME} PRIVATE ${JPEG_LIBRARIES})
++  target_link_libraries(${PROJECT_NAME} PUBLIC ${JPEG_LIBRARIES})
++endif()
++
++if (WITH_ZLIB)
++  target_link_libraries(${PROJECT_NAME} PUBLIC ${ZLIB_LIBRARIES})
+ endif()
+ 
+ if (USE_PYTHON)
+@@ -118,6 +128,40 @@ if (WITH_JPEG)
+     include_directories(${JPEG_INCLUDE_DIRS})
+ endif()
+ 
++include_directories(torchvision/csrc/io/image)
++include_directories(torchvision/csrc/io/image/cpu)
++include_directories(${TORCH_INCLUDE_DIRS})
++
++set(FUZZ_TARGETS
++  decode_jpeg
++  decode_png
++  encode_jpeg
++  encode_png
++)
++
++foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
++  add_executable(${FUZZ_TARGET}_${SUFFIX} ${CMAKE_SOURCE_DIR}/${FUZZ_TARGET}.cc)
++  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PUBLIC ${PROJECT_NAME} ${CMAKE_DL_LIBS} pthread rt ${ENGINE})
++  add_dependencies(${FUZZ_TARGET}_${SUFFIX} ${PROJECT_NAME})
++  set_target_properties(${FUZZ_TARGET}_${SUFFIX} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
++  install(TARGETS ${FUZZ_TARGET}_${SUFFIX} DESTINATION /)
++endforeach()
++
++if (BUILD_SAVERS)
++  set(SAVERS
++    save_jpeg
++    save_png
++  )
++
++  foreach(SAVER IN LISTS SAVERS)
++    add_executable(${SAVER} ${CMAKE_SOURCE_DIR}/${SAVER}.cc)
++    target_link_libraries(${SAVER} PRIVATE ${PROJECT_NAME} ${CMAKE_DL_LIBS} pthread rt)
++    add_dependencies(${SAVER} ${PROJECT_NAME})
++    set_target_properties(${SAVER} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
++    install(TARGETS ${SAVER} DESTINATION /)
++  endforeach()
++endif()
++
+ set(TORCHVISION_CMAKECONFIG_INSTALL_DIR "share/cmake/TorchVision" CACHE STRING "install path for TorchVisionConfig.cmake")
+ 
+ configure_package_config_file(cmake/TorchVisionConfig.cmake.in
