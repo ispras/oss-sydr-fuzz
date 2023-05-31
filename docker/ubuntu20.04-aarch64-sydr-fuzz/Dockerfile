@@ -9,7 +9,7 @@ RUN apt-get update && \
         gcc-multilib-arm-linux-gnueabi g++-multilib-arm-linux-gnueabi \
         libglib2.0-dev libtool python-dev python3-pip lsb-release pkg-config \
         vim curl lcov gnuplot wget unzip m4 software-properties-common \
-        zlib1g-dev git texinfo bison zip htop psutils openjdk-17-jdk
+        zlib1g-dev git texinfo bison zip htop psutils
 
 # Add gcc repository
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -93,15 +93,5 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 ENV PATH=$PATH:/fuzz/sydr
-
-# Install Jazzer
-RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-arm64 -o /usr/local/bin/bazel && \
-    chmod +x /usr/local/bin/bazel
-RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
-    bazel build --java_runtime_version=local_jdk_17 -c opt \
-    --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
-    cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
-        /usr/local/lib/jazzer_standalone_deploy.jar && \
-    cp -L ./bazel-out/k8-opt/bin/launcher/jazzer /usr/local/bin/ && cd .. && rm -rf jazzer
 
 WORKDIR /
