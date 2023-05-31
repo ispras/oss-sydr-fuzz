@@ -50,15 +50,15 @@ then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g"
-  export CXXFLAGS="-g"
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 fi
 
 cd /pytorch_$SUFFIX
 
 MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
         USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=1 BUILD_TEST=0 \
-        BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 \
+        BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_ITT=0 \
         CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" \
 	CMAKE_THREAD_LIBS_INIT="$(find /usr/lib -name 'libpthread.so*' | head -1)" \
         python3 setup.py build
