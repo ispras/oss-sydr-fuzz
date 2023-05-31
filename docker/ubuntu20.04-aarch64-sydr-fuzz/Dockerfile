@@ -94,4 +94,14 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
 
 ENV PATH=$PATH:/fuzz/sydr
 
+# Install Jazzer
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
+    chmod +x /usr/local/bin/bazel
+RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
+    bazel build --java_runtime_version=local_jdk_17 -c opt \
+    --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
+    cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
+        /usr/local/lib/jazzer_standalone_deploy.jar && \
+    cp -L ./bazel-out/k8-opt/bin/launcher/jazzer /usr/local/bin/ && cd .. && rm -rf jazzer
+
 WORKDIR /

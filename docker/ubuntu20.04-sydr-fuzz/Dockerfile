@@ -96,7 +96,6 @@ ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
 # Install Jazzer
-
 RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \

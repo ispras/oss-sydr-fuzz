@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-jazzer
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt-get -y install rsync
 

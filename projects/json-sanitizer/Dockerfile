@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-jazzer
+FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN mkdir /out
 RUN git clone --depth 1 https://github.com/google/fuzzing
