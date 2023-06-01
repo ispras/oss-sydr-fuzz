@@ -19,7 +19,7 @@ target = "/sydr/fuzz_csv_reader @@"
 
 [aflplusplus]
 target = "/afl/fuzz_csv_reader @@"
-args = "-i /corpus/csv/corpus"
+args = "-t 60000 -i /corpus/csv/corpus"
 [aflplusplus.env]
 AFL_IGNORE_PROBLEMS="1"
 

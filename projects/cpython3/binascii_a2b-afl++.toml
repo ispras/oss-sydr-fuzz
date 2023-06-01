@@ -19,7 +19,7 @@ target = "/sydr/fuzz_binascii_a2b @@"
 
 [aflplusplus]
 target = "/afl/fuzz_binascii_a2b @@"
-args = "-i /corpus/parser/corpus"
+args = "-t 60000 -i /corpus/parser/corpus"
 
 [cov]
 target = "/cov/fuzz_binascii_a2b @@"

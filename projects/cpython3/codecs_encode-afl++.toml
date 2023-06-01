@@ -19,7 +19,7 @@ target = "/sydr/fuzz_codecs_encode @@"
 
 [aflplusplus]
 target = "/afl/fuzz_codecs_encode @@"
-args = "-i /corpus/parser/corpus"
+args = "-t 60000 -i /corpus/parser/corpus"
 
 [cov]
 target = "/cov/fuzz_codecs_encode @@"

@@ -19,7 +19,7 @@ target = "/sydr/fuzz_struct_unpack @@"
 
 [aflplusplus]
 target = "/afl/fuzz_struct_unpack @@"
-args = "-i /fuzz_struct_unpack_corpus"
+args = "-t 60000 -i /fuzz_struct_unpack_corpus"
 
 [cov]
 target = "/cov/fuzz_struct_unpack @@"

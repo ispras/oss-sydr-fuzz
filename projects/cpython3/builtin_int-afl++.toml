@@ -19,7 +19,7 @@ target = "/sydr/fuzz_builtin_int @@"
 
 [aflplusplus]
 target = "/afl/fuzz_builtin_int @@"
-args = "-i /corpus/parser/corpus"
+args = "-t 60000 -i /corpus/parser/corpus"
 
 [cov]
 target = "/cov/fuzz_builtin_int @@"

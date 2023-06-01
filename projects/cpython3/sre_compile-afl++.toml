@@ -19,7 +19,7 @@ target = "/sydr/fuzz_sre_compile @@"
 
 [aflplusplus]
 target = "/afl/fuzz_sre_compile @@"
-args = "-x /fuzz_sre_compile.dict -i /fuzz_sre_compile_corpus"
+args = "-t 60000 -x /fuzz_sre_compile.dict -i /fuzz_sre_compile_corpus"
 
 [cov]
 target = "/cov/fuzz_sre_compile @@"

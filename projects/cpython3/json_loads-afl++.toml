@@ -19,7 +19,7 @@ target = "/sydr/fuzz_json_loads @@"
 
 [aflplusplus]
 target = "/afl/fuzz_json_loads @@"
-args = "-x /fuzz_json_loads.dict -i /corpus/json/corpus"
+args = "-t 60000 -x /fuzz_json_loads.dict -i /corpus/json/corpus"
 
 [cov]
 target = "/cov/fuzz_json_loads @@"
