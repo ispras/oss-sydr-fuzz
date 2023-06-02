@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash
 #
 # Copyright 2023 ISP RAS
 #
@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 ################################################################################
+
+PATCH_HEADERS=$true
 
 for CONFIG in $CONFIGS; do
 
@@ -34,8 +36,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null -std=c++17"
+  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
+  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
 fi
@@ -64,12 +66,46 @@ then
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
 fi
 
+# Build pytorch
+
+cd /pytorch
+
+# clean artifacts from previous build
+python3 setup.py clean
+
+MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
+        USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=1 BUILD_TEST=0 \
+        BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_ITT=0 \
+        CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" \
+        CMAKE_THREAD_LIBS_INIT="$(find /usr/lib -name 'libpthread.so*' | head -1)" \
+        python3 setup.py build
+
+if [[ $PATCH_HEADERS ]]
+then
+  # Patch PyTorch headers to build torchvision with clang
+  sed -i '1 i\#define ORDERED_DICT' /pytorch/torch/include/torch/csrc/api/include/torch/ordered_dict.h
+  sed -i '1 i\#ifndef ORDERED_DICT' /pytorch/torch/include/torch/csrc/api/include/torch/ordered_dict.h
+  echo "#endif" >> /pytorch/torch/include/torch/csrc/api/include/torch/ordered_dict.h
+
+  sed -i '1 i\#define ORDERED_DICT' /pytorch/torch/csrc/api/include/torch/ordered_dict.h
+  sed -i '1 i\#ifndef ORDERED_DICT' /pytorch/torch/csrc/api/include/torch/ordered_dict.h
+  echo "#endif" >> /pytorch/torch/csrc/api/include/torch/ordered_dict.h
+
+  sed -i '1 i\#define TYPES' /pytorch/torch/include/torch/csrc/api/include/torch/types.h
+  sed -i '1 i\#ifndef TYPES' /pytorch/torch/include/torch/csrc/api/include/torch/types.h
+  echo "#endif" >> /pytorch/torch/include/torch/csrc/api/include/torch/types.h
+
+  sed -i '1 i\#define TYPES' /pytorch/torch/csrc/api/include/torch/types.h
+  sed -i '1 i\#ifndef TYPES' /pytorch/torch/csrc/api/include/torch/types.h
+  echo "#endif" >> /pytorch/torch/csrc/api/include/torch/types.h
+
+  PATCH_HEADERS=$false
+fi
+
 # Build libpng
-cd /
-wget http://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz
-tar -xvzf libpng-1.6.37.tar.gz
-mv /libpng-1.6.37/ /libpng-1.6.37-$SUFFIX/
-cd /libpng-1.6.37-$SUFFIX/
+
+cd /libpng-1.6.37
+rm -rf build
 cmake -DCMAKE_C_COMPILER=$CC \
       -DCMAKE_C_FLAGS="$CFLAGS" \
       -S . -B build/
@@ -77,11 +113,9 @@ cd build
 cmake --build . -j$(nproc)
 
 # Build libjpeg-turbo
-cd /
-wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz
-tar -xvzf 2.1.3.tar.gz
-mv /libjpeg-turbo-2.1.3/ /libjpeg-turbo-2.1.3-$SUFFIX/
-cd /libjpeg-turbo-2.1.3-$SUFFIX/
+
+cd /libjpeg-turbo-2.1.3
+rm -rf build
 cmake -G"Unix Makefiles" -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DENABLE_STATIC=1 \
       -DENABLE_SHARED=0 -DWITH_JPEG8=1 \
       -DCMAKE_C_FLAGS="$CFLAGS" \
@@ -90,10 +124,9 @@ cd build/
 make -j$(nproc)
 
 # Build zlib
-cd /
-git clone https://github.com/madler/zlib.git zlib_$SUFFIX
-cd zlib_$SUFFIX
-git checkout v1.2.13
+
+cd /zlib
+make clean
 CC=$CC CXX=$CXX \
       CFLAGS="$CFLAGS" \
       CXXFLAGS="$CXXFLAGS" \
@@ -101,19 +134,20 @@ CC=$CC CXX=$CXX \
 make -j$(nproc)
 
 # Build torchvision
-cd /vision_$SUFFIX/
 
-Torch_DIR=/pytorch_$SUFFIX/ \
+cd /vision
+rm -rf build
+Torch_DIR=/pytorch/ \
       cmake \
       -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
       -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
       -DENGINE=$ENGINE -DSUFFIX=$SUFFIX -DBUILD_SAVERS=${BUILD_SAVERS:-} \
-      -DJPEG_LIBRARY=/libjpeg-turbo-2.1.3-$SUFFIX/build/libjpeg.a \
-      -DPNG_LIBRARY=/libpng-1.6.37-$SUFFIX/build/libpng.a \
-      -DZLIB_LIBRARY=/zlib_$SUFFIX/libz.a \
-      -Donnx_LIBRARY=/pytorch_$SUFFIX/build/lib/libonnx.a \
-      -Donnx_proto_LIBRARY=/pytorch_$SUFFIX/build/lib/libonnx_proto.a \
-      -Dfoxi_loader_LIBRARY=/pytorch_$SUFFIX/build/lib/libfoxi_loader.a \
+      -DJPEG_LIBRARY=/libjpeg-turbo-2.1.3/build/libjpeg.a \
+      -DPNG_LIBRARY=/libpng-1.6.37/build/libpng.a \
+      -DZLIB_LIBRARY=/zlib/libz.a \
+      -Donnx_LIBRARY=/pytorch/build/lib/libonnx.a \
+      -Donnx_proto_LIBRARY=/pytorch/build/lib/libonnx_proto.a \
+      -Dfoxi_loader_LIBRARY=/pytorch/build/lib/libfoxi_loader.a \
       -DCMAKE_C_COMPILER_ID=GNU -DCMAKE_CXX_COMPILER_ID=GNU \
       -S . -B build/
 cd build/
