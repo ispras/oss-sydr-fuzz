@@ -65,8 +65,8 @@ RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && \
 
 # Copy build script, targets and patch vision build.
 COPY *.cc /vision/
-COPY build_vision.sh CMakeLists.patch /
+COPY build.sh CMakeLists.patch /
 RUN cd /vision && git apply /CMakeLists.patch
 
 # Build torchvision
-RUN CONFIGS="libfuzzer afl sydr coverage" /build_vision.sh
+RUN CONFIGS="libfuzzer afl sydr coverage" /build.sh
