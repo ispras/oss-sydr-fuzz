@@ -27,13 +27,13 @@ RUN apt-get update && apt-get upgrade -y && \
     libpng-dev libjpeg-dev ffmpeg libavformat-dev libswscale-dev python-is-python3 nasm
 
 # Clone target from GitHub.
-RUN git clone https://github.com/pytorch/pytorch.git pytorch_fuzz
-RUN cd /pytorch_fuzz && \
+RUN git clone https://github.com/pytorch/pytorch.git pytorch
+RUN cd /pytorch && \
     git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
     git submodule update --init --recursive --jobs 0
 
-RUN git clone https://github.com/pytorch/vision.git vision_fuzz/
-RUN cd /vision_fuzz && \
+RUN git clone https://github.com/pytorch/vision.git vision
+RUN cd /vision && \
     git checkout 9d0a93eee90bf7c401b74ebf9c8be80346254f15
 
 # Install OpenCV
@@ -44,14 +44,13 @@ RUN cd / && mkdir cv && cd cv/ && \
     cmake --build . -j$(nproc) && \
     make install && cd /
 
-# Copy torch for different instrumentations.
-RUN cp -r /pytorch_fuzz/ /pytorch_afl/
-RUN cp -r /pytorch_fuzz/ /pytorch_sydr/
-RUN cp -r /pytorch_fuzz/ /pytorch_cov/
-
-# Build torch libraries.
-COPY build_torch.sh /
-RUN CONFIGS="libfuzzer afl sydr coverage" /build_torch.sh
+# Download jpeg, png and zlib sources.
+RUN wget http://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
+    tar -xvzf libpng-1.6.37.tar.gz && rm libpng-1.6.37.tar.gz
+RUN wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz && \
+    tar -xvzf 2.1.3.tar.gz && rm 2.1.3.tar.gz
+RUN git clone https://github.com/madler/zlib.git zlib && cd zlib && \
+    git checkout v1.2.13
 
 # Copy corpus and tensor
 RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
@@ -65,14 +64,9 @@ RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && \
     cp -rn /fuzzing-corpus/png/*/* /png_corpus/
 
 # Copy build script, targets and patch vision build.
-COPY *.cc /vision_fuzz/
-COPY build_vision.sh CMakeLists.patch /
-RUN cd /vision_fuzz && git apply /CMakeLists.patch
-
-# Copy vision for different instrumentations.
-RUN cp -r /vision_fuzz/ /vision_afl/
-RUN cp -r /vision_fuzz/ /vision_sydr/
-RUN cp -r /vision_fuzz/ /vision_cov/
+COPY *.cc /vision/
+COPY build.sh CMakeLists.patch /
+RUN cd /vision && git apply /CMakeLists.patch
 
 # Build torchvision
-RUN CONFIGS="libfuzzer afl sydr coverage" /build_vision.sh
+RUN CONFIGS="libfuzzer afl sydr coverage" /build.sh
