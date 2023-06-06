@@ -31,9 +31,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     }
 
     write(fd, data, size);
-
-    printf("%s\n", video_path);
-
     vision::video_reader::probe_video_from_file(video_path);
 
     unlink(video_path);
