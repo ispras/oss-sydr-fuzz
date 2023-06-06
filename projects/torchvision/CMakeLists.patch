@@ -1,16 +1,17 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 85b878307c..1e0840a9c1 100644
+index 405f947c23..73be1a2909 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -6,6 +6,7 @@ file(STRINGS version.txt TORCHVISION_VERSION)
+@@ -6,6 +6,8 @@ file(STRINGS version.txt TORCHVISION_VERSION)
  option(WITH_CUDA "Enable CUDA support" OFF)
  option(WITH_PNG "Enable features requiring LibPNG." ON)
  option(WITH_JPEG "Enable features requiring LibJPEG." ON)
 +option(WITH_ZLIB "Enable features requiring libZLIB." ON)
++option(WITH_FFMPEG "Enable features requiring FFMPEG libs." ON)
  option(USE_PYTHON "Link to Python when building" OFF)
  
  if(WITH_CUDA)
-@@ -32,6 +33,11 @@ if (WITH_JPEG)
+@@ -27,6 +29,11 @@ if (WITH_JPEG)
      find_package(JPEG REQUIRED)
  endif()
  
@@ -22,12 +23,24 @@ index 85b878307c..1e0840a9c1 100644
  if (USE_PYTHON)
    add_definitions(-DUSE_PYTHON)
    find_package(Python3 REQUIRED COMPONENTS Development)
-@@ -89,15 +95,19 @@ FOREACH(DIR ${ALLOW_LISTED})
+@@ -75,7 +82,8 @@ include(CMakePackageConfigHelpers)
+ 
+ set(TVCPP torchvision/csrc)
+ list(APPEND ALLOW_LISTED ${TVCPP} ${TVCPP}/io/image ${TVCPP}/io/image/cpu ${TVCPP}/models ${TVCPP}/ops
+-  ${TVCPP}/ops/autograd ${TVCPP}/ops/cpu ${TVCPP}/io/image/cuda)
++	${TVCPP}/ops/autograd ${TVCPP}/ops/cpu ${TVCPP}/io/image/cuda ${TVCPP}/io/video_reader
++	${TVCPP}/io/decoder ${TVCPP}/io/video)
+ if(WITH_CUDA)
+     list(APPEND ALLOW_LISTED ${TVCPP}/ops/cuda ${TVCPP}/ops/autocast)
+ endif()
+@@ -84,15 +92,36 @@ FOREACH(DIR ${ALLOW_LISTED})
      file(GLOB ALL_SOURCES ${ALL_SOURCES} ${DIR}/*.*)
  ENDFOREACH()
  
 -add_library(${PROJECT_NAME} SHARED ${ALL_SOURCES})
 -target_link_libraries(${PROJECT_NAME} PRIVATE ${TORCH_LIBRARIES})
++list(FILTER ALL_SOURCES EXCLUDE REGEX ".*_test\.cpp")
++
 +add_library(${PROJECT_NAME} STATIC ${ALL_SOURCES})
 +target_link_libraries(${PROJECT_NAME} PUBLIC ${TORCH_LIBRARIES})
  
@@ -41,17 +54,35 @@ index 85b878307c..1e0840a9c1 100644
 +  target_link_libraries(${PROJECT_NAME} PUBLIC ${JPEG_LIBRARIES})
 +endif()
 +
++if (WITH_FFMPEG)
++  set(FFMPEG_LIBS
++    libavformat
++    libavcodec
++    libavutil
++    libswresample
++    libswscale
++  )
++  foreach(FFMPEG_LIB IN LISTS FFMPEG_LIBS)
++    target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_DIR}/${FFMPEG_LIB}/${FFMPEG_LIB}.a)
++    FILE(GLOB FFMPEG_INCLUDE ${FFMPEG_DIR}/${FFMPEG_LIB}/*.h)
++    include_directories(${FFMPEG_INCLUDE}) 
++  endforeach()
++endif()
++
 +if (WITH_ZLIB)
 +  target_link_libraries(${PROJECT_NAME} PUBLIC ${ZLIB_LIBRARIES})
  endif()
  
  if (USE_PYTHON)
-@@ -118,6 +128,40 @@ if (WITH_JPEG)
+@@ -113,6 +142,44 @@ if (WITH_JPEG)
      include_directories(${JPEG_INCLUDE_DIRS})
  endif()
  
 +include_directories(torchvision/csrc/io/image)
 +include_directories(torchvision/csrc/io/image/cpu)
++include_directories(torchvision/csrc/io/video_reader)
++include_directories(torchvision/csrc/io/decoder)
++include_directories(torchvision/csrc/io/video)
 +include_directories(${TORCH_INCLUDE_DIRS})
 +
 +set(FUZZ_TARGETS
@@ -59,6 +90,7 @@ index 85b878307c..1e0840a9c1 100644
 +  decode_png
 +  encode_jpeg
 +  encode_png
++  video_reader
 +)
 +
 +foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
