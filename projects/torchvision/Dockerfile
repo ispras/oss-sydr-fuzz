@@ -61,9 +61,11 @@ RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
 RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
 
 RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && \
-    mkdir /jpeg_tensor/ && mkdir /png_tensor/
+    mkdir /jpeg_tensor/ && mkdir /png_tensor/ && \
+    mkdir /mp4_corpus/
 RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && \
-    cp -rn /fuzzing-corpus/png/*/* /png_corpus/
+    cp -rn /fuzzing-corpus/png/*/* /png_corpus/ && \
+    cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
 
 # Copy build script, targets and patch vision build.
 COPY *.cc /vision/
