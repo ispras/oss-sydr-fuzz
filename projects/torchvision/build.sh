@@ -27,6 +27,7 @@ then
   export CXX=clang++
   export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
   export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17"
+  export LDFLAGS="$CFLAGS"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
   export BUILD_SAVERS="OFF"
 fi
@@ -38,6 +39,7 @@ then
   export CXX=afl-clang-fast++
   export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
   export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17"
+  export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
 fi
@@ -49,6 +51,7 @@ then
   export CXX=clang++
   export CFLAGS="-g"
   export CXXFLAGS="-g -std=c++17"
+  export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   export BUILD_SAVERS="ON"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -61,6 +64,7 @@ then
   export CXX=clang++
   export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
   export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17"
+  export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   export BUILD_SAVERS="OFF"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -133,6 +137,13 @@ CC=$CC CXX=$CXX \
       ./configure
 make -j$(nproc)
 
+# Build ffmpeg
+
+cd /ffmpeg
+make clean
+./configure --cc=$CC --cxx=$CXX
+make -j$(nproc)
+
 # Build torchvision
 
 cd /vision
@@ -145,6 +156,7 @@ Torch_DIR=/pytorch/ \
       -DJPEG_LIBRARY=/libjpeg-turbo-2.1.3/build/libjpeg.a \
       -DPNG_LIBRARY=/libpng-1.6.37/build/libpng.a \
       -DZLIB_LIBRARY=/zlib/libz.a \
+      -DFFMPEG_DIR=/ffmpeg \
       -Donnx_LIBRARY=/pytorch/build/lib/libonnx.a \
       -Donnx_proto_LIBRARY=/pytorch/build/lib/libonnx_proto.a \
       -Dfoxi_loader_LIBRARY=/pytorch/build/lib/libfoxi_loader.a \
