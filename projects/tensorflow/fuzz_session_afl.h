@@ -5,8 +5,6 @@
 #include "tensorflow/core/graph/graph.h"
 #include "tensorflow/core/public/session.h"
 
-__AFL_FUZZ_INIT();
-
 // Standard invoking function macro to dispatch to a fuzzer class.
 #ifndef PLATFORM_WINDOWS
 #define STANDARD_TF_FUZZ_FUNCTION(FuzzerClass)                              \
