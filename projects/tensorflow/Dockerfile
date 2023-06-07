@@ -53,27 +53,27 @@ COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session
 COPY fuzz_session_afl.h /tensorflow_afl/tensorflow/core/kernels/fuzzing/fuzz_session.h
 
 RUN cd /tensorflow_afl && CONFIG=afl /build.sh
-RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
-RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
-RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
-
-# Fix coverage paths.
-RUN /fix_cov.sh
-
-# Prepare corporas and dictionaries.
-
-RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/corpus /
-RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/dictionaries /
-
-COPY corpus/*.zip /
-
-WORKDIR /corpus
-RUN find / -maxdepth 1 -name '*.zip' -exec bash -c "unzip {} && rm {}" \;
-
-# Increase timeout for forkserver spin up.
-ENV AFL_FORKSRV_INIT_TMOUT=1200000
-
-# Set large bitmap size for afl-showmap operation.
-ENV AFL_MAP_SIZE=100000000
-
-WORKDIR /
+#RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
+#RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
+#RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
+#
+## Fix coverage paths.
+#RUN /fix_cov.sh
+#
+## Prepare corporas and dictionaries.
+#
+#RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/corpus /
+#RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/dictionaries /
+#
+#COPY corpus/*.zip /
+#
+#WORKDIR /corpus
+#RUN find / -maxdepth 1 -name '*.zip' -exec bash -c "unzip {} && rm {}" \;
+#
+## Increase timeout for forkserver spin up.
+#ENV AFL_FORKSRV_INIT_TMOUT=1200000
+#
+## Set large bitmap size for afl-showmap operation.
+#ENV AFL_MAP_SIZE=100000000
+#
+#WORKDIR /

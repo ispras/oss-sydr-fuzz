@@ -10,16 +10,9 @@ __AFL_FUZZ_INIT();
 // Standard invoking function macro to dispatch to a fuzzer class.
 #ifndef PLATFORM_WINDOWS
 #define STANDARD_TF_FUZZ_FUNCTION(FuzzerClass)                              \
-   extern "C" int main() { \
-    __AFL_INIT(); \
+   extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) { \
     static FuzzerClass* fuzzer = new FuzzerClass();                         \
-    uint8_t *data = __AFL_FUZZ_TESTCASE_BUF; \
-    while (__AFL_LOOP(1000)) \
-    { \
-        size_t size = __AFL_FUZZ_TESTCASE_LEN; \
-        fuzzer->Fuzz(data, size);	\
-    } \
-    return 0; \
+    return fuzzer->Fuzz(data, size);	\
   }
 #else
 // We don't compile this for Windows, MSVC doesn't like it as pywrap in Windows
