@@ -36,8 +36,8 @@ then
   export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
   export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
   export SANITIZERS="address undefined"
-  export LINKOPTS="-fsanitize=undefined,address,bounds,integer,null"
   export FUZZING_ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
+  export LINKOPTS="-fsanitize=undefined,address,bounds,integer,null $FUZZING_ENGINE"
 fi
 
 if [[ $CONFIG = "sydr" ]]

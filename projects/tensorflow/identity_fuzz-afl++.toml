@@ -22,7 +22,7 @@ target = "/sydr/identity_fuzz --fuzz=FuzzIdentity.Fuzz @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/identity"
-target = "/afl/identity_fuzz --fuzz=FuzzIdentity.Fuzz"
+target = "/afl/identity_fuzz --fuzz=FuzzIdentity.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

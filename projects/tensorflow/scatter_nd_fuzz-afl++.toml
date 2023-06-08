@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/scatter_nd_fuzz @@"
 
 [aflplusplus]
-target = "/afl/scatter_nd_fuzz"
+target = "/afl/scatter_nd_fuzz @@"
 args = "-t 60000 -i /corpus/scatter_nd"
 
 [aflplusplus.env]

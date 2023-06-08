@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/decode_csv_fuzz @@"
 
 [aflplusplus]
-target = "/afl/decode_csv_fuzz"
+target = "/afl/decode_csv_fuzz @@"
 args = "-t 60000 -i /corpus/decode_csv"
 
 [aflplusplus.env]

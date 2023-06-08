@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/joinpath_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
-target = "/afl/joinpath_fuzz --fuzz=CC_FUZZING.FuzzTest"
+target = "/afl/joinpath_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 args = "-t 60000 -i /corpus/joinpath"
 
 [aflplusplus.env]

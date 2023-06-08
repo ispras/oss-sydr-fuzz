@@ -22,7 +22,7 @@ target = "/sydr/arg_def_case_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/arg_def_case"
-target = "/afl/arg_def_case_fuzz --fuzz=CC_FUZZING.FuzzTest"
+target = "/afl/arg_def_case_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

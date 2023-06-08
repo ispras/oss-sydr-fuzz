@@ -22,7 +22,7 @@ target = "/sydr/add_fuzz --fuzz=FuzzAdd.Fuzz @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/add"
-target = "/afl/add_fuzz --fuzz=FuzzAdd.Fuzz"
+target = "/afl/add_fuzz --fuzz=FuzzAdd.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

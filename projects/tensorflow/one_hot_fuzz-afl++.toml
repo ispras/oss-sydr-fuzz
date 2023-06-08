@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/one_hot_fuzz @@"
 
 [aflplusplus]
-target = "/afl/one_hot_fuzz"
+target = "/afl/one_hot_fuzz @@"
 args = "-t 60000 -i /corpus/one_hot"
 
 [aflplusplus.env]

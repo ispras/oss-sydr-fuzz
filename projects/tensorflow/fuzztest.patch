@@ -12,10 +12,10 @@ index 1261273bc92..3081d7c566b 100644
 -        sha256 = "c75f224b34c3c62ee901381fb743f6326f7b91caae0ceb8fe62f3fd36f187627",
 -        strip_prefix = "fuzztest-58b4e7065924f1a284952b84ea827ce35a87e4dc",
 -        urls = tf_mirror_urls("https://github.com/google/fuzztest/archive/58b4e7065924f1a284952b84ea827ce35a87e4dc.zip"),
-+        sha256 = "5c1dc93f36c605ee510565044e24ea12514962dbd2503dd54014dd42a713f9cb",
-+        strip_prefix = "fuzztest-a45b9674a08628aa1612aa337468ff58a888a949",
-+        urls = ["https://github.com/ispras/fuzztest/archive/a45b9674a08628aa1612aa337468ff58a888a949.zip",
-+		"https://github.com/ispras/fuzztest/archive/a45b9674a08628aa1612aa337468ff58a888a949.zip"],
++        sha256 = "f7b87358814869a2f6b904b7eb0684272f2b54cd74f4bbe64936854e35c39923",
++        strip_prefix = "fuzztest-080ce90f8538e840001272054016cda6256678f9",
++        urls = ["https://github.com/ispras/fuzztest/archive/080ce90f8538e840001272054016cda6256678f9.zip",
++		"https://github.com/ispras/fuzztest/archive/080ce90f8538e840001272054016cda6256678f9.zip"],
      )
  
      tf_http_archive(
@@ -27,7 +27,7 @@ index bda9e9518b4..699b1f61824 100644
          "mirror.tensorflow.org",
          "mirror.bazel.build",
          "storage.googleapis.com",
-+	"https://github.com/ispras/fuzztest/archive/a45b9674a08628aa1612aa337468ff58a888a949.zip",
++	"https://github.com/ispras/fuzztest/archive/080ce90f8538e840001272054016cda6256678f9.zip",
      )]):
          fail("The first entry of tf_http_archive(urls) must be a mirror " +
               "URL, preferrably mirror.tensorflow.org. Even if you don't have " +
