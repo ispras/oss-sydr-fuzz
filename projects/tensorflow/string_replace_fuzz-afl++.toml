@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/string_replace_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
-target = "/afl/string_replace_fuzz --fuzz=CC_FUZZING.FuzzTest"
+target = "/afl/string_replace_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 args = "-t 60000 -i /corpus/string_replace"
 
 [aflplusplus.env]

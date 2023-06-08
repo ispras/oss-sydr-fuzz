@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/string_split_v2_fuzz @@"
 
 [aflplusplus]
-target = "/afl/string_split_v2_fuzz"
+target = "/afl/string_split_v2_fuzz @@"
 args = "-t 60000 -i /corpus/string_split_v2/"
 
 [aflplusplus.env]

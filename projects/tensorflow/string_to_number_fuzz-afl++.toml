@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/string_to_number_fuzz --fuzz=FuzzStringToNumber.Fuzz @@"
 
 [aflplusplus]
-target = "/afl/string_to_number_fuzz --fuzz=FuzzStringToNumber.Fuzz"
+target = "/afl/string_to_number_fuzz --fuzz=FuzzStringToNumber.Fuzz @@"
 args = "-t 60000 -i /corpus/string_to_number"
 
 [aflplusplus.env]

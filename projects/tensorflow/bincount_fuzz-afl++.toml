@@ -22,7 +22,7 @@ target = "/sydr/bincount_fuzz --fuzz=FuzzBincount.Fuzz @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/bincount"
-target = "/afl/bincount_fuzz --fuzz=FuzzBincount.Fuzz"
+target = "/afl/bincount_fuzz --fuzz=FuzzBincount.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

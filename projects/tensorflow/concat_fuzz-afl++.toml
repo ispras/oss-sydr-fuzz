@@ -22,7 +22,7 @@ target = "/sydr/concat_fuzz --fuzz=FuzzConcat.Fuzz @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/concat"
-target = "/afl/concat_fuzz --fuzz=FuzzConcat.Fuzz"
+target = "/afl/concat_fuzz --fuzz=FuzzConcat.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

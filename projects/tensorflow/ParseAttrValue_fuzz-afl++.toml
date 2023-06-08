@@ -22,7 +22,7 @@ target = "/sydr/ParseAttrValue_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/ParseAttrValue"
-target = "/afl/ParseAttrValue_fuzz --fuzz=CC_FUZZING.FuzzTest"
+target = "/afl/ParseAttrValue_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

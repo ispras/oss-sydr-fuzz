@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/example_proto_fast_parsing_fuzz @@"
 
 [aflplusplus]
-target = "/afl/example_proto_fast_parsing_fuzz"
+target = "/afl/example_proto_fast_parsing_fuzz @@"
 args = "-t 60000 -i /corpus/example_proto_fast_parsing"
 
 [aflplusplus.env]
