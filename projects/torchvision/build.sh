@@ -166,33 +166,36 @@ cd build/
 cmake --build . -j$(nproc)
 cmake --install .
 
-done
+if [[ $CONFIG = "sydr" ]]
+then
+  # Generate tensors from corpus
+  
+  cd /
+  
+  for filename in /jpeg_corpus/*; do 
+      if ./save_jpeg "$filename"; then
+          mv /jpeg_corpus/*.tensor /jpeg_tensor/
+      fi
+  done
+  
+  for filename in /png_corpus/*; do 
+      if ./save_png "$filename"; then
+          mv /png_corpus/*.tensor /png_tensor/
+      fi
+  done
+  
+  # Write \x00 to start of each image file
+  for filename in /png_corpus/*.png; do
+      [ -e "$filename" ] || continue
+      printf "\x00" | cat - $filename > ${filename}_input
+      rm $filename
+  done
+  
+  for filename in /jpeg_corpus/*.jp*g; do
+      [ -e "$filename" ] || continue
+      printf "\x00" | cat - $filename > ${filename}_input
+      rm $filename
+  done
+fi
 
-# Generate tensors from corpus
-
-cd /
-
-for filename in /jpeg_corpus/*; do 
-    if ./save_jpeg "$filename"; then
-        mv /jpeg_corpus/*.tensor /jpeg_tensor/
-    fi
-done
-
-for filename in /png_corpus/*; do 
-    if ./save_png "$filename"; then
-        mv /png_corpus/*.tensor /png_tensor/
-    fi
-done
-
-# Write \x00 to start of each image file
-for filename in /png_corpus/*.png; do
-    [ -e "$filename" ] || continue
-    printf "\x00" | cat - $filename > ${filename}_input
-    rm $filename
-done
-
-for filename in /jpeg_corpus/*.jp*g; do
-    [ -e "$filename" ] || continue
-    printf "\x00" | cat - $filename > ${filename}_input
-    rm $filename
 done

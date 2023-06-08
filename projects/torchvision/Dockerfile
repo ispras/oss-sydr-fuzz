@@ -73,4 +73,5 @@ COPY build.sh CMakeLists.patch /
 RUN cd /vision && git apply /CMakeLists.patch
 
 # Build torchvision
-RUN CONFIGS="libfuzzer afl sydr coverage" /build.sh
+RUN CONFIGS="libfuzzer afl" /build.sh
+RUN CONFIGS="sydr coverage" /build.sh
