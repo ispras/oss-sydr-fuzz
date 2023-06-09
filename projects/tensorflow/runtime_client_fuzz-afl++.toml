@@ -22,7 +22,7 @@ target = "/sydr/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz 
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/runtime_client"
-target = "/afl/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz"
+target = "/afl/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

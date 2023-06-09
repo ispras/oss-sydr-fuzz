@@ -87,12 +87,12 @@ build_target(){
 	-DNNP_INFERENCE_ONLY=0 -DONNXIFI_ENABLE_EXT=1 -DONNX_ML=1 -DONNX_NAMESPACE=onnx_torch \
 	-DUSE_EXTERNAL_MZCRC -D_FILE_OFFSET_BITS=64 -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO \
 	-DLIBKINETO_NOCUPTI -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DTH_HAVE_THREAD \
-	-DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -g -O2 \
+	-DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -g -O2 -std=c++17 \
 	$TARGET_FLAGS $extra -I/pytorch/torch/include \
 	/$target.cc -c -o ./$target.o
 
     # Link target
-    $CXX -g -O2 $TARGET_FLAGS -std=gnu++14 -DNDEBUG ./$target.o $MAIN \
+    $CXX -g -O2 $TARGET_FLAGS -DNDEBUG ./$target.o $MAIN \
         lib/libtorch.a \
         -Wl,--whole-archive,"/pytorch/build/lib/libtorch.a" -Wl,--no-whole-archive \
         -Wl,--whole-archive,"/pytorch/build/lib/libtorch_cpu.a" -Wl,--no-whole-archive \

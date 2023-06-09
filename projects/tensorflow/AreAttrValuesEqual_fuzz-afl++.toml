@@ -22,7 +22,7 @@ target = "/sydr/AreAttrValuesEqual_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/AreAttrValuesEqual"
-target = "/afl/AreAttrValuesEqual_fuzz --fuzz=CC_FUZZING.FuzzTest"
+target = "/afl/AreAttrValuesEqual_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

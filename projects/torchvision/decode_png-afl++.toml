@@ -19,7 +19,7 @@ args = "-l debug"
 target = "/decode_png_sydr @@"
 
 [aflplusplus]
-target = "/decode_png_fuzz_afl"
+target = "/decode_png_afl @@"
 args = "-i /png_corpus/ -t 5000+"
 jobs = 3
 

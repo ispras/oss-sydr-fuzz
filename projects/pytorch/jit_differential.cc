@@ -42,7 +42,7 @@
 #include <torch/script.h>
 
 bool exactlyEqual(const at::Tensor &a, const at::Tensor &b) {
-  return (a - b).abs().max().item<float>() == 0.f;
+  return torch::equal(a, b);
 }
 
 bool exactlyEqual(const std::vector<at::Tensor> &a,

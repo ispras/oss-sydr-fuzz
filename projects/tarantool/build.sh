@@ -43,11 +43,6 @@ cd /tarantool
 
 patch -p1 < /tarantool/test/fuzz/fix-condition-ubsan.patch
 
-# Avoid compilation issue due to some unused variables. They are in fact
-# not unused, but the compilers are complaining.
-sed -i 's/total = 0;/total = 0;(void)total;/g' ./src/lib/core/crash.c
-sed -i 's/n = 0;/n = 0;(void)n;/g' ./src/lib/core/sio.c
-
 : ${LD:="${CXX}"}
 : ${LDFLAGS:="${CXXFLAGS}"}  # to make sure we link with sanitizer runtime
 
@@ -89,13 +84,15 @@ do
   echo "Copying for $module";
   cp $f /
   [[ -e $corpus_dir ]] && cp -r $corpus_dir /corpus_$module
+  dict_path="test/static/${name}.dict"
+  [[ -e $dict_path ]] && cp $dict_path /
 done
 
 # Build the project for AFL++.
 CC=afl-clang-fast
 CXX=afl-clang-fast++
-CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
 cmake_args=(
     # Specific to Tarantool

@@ -1,4 +1,4 @@
-// Copyright 2022 ISP RAS
+// Copyright 2023 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,27 +14,26 @@
 //
 //###############################################################################
 
-#include <stdint.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-__AFL_FUZZ_INIT();
+#include "video_reader.h"
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+    char video_path[24] = {0};
+    strcpy(video_path, "/tmp/video-XXXXXX");
+    int fd = mkstemp(video_path);
+    if (fd == -1) {
+        return 0;
+    }
 
-int main() {
+    write(fd, data, size);
+    vision::video_reader::probe_video_from_file(video_path);
 
-#ifdef __AFL_HAVE_MANUAL_CONTROL
-  __AFL_INIT();
-#endif
-
-  uint8_t *data = __AFL_FUZZ_TESTCASE_BUF;
-
-  while (__AFL_LOOP(1000)) {
-    size_t size = __AFL_FUZZ_TESTCASE_LEN;
-
-    LLVMFuzzerTestOneInput(data, size);
-  }
-
-  return 0;
+    unlink(video_path);
+    close(fd);
+    return 0;
 }

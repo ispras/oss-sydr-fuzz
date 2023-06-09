@@ -68,6 +68,16 @@ Minimize corpus:
 
     # sydr-fuzz -c encode_png.toml cmin
 
+#### video_reader
+
+Run hybrid fuzzing:
+
+    # sydr-fuzz -c video_reader.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c video_reader.toml cmin
+
 ### Fuzz Targets for AFL++
 
 #### decode_jpeg-afl++
@@ -85,6 +95,10 @@ Minimize corpus:
 #### encode_png-afl++
 
     # sydr-fuzz -c encode_png-afl++.toml run
+
+#### video_reader-afl++
+
+    # sydr-fuzz -c video_reader-afl++.toml run
 
 ## Security predicates
 

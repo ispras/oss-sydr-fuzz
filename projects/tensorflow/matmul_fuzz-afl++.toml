@@ -22,7 +22,7 @@ target = "/sydr/matmul_fuzz --fuzz=FuzzMatMul.Fuzz @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/matmul"
-target = "/afl/matmul_fuzz --fuzz=FuzzMatMul.Fuzz"
+target = "/afl/matmul_fuzz --fuzz=FuzzMatMul.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"

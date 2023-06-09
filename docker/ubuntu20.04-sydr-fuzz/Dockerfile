@@ -9,19 +9,19 @@ RUN apt-get update && \
                        wget curl unzip clang-11 vim lsb-release zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
                        gcc-10-plugin-dev gcc-10-multilib python3 python3-pip \
-                       libtool gnuplot binutils-dev
+                       libtool gnuplot binutils-dev zip htop psutils openjdk-17-jdk
 
 RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
     cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
     rm -rf gdb-*
 
-RUN python3 -m pip install scipy numpy coverage toml concurrencytest psutil
+RUN python3 -m pip install coverage toml concurrencytest psutil
 
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh && \
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.sh && \
     mkdir /cmake && \
-    bash cmake-3.22.1-linux-x86_64.sh --prefix=/cmake --exclude-subdir --skip-license && \
+    bash cmake-*.sh --prefix=/cmake --exclude-subdir --skip-license && \
     ln -s /cmake/bin/cmake /bin/cmake && \
-    rm cmake-3.22.1-linux-x86_64.sh
+    rm cmake-*.sh
 
 # Install Rust.
 RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly --profile=minimal
@@ -73,7 +73,7 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout 4.05c && export CC=clang && export CXX=clang++ && \
+    git checkout 4.06c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
@@ -94,5 +94,15 @@ ENV GOPATH=/root/go
 ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
+
+# Install Jazzer
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
+    chmod +x /usr/local/bin/bazel
+RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
+    bazel build --java_runtime_version=local_jdk_17 -c opt \
+    --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
+    cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
+        /usr/local/lib/jazzer_standalone_deploy.jar && \
+    cp -L ./bazel-out/k8-opt/bin/launcher/jazzer /usr/local/bin/ && cd .. && rm -rf jazzer
 
 WORKDIR /

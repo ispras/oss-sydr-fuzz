@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/encode_jpeg_fuzz @@"
 
 [aflplusplus]
-target = "/afl/encode_jpeg_fuzz"
+target = "/afl/encode_jpeg_fuzz @@"
 args = "-t 60000 -i /corpus/encode_jpeg"
 
 [aflplusplus.env]

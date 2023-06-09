@@ -37,4 +37,7 @@ COPY targets/*_sydr.c targets/*_afl.c ./fuzz/
 # Build fuzz targets.
 RUN ./build.sh
 
+# Remove empty files from corpus.
+RUN find /openssl/fuzz/corpora -type f -size 0c | xargs -I {} rm {}
+
 WORKDIR /

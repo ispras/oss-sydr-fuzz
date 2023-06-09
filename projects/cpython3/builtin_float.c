@@ -1,4 +1,4 @@
-// Copyright 2022 ISP RAS
+// Copyright 2023 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,17 +18,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
+#include <Python.h>
 
-int main(int argc, char **argv) {
-  FILE *fd = fopen(argv[1], "rb");
-  if (!fd)
-    return 1;
+int fuzz_builtin_float(const char* data, size_t size) {
+    PyObject* s = PyBytes_FromStringAndSize(data, size);
+    if (s == NULL) return 0;
+    PyObject* f = PyFloat_FromString(s);
+    if (PyErr_Occurred() && PyErr_ExceptionMatches(PyExc_ValueError)) {
+        PyErr_Clear();
+    }
+
+    Py_XDECREF(f);
+    Py_DECREF(s);
+    return 0;
+}
+
+int main(int argc, char** argv)
+{
+  // Make initialization
+  if (!Py_IsInitialized()) {
+    Py_InitializeEx(0);
+  }
+
+  // Read symbolic file
+  FILE* fd = fopen(argv[1], "rb");
+  if (!fd) return 1;
   fseek(fd, 0, SEEK_END);
   long fsize = ftell(fd);
   fseek(fd, 0, SEEK_SET);
-  char *buffer = (char *)malloc(fsize);
+  char* buffer = (char*)malloc(fsize);
   fread(buffer, 1, fsize, fd);
   fclose(fd);
-  return LLVMFuzzerTestOneInput((const uint8_t *)buffer, fsize);
+
+  // Run fuzztarget
+  fuzz_builtin_float(buffer, fsize);
+
+  return 0;
 }

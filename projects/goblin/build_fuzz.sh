@@ -22,6 +22,3 @@ done
 
 cd ./fuzz-afl
 RUSTFLAGS="-C debuginfo=2 -C panic=abort" cargo afl build --release
-cp target/release/afl_parse /
-cp target/release/afl_parse_elf /
-

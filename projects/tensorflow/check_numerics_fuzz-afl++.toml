@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/check_numerics_fuzz @@"
 
 [aflplusplus]
-target = "/afl/check_numerics_fuzz"
+target = "/afl/check_numerics_fuzz @@"
 args = "-t 60000 -i /corpus/check_numerics"
 
 [aflplusplus.env]

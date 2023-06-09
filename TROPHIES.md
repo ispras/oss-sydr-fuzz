@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-113 new bugs in
+123 new bugs in
 27 open source projects.
 
 * audk:
@@ -35,16 +35,18 @@
     * <https://sourceforge.net/p/freeimage/bugs/349/>
     * <https://sourceforge.net/p/freeimage/bugs/350/>
     * <https://sourceforge.net/p/freeimage/bugs/351/>
+    * <https://sourceforge.net/p/freeimage/patches/158/>
 * goblin:
     * <https://github.com/m4b/goblin/issues/328>
     * <https://github.com/m4b/goblin/pull/329>
     * <https://github.com/m4b/goblin/pull/330>
     * <https://github.com/m4b/goblin/pull/332>
     * <https://github.com/m4b/goblin/pull/333>
+    * <https://github.com/m4b/goblin/pull/368>
 * golang/image
     * <https://github.com/golang/image/pull/14>
 * hdf5:
-    * <https://github.com/HDFGroup/hdf5/issues/2432>
+    * <https://github.com/HDFGroup/hdf5/issues/2432> (PR: <https://github.com/HDFGroup/hdf5/pull/2691>)
 * ICU (Node.js dependency):
     * <https://github.com/nodejs/node/issues/45297> (PR: <https://github.com/unicode-org/icu/pull/2248>)
     * <https://unicode-org.atlassian.net/browse/ICU-22235>
@@ -58,6 +60,7 @@
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
     * <https://github.com/mm2/Little-CMS/issues/333>
+    * <https://github.com/mm2/Little-CMS/pull/376>
 * miniz:
     * <https://github.com/richgel999/miniz/pull/238>
 * miniz-2.0.8 (pytorch third\_party):
@@ -66,6 +69,10 @@
     * <https://github.com/jcrist/msgspec/issues/366>
 * nDPI:
     * <https://github.com/ntop/nDPI/issues/1803>
+    * <https://github.com/ntop/nDPI/pull/1980>
+    * <https://github.com/ntop/nDPI/pull/1998>
+    * <https://github.com/ntop/nDPI/pull/1999>
+    * <https://github.com/ntop/nDPI/pull/2005>
 * OpenJPEG (OpenCV 3rdparty):
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
@@ -88,6 +95,8 @@
     * <https://github.com/pytorch/pytorch/pull/94300>
     * <https://github.com/pytorch/pytorch/issues/95061> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/issues/95062> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
+    * <https://github.com/pytorch/pytorch/pull/102156>
+    * <https://github.com/pytorch/pytorch/pull/102160>
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
@@ -127,6 +136,7 @@
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
+    * <https://github.com/tarantool/tarantool/pull/8640>
 * TensorFlow:
     * <https://github.com/tensorflow/tensorflow/pull/56455>
     * <https://github.com/tensorflow/tensorflow/pull/60082>

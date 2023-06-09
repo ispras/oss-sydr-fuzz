@@ -28,7 +28,7 @@ int main(int argc, char **argv)
         uint64_t crypto_data_len;
         u_int32_t first_int, version = 0;
 
-        fuzz_init_detection_module(&ndpi_info_mod, 0);
+        fuzz_init_detection_module(&ndpi_info_mod);
         flow = ndpi_calloc(1, SIZEOF_FLOW_STRUCT);
 
         FILE *fd = fopen(argv[1], "rb");

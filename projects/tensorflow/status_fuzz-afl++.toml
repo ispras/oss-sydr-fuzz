@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/status_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 
 [aflplusplus]
-target = "/afl/status_fuzz --fuzz=CC_FUZZING.FuzzTest"
+target = "/afl/status_fuzz --fuzz=CC_FUZZING.FuzzTest @@"
 args = "-t 60000 -i /corpus/status"
 
 [aflplusplus.env]

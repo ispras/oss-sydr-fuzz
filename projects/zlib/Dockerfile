@@ -24,7 +24,7 @@ RUN git clone  https://github.com/madler/zlib.git
 
 WORKDIR /zlib
 
-RUN git checkout 21767c654d31d2dccdde4330529775c6c5fd5389
+RUN git checkout 04f42ceca40f73e2978b50e93806c2a18c1281fc
 
 COPY afl.cc *.c* build.sh \
          ./
