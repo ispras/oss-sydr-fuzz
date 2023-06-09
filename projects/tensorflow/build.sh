@@ -33,8 +33,8 @@ then
   export OUT="/afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null"
+  export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null -DPATCH_ARGS_FOR_AFL"
+  export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null -DPATCH_ARGS_FOR_AFL"
   export SANITIZERS="address undefined"
   export FUZZING_ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export LINKOPTS="-fsanitize=undefined,address,bounds,integer,null $FUZZING_ENGINE"
@@ -133,8 +133,8 @@ for bazel_target in ${FUZZERS}; do
   cp ${bazel_location} $OUT/$fuzz_name
 done
 
-if [[ $CONFIG != "coverage" ]]
-then
-  rm -f bazel-*
-  rm -rf /root/.cache/bazel/_bazel_root
-fi
+#if [[ $CONFIG != "coverage" ]]
+#then
+#  rm -f bazel-*
+#  rm -rf /root/.cache/bazel/_bazel_root
+#fi
