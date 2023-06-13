@@ -35,3 +35,8 @@ RUN cd /pytorch && \
 RUN git clone https://github.com/pytorch/audio.git audio
 RUN cd /audio && \
     git checkout 30afaa9b2f460ca3baf6ac177bce4f6b5da8b99c
+
+COPY build.sh /
+COPY load_audio.cc /audio
+
+RUN /build.sh
