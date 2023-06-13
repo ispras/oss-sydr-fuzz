@@ -57,7 +57,7 @@ RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
 RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
 # Fix coverage paths.
-#RUN /fix_cov.sh
+RUN /fix_cov.sh
 
 # Prepare corporas and dictionaries.
 
