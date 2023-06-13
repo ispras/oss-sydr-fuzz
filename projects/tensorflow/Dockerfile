@@ -53,8 +53,8 @@ COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session
 
 RUN cd /tensorflow_afl && CONFIG=afl /build.sh
 RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
-#RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
-#RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
+RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
+RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
 # Fix coverage paths.
 #RUN /fix_cov.sh
