@@ -23,7 +23,7 @@ target = "/sydr/add_fuzz --fuzz=FuzzAdd.Fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/add_fuzz_run"
-args = "-jobs=1000 -workers=3 -rss_limit_mb=8192 /corpus/add"
+args = "-rss_limit_mb=8192 /corpus/add"
 
 [cov]
 target = "/cov/add_fuzz --fuzz=FuzzAdd.Fuzz @@"
