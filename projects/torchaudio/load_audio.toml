@@ -15,12 +15,12 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
+args = "-l debug -j16"
 target = "/load_audio_sydr @@"
 
 [libfuzzer]
 path = "/load_audio_fuzz"
-args = "-detect_leaks=0 /wav_corpus/"
+args = "-rss_limit_mb=16384 -detect_leaks=0 /wav_corpus/ -jobs=1000 -workers=1"
 
 [cov]
 target = "/load_audio_cov @@"
