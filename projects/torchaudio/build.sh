@@ -16,8 +16,6 @@
 #
 ################################################################################
 
-sed -i -e 's/SHARED/STATIC/' /audio/cmake/TorchAudioHelper.cmake
-
 for CONFIG in $CONFIGS; do
 
 if [[ $CONFIG = "libfuzzer" ]]
@@ -95,7 +93,7 @@ Torch_DIR=/pytorch/ \
     -DCMAKE_C_COMPILER_ID=GNU -DCMAKE_CXX_COMPILER_ID=GNU \
     -S . -B build/
 cd build
-cmake --build . -j$(nproc) -t libtorchaudio libtochaudio_sox load_audio_${SUFFIX}
-
+cmake --build . -j$(nproc)
+cmake --install .
 
 done

@@ -35,16 +35,17 @@ index acbbef45..abadf82f 100644
      target_include_directories(
        ${name}
 diff --git a/torchaudio/csrc/CMakeLists.txt b/torchaudio/csrc/CMakeLists.txt
-index fc0c5494..8af066d2 100644
+index fc0c5494..33f33e8e 100644
 --- a/torchaudio/csrc/CMakeLists.txt
 +++ b/torchaudio/csrc/CMakeLists.txt
-@@ -118,3 +118,18 @@ if (BUILD_TORCHAUDIO_PYTHON_EXTENSION)
+@@ -118,3 +118,21 @@ if (BUILD_TORCHAUDIO_PYTHON_EXTENSION)
      ""
      )
  endif()
 +
 +include_directories(${CMAKE_SOURCE_DIR})
 +include_directories(${CMAKE_SOURCE_DIR}/torchaudio/csrc/sox)
++include_directories(${CMAKE_SOURCE_DIR}/third_party/install/include)
 +
 +set(FUZZ_TARGETS
 +  load_audio
@@ -52,8 +53,10 @@ index fc0c5494..8af066d2 100644
 +
 +foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
 +  add_executable(${FUZZ_TARGET}_${SUFFIX} ${CMAKE_SOURCE_DIR}/${FUZZ_TARGET}.cc)
-+  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PUBLIC libtorchaudio ${ENGINE})
-+  add_dependencies(${FUZZ_TARGET}_${SUFFIX} libtorchaudio)
++  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PRIVATE
++    libtorchaudio_sox ${TORCH_LIBRARIES}
++    ${CMAKE_DL_LIBS} pthread rt ${ENGINE})
++  add_dependencies(${FUZZ_TARGET}_${SUFFIX} libtorchaudio_sox)
 +  set_target_properties(${FUZZ_TARGET}_${SUFFIX} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
 +  install(TARGETS ${FUZZ_TARGET}_${SUFFIX} DESTINATION /)
 +endforeach()

@@ -18,25 +18,25 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Kobrin Eli
 
-# Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi \
-    typing_extensions
-
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y \
-    python-is-python3 nasm
-
-# Clone target from GitHub.
+# Clone pytorch and torchaudio from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch
 RUN cd /pytorch && \
     git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
     git submodule update --init --recursive --jobs 0
 
+COPY torchaudio.patch /
 RUN git clone https://github.com/pytorch/audio.git audio
 RUN cd /audio && \
-    git checkout 30afaa9b2f460ca3baf6ac177bce4f6b5da8b99c
+    git checkout 30afaa9b2f460ca3baf6ac177bce4f6b5da8b99c && \
+    git apply /torchaudio.patch
 
-COPY build.sh /
+COPY build.sh torchaudio.patch /
 COPY load_audio.cc /audio
 
-RUN /build.sh
+RUN CONFIGS="libfuzzer afl" /build.sh
+RUN CONFIGS="sydr coverage" /build.sh
+
+# Prepare corporas.
+RUN mkdir wav_corpus
+RUN git clone https://github.com/strongcourage/fuzzing-corpus.git && \
+    find /fuzzing-corpus -name '*.wav' -exec cp {} /wav_corpus/ \;
