@@ -5,7 +5,7 @@ The aim of torchaudio is to apply PyTorch to the audio domain.
 
 ## Build Docker
 
-    $ sudo docker build -t oss-sydr-fuzz-torchaudio.
+    $ sudo docker build -t oss-sydr-fuzz-torchaudio .
 
 ## Run Hybrid Fuzzing
 
@@ -27,7 +27,7 @@ Run hybrid fuzzing:
 
 Minimize corpus:
 
-    # sydr-fuzz -c load_audio.toml run
+    # sydr-fuzz -c load_audio.toml cmin
 
 Collect and report coverage:
 
