@@ -30,7 +30,7 @@ RUN cd /audio && \
     git checkout 30afaa9b2f460ca3baf6ac177bce4f6b5da8b99c && \
     git apply /torchaudio.patch
 
-COPY build.sh torchaudio.patch /
+COPY build.sh /
 COPY load_audio.cc /audio
 
 RUN CONFIGS="libfuzzer afl" /build.sh
