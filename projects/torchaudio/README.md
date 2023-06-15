@@ -9,7 +9,7 @@ The aim of torchaudio is to apply PyTorch to the audio domain.
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/torchvision` directory:
+Unzip Sydr (`sydr.zip`) in `projects/torchaudio` directory:
 
     $ unzip sydr.zip
 
