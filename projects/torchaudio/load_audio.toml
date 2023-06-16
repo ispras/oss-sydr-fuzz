@@ -17,6 +17,7 @@
 [sydr]
 args = "-l debug -j16"
 target = "/load_audio_sydr @@"
+timeout = 1800
 
 [libfuzzer]
 path = "/load_audio_fuzz"
