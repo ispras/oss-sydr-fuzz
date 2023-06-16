@@ -17,7 +17,7 @@
 [sydr]
 args = "-l debug"
 target = "/load_audio_sydr @@"
-timeout = 1800
+timeout = 2700
 
 [aflplusplus]
 target = "/load_audio_afl @@"

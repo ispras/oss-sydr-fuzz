@@ -17,6 +17,7 @@
 [sydr]
 args = "-l debug"
 target = "/decode_jpeg_sydr @@"
+timeout = 2700
 
 [aflplusplus]
 target = "/decode_jpeg_afl @@"
