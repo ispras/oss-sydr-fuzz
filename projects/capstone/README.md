@@ -23,4 +23,20 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run
+    # sydr-fuzz -c fuzz_disasm.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c fuzz_disasm.toml cmin
+
+Check security predicates:
+
+    # sydr-fuzz -c fuzz_disasm.toml security
+
+Collect and report coverage:
+
+    # sydr-fuzz -c fuzz_disasm.toml cov-report
+
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c fuzz_disasm-afl++.toml run
