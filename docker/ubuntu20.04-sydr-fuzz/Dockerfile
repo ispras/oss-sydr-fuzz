@@ -73,7 +73,7 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout 4.06c && export CC=clang && export CXX=clang++ && \
+    git checkout 4.07c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
@@ -104,5 +104,10 @@ RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer
     cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
         /usr/local/lib/jazzer_standalone_deploy.jar && \
     cp -L ./bazel-out/k8-opt/bin/launcher/jazzer /usr/local/bin/ && cd .. && rm -rf jazzer
+
+# Install jacoco lib for java coverage
+RUN mkdir /usr/local/lib/jacoco && cd /usr/local/lib/jacoco && \
+    wget https://github.com/jacoco/jacoco/releases/download/v0.8.10/jacoco-0.8.10.zip && \
+    unzip jacoco*.zip && rm -rf jacoco*.zip
 
 WORKDIR /
