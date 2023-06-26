@@ -22,4 +22,4 @@ path = "/image/fuzz_jpeg"
 args = "-dict=/jpeg.dict -rss_limit_mb=8192 /go-fuzz-corpus/jpeg/corpus"
 
 [cov]
-target = "/image/fuzz_jepg.zip"
+target = "/image/fuzz_jpeg.zip"
