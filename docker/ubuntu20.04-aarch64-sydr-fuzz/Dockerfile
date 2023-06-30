@@ -59,6 +59,16 @@ RUN git clone https://github.com/ninja-build/ninja.git && cd ninja && \
     git checkout v1.11.1 && cmake -Bbuild-cmake && cmake --build build-cmake && \
     mv build-cmake/ninja /usr/bin && cd .. && rm -rf ninja
 
+# Install Go
+RUN wget https://go.dev/dl/go1.19.10.linux-arm64.tar.gz && \
+    tar -C /root -xf go1.19.10.linux-arm64.tar.gz && \
+    rm go1.19.10.linux-arm64.tar.gz
+
+ENV GOPATH=/root/go
+ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
+
+RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
+
 # Install Rust.
 RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly --profile=minimal
 
