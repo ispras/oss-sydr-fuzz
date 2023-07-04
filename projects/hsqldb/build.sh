@@ -18,6 +18,8 @@ SRC=/
 OUT=/out
 ANT=/ant/apache-ant-1.10.12/bin/ant
 
+mkdir $OUT
+
 pushd ${SRC}/hsqldb-svn/build
 $ANT -Dbuild.debug=true hsqldb
 cp ../lib/hsqldb.jar $OUT/
@@ -41,24 +43,4 @@ for fuzzer in $(find $SRC -maxdepth 1 -name '*Fuzzer.java'); do
   fuzzer_basename=$(basename -s .java $fuzzer)
   javac -cp $SRC:$BUILD_CLASSPATH $fuzzer
   cp $SRC/$fuzzer_basename.class $OUT/
-  #for member_class in $(find $SRC -maxdepth 1 -name "$fuzzer_basename\$*.class"); do
-  #  cp $member_class $OUT/
-  #done
-
-  # Create an execution wrapper that executes Jazzer with the correct arguments.
-  echo "#!/bin/bash
-# LLVMFuzzerTestOneInput for fuzzer detection.
-this_dir=\$(dirname \"\$0\")
-if [[ \"\$@\" =~ (^| )-runs=[0-9]+($| ) ]]; then
-  mem_settings='-Xmx1900m:-Xss900k'
-else
-  mem_settings='-Xmx2048m:-Xss1024k'
-fi
-jazzer --agent_path=\$this_dir/jazzer_agent_deploy.jar \
---cp=$RUNTIME_CLASSPATH \
---target_class=$fuzzer_basename \
---jvm_args=\"\$mem_settings\" \
---disabled_hooks=\"com.code_intelligence.jazzer.sanitizers.SqlInjection\" \
-\$@" > $OUT/$fuzzer_basename
-  chmod u+x $OUT/$fuzzer_basename
 done

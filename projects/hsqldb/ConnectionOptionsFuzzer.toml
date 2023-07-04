@@ -14,18 +14,6 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
-
-RUN curl -L https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.12-bin.zip -o ant.zip && \
-    unzip ant.zip -d /ant && \
-    rm -rf ant.zip
-
-RUN apt install -y subversion
-
-RUN svn checkout https://svn.code.sf.net/p/hsqldb/svn/base/trunk hsqldb-svn
-
-COPY build.sh /
-COPY *.java /
-WORKDIR /hsqldb
-
-RUN chmod +x /build.sh && /build.sh
+[jazzer]
+target_class = "ConnectionOptionsFuzzer"
+args = "--cp=/out/:/out/hsqldb.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 --disabled_hooks=com.code_intelligence.jazzer.sanitizers.SqlInjection"
