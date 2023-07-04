@@ -28,4 +28,4 @@ COPY build.sh /
 COPY *.java /
 WORKDIR /hsqldb
 
-RUN chmod +x /build.sh && /build.sh
+RUN /build.sh
