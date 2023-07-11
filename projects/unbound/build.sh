@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 # Copyright 2019 Google Inc.
-# Modifications copyright (C) 2021 ISP RAS
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
