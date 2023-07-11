@@ -38,4 +38,4 @@ ENV CASR_SOURCE_DIRS /json-sanitizer/src/main/java
 
 WORKDIR /json-sanitizer
 RUN git checkout 6c86f9becc3412167e912384832722a5ebe69b12
-RUN chmod +x /json-sanitizer/build.sh && /json-sanitizer/build.sh
+RUN /json-sanitizer/build.sh
