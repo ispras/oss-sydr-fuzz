@@ -21,14 +21,14 @@ MAINTAINER Andrey Fedotov
 # Install build dependencies.
 RUN apt-get update
 
-RUN apt-get install -y make libtool libssl-dev libexpat-dev wget bison
+RUN apt-get install -y make libtool libssl-dev libexpat-dev wget bison flex
 
 RUN git clone https://github.com/NLnetLabs/unbound unbound
 
 WORKDIR unbound
 
 # Checkout commit.
-RUN git checkout 7749d98a14359200d6d37028f27f07fd823623a1
+RUN git checkout 7240ecbeb00687197a039d7088e8825c58aae018
 
 COPY parse_packet_fuzzer.c .
 
