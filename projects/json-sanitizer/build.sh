@@ -37,6 +37,11 @@ PROJECT_JARS=json-sanitizer.jar
 # Get the fuzzer dependencies (gson).
 mvn dependency:copy -Dartifact=com.google.code.gson:gson:2.8.6 -DoutputDirectory=$OUT/
 
+# Get gson sources.
+wget -P $OUT/ https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.6/gson-2.8.6-sources.jar
+mkdir $OUT/gson-2.8.6-src
+unzip -d $OUT/gson-2.8.6-src/ $OUT/gson-2.8.6-sources.jar
+
 # The jar files containing further dependencies of the fuzz targets (separated
 # by spaces).
 FUZZER_JARS=gson-2.8.6.jar

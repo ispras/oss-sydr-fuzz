@@ -34,7 +34,7 @@ RUN git clone https://github.com/OWASP/json-sanitizer /json-sanitizer
 COPY build.sh /json-sanitizer
 COPY DenylistFuzzer.java IdempotenceFuzzer.java ValidJsonFuzzer.java /
 
-ENV CASR_SOURCE_DIRS /json-sanitizer/src/main/java
+ENV CASR_SOURCE_DIRS /json-sanitizer/src/main/java:/out/gson-2.8.6-src/
 
 WORKDIR /json-sanitizer
 RUN git checkout 6c86f9becc3412167e912384832722a5ebe69b12
