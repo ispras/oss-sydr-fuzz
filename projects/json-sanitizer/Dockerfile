@@ -29,10 +29,13 @@ RUN rm -rf fuzzing
 RUN git clone --depth 1 https://github.com/dvyukov/go-fuzz-corpus && \
     mv go-fuzz-corpus/json/corpus /out/corpus && rm -rf go-fuzz-corpus
 
-RUN git clone --depth 1 https://github.com/OWASP/json-sanitizer /json-sanitizer
+RUN git clone https://github.com/OWASP/json-sanitizer /json-sanitizer
 
 COPY build.sh /json-sanitizer
 COPY DenylistFuzzer.java IdempotenceFuzzer.java ValidJsonFuzzer.java /
 
+ENV CASR_SOURCE_DIRS /json-sanitizer/src/main/java
+
 WORKDIR /json-sanitizer
+RUN git checkout 6c86f9becc3412167e912384832722a5ebe69b12
 RUN chmod +x /json-sanitizer/build.sh && /json-sanitizer/build.sh
