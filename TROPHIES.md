@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-132 new bugs in
-27 open source projects.
+134 new bugs in
+28 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -56,6 +56,8 @@
     * <https://github.com/image-rs/image/issues/1854>
 * libpcap:
     * <https://github.com/the-tcpdump-group/libpcap/issues/1134>
+* libtiff (OpenCV 3rdparty):
+    * <https://gitlab.com/libtiff/libtiff/-/merge_requests/512>
 * Little-CMS:
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
@@ -153,6 +155,7 @@
     * <https://github.com/pytorch/vision/pull/7691>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
+    * <https://github.com/NLnetLabs/unbound/pull/909>
 * xlnt:
     * <https://github.com/tfussell/xlnt/issues/592>
     * <https://github.com/tfussell/xlnt/issues/593>
