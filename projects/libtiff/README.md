@@ -1,4 +1,4 @@
-# libTIFF
+# LibTIFF
 
 LibTIFF is a library for reading and writing Tagged Image File Format (abbreviated TIFF) files.
 
