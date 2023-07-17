@@ -20,7 +20,7 @@ target = "/tiff_read_rgba_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /libtiff/tif -x /tiff.dict"
+args = "-i /tif -x /tiff.dict"
 target = "/tiff_read_rgba_afl @@"
 jobs = 4
 

@@ -107,5 +107,5 @@ then
   mkdir afl_testcases
   (cd afl_testcases; tar xf "/afl_testcases.tgz")
   mkdir /tif
-  find afl_testcases -type f -name '*.tif' -exec mv -n {} tif/ \;
+  find afl_testcases -type f -name '*.tif' -exec mv -n {} /tif/ \;
 fi

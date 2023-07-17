@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/tiff_read_rgba_fuzzer"
-args = "-dict=/tiff.dict /libtiff/tif"
+args = "-dict=/tiff.dict /tif"
 
 [cov]
 target = "/tiff_read_rgba_cov @@"
