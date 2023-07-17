@@ -1,0 +1,19 @@
+diff --git a/Makefile b/Makefile
+index 8ea7549..cce470f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,14 +1,5 @@
+ # Unix makefile for JBIG-KIT
+ 
+-# Select an ANSI/ISO C compiler here, GNU gcc is recommended
+-CC = gcc
+-
+-# Options for the compiler: A high optimization level is suggested
+-CFLAGS = -O2 -W -Wno-unused-result
+-# CFLAGS = -O -g -W -Wall -Wno-unused-result -ansi -pedantic # -DDEBUG
+-
+-export CC CFLAGS
+-
+ VERSION=2.1
+ 
+ all: lib pbm
