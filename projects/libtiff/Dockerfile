@@ -16,16 +16,16 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN git clone https://gitlab.com/libtiff/libtiff &&\
+RUN git clone https://gitlab.com/libtiff/libtiff && \
     cd libtiff && git checkout cb88a5b6bf1757060ec4d50055fa852fd7830cfe
 
-RUN git clone https://github.com/madler/zlib &&\
+RUN git clone https://github.com/madler/zlib && \
     cd zlib && git checkout 04f42ceca40f73e2978b50e93806c2a18c1281fc
 
-RUN git clone https://github.com/libjpeg-turbo/libjpeg-turbo &&\
+RUN git clone https://github.com/libjpeg-turbo/libjpeg-turbo && \
     cd libjpeg-turbo && git checkout e429e379b01dde9d1d92b5bbabd2a18ee75d7eaa
 
-RUN git clone https://www.cl.cam.ac.uk/~mgk25/git/jbigkit &&\
+RUN git clone https://www.cl.cam.ac.uk/~mgk25/git/jbigkit && \
     cd jbigkit && git checkout 7d3c1bea895d910907e2501fe9165e353eceabae
 
 COPY jbigkit.patch /jbigkit
