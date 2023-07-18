@@ -86,6 +86,7 @@ ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driv
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 
 RUN git clone https://github.com/google/atheris && cd atheris && \
+    git checkout edf3eebfd028a2822db5037b8f95e5432990fd03 && \
     LIBFUZZER_LIB=/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer_no_main-aarch64.a \
     MAKEFLAGS="-j$(nproc)" pip3 install . && \
     cd .. && rm -rf atheris

@@ -79,7 +79,9 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
 
 ENV PATH=$PATH:/fuzz/sydr
 
-RUN git clone https://github.com/google/atheris && cd atheris && pip3 install . && cd .. && rm -rf atheris
+RUN git clone https://github.com/google/atheris && cd atheris && \
+    git checkout edf3eebfd028a2822db5037b8f95e5432990fd03 && \
+    pip3 install . && cd .. && rm -rf atheris
 
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
