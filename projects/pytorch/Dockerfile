@@ -22,7 +22,7 @@ RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch/ /pytorch
 RUN cd /pytorch && \
-    git checkout d56e1b2f674ac8667d5f58329569a628f1636b81 && \
+    git checkout 18bcf62bbcf7ffd47e3bcf2596f72aa07a07d65f && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
