@@ -19,45 +19,50 @@
 #add next branch
 for branch in v4 next
 do
-    cd capstone$branch
-    # build project
-    mkdir build
+    cd /capstone$branch
+
+    # Build libFuzzer target
+    mkdir build && cd build
     # does not seem to work in source directory
     # + make.sh overwrites CFLAGS
-    cd build
-    cmake -DCMAKE_C_COMPILER=clang -DCMAKE_C_FLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero" -DCAPSTONE_BUILD_SHARED=0 ..
+    cmake -DCMAKE_C_COMPILER=clang \
+          -DCMAKE_CXX_COMPILER=clang++ \
+          -DCMAKE_C_FLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero" \
+          -DCMAKE_CXX_FLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero" \
+          -DCAPSTONE_BUILD_SHARED=0 \
+          ..
     make -j$(nproc)
-
-    cd /capstone$branch/bindings/python
-    #better debug info
-    sed -i -e 's/#print/print/' capstone/__init__.py
-    (
-    export CFLAGS=""
-    export AFL_NOOPT=1
-    python setup.py install
-    )
-    cd /capstone$branch/suite
-    mkdir fuzz/corpus
-    find MC/ -name *.cs | ./test_corpus.py
-    cd fuzz
-    cp -r corpus /corpus$branch
-
-    cd ../../build
-    # build fuzz target
-    CXX=clang++
-    CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
     FUZZO=CMakeFiles/fuzz_disasm.dir/suite/fuzz/fuzz_disasm.c.o
     if [ -f CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o ]; then
         FUZZO="$FUZZO CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o"
     fi
-    $CXX $CXXFLAGS $FUZZO -o /fuzz_disasm$branch libcapstone.a
+    clang++ -g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $FUZZO -I../include/capstone -o /fuzz_disasm$branch libcapstone.a
 
-    # build Sydr target
-    cd ..
-    rm -rf build
-    mkdir build
-    cd build
-    cmake -DCMAKE_C_COMPILER=clang -DCMAKE_C_FLAGS="-g" -DCAPSTONE_BUILD_SHARED=0 ..
+
+    # Build AFL++ target
+    cd .. && rm -rf build && mkdir build && cd build
+    cmake -DCMAKE_C_COMPILER=afl-clang-fast \
+          -DCMAKE_CXX_COMPILER=afl-clang-fast++ \
+          -DCMAKE_C_FLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" \
+          -DCMAKE_CXX_FLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" \
+          -DCAPSTONE_BUILD_SHARED=0 \
+          ..
+    make -j$(nproc)
+    FUZZO=CMakeFiles/fuzz_disasm.dir/suite/fuzz/fuzz_disasm.c.o
+    if [ -f CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o ]; then
+        FUZZO="$FUZZO CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o"
+    fi
+    afl-clang-fast++ -g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $FUZZO -I../include/capstone -o /afl_disasm$branch libcapstone.a
+
+
+    # Build Sydr target
+    cd .. && rm -rf build && mkdir build && cd build
+    cmake -DCMAKE_C_COMPILER=clang \
+          -DCMAKE_CXX_COMPILER=clang++ \
+          -DCMAKE_C_FLAGS="-g" \
+          -DCMAKE_CXX_FLAGS="-g" \
+          -DCAPSTONE_BUILD_SHARED=0 \
+          ..
     make -j$(nproc)
     FUZZO=../suite/fuzz/fuzz_harness.c
     if [ -f CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o ]; then
@@ -65,5 +70,29 @@ do
     fi
     clang -g $FUZZO -I../include/capstone -o /sydr_disasm$branch libcapstone.a
 
-    cd ../../
+
+    # Build cov target
+    cd .. && rm -rf build && mkdir build && cd build
+    cmake -DCMAKE_C_COMPILER=clang \
+          -DCMAKE_CXX_COMPILER=clang++ \
+          -DCMAKE_C_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+          -DCMAKE_CXX_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+          -DCAPSTONE_BUILD_SHARED=0 \
+          ..
+    make -j$(nproc)
+    FUZZO=../suite/fuzz/fuzz_harness.c
+    if [ -f CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o ]; then
+        FUZZO="$FUZZO CMakeFiles/fuzz_disasm.dir/suite/fuzz/platform.c.o"
+    fi
+    clang -g -fprofile-instr-generate -fcoverage-mapping $FUZZO -I../include/capstone -o /cov_disasm$branch libcapstone.a
+
+
+    # Prepare corpus
+    cd ../bindings/python
+    (export CFLAGS="" && python setup.py install)
+    cd ../../suite
+    mkdir fuzz/corpus
+    find MC/ -name *.cs | ./test_corpus.py
+    cp -r fuzz/corpus /corpus$branch
+
 done

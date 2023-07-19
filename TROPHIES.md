@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-123 new bugs in
-27 open source projects.
+136 new bugs in
+28 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -56,6 +56,10 @@
     * <https://github.com/image-rs/image/issues/1854>
 * libpcap:
     * <https://github.com/the-tcpdump-group/libpcap/issues/1134>
+    * <https://github.com/the-tcpdump-group/libpcap/pull/1205>
+    * <https://github.com/the-tcpdump-group/libpcap/pull/1206>
+* libtiff (OpenCV 3rdparty):
+    * <https://gitlab.com/libtiff/libtiff/-/merge_requests/512>
 * Little-CMS:
     * <https://github.com/mm2/Little-CMS/issues/329>
     * <https://github.com/mm2/Little-CMS/issues/331>
@@ -73,6 +77,9 @@
     * <https://github.com/ntop/nDPI/pull/1998>
     * <https://github.com/ntop/nDPI/pull/1999>
     * <https://github.com/ntop/nDPI/pull/2005>
+    * <https://github.com/ntop/nDPI/pull/2032>
+    * <https://github.com/ntop/nDPI/pull/2033>
+    * <https://github.com/ntop/nDPI/pull/2034>
 * OpenJPEG (OpenCV 3rdparty):
     * <https://github.com/opencv/opencv/issues/22284>
 * OpenXLSX:
@@ -91,12 +98,16 @@
     * <https://github.com/pytorch/pytorch/pull/91401>
     * <https://github.com/pytorch/pytorch/pull/94295>
     * <https://github.com/pytorch/pytorch/pull/94297>
-    * <https://github.com/pytorch/pytorch/pull/94298>
+    * <https://github.com/pytorch/pytorch/pull/103327>
     * <https://github.com/pytorch/pytorch/pull/94300>
     * <https://github.com/pytorch/pytorch/issues/95061> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/issues/95062> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/pull/102156>
     * <https://github.com/pytorch/pytorch/pull/102160>
+    * <https://github.com/pytorch/pytorch/pull/103667>
+    * <https://github.com/pytorch/pytorch/pull/103969>
+    * <https://github.com/pytorch/pytorch/pull/104044>
+    * <https://github.com/pytorch/pytorch/pull/104243>
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
@@ -140,10 +151,13 @@
 * TensorFlow:
     * <https://github.com/tensorflow/tensorflow/pull/56455>
     * <https://github.com/tensorflow/tensorflow/pull/60082>
+    * <https://github.com/tensorflow/tensorflow/pull/60933>
 * Torchvision:
     * <https://github.com/pytorch/vision/pull/6456>
+    * <https://github.com/pytorch/vision/pull/7691>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
+    * <https://github.com/NLnetLabs/unbound/pull/909>
 * xlnt:
     * <https://github.com/tfussell/xlnt/issues/592>
     * <https://github.com/tfussell/xlnt/issues/593>

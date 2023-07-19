@@ -28,8 +28,7 @@ RUN git clone --branch next https://github.com/aquynh/capstone.git capstonenext
 
 # Checkout specified commit. It could be updated later.
 RUN cd capstonenext && \
-    git checkout afb5575140dbf8405a8f6c3ec00ba1f954f668d0 && \
-    cd ..
+    git checkout afb5575140dbf8405a8f6c3ec00ba1f954f668d0
 
 # Copy build script.
 COPY build.sh /

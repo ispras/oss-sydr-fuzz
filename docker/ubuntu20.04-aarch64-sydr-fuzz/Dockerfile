@@ -59,6 +59,16 @@ RUN git clone https://github.com/ninja-build/ninja.git && cd ninja && \
     git checkout v1.11.1 && cmake -Bbuild-cmake && cmake --build build-cmake && \
     mv build-cmake/ninja /usr/bin && cd .. && rm -rf ninja
 
+# Install Go
+RUN wget https://go.dev/dl/go1.19.10.linux-arm64.tar.gz && \
+    tar -C /root -xf go1.19.10.linux-arm64.tar.gz && \
+    rm go1.19.10.linux-arm64.tar.gz
+
+ENV GOPATH=/root/go
+ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
+
+RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
+
 # Install Rust.
 RUN curl https://sh.rustup.rs | sh -s -- -y --default-toolchain=nightly --profile=minimal
 
@@ -76,6 +86,7 @@ ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driv
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 
 RUN git clone https://github.com/google/atheris && cd atheris && \
+    git checkout edf3eebfd028a2822db5037b8f95e5432990fd03 && \
     LIBFUZZER_LIB=/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer_no_main-aarch64.a \
     MAKEFLAGS="-j$(nproc)" pip3 install . && \
     cd .. && rm -rf atheris
@@ -88,7 +99,7 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout 4.06c && export CC=clang-14 && export CXX=clang++-14 && \
+    git checkout 4.07c && export CC=clang-14 && export CXX=clang++-14 && \
     export LD_LIBRARY_PATH="$(llvm-config-14 --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 

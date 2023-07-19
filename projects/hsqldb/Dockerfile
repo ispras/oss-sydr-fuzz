@@ -1,4 +1,4 @@
-# Copyright 2021 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,18 @@
 #
 ################################################################################
 
-[sydr]
-args = "-l debug -j 2"
-target = "/sydr_disasmnext @@"
-jobs = 2
+FROM sydr/ubuntu20.04-sydr-fuzz
 
-[libfuzzer]
-path = "/fuzz_disasmnext"
-args = "/corpusnext"
+RUN curl -L https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.12-bin.zip -o ant.zip && \
+    unzip ant.zip -d /ant && \
+    rm -rf ant.zip
+
+RUN apt install -y subversion
+
+RUN svn checkout https://svn.code.sf.net/p/hsqldb/svn/base/trunk hsqldb-svn
+
+COPY build.sh /
+COPY *.java /
+WORKDIR /hsqldb
+
+RUN /build.sh

@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,6 @@
 #
 ################################################################################
 
-[sydr]
-args = "-l debug"
-target = "/decode_jpeg_sydr @@"
-timeout = 2700
-
-[libfuzzer]
-path = "/decode_jpeg_fuzz"
-args = "-detect_leaks=0 -rss_limit_mb=15360 -timeout=300 -report_slow_units=350 /jpeg_corpus/"
-
-[cov]
-target = "/decode_jpeg_cov @@"
+[jazzer]
+target_class = "SqlStatementFuzzer"
+args = "--cp=/out/:/out/hsqldb.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 --disabled_hooks=com.code_intelligence.jazzer.sanitizers.SqlInjection"

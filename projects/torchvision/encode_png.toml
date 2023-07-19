@@ -17,6 +17,7 @@
 [sydr]
 args = "-l debug"
 target = "/encode_png_sydr @@"
+timeout = 2700
 
 [libfuzzer]
 path = "/encode_png_fuzz"
