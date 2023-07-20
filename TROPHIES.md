@@ -103,7 +103,7 @@
     * <https://github.com/pytorch/pytorch/issues/95061> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/issues/95062> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/pull/102156>
-    * <https://github.com/pytorch/pytorch/pull/102160>
+    * <https://github.com/pytorch/pytorch/pull/105537>
     * <https://github.com/pytorch/pytorch/pull/103667>
     * <https://github.com/pytorch/pytorch/pull/103969>
     * <https://github.com/pytorch/pytorch/pull/104044>
