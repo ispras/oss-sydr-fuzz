@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -e
 #
 # Copyright 2023 ISP RAS
 #
