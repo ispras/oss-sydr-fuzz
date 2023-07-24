@@ -89,7 +89,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
 	fd = bufferToFile(Data, Size);
 #endif
  	if (fd == NULL)
-				return 0;
+		return 0;
 
 	pkts = pcap_fopen_offline(fd, eBuf);
 	if (pkts == NULL) {
