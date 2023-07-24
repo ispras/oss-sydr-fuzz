@@ -8,7 +8,7 @@ tcpdump is a data-network packet analyzer computer program that runs under a com
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/libpcap` directory:
+Unzip Sydr (`sydr.zip`) in `projects/tcpdump` directory:
 
     $ unzip sydr.zip
 
