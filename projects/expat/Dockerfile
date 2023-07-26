@@ -40,3 +40,4 @@ WORKDIR /
 
 COPY corpus.zip /
 RUN unzip /corpus.zip
+RUN rm -rf /corpus/empty.xml
