@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-136 new bugs in
+137 new bugs in
 28 open source projects.
 
 * audk:
@@ -108,6 +108,7 @@
     * <https://github.com/pytorch/pytorch/pull/103969>
     * <https://github.com/pytorch/pytorch/pull/104044>
     * <https://github.com/pytorch/pytorch/pull/104243>
+    * <https://github.com/pytorch/pytorch/pull/106041>
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
