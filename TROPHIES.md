@@ -26,6 +26,8 @@
     * <https://github.com/tianocore/edk2-platforms/commit/878c4b13fb2fabd07c5db29ae465aeb2177ce744>
 * exrs:
     * <https://github.com/johannesvollmer/exrs/pull/166>
+* FFmpeg (torchvision 3rdparty):
+    * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230802093524.1136658-1-kobrineli@ispras.ru/>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
