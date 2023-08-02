@@ -18,7 +18,7 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 
 MAINTAINER Kobrin Eli
 
-# Clone pytorch and torchaudio from GitHub.
+# Clone pytorch, torchaudio and libsox from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch
 RUN cd /pytorch && \
     git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
@@ -27,11 +27,25 @@ RUN cd /pytorch && \
 COPY torchaudio.patch /
 RUN git clone https://github.com/pytorch/audio.git audio
 RUN cd /audio && \
-    git checkout 30afaa9b2f460ca3baf6ac177bce4f6b5da8b99c && \
+    git checkout 8497ee91b7526b5734e0cc16f9a0afafd9e72e78 && \
     git apply /torchaudio.patch
+
+COPY libsox.patch /
+RUN git clone git://git.code.sf.net/p/sox/code /libsox
+RUN cd /libsox && \
+    git checkout 42b3557e13e0fe01a83465b672d89faddbe65f49 && \
+    git apply /libsox.patch
 
 COPY build.sh /
 COPY load_audio.cc /audio
+
+# Build libsox
+RUN cd /libsox && \
+    autoreconf -i && \
+    ./configure && \
+    make && \
+    make install
+ENV LD_LIBRARY_PATH=/libsox/src/.libs
 
 RUN CONFIGS="libfuzzer afl" /build.sh
 RUN CONFIGS="sydr coverage" /build.sh
