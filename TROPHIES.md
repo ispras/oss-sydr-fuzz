@@ -27,7 +27,7 @@
 * exrs:
     * <https://github.com/johannesvollmer/exrs/pull/166>
 * FFmpeg (torchvision 3rdparty):
-    * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230802093524.1136658-1-kobrineli@ispras.ru/>
+    * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230802121410.1141794-1-kobrineli@ispras.ru/>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
