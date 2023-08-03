@@ -39,14 +39,6 @@ RUN cd /libsox && \
 COPY build.sh /
 COPY load_audio.cc /audio
 
-# Build libsox
-RUN cd /libsox && \
-    autoreconf -i && \
-    ./configure && \
-    make && \
-    make install
-ENV LD_LIBRARY_PATH=/libsox/src/.libs
-
 RUN CONFIGS="libfuzzer afl" /build.sh
 RUN CONFIGS="sydr coverage" /build.sh
 

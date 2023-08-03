@@ -54,9 +54,21 @@ index fc0c5494..33f33e8e 100644
 +foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
 +  add_executable(${FUZZ_TARGET}_${SUFFIX} ${CMAKE_SOURCE_DIR}/${FUZZ_TARGET}.cc)
 +  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PRIVATE
-+    libtorchaudio_sox ${TORCH_LIBRARIES}
++    libtorchaudio_sox /usr/local/lib/libsox.a ltdl ${TORCH_LIBRARIES}
 +    ${CMAKE_DL_LIBS} pthread rt ${ENGINE})
 +  add_dependencies(${FUZZ_TARGET}_${SUFFIX} libtorchaudio_sox)
 +  set_target_properties(${FUZZ_TARGET}_${SUFFIX} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
 +  install(TARGETS ${FUZZ_TARGET}_${SUFFIX} DESTINATION /)
 +endforeach()
+diff --git a/torchaudio/csrc/sox/CMakeLists.txt b/torchaudio/csrc/sox/CMakeLists.txt
+index 5ffe782c..60ba217e 100644
+--- a/torchaudio/csrc/sox/CMakeLists.txt
++++ b/torchaudio/csrc/sox/CMakeLists.txt
+@@ -10,7 +10,7 @@ torchaudio_library(
+   libtorchaudio_sox
+   "${sources}"
+   ""
+-  "torch;sox"
++  "torch;/usr/local/lib/libsox.a"
+   ""
+   )
