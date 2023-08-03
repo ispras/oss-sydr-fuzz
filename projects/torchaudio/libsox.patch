@@ -1,0 +1,17 @@
+diff --git a/configure.ac b/configure.ac
+index 39306398..0670e05e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -32,9 +32,9 @@ AC_PROG_LN_S
+ PKG_PROG_PKG_CONFIG
+ PKG_INSTALLDIR
+ 
+-AX_APPEND_COMPILE_FLAGS([-fstack-protector-strong])
+-AX_APPEND_COMPILE_FLAGS([-Wall -Wmissing-prototypes -Wstrict-prototypes])
+-AX_APPEND_LINK_FLAGS([-Wl,--as-needed])
++#AX_APPEND_COMPILE_FLAGS([-fstack-protector-strong])
++#AX_APPEND_COMPILE_FLAGS([-Wall -Wmissing-prototypes -Wstrict-prototypes])
++#AX_APPEND_LINK_FLAGS([-Wl,--as-needed])
+ 
+ dnl Check for system dependent features.
+ AC_C_BIGENDIAN
