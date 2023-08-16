@@ -265,8 +265,10 @@ then
       rm -rf /corpus
       mkdir /corpus
       cd /ffmpeg/fate-suite
-      find * -iname *.mp4 >> fnd
-      find * -iname *.mov >> fnd
-      find * -iname *.api >> fnd
+      find * -iname *.m* >> fnd
+      find * -iname *.a* >> fnd
+      find * -iname *.h* >> fnd
+      find * -iname *.b* >> fnd
+      find * -iname *.f* >> fnd
       while read p; do cp -r $p /corpus/; done < fnd
 fi
