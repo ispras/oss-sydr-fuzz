@@ -21,19 +21,21 @@ if [[ $CONFIG = "libfuzzer" ]]
 then
       export CC="clang"
       export CXX="clang++"
-      export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-      export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-      export LDFLAGS="$CFLAGS"
+      export LDFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
                          -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         /target_bsf_fuzzer.c -I/ffmpeg_deps -I/ffmpeg \
-                         -o /target_bsf_fuzzer \
+                         -I/ffmpeg_deps -I/ffmpeg \
                          -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
                          -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound \
+                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
                          -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
                          -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_fuzz"
+      export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 \
+                         -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
+                         /target_dec_fuzzer.c -o /target_dec_fuzz"
+      export TARGET_DEM="-DIO_FLAT=0 /target_dem_fuzzer.c -o /target_dem_fuzz"
 
       mkdir -p $OUT/lib/
       cp /usr/lib/x86_64-linux-gnu/libbz2.so.1.0 $OUT/lib/
@@ -45,53 +47,59 @@ if [[ $CONFIG = "afl" ]]
 then
       export CC="afl-clang-fast"
       export CXX="afl-clang-fast++"
-      export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-      export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-      export LDFLAGS="$CFLAGS"
+      export LDFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
                          -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         /target_bsf_fuzzer.c -I/ffmpeg_deps -I/ffmpeg \
-                         -o /target_bsf_afl \
+                         -I/ffmpeg_deps -I/ffmpeg \
                          -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
                          -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound \
+                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
                          -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
                          -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_afl"
+      export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
+                         -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
+                         /target_dec_fuzzer.c -o /target_dec_afl"
+      export TARGET_DEM="-DIO_FLAT=0 /target_dem_fuzzer.c -o /target_dem_afl"
 fi
 
 if [[ $CONFIG = "sydr" ]]
 then
       export CC=clang
       export CXX=clang++
-      export CFLAGS="-g"
-      export CXXFLAGS="-g"
+      export LDFLAGS="-g"
       export LINK_FLAGS="-g -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         -I/ffmpeg_deps -I/ffmpeg -o /target_bsf_sydr \
+                         -I/ffmpeg_deps -I/ffmpeg \
                          -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
                          -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound \
+                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
                          -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld \
-                         target_bsf_fuzzer.o main.o"
+                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export TARGET_BSF="-o /target_bsf_sydr target_bsf_fuzzer.o main.o"
+      export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
+                         -o /target_dec_sydr target_dec_fuzzer.o main.o"
+      export TARGET_DEM="-o /target_dem_sydr target_dem_fuzzer.o main.o"
 fi
 
 if [[ $CONFIG = "coverage" ]]
 then
       export CC=clang
       export CXX=clang++
-      export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+      export LDFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
       export LINK_FLAGS="$CFLAGS -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         -I/ffmpeg_deps -o /target_bsf_cov \
+                         -I/ffmpeg_deps \
                          -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
                          -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound \
+                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
                          -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld \
-                         target_bsf_fuzzer.o main.o"
+                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export TARGET_BSF="-o /target_bsf_cov target_bsf_fuzzer.o main.o"
+      export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
+                         -o /target_dec_cov target_dec_fuzzer.o main.o"
+      export TARGET_DEM="-o /target_dem_cov target_dem_fuzzer.o main.o"
 fi
 
 # Disable UBSan vptr since several targets built with -fno-rtti.
@@ -224,17 +232,26 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
 make clean
 make -j$(nproc) install
 
-cp /ffmpeg/tools/target_bsf_fuzzer.c /ffmpeg/tools/target_dec_fuzzer.c /ffmpeg/tools/target_dem_fuzzer.c /
-
-# Build targets.
+# Build target.
 if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
 then
-      $CC $CFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
-      $CC $CFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /target_bsf_fuzzer.c
+      $CC $LDFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
+      $CC $LDFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /target_bsf_fuzzer.c
+      $CC $LDFLAGS -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
+                   -I/ffmpeg -c -o target_dec_fuzzer.o /target_dec_fuzzer.c
+      $CC $LDFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /target_dem_fuzzer.c
 fi
 
-$CC $LINK_FLAGS
+# BSF target.
+$CC $LINK_FLAGS $TARGET_BSF
 
+# DEC target.
+$CC $LINK_FLAGS $TARGET_DEC
+
+# DEM target.
+$CC $LINK_FLAGS $TARGET_DEM
+
+# Get corpus.
 if [[ $CONFIG = "coverage" ]]
 then
       # Download test samples, will be used as seed corpus.
@@ -242,10 +259,10 @@ then
       # TODO: implement a better way to maintain a minimized seed corpora
       # for all targets. As of 2017-05-04 now the combined size of corpora
       # is too big for ClusterFuzz (over 10Gb compressed data).
-      #export TEST_SAMPLES_PATH=/ffmpeg/fate-suite/
-      #make fate-rsync SAMPLES=$TEST_SAMPLES_PATH
-      #cd /
+      export TEST_SAMPLES_PATH=/ffmpeg/fate-suite/
+      make fate-rsync SAMPLES=$TEST_SAMPLES_PATH
       #python group_seed_corpus.py $TEST_SAMPLES_PATH /
+      rm -rf /corpus
       mkdir /corpus
       cd /ffmpeg/fate-suite
       find * -iname *.mp4 >> fnd

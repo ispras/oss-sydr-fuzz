@@ -16,12 +16,12 @@
 
 [sydr]
 args = "-l debug -j2"
-target = "/target_bsf_sydr @@"
+target = "/target_dec_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/target_bsf_fuzz"
+path = "/target_dec_fuzz"
 args = "-jobs=1000 -workers=4 /corpus"
 
 [cov]
-target = "/target_bsf_cov @@"
+target = "/target_dec_cov @@"

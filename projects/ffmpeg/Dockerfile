@@ -17,14 +17,10 @@
 FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt-get update && apt-get install -y make autoconf libtool build-essential \
-	libass-dev libfreetype6-dev \
-	libvdpau-dev libxcb1-dev libxcb-shm0-dev libdrm-dev \
+	libass-dev libfreetype6-dev libsdl1.2-dev pkg-config libbz2-dev chrpath python \
+	libvdpau-dev libxcb1-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-shm0-dev libdrm-dev \
 	texinfo libbz2-dev libbz2-1.0 zlib1g zlib1g-dev yasm cmake mercurial wget \
-	xutils-dev libpciaccess-dev nasm rsync libvpx-dev gcc-multilib-arm-linux-gnueabi \
-	libass-dev libfreetype6-dev libsdl1.2-dev \
-	libvdpau-dev libxcb1-dev libxcb-shm0-dev libdrm-dev \
-	pkg-config texinfo libbz2-dev zlib1g zlib1g-dev yasm cmake mercurial wget \
-	xutils-dev libpciaccess-dev nasm rsync libvpx-dev chrpath python
+	xutils-dev libpciaccess-dev nasm rsync libvpx-dev gcc-multilib-arm-linux-gnueabi
 
 RUN curl -LO http://mirrors.kernel.org/ubuntu/pool/main/a/automake-1.16/automake_1.16.5-1.3_all.deb && \
     apt install ./automake_1.16.5-1.3_all.deb
@@ -41,7 +37,7 @@ RUN git clone https://gitlab.xiph.org/xiph/theora.git
 RUN git clone https://gitlab.xiph.org/xiph/vorbis.git
 RUN git clone https://gitlab.gnome.org/GNOME/libxml2.git
 
-COPY *.sh *.py /
+COPY *.sh *.py target* /
 
 RUN CONFIG="libfuzzer" /build.sh
 RUN CONFIG="afl" /build.sh
