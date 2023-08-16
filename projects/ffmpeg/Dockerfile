@@ -16,11 +16,11 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN apt-get update && apt-get install -y make autoconf libtool build-essential \
+RUN apt-get update && apt-get install -y \
 	libass-dev libfreetype6-dev libsdl1.2-dev pkg-config libbz2-dev chrpath python \
 	libvdpau-dev libxcb1-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-shm0-dev libdrm-dev \
-	texinfo libbz2-dev libbz2-1.0 zlib1g zlib1g-dev yasm cmake mercurial wget \
-	xutils-dev libpciaccess-dev nasm rsync libvpx-dev gcc-multilib-arm-linux-gnueabi
+	texinfo libbz2-dev libbz2-1.0 zlib1g zlib1g-dev yasm mercurial \
+	xutils-dev libpciaccess-dev nasm rsync libvpx-dev
 
 RUN curl -LO http://mirrors.kernel.org/ubuntu/pool/main/a/automake-1.16/automake_1.16.5-1.3_all.deb && \
     apt install ./automake_1.16.5-1.3_all.deb
