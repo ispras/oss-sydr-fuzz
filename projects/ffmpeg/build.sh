@@ -231,7 +231,7 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
         --disable-protocols \
         --disable-demuxer=rtp,rtsp,sdp \
         --disable-devices \
-        --disable-shared \
+        --disable-shared
 make clean
 make -j$(nproc) install
 
