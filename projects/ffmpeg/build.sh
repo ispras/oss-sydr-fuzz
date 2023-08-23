@@ -22,7 +22,8 @@ if [[ $CONFIG = "libfuzzer" ]]
 then
       export CC="clang"
       export CXX="clang++"
-      export LDFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+      export FFMPEG_CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+      export LDFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
                          -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
@@ -48,7 +49,8 @@ if [[ $CONFIG = "afl" ]]
 then
       export CC="afl-clang-fast"
       export CXX="afl-clang-fast++"
-      export LDFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+      export FFMPEG_CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+      export LDFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
                          -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
@@ -69,6 +71,7 @@ if [[ $CONFIG = "sydr" ]]
 then
       export CC=clang
       export CXX=clang++
+      export FFMPEG_CFLAGS="-g"
       export LDFLAGS="-g"
       export LINK_FLAGS="-g -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
@@ -88,6 +91,7 @@ if [[ $CONFIG = "coverage" ]]
 then
       export CC=clang
       export CXX=clang++
+      export FFMPEG_CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
       export LDFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
       export LINK_FLAGS="$CFLAGS -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
                          -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
@@ -104,8 +108,8 @@ then
 fi
 
 # Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="-fno-sanitize=vptr"
-export CXXFLAGS="-fno-sanitize=vptr"
+export CFLAGS="$LDFLAGS -fno-sanitize=vptr"
+export CXXFLAGS="$LDFLAGS -fno-sanitize=vptr"
 
 # Build dependencies.
 export FFMPEG_DEPS_PATH=/ffmpeg_deps
@@ -203,12 +207,11 @@ rm $FFMPEG_DEPS_PATH/lib/*.so.*
 
 # Build ffmpeg.
 cd /ffmpeg
-FFMPEG_BUILD_ARGS=''
 
 PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
-        --cc=$CC --cxx=$CXX --ld="$CXX $LDFLAGS -std=c++11" \
-        --extra-cflags="-I$FFMPEG_DEPS_PATH/include" \
-        --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib" \
+        --cc=$CC --cxx=$CXX --ld="$CXX" \
+        --extra-cflags="-I$FFMPEG_DEPS_PATH/include $FFMPEG_CFLAGS" \
+        --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib $LDFLAGS -std=c++11" \
         --prefix="$FFMPEG_DEPS_PATH" \
         --pkg-config-flags="--static" \
         --libfuzzer=$LIB_FUZZING_ENGINE \
@@ -229,7 +232,6 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
         --disable-demuxer=rtp,rtsp,sdp \
         --disable-devices \
         --disable-shared \
-        $FFMPEG_BUILD_ARGS
 make clean
 make -j$(nproc) install
 
