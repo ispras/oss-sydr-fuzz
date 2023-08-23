@@ -268,6 +268,6 @@ then
       rm -rf /corpus
       mkdir /corpus
       cd /ffmpeg/fate-suite
-      cp -R */*.* /corpus
+      cp -R -f -n */*.* /corpus
       rm -rf /ffmpeg/fate-suite
 fi
