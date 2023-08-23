@@ -25,14 +25,14 @@ then
       export FFMPEG_CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
       export LDFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
-                         -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
-                         -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         -I/ffmpeg_deps -I/ffmpeg \
-                         -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                         -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                         -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+                        -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
+                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
+                        -I/ffmpeg_deps -I/ffmpeg \
+                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
+                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
+                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
+                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
+                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
       export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_fuzz"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 \
                          -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
@@ -52,14 +52,14 @@ then
       export FFMPEG_CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
       export LDFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
-                         -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
-                         -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         -I/ffmpeg_deps -I/ffmpeg \
-                         -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                         -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                         -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+                        -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
+                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
+                        -I/ffmpeg_deps -I/ffmpeg \
+                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
+                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
+                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
+                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
+                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
       export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_afl"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
@@ -74,13 +74,13 @@ then
       export FFMPEG_CFLAGS="-g"
       export LDFLAGS="-g"
       export LINK_FLAGS="-g -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
-                         -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         -I/ffmpeg_deps -I/ffmpeg \
-                         -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                         -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                         -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
+                        -I/ffmpeg_deps -I/ffmpeg \
+                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
+                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
+                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
+                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
+                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
       export TARGET_BSF="-o /target_bsf_sydr target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -o /target_dec_sydr target_dec_fuzzer.o main.o"
@@ -92,15 +92,15 @@ then
       export CC=clang
       export CXX=clang++
       export FFMPEG_CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export LDFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export LINK_FLAGS="$CFLAGS -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
-                         -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                         -I/ffmpeg_deps \
-                         -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                         -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                         -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                         -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                         -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export LDFLAGS="$FFMPEG_CFLAGS"
+      export LINK_FLAGS="$LDFLAGS -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
+                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
+                        -I/ffmpeg_deps \
+                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
+                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
+                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
+                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
+                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
       export TARGET_BSF="-o /target_bsf_cov target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -o /target_dec_cov target_dec_fuzzer.o main.o"
@@ -174,14 +174,13 @@ make -j$(nproc) all
 make install
 
 cd /theora
-THEORA_BUILD_ARGS=''
 # theora requires ogg, need to pass its location to the "configure" script.
 CFLAGS="$CFLAGS -fPIC" LDFLAGS="-L$FFMPEG_DEPS_PATH/lib/" \
       CPPFLAGS="$CXXFLAGS -I$FFMPEG_DEPS_PATH/include/" \
       LD_LIBRARY_PATH="$FFMPEG_DEPS_PATH/lib/" \
       ./autogen.sh
 ./configure --with-ogg="$FFMPEG_DEPS_PATH" --prefix="$FFMPEG_DEPS_PATH" \
-      --enable-static --disable-examples $THEORA_BUILD_ARGS
+      --enable-static --disable-examples
 make clean
 make -j$(nproc)
 make install
@@ -257,11 +256,6 @@ $CC $LINK_FLAGS $TARGET_DEM
 # Get corpus.
 if [[ $CONFIG = "coverage" ]]
 then
-      # Download test samples, will be used as seed corpus.
-      # DISABLED.
-      # TODO: implement a better way to maintain a minimized seed corpora
-      # for all targets. As of 2017-05-04 now the combined size of corpora
-      # is too big for ClusterFuzz (over 10Gb compressed data).
       export TEST_SAMPLES_PATH=/ffmpeg/fate-suite/
       make fate-rsync SAMPLES=$TEST_SAMPLES_PATH
       #python group_seed_corpus.py $TEST_SAMPLES_PATH /
