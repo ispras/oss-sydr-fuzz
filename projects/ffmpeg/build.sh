@@ -210,7 +210,7 @@ cd /ffmpeg
 PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
         --cc=$CC --cxx=$CXX --ld="$CXX" \
         --extra-cflags="-I$FFMPEG_DEPS_PATH/include $FFMPEG_CFLAGS" \
-        --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib $LDFLAGS -std=c++11" \
+        --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib $FFMPEG_CFLAGS -std=c++11" \
         --prefix="$FFMPEG_DEPS_PATH" \
         --pkg-config-flags="--static" \
         --libfuzzer=$LIB_FUZZING_ENGINE \
