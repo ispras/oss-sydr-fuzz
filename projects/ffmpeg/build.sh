@@ -33,11 +33,11 @@ then
       export FFMPEG_CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
       export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
-      export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_fuzz"
+      export TARGET_BSF="/ffmpeg/tools/target_bsf_fuzzer.c -o /target_bsf_fuzz"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 \
                          -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
-                         /target_dec_fuzzer.c -o /target_dec_fuzz"
-      export TARGET_DEM="-DIO_FLAT=0 /target_dem_fuzzer.c -o /target_dem_fuzz"
+                         /ffmpeg/tools/target_dec_fuzzer.c -o /target_dec_fuzz"
+      export TARGET_DEM="-DIO_FLAT=0 /ffmpeg/tools/target_dem_fuzzer.c -o /target_dem_fuzz"
 
       mkdir -p $OUT/lib/
       cp /usr/lib/x86_64-linux-gnu/libbz2.so.1.0 $OUT/lib/
@@ -52,11 +52,11 @@ then
       export FFMPEG_CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
       export CFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
-      export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_afl"
+      export TARGET_BSF="/ffmpeg/tools/target_bsf_fuzzer.c -o /target_bsf_afl"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
-                         /target_dec_fuzzer.c -o /target_dec_afl"
-      export TARGET_DEM="-DIO_FLAT=0 /target_dem_fuzzer.c -o /target_dem_afl"
+                         /ffmpeg/tools/target_dec_fuzzer.c -o /target_dec_afl"
+      export TARGET_DEM="-DIO_FLAT=0 /ffmpeg/tools/target_dem_fuzzer.c -o /target_dem_afl"
 fi
 
 if [[ $CONFIG = "sydr" ]]
@@ -216,10 +216,10 @@ make -j$(nproc) install
 if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
 then
       $CC $FFMPEG_CFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
-      $CC $FFMPEG_CFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /target_bsf_fuzzer.c
+      $CC $FFMPEG_CFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /ffmpeg/tools/target_bsf_fuzzer.c
       $CC $FFMPEG_CFLAGS -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
-                   -I/ffmpeg -c -o target_dec_fuzzer.o /target_dec_fuzzer.c
-      $CC $FFMPEG_CFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /target_dem_fuzzer.c
+                   -I/ffmpeg -c -o target_dec_fuzzer.o /ffmpeg/tools/target_dec_fuzzer.c
+      $CC $FFMPEG_CFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /ffmpeg/tools/target_dem_fuzzer.c
 fi
 
 # BSF target.

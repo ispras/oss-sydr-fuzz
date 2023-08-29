@@ -47,7 +47,7 @@ RUN git clone https://gitlab.xiph.org/xiph/vorbis.git && cd vorbis && \
 RUN git clone https://gitlab.gnome.org/GNOME/libxml2.git && cd libxml2 && \
 	git checkout 778cca386dd29893958310576792e08e018f8e23
 
-COPY *.sh *.py target* /
+COPY *.sh *.py /
 
 RUN CONFIG="libfuzzer" /build.sh
 RUN CONFIG="afl" /build.sh
