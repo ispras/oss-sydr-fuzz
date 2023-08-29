@@ -17,22 +17,22 @@
 ################################################################################
 
 export OUT="/"
+export LINK_LIBS="-ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
+                  -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
+                  -I/ffmpeg_deps -I/ffmpeg \
+                  -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
+                  -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
+                  -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
+                  -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
+                  -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
 
 if [[ $CONFIG = "libfuzzer" ]]
 then
       export CC="clang"
       export CXX="clang++"
       export FFMPEG_CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-      export LDFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
-      export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
-                        -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
-                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                        -I/ffmpeg_deps -I/ffmpeg \
-                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
+      export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
       export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_fuzz"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 \
                          -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
@@ -50,16 +50,8 @@ then
       export CC="afl-clang-fast"
       export CXX="afl-clang-fast++"
       export FFMPEG_CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-      export LDFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
-      export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero \
-                        -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib 
-                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                        -I/ffmpeg_deps -I/ffmpeg \
-                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export CFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
+      export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
       export TARGET_BSF="/target_bsf_fuzzer.c -o /target_bsf_afl"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
@@ -72,15 +64,8 @@ then
       export CC=clang
       export CXX=clang++
       export FFMPEG_CFLAGS="-g"
-      export LDFLAGS="-g"
-      export LINK_FLAGS="-g -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
-                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                        -I/ffmpeg_deps -I/ffmpeg \
-                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export CFLAGS="-g"
+      export LINK_FLAGS="-g $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_sydr target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -o /target_dec_sydr target_dec_fuzzer.o main.o"
@@ -92,15 +77,8 @@ then
       export CC=clang
       export CXX=clang++
       export FFMPEG_CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export LDFLAGS="$FFMPEG_CFLAGS"
-      export LINK_FLAGS="$LDFLAGS -ldrm -lm -ldl -lXext -lz -lpthread -lrt -L/ffmpeg_deps/lib \
-                        -L/ffmpeg_deps/lib/alsa-lib/smixer/ -L/ffmpeg_deps/lib/vdpau/ \
-                        -I/ffmpeg_deps \
-                        -lfdk-aac -lvorbisenc -lvorbisfile -l:smixer-hda.a -l:smixer-ac97.a \
-                        -l:smixer-sbase.a -lvdpau_trace -lavfilter -lavdevice -lpostproc \
-                        -lva -logg -lswscale -ltheoradec -ltheoraenc -lvpx -lasound -lbz2 \
-                        -lswresample -lvorbis -lvdpau -lavutil -lavcodec -lavformat \
-                        -ltheora -lva-drm -lxml2 -lopus -fuse-ld=/usr/bin/ld.lld"
+      export CFLAGS="$FFMPEG_CFLAGS"
+      export LINK_FLAGS="$FFMPEG_CFLAGS $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_cov target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -o /target_dec_cov target_dec_fuzzer.o main.o"
@@ -108,8 +86,8 @@ then
 fi
 
 # Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="$LDFLAGS -fno-sanitize=vptr"
-export CXXFLAGS="$LDFLAGS -fno-sanitize=vptr"
+export CFLAGS="$CFLAGS -fno-sanitize=vptr"
+export CXXFLAGS="$CFLAGS -fno-sanitize=vptr"
 
 # Build dependencies.
 export FFMPEG_DEPS_PATH=/ffmpeg_deps
@@ -237,11 +215,11 @@ make -j$(nproc) install
 # Build target.
 if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
 then
-      $CC $LDFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
-      $CC $LDFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /target_bsf_fuzzer.c
-      $CC $LDFLAGS -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
+      $CC $FFMPEG_CFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
+      $CC $FFMPEG_CFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /target_bsf_fuzzer.c
+      $CC $FFMPEG_CFLAGS -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
                    -I/ffmpeg -c -o target_dec_fuzzer.o /target_dec_fuzzer.c
-      $CC $LDFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /target_dem_fuzzer.c
+      $CC $FFMPEG_CFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /target_dem_fuzzer.c
 fi
 
 # BSF target.
