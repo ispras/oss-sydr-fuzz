@@ -86,7 +86,7 @@ then
 fi
 
 # Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="$CFLAGS -fno-sanitize=vptr"
+export CFLAGS="$FFMPEG_FLAGS"
 export CXXFLAGS="$CFLAGS -fno-sanitize=vptr"
 
 # Build dependencies.
