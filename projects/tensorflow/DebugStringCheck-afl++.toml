@@ -28,4 +28,4 @@ target = "/afl/tensor_fuzz --fuzz=TensorFuzz.DebugStringCheck @@"
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/cov/general_ops_fuzz --fuzz=FuzzDecodeDecodeValidInput.Fuzz @@"
+target = "/cov/tensor_fuzz --fuzz=TensorFuzz.DebugStringCheck @@"
