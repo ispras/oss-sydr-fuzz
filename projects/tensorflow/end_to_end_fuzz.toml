@@ -23,7 +23,7 @@ target = "/sydr/end_to_end_fuzz --fuzz=End2EndFuzz.FuzzEndToEnd @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/end_to_end_fuzz_run"
-args = "-rss_limit_mb=8192 /corpus/add"
+args = "-rss_limit_mb=8192 /corpus/end_to_end"
 
 [cov]
 target = "/cov/end_to_end_fuzz --fuzz=End2EndFuzz.FuzzEndToEnd @@"
