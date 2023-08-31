@@ -236,7 +236,6 @@ if [[ $CONFIG = "coverage" ]]
 then
       export TEST_SAMPLES_PATH=/ffmpeg/fate-suite/
       make fate-rsync SAMPLES=$TEST_SAMPLES_PATH
-      #python group_seed_corpus.py $TEST_SAMPLES_PATH /
       rm -rf /corpus
       mkdir /corpus
       cd /ffmpeg/fate-suite
