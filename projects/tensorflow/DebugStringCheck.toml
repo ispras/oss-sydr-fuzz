@@ -26,4 +26,4 @@ path = "/fuzzer/DebugStringCheck_run"
 args = "-rss_limit_mb=8192 /corpus/DebugStringCheck"
 
 [cov]
-target = "/cov/general_ops_fuzz --fuzz=TensorFuzz.DebugStringCheck @@"
+target = "/cov/tensor_fuzz --fuzz=TensorFuzz.DebugStringCheck @@"
