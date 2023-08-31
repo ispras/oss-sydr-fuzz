@@ -18,7 +18,7 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"
+target = "/sydr/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"
 
 [libfuzzer]
 set_cover_merge=true
@@ -26,4 +26,4 @@ path = "/fuzzer/FuzzImportGraphDef_run"
 args = "-rss_limit_mb=8192 /corpus/FuzzImportGraphDef"
 
 [cov]
-target = "/cov/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"
+target = "/cov/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"
