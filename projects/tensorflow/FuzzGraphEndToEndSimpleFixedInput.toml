@@ -22,8 +22,8 @@ target = "/sydr/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixe
 
 [libfuzzer]
 set_cover_merge=true
-path = "/fuzzer/FuzzDecodeJpegValidInput_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzDecodeJpegValidInput"
+path = "/fuzzer/FuzzGraphEndToEndSimpleFixedInput_run"
+args = "-rss_limit_mb=8192 /corpus/FuzzGraphEndToEndSimpleFixedInput"
 
 [cov]
 target = "/cov/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
