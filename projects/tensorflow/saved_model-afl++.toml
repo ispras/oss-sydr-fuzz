@@ -18,12 +18,12 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/sydr/saved_model_fuzz --fuzz=SavedModelFuzz.FuzzLoadSavedModel @@"
 
 [libfuzzer]
 set_cover_merge=true
-path = "/fuzzer/runtime_client_fuzz_run"
-args = "-rss_limit_mb=8192 /corpus/runtime_client"
+path = "/fuzzer/saved_model_run"
+args = "-rss_limit_mb=8192 /corpus/FuzzDecodeJpegValidInput"
 
 [cov]
-target = "/cov/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/cov/saved_model_fuzz --fuzz=SavedModelFuzz.FuzzLoadSavedModel @@"

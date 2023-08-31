@@ -31,8 +31,8 @@ fi
 if [[ $CONFIG = "afl" ]]
 then
   export OUT="/afl"
-  export CC=afl-clang-fast
-  export CXX=afl-clang-fast++
+  export CC=/custom_afl_cc/AFLplusplus/afl-clang-fast
+  export CXX=/custom_afl_cc/AFLplusplus/afl-clang-fast++
   export CFLAGS="-g -fsanitize=undefined,address,bounds,integer,null -DPATCH_ARGS_FOR_AFL"
   export CXXFLAGS="-g -fsanitize=undefined,address,bounds,integer,null -DPATCH_ARGS_FOR_AFL"
   export SANITIZERS="address undefined"
@@ -64,6 +64,9 @@ then
   $CC $CFLAGS -fPIC -o /sydr_driver.o -c /sydr_driver.cc
 fi
 
+# Remove configure for runtime_client_fuzz target because it is spoilt
+rm tensorflow/security/fuzzing/cc/core/function/BUILD
+
 mkdir $OUT
 git apply --ignore-space-change --ignore-whitespace /fuzz_patch.patch
 
@@ -81,6 +84,7 @@ sed -i 's/build:linux --copt=\"-Wno-array-parameter\"/# overwritten/g' ./.bazelr
 sed -i 's/build:linux --copt=\"-Wno-stringop-overflow\"/# overwritten/g' ./.bazelrc
 
 # Force Python3, run configure.py to pick the right build config
+export TF_PYTHON_VERSION=3.9
 PYTHON=python3
 yes "" | python3 configure.py
 

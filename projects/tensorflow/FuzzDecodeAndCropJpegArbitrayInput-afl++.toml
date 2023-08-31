@@ -18,14 +18,14 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeAndCropJpegArbitraryInput.Fuzz @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/runtime_client"
-target = "/afl/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+args = "-t 60000 -i /corpus/FuzzDecodeAndCropJpegArbitraryInput"
+target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeAndCropJpegArbitraryInput.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/cov/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/cov/general_ops_fuzz --fuzz=FuzzDecodeAndCropJpegArbitraryInput.Fuzz @@"
