@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndAllStatic @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzDecodeDecodeValidInput"
+args = "-t 60000 -i /corpus/FuzzGraphEndToEndAllStatic"
 target = "/afl/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndAllStatic @@"
 
 [aflplusplus.env]
