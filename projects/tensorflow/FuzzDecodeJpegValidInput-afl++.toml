@@ -18,14 +18,14 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeDecodeValidInput.Fuzz @@"
+target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeJpegValidInput.Fuzz @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzDecodeDecodeValidInput"
-target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeDecodeValidInput.Fuzz @@"
+args = "-t 60000 -i /corpus/FuzzDecodeJpegValidInput"
+target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeJpegValidInput.Fuzz @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/cov/general_ops_fuzz --fuzz=FuzzDecodeDecodeValidInput.Fuzz @@"
+target = "/cov/general_ops_fuzz --fuzz=FuzzDecodeJpegValidInput.Fuzz @@"
