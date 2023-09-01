@@ -23,7 +23,7 @@ target = "/sydr/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndFDP @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzGraphEndToEndFDP_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzGraphEndToEndFDP"
+args = "-rss_limit_mb=8192 /corpus/graph"
 
 [cov]
 target = "/cov/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndFDP @@"

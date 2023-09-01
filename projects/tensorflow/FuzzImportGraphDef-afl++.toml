@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzImportGraphDef"
+args = "-t 60000 -i /corpus/graph"
 target = "/afl/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"
 
 [aflplusplus.env]

@@ -23,7 +23,7 @@ target = "/sydr/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzRemoveDimWithStatus
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzRemoveDimWithStatus_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzRemoveDimWithStatus"
+args = "-rss_limit_mb=8192 /corpus/tensor_shape"
 
 [cov]
 target = "/cov/tenso_shape_fuzz --fuzz=TensorShapeFuzz.FuzzRemoveDimWithStatus @@"

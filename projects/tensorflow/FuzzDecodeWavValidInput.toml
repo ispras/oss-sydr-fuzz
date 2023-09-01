@@ -23,7 +23,7 @@ target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeWavValidInput.Fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzDecodeWavValidInput_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzDecodeWavValidInput"
+args = "-rss_limit_mb=8192 /corpus/decode_wav"
 
 [cov]
 target = "/cov/general_ops_fuzz --fuzz=FuzzDecodeWavValidInput.Fuzz @@"

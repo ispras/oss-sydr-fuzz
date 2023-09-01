@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeAndCropJpegArbitraryInput.Fuzz @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzDecodeAndCropJpegArbitraryInput"
+args = "-t 60000 -i /corpus/jpeg"
 target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeAndCropJpegArbitraryInput.Fuzz @@"
 
 [aflplusplus.env]

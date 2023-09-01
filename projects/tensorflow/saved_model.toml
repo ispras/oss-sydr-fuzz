@@ -23,7 +23,8 @@ target = "/sydr/saved_model_fuzz --fuzz=SavedModelFuzz.FuzzLoadSavedModel @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/saved_model_fuzz_run"
-args = "-rss_limit_mb=8192 /corpus/saved_model_fuzz"
+#args = "-rss_limit_mb=8192 /corpus/saved_model"
+args = "-rss_limit_mb=8192"
 
 [cov]
 target = "/cov/saved_model_fuzz --fuzz=SavedModelFuzz.FuzzLoadSavedModel @@"

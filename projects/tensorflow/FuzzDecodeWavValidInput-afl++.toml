@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeWavValidInput.Fuzz @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzDecodeWavValidInput"
+args = "-t 60000 -i /corpus/decode_wav"
 target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeWavValidInput.Fuzz @@"
 
 [aflplusplus.env]

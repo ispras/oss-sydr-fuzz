@@ -23,7 +23,7 @@ target = "/sydr/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndAllS
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzGraphEndToEndAllStatic_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzGraphEndToEndAllStatic"
+args = "-rss_limit_mb=8192 /corpus/graph"
 
 [cov]
 target = "/cov/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndAllStatic @@"

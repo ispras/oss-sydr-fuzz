@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzGraphEndToEndSimpleFixedInput"
+args = "-t 60000 -i /corpus/graph"
 target = "/afl/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
 
 [aflplusplus.env]

@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzRemoveDimWithStatus @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzRemoveDimWithStatus"
+args = "-t 60000 -i /corpus/tensor_shape"
 target = "/afl/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzRemoveDimWithStatus @@"
 
 [aflplusplus.env]

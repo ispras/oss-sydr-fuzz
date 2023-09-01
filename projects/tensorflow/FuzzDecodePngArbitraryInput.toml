@@ -23,7 +23,7 @@ target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodePngArbitraryInput.Fuzz @@"
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzDecodePngArbitraryInput_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzDecodePngArbitraryInput"
+args = "-rss_limit_mb=8192 /corpus/decode_png"
 
 [cov]
 target = "/cov/general_ops_fuzz --fuzz=FuzzDecodePngArbitraryInput.Fuzz @@"

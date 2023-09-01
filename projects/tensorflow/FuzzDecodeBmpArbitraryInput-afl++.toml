@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeBmpArbitraryInput.Fuzz @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzDecodeBmpArbitraryInput"
+args = "-t 60000 -i /corpus/decode_bmp"
 target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeBmpArbitraryInput.Fuzz @@"
 
 [aflplusplus.env]

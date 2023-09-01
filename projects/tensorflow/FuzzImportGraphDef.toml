@@ -23,7 +23,7 @@ target = "/sydr/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzImportGraphDef_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzImportGraphDef"
+args = "-rss_limit_mb=8192 /corpus/graph"
 
 [cov]
 target = "/cov/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzImportGraphDef @@"

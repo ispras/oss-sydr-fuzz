@@ -23,7 +23,7 @@ target = "/sydr/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzPartialTensorShape 
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzPartialTensorShape_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzPartialTensorShape"
+args = "-rss_limit_mb=8192 /corpus/tensor_shape"
 
 [cov]
 target = "/cov/tensor_shape_fuzz --fuzz=FuzzPartialTensorShape.Fuzz @@"

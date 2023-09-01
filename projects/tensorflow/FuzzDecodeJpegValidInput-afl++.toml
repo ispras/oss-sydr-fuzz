@@ -21,7 +21,7 @@ args = "-l debug"
 target = "/sydr/general_ops_fuzz --fuzz=FuzzDecodeJpegValidInput.Fuzz @@"
 
 [aflplusplus]
-args = "-t 60000 -i /corpus/FuzzDecodeJpegValidInput"
+args = "-t 60000 -i /corpus/jpeg"
 target = "/afl/general_ops_fuzz --fuzz=FuzzDecodeJpegValidInput.Fuzz @@"
 
 [aflplusplus.env]
