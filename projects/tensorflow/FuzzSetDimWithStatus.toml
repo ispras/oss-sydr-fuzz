@@ -23,7 +23,7 @@ target = "/sydr/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzSetDimWithStatus @@
 [libfuzzer]
 set_cover_merge=true
 path = "/fuzzer/FuzzSetDimWithStatus_run"
-args = "-rss_limit_mb=8192 /corpus/FuzzSetDimWithStatus"
+args = "-rss_limit_mb=8192 /corpus/tensor_shape"
 
 [cov]
 target = "/cov/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzSetDimWithStatus @@"

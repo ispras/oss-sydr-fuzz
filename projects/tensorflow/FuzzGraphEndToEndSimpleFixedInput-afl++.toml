@@ -18,14 +18,14 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
+target = "/sydr/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
 
 [aflplusplus]
 args = "-t 60000 -i /corpus/graph"
-target = "/afl/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
+target = "/afl/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
 
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
-target = "/cov/general_ops_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
+target = "/cov/graph_constructor_fuzz --fuzz=GraphDefFuzz.FuzzGraphEndToEndSimpleFixedInput @@"
