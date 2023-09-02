@@ -31,7 +31,7 @@ then
       export CC="clang"
       export CXX="clang++"
       export FFMPEG_CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-      export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero"
+      export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero -fno-sanitize=vptr"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
       export TARGET_BSF="/ffmpeg/tools/target_bsf_fuzzer.c -o /target_bsf_fuzz"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 \
@@ -50,7 +50,7 @@ then
       export CC="afl-clang-fast"
       export CXX="afl-clang-fast++"
       export FFMPEG_CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-      export CFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero"
+      export CFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero -fno-sanitize=vptr"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
       export TARGET_BSF="/ffmpeg/tools/target_bsf_fuzzer.c -o /target_bsf_afl"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
@@ -64,7 +64,7 @@ then
       export CC=clang
       export CXX=clang++
       export FFMPEG_CFLAGS="-g"
-      export CFLAGS="-g"
+      export CFLAGS="-g -fno-sanitize=vptr"
       export LINK_FLAGS="-g $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_sydr target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
@@ -77,7 +77,7 @@ then
       export CC=clang
       export CXX=clang++
       export FFMPEG_CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export CFLAGS="$FFMPEG_CFLAGS"
+      export CFLAGS="$FFMPEG_CFLAGS -fno-sanitize=vptr"
       export LINK_FLAGS="$FFMPEG_CFLAGS $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_cov target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
@@ -87,7 +87,7 @@ fi
 
 # Disable UBSan vptr since several targets built with -fno-rtti.
 export CFLAGS="$FFMPEG_FLAGS"
-export CXXFLAGS="$CFLAGS -fno-sanitize=vptr"
+export CXXFLAGS="$CFLAGS"
 
 # Build dependencies.
 export FFMPEG_DEPS_PATH=/ffmpeg_deps
