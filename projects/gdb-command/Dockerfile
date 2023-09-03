@@ -28,7 +28,7 @@ RUN git clone https://github.com/anfedotoff/gdb-command.git
 WORKDIR /gdb-command
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 6bba8c08d57f3e980e7eabf826b123000df2b50d
+RUN git checkout 53bde8239de16726fe19e819979828773a5fbbbe
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
