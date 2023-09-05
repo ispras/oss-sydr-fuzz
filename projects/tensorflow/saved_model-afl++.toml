@@ -18,14 +18,12 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/sydr/saved_model_fuzz --fuzz=SavedModelFuzz.FuzzLoadSavedModel @@"
 
-[aflplusplus]
-args = "-t 60000 -i /corpus/runtime_client"
-target = "/afl/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
-
-[aflplusplus.env]
-ASAN_OPTIONS = "hard_rss_limit_mb=8192"
+[libfuzzer]
+set_cover_merge=true
+path = "/fuzzer/saved_model_fuzz_run"
+args = "-rss_limit_mb=8192 /corpus/saved_model"
 
 [cov]
-target = "/cov/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/cov/saved_model_fuzz --fuzz=SavedModelFuzz.FuzzLoadSavedModel @@"
