@@ -104,11 +104,12 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     torch::jit::parseIR(input, graph.get());
 
     std::vector<at::Tensor> inputs = {at::rand({3, 3, 3}, at::kCPU)};
+    std::vector<at::Tensor> inputs_copy = {inputs[0].detach().clone()};
     auto orig_outputs = runGraph(graph, inputs);
 
     torch::jit::preoptimizeGraph(graph);
     graph->lint();
-    auto opt_outputs = runGraph(graph, inputs);
+    auto opt_outputs = runGraph(graph, inputs_copy);
 
     if (!exactlyEqual(orig_outputs, opt_outputs)) {
       throw std::logic_error("Result differs!");
