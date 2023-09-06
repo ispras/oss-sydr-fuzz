@@ -30,8 +30,8 @@ if [[ $CONFIG = "libfuzzer" ]]
 then
       export CC="clang"
       export CXX="clang++"
-      export FFMPEG_CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-      export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero -fno-sanitize=vptr"
+      export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+      export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,float-divide-by-zero -fno-sanitize=vptr"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
       export TARGET_BSF="/ffmpeg/tools/target_bsf_fuzzer.c -o /target_bsf_fuzz"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 \
@@ -49,8 +49,8 @@ if [[ $CONFIG = "afl" ]]
 then
       export CC="afl-clang-fast"
       export CXX="afl-clang-fast++"
-      export FFMPEG_CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-      export CFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero -fno-sanitize=vptr"
+      export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+      export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,float-divide-by-zero -fno-sanitize=vptr"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero $LINK_LIBS"
       export TARGET_BSF="/ffmpeg/tools/target_bsf_fuzzer.c -o /target_bsf_afl"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
@@ -63,8 +63,8 @@ if [[ $CONFIG = "sydr" ]]
 then
       export CC=clang
       export CXX=clang++
-      export FFMPEG_CFLAGS="-g"
-      export CFLAGS="-g -fno-sanitize=vptr"
+      export CFLAGS="-g"
+      export CXXFLAGS="-g -fno-sanitize=vptr"
       export LINK_FLAGS="-g $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_sydr target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
@@ -76,9 +76,9 @@ if [[ $CONFIG = "coverage" ]]
 then
       export CC=clang
       export CXX=clang++
-      export FFMPEG_CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export CFLAGS="$FFMPEG_CFLAGS -fno-sanitize=vptr"
-      export LINK_FLAGS="$FFMPEG_CFLAGS $LINK_LIBS"
+      export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+      export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fno-sanitize=vptr"
+      export LINK_FLAGS="$CFLAGS $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_cov target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -o /target_dec_cov target_dec_fuzzer.o main.o"
@@ -86,8 +86,6 @@ then
 fi
 
 # Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="$FFMPEG_FLAGS"
-export CXXFLAGS="$CFLAGS"
 
 # Build dependencies.
 export FFMPEG_DEPS_PATH=/ffmpeg_deps
@@ -187,8 +185,8 @@ cd /ffmpeg
 
 PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
         --cc=$CC --cxx=$CXX --ld="$CXX" \
-        --extra-cflags="-I$FFMPEG_DEPS_PATH/include $FFMPEG_CFLAGS" \
-        --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib $FFMPEG_CFLAGS -std=c++11" \
+        --extra-cflags="-I$FFMPEG_DEPS_PATH/include $CFLAGS" \
+        --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib $CFLAGS -std=c++11" \
         --prefix="$FFMPEG_DEPS_PATH" \
         --pkg-config-flags="--static" \
         --libfuzzer=$LIB_FUZZING_ENGINE \
@@ -215,11 +213,11 @@ make -j$(nproc) install
 # Build target.
 if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
 then
-      $CC $FFMPEG_CFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
-      $CC $FFMPEG_CFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /ffmpeg/tools/target_bsf_fuzzer.c
-      $CC $FFMPEG_CFLAGS -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
+      $CC $CFLAGS -c -o main.o /opt/StandaloneFuzzTargetMain.c
+      $CC $CFLAGS -I/ffmpeg -c -o target_bsf_fuzzer.o /ffmpeg/tools/target_bsf_fuzzer.c
+      $CC $CFLAGS -DFFMPEG_CODEC=AV_CODEC_ID_MPEG1VIDEO -DFUZZ_FFMPEG_VIDEO \
                    -I/ffmpeg -c -o target_dec_fuzzer.o /ffmpeg/tools/target_dec_fuzzer.c
-      $CC $FFMPEG_CFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /ffmpeg/tools/target_dem_fuzzer.c
+      $CC $CFLAGS -DIO_FLAT=0 -I/ffmpeg -c -o target_dem_fuzzer.o /ffmpeg/tools/target_dem_fuzzer.c
 fi
 
 # BSF target.
