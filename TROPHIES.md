@@ -158,6 +158,7 @@
 * Torchvision:
     * <https://github.com/pytorch/vision/pull/6456>
     * <https://github.com/pytorch/vision/pull/7691>
+    * <https://github.com/pytorch/vision/issues/7936>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
     * <https://github.com/NLnetLabs/unbound/pull/909>
