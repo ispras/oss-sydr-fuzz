@@ -64,8 +64,8 @@ then
       export CC=clang
       export CXX=clang++
       export CFLAGS="-g"
-      export CXXFLAGS="-g -fno-sanitize=vptr"
-      export LINK_FLAGS="-g $LINK_LIBS"
+      export CXXFLAGS="-g"
+      export LINK_FLAGS="$CFLAGS $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_sydr target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
                          -o /target_dec_sydr target_dec_fuzzer.o main.o"
@@ -77,7 +77,7 @@ then
       export CC=clang
       export CXX=clang++
       export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-      export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fno-sanitize=vptr"
+      export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
       export LINK_FLAGS="$CFLAGS $LINK_LIBS"
       export TARGET_BSF="-o /target_bsf_cov target_bsf_fuzzer.o main.o"
       export TARGET_DEC="-lxcb -lxcb-shm -lxcb -lxcb-xfixes -lxcb -lxcb-shape -lxcb -lX11 -lbz2 \
@@ -85,14 +85,11 @@ then
       export TARGET_DEM="-o /target_dem_cov target_dem_fuzzer.o main.o"
 fi
 
-# Disable UBSan vptr since several targets built with -fno-rtti.
-
 # Build dependencies.
 export FFMPEG_DEPS_PATH=/ffmpeg_deps
 rm -rf $FFMPEG_DEPS_PATH
 mkdir -p $FFMPEG_DEPS_PATH
 
-export PATH="$FFMPEG_DEPS_PATH/bin:$PATH"
 export LD_LIBRARY_PATH="$FFMPEG_DEPS_PATH/lib"
 
 cd /
@@ -189,7 +186,6 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
         --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib $CFLAGS -std=c++11" \
         --prefix="$FFMPEG_DEPS_PATH" \
         --pkg-config-flags="--static" \
-        --libfuzzer=$LIB_FUZZING_ENGINE \
         --optflags=-O1 \
         --enable-gpl \
         --enable-nonfree \
