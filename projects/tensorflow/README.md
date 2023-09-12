@@ -116,8 +116,6 @@ Open /fuzz/cleanpath-cov-html/index.html with browser.
 * status_fuzz
 * status_group_fuzz
 * string_replace_fuzz
-* string_split_fuzz
-* string_split_v2_fuzz
 * string_to_number_fuzz
 * stringprintf_fuzz
 * tstring_fuzz
