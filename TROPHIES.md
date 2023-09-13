@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-136 new bugs in
+142 new bugs in
 28 open source projects.
 
 * audk:
@@ -26,6 +26,8 @@
     * <https://github.com/tianocore/edk2-platforms/commit/878c4b13fb2fabd07c5db29ae465aeb2177ce744>
 * exrs:
     * <https://github.com/johannesvollmer/exrs/pull/166>
+* FFmpeg (torchvision 3rdparty):
+    * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230802121410.1141794-1-kobrineli@ispras.ru/>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
@@ -103,11 +105,16 @@
     * <https://github.com/pytorch/pytorch/issues/95061> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/issues/95062> (PR: <https://github.com/pytorch/pytorch/pull/95221>)
     * <https://github.com/pytorch/pytorch/pull/102156>
-    * <https://github.com/pytorch/pytorch/pull/102160>
+    * <https://github.com/pytorch/pytorch/pull/105537>
     * <https://github.com/pytorch/pytorch/pull/103667>
     * <https://github.com/pytorch/pytorch/pull/103969>
     * <https://github.com/pytorch/pytorch/pull/104044>
     * <https://github.com/pytorch/pytorch/pull/104243>
+    * <https://github.com/pytorch/pytorch/pull/106041>
+    * <https://github.com/pytorch/pytorch/pull/108413>
+    * <https://github.com/pytorch/pytorch/pull/108414>
+    * <https://github.com/pytorch/pytorch/pull/108417>
+    * <https://github.com/pytorch/pytorch/pull/108418>
 * Rizin:
     * [rizinorg/rizin@6b118bf](https://github.com/rizinorg/rizin/commit/6b118bf67300182cb068d9e9bb23e85bd052bf86) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
     * [rizinorg/rizin@eb7e0ef](https://github.com/rizinorg/rizin/commit/eb7e0efe3876a3b9322d0a74860b40010fd6b1cf) (PR: <https://github.com/rizinorg/rizin/pull/2930>)
@@ -155,6 +162,7 @@
 * Torchvision:
     * <https://github.com/pytorch/vision/pull/6456>
     * <https://github.com/pytorch/vision/pull/7691>
+    * <https://github.com/pytorch/vision/issues/7936>
 * unbound:
     * <https://github.com/NLnetLabs/unbound/issues/637>
     * <https://github.com/NLnetLabs/unbound/pull/909>

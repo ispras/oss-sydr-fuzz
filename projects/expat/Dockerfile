@@ -28,7 +28,7 @@ RUN git clone https://github.com/libexpat/libexpat expat
 WORKDIR expat
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 9c42ebdd4a3b901dd47fb20925291ff10698b610
+RUN git checkout 6a36e138f343192d256a0eace730c94170a8141b
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
 COPY build.sh main.c afl.cc *.dict ./
@@ -40,3 +40,4 @@ WORKDIR /
 
 COPY corpus.zip /
 RUN unzip /corpus.zip
+RUN rm -rf /corpus/empty.xml

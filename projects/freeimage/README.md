@@ -16,7 +16,7 @@ Unzip Sydr (`sydr.zip`) in `projects/freeimage` directory:
 
 Run docker:
 
-    $ sudo docker run -v /etc/localtime:/etc/localtime:ro --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-freeimage /bin/bash
+    $ sudo docker run -v /etc/localtime:/etc/localtime:ro --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined --rm -it -v $PWD:/fuzz oss-sydr-fuzz-freeimage /bin/bash
 
 Change directory to `/fuzz`:
 

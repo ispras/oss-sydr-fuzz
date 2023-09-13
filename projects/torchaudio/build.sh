@@ -64,6 +64,15 @@ then
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
 fi
 
+# Build libsox
+
+cd /libsox
+autoreconf -i
+make clean || true
+./configure
+make
+make install
+
 # Build pytorch
 
 cd /pytorch

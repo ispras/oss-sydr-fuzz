@@ -18,12 +18,12 @@ exit-on-time = 3600
 
 [sydr]
 args = "-l debug"
-target = "/sydr/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/sydr/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzSetDimWithStatus @@"
 
 [libfuzzer]
 set_cover_merge=true
-path = "/fuzzer/runtime_client_fuzz_run"
-args = "-rss_limit_mb=8192 /corpus/runtime_client"
+path = "/fuzzer/FuzzSetDimWithStatus_run"
+args = "-rss_limit_mb=8192 /corpus/tensor_shape"
 
 [cov]
-target = "/cov/runtime_client_fuzz --fuzz=FuzzRuntimeClient.CreateFunctionFuzz @@"
+target = "/cov/tensor_shape_fuzz --fuzz=TensorShapeFuzz.FuzzSetDimWithStatus @@"

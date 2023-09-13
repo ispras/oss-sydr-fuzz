@@ -46,6 +46,9 @@ build:${CONFIG} --copt=-DFUZZTEST_COMPATIBILITY_MODE
 build:${CONFIG} --dynamic_mode=off
 build:${CONFIG} --action_env=CC=${CC}
 build:${CONFIG} --action_env=CXX=${CXX}
+build:${CONFIG} --action_env=CLANG_COMPILER_PATH="${CC}"
+build:${CONFIG} --repo_env=CC=${CC}
+build:${CONFIG} --repo_env=BAZEL_COMPILER=${CC}
 "
 
 for flag in $CFLAGS; do

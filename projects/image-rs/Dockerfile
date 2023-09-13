@@ -26,7 +26,7 @@ RUN git clone https://github.com/image-rs/image
 WORKDIR /image
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 099a4fe08d77f3fe526e0dfae616dcb80911f332
+RUN git checkout ec623d2b805a0662b021a752833733b97c353ceb
 
 # Copy build script.
 COPY build_cov.sh build_fuzz.sh build_sydr.sh /

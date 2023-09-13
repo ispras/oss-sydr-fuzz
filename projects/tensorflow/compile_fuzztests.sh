@@ -66,10 +66,28 @@ for fuzz_main_file in $FUZZ_TEST_BINARIES_OUT_PATHS; do
   cp ${fuzz_main_file} $OUT/
   if [[ $CONFIG = "libfuzzer" ]]
   then
-    FUZZ_TESTS=$($fuzz_main_file --list_fuzz_tests)
+    FUZZ_TESTS=($($fuzz_main_file --list_fuzz_tests))
     fuzz_basename=$(basename $fuzz_main_file)
-    for fuzz_entrypoint in $FUZZ_TESTS; do
-      TARGET_FUZZER="$OUT/${fuzz_basename}_run"
+    
+    # The name of fuzzer test consists of 2 parts.
+    # Learn which parts are same to get the idx to construct
+    # unique fuzzer name.
+    if [[ ${#FUZZ_TESTS[@]} -gt 1 ]]; then
+      idx=0
+      IFS='.' read -a first <<< "${FUZZ_TESTS[0]}"
+      IFS='.' read -a second <<< "${FUZZ_TESTS[1]}"
+      if [[ ${first[0]} == ${second[0]} ]]; then
+        idx=1
+      fi
+    fi
+    
+    for fuzz_entrypoint in ${FUZZ_TESTS[@]}; do
+      target_name=$fuzz_basename
+      if [[ ${#FUZZ_TESTS[@]} -gt 1 ]]; then
+        IFS='.' read -a target_name <<< "$fuzz_entrypoint"
+        target_name=${target_name[$idx]}
+      fi
+      TARGET_FUZZER="$OUT/${target_name}_run"
       $CC $CFLAGS \
           -DFUZZER=\"$OUT/$fuzz_basename\" \
           -DTARGET=\"$fuzz_entrypoint\" \

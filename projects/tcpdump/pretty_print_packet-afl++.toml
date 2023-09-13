@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,14 @@
 #
 ################################################################################
 
-exit-on-time = 3600
-
 [sydr]
-args = "-l debug"
-target = "/sydr/string_split_fuzz @@"
+args = "-l debug -j2"
+target = "/pretty_print_packet_sydr @@"
+jobs = 2
 
-[libfuzzer]
-set_cover_merge=true
-path = "/fuzzer/string_split_fuzz"
-args = "-rss_limit_mb=8192 /corpus/string_split"
+[aflplusplus]
+args = "-i /corpus"
+target = "/pretty_print_packet_afl @@"
 
 [cov]
-target = "/cov/string_split_fuzz @@"
+target = "/pretty_print_packet_cov @@"

@@ -20,9 +20,9 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions
 
 # Clone target from GitHub.
-RUN git clone https://github.com/pytorch/pytorch/ /pytorch
+RUN git clone https://github.com/pytorch/pytorch /pytorch
 RUN cd /pytorch && \
-    git checkout d56e1b2f674ac8667d5f58329569a628f1636b81 && \
+    git checkout aa89f0a1fd69c37d51ffc3b9b9449989761c6be9 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.

@@ -14,7 +14,7 @@ Unzip Sydr (`sydr.zip`) in `projects/rapidjson` directory:
 
 Run docker:
 
-    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-rapidjson /bin/bash
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-rapidjson /bin/bash
 
 Change directory to `/fuzz`:
 

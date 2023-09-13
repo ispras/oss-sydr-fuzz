@@ -77,7 +77,7 @@ cd /pytorch
 # clean artifacts from previous build
 python3 setup.py clean
 
-MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
+MAX_JOBS=$(expr $(nproc) / 2) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
         USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=1 BUILD_TEST=0 \
         BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_ITT=0 \
         CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" \
@@ -114,7 +114,7 @@ cmake -DCMAKE_C_COMPILER=$CC \
       -DCMAKE_C_FLAGS="$CFLAGS" \
       -S . -B build/
 cd build
-cmake --build . -j$(nproc)
+cmake --build . -j$(expr $(nproc) / 2)
 
 # Build libjpeg-turbo
 
@@ -125,7 +125,7 @@ cmake -G"Unix Makefiles" -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DENAB
       -DCMAKE_C_FLAGS="$CFLAGS" \
       -S . -B build/
 cd build/
-make -j$(nproc)
+make -j$(expr $(nproc) / 2)
 
 # Build zlib
 
@@ -135,14 +135,14 @@ CC=$CC CXX=$CXX \
       CFLAGS="$CFLAGS" \
       CXXFLAGS="$CXXFLAGS" \
       ./configure
-make -j$(nproc)
+make -j$(expr $(nproc) / 2)
 
 # Build ffmpeg
 
 cd /ffmpeg
 make clean
 ./configure --cc=$CC --cxx=$CXX
-make -j$(nproc)
+make -j$(expr $(nproc) / 2)
 
 # Build torchvision
 
@@ -163,7 +163,7 @@ Torch_DIR=/pytorch/ \
       -DCMAKE_C_COMPILER_ID=GNU -DCMAKE_CXX_COMPILER_ID=GNU \
       -S . -B build/
 cd build/
-cmake --build . -j$(nproc)
+cmake --build . -j$(expr $(nproc) / 2)
 cmake --install .
 
 if [[ $CONFIG = "sydr" ]]

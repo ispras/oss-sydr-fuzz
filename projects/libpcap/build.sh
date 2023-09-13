@@ -11,8 +11,9 @@ CC="clang"
 CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
 TARGET_CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
-mkdir libfuzzer && cd libfuzzer
+./autogen.sh
 
+mkdir libfuzzer && cd libfuzzer
 ../configure CC="$CC" CFLAGS="$CFLAGS"
 make -j`nproc`
 
