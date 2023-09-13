@@ -14,7 +14,7 @@ Unzip Sydr (`sydr.zip`) in `projects/ydb` directory:
 
 Run Docker:
 
-    $ sudo docker run -v /etc/localtime:/etc/localtime:ro --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-ydb /bin/bash
+    $ sudo docker run -v /etc/localtime:/etc/localtime:ro --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined --rm -it -v $PWD:/fuzz oss-sydr-fuzz-ydb /bin/bash
 
 Change the directory to `/fuzz`:
 

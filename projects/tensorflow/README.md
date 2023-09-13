@@ -14,7 +14,7 @@ Unzip Sydr (`sydr.zip`) in `projects/tensorflow` directory:
 
 Run Docker:
 
-    $ sudo docker run -v /etc/localtime:/etc/localtime:ro --privileged --network host --rm -it -v $PWD:/fuzz oss-sydr-fuzz-tensorflow /bin/bash
+    $ sudo docker run -v /etc/localtime:/etc/localtime:ro --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined --rm -it -v $PWD:/fuzz oss-sydr-fuzz-tensorflow /bin/bash
 
 Change the directory to `/fuzz`:
 
