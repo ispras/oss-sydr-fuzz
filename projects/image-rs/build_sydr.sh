@@ -15,7 +15,10 @@
 #
 ################################################################################
 
-cargo build --release
+# '--cfg fuzzing' disables CRC checks in png crate, which
+#  makes libfuzzer' errors not reproducable on sydr targets.
+RUSTFLAGS="--cfg fuzzing" cargo build --release
+
 cp /image/fuzz/target/release/sydr_script_bmp /
 cp /image/fuzz/target/release/sydr_script_exr /
 cp /image/fuzz/target/release/sydr_script_gif /
