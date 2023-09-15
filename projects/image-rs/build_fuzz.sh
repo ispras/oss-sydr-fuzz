@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-RUSTFLAGS="-C panic=abort" cargo fuzz build -O
+RUSTFLAGS="-C debuginfo=2 -C panic=abort" cargo fuzz build -O
 cargo fuzz list | while read i; do
     cp fuzz/target/x86_64-unknown-linux-gnu/release/$i /
 done
