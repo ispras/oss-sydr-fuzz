@@ -44,8 +44,8 @@ RUN git clone https://gitlab.xiph.org/xiph/theora.git && cd theora && \
 	git checkout 7180717276af1ebc7da15c83162d6c5d6203aabf
 RUN git clone https://gitlab.xiph.org/xiph/vorbis.git && cd vorbis && \
 	git checkout 84c023699cdf023a32fa4ded32019f194afcdad0
-RUN git clone https://gitlab.gnome.org/GNOME/libxml2.git && cd libxml2 && \
-	git checkout 778cca386dd29893958310576792e08e018f8e23
+RUN git clone https://github.com/GNOME/libxml2.git && cd libxml2 && \
+	git checkout d7cfe356500906fad0f3b3d186e1abbd5489a23c
 
 COPY *.sh *.py /
 
