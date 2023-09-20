@@ -235,4 +235,5 @@ then
       cd /ffmpeg/fate-suite
       cp -R -f -n */*.* /corpus
       rm -rf /ffmpeg/fate-suite
+      cd /corpus && find -type f -size +1M -delete
 fi
