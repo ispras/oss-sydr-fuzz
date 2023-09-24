@@ -54,3 +54,5 @@ RUN /build_text.sh
 
 # Prepare initial corporas.
 RUN unzip load_fuzz.zip
+RUN mkdir /parse_native_yaml
+COPY /pytorch/aten/src/ATen/native/*.yaml /parse_native_yaml

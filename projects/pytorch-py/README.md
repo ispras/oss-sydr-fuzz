@@ -35,3 +35,5 @@ Collect coverage:
 ## Supported Targets
 
 * load_fuzz
+* load_weights_fuzz
+* parse_native_yaml
