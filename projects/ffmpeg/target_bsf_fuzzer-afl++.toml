@@ -20,7 +20,7 @@ target = "/target_bsf_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /corpus"
+args = "-i /corpus -t 2000"
 target = "/target_bsf_afl @@"
 
 [cov]
