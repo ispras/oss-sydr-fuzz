@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y autoconf automake libtool make pkg-conf
 					python flex bison libmagic-dev libcap-ng-dev libyaml-dev libjansson-dev libpcap-dev
 RUN cargo install --force cbindgen
 
+RUN git init && git remote add origin https://github.com/koltiradw/suricata_fuzz_corpus.git && \
+		git fetch origin && git checkout main && rm -rf .git
+
 RUN mkdir SRC
 
 WORKDIR /SRC
