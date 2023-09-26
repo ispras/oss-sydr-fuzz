@@ -1,0 +1,33 @@
+# Copyright 2023 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+exit-on-time = 7200
+
+[sydr]
+args = "-l trace -s 180"
+target = "/SRC/suricata/sydr/fuzz_applayerparserparse_bittorrent-dht @@"
+jobs = 1
+
+[[aflplusplus]]
+args = "-t 100000 -i /corpus_bittorrent-dht/ -x /suricata.dict -a binary"
+target = "/SRC/suricata/afl/fuzz_applayerparserparse_bittorrent-dht @@"
+jobs = 3
+[aflplusplus.env]
+        AFL_MAP_SIZE = '1298666'
+
+[cov]
+target = "/SRC/suricata/cover/fuzz_applayerparserparse_bittorrent-dht @@"
+
