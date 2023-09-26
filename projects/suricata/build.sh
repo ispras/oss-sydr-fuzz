@@ -19,7 +19,6 @@ echo "[x] Prerequisites"
 tar -xvzf pcre2-10.39.tar.gz
 tar -xvzf lz4-1.9.2.tar.gz
 tar -xvzf jansson-2.12.tar.gz
-tar -xvzf libpcap-1.9.1.tar.gz
 
 echo "[x] Libfuzzer stage"
 export CC=clang
@@ -56,25 +55,10 @@ make install
 )
 
 (
-cd libpcap-1.9.1
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 mkdir build
 cd build
 cmake ..
-make install
-)
-
-(
-cd libyaml
-./bootstrap
-./configure --disable-shared
-make -j$(nproc)
 make install
 )
 
@@ -131,27 +115,11 @@ make install
 )
 
 (
-cd libpcap-1.9.1
-make clean
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 rm -rf build
 mkdir build
 cd build
 cmake ..
-make install
-)
-
-(
-cd libyaml
-make clean
-./configure --disable-shared
-make -j$(nproc)
 make install
 )
 
@@ -206,27 +174,11 @@ make install
 )
 
 (
-cd libpcap-1.9.1
-make clean
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 rm -rf build
 mkdir build
 cd build
 cmake ..
-make install
-)
-
-(
-cd libyaml
-make clean
-./configure --disable-shared
-make -j$(nproc)
 make install
 )
 
@@ -291,27 +243,11 @@ make install
 )
 
 (
-cd libpcap-1.9.1
-make clean
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 rm -rf build
 mkdir build
 cd build
 cmake ..
-make install
-)
-
-(
-cd libyaml
-make clean
-./configure --disable-shared
-make -j$(nproc)
 make install
 )
 
@@ -332,5 +268,4 @@ cp src/fuzz_predefpcap_aware cover/fuzz_predefpcap_aware
 cp src/fuzz_sigpcap_aware cover/fuzz_sigpcap_aware
 make clean
 )
-
 
