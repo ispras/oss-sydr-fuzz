@@ -109,6 +109,7 @@ make install
 )
 
 (
+cd suricata
 sh autogen.sh
 ./src/tests/fuzz/oss-fuzz-configure.sh && make -j$(nproc)
 
@@ -157,6 +158,7 @@ make install
 )
 
 (
+cd suricata
 sed -i 's/fuzz_applayerparserparse.c/sydr_applayerparserparse.c/g' src/Makefile.am
 sed -i 's/fuzz_applayerparserparse_LDFLAGS/PASS/g' src/Makefile.am
 sed -i 's/fuzz_applayerprotodetectgetproto.c/sydr_applayerprotodetectgetproto.c/g' src/Makefile.am
@@ -216,6 +218,7 @@ make install
 )
 
 (
+cd suricata
 sh autogen.sh
 ./src/tests/fuzz/oss-fuzz-configure.sh && make -j$(nproc)
 
