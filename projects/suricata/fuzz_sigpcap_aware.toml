@@ -23,7 +23,7 @@ jobs = 1
 timeout = 1800
 
 [libfuzzer]
-path = "/SRC/suricata/afl/fuzz_sigpcap_aware"
+path = "/SRC/suricata/libfuzzer/fuzz_sigpcap_aware"
 args = "/corpus_sigpcap_aware -jobs=1000 -workers=3 -dict=/suricata.dict"
 
 [cov]

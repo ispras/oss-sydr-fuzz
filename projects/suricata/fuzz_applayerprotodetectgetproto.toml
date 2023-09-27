@@ -22,7 +22,7 @@ target = "/SRC/suricata/sydr/fuzz_applayerprotodetectgetproto @@"
 jobs = 1
 
 [libfuzzer]
-path = "/SRC/suricata/afl/fuzz_applayerprotodetectgetproto"
+path = "/SRC/suricata/libfuzzer/fuzz_applayerprotodetectgetproto"
 args = "/corpus_applayerprotodetectgetproto -jobs=1000 -workers=3 -dict=/suricata.dict"
 
 [cov]

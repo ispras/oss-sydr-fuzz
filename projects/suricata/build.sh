@@ -18,7 +18,6 @@
 echo "[x] Prerequisites"
 tar -xvzf pcre2-10.39.tar.gz
 tar -xvzf lz4-1.9.2.tar.gz
-tar -xvzf jansson-2.12.tar.gz
 
 echo "[x] Libfuzzer stage"
 export CC=clang
@@ -45,13 +44,6 @@ cd lz4-1.9.2
 make liblz4.a
 cp lib/liblz4.a /usr/local/lib/
 cp lib/lz4*.h /usr/local/include/
-)
-
-(
-cd jansson-2.12
-./configure --disable-shared
-make -j$(nproc)
-make install
 )
 
 (
@@ -85,6 +77,7 @@ make clean
 echo "[x] AFL++ stage"
 export CC=afl-clang-lto
 export CXX=afl-clang-lto++
+export AFL_LLVM_DICT2FILE=/suricata.dict
 export ac_cv_func_malloc_0_nonnull=yes
 export ac_cv_func_realloc_0_nonnull=yes
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
@@ -107,14 +100,6 @@ cp lib/lz4*.h /usr/local/include/
 )
 
 (
-cd jansson-2.12
-make clean
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 rm -rf build
 mkdir build
@@ -124,7 +109,6 @@ make install
 )
 
 (
-cp -r libhtp suricata && cd suricata
 sh autogen.sh
 ./src/tests/fuzz/oss-fuzz-configure.sh && make -j$(nproc)
 
@@ -141,13 +125,10 @@ cp src/fuzz_sigpcap_aware afl/fuzz_sigpcap_aware
 make clean
 )
 
-unset CFLAGS
-unset CXXFLAGS
-unset LDFLAGS
-unset RUSTFLAGS
-
 echo "[x] Sydr stage"
 export CC=clang
+export CFLAGS="-g"
+export CXXFLAGS="-g"
 
 (
 cd pcre2-10.39
@@ -166,14 +147,6 @@ cp lib/lz4*.h /usr/local/include/
 )
 
 (
-cd jansson-2.12
-make clean
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 rm -rf build
 mkdir build
@@ -183,8 +156,6 @@ make install
 )
 
 (
-cp -r libhtp suricata && cd suricata
-
 sed -i 's/fuzz_applayerparserparse.c/sydr_applayerparserparse.c/g' src/Makefile.am
 sed -i 's/fuzz_applayerparserparse_LDFLAGS/PASS/g' src/Makefile.am
 sed -i 's/fuzz_applayerprotodetectgetproto.c/sydr_applayerprotodetectgetproto.c/g' src/Makefile.am
@@ -235,14 +206,6 @@ cp lib/lz4*.h /usr/local/include/
 )
 
 (
-cd jansson-2.12
-make clean
-./configure --disable-shared
-make -j$(nproc)
-make install
-)
-
-(
 cd fuzzpcap
 rm -rf build
 mkdir build
@@ -252,7 +215,6 @@ make install
 )
 
 (
-cp -r libhtp suricata && cd suricata
 sh autogen.sh
 ./src/tests/fuzz/oss-fuzz-configure.sh && make -j$(nproc)
 

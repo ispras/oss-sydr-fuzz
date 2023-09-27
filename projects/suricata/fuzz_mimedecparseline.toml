@@ -22,7 +22,7 @@ target = "/SRC/suricata/sydr/fuzz_mimedecparseline @@"
 jobs = 1
 
 [libfuzzer]
-path = "/SRC/suricata/afl/fuzz_mimedecparseline"
+path = "/SRC/suricata/libfuzzer/fuzz_mimedecparseline"
 args = "/corpus_mimedecparseline -jobs=1000 -workers=3 -dict=/suricata.dict"
 
 [cov]

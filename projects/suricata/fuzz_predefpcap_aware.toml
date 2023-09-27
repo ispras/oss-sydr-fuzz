@@ -22,7 +22,7 @@ target = "/SRC/suricata/sydr/fuzz_predefpcap_aware @@"
 jobs = 1
 
 [libfuzzer]
-path = "/SRC/suricata/afl/fuzz_predefpcap_aware"
+path = "/SRC/suricata/libfuzzer/fuzz_predefpcap_aware"
 args = "/corpus_predefpcap_aware -jobs=1000 -workers=3 -dict=/suricata.dict"
 
 [cov]

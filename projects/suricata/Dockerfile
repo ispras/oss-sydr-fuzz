@@ -29,12 +29,10 @@ RUN mkdir SRC
 WORKDIR /SRC
 
 ADD https://github.com/PhilipHazel/pcre2/releases/download/pcre2-10.39/pcre2-10.39.tar.gz pcre2-10.39.tar.gz
-ADD http://www.digip.org/jansson/releases/jansson-2.12.tar.gz jansson-2.12.tar.gz
 ADD https://github.com/lz4/lz4/archive/v1.9.2.tar.gz lz4-1.9.2.tar.gz
-RUN git clone --depth 1 -b develop https://github.com/madler/zlib.git
 RUN git clone --depth=1 https://github.com/catenacyber/fuzzpcap
 
-RUN git clone --depth 1 https://github.com/OISF/suricata.git suricata && \
+RUN git clone https://github.com/OISF/suricata.git suricata && \
 				cd suricata && git checkout af4bb917dc9842229445683b5ce2f955faa464c2
 RUN git clone --depth 1 https://github.com/OISF/libhtp.git libhtp
 
