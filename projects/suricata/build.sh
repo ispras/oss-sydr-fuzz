@@ -127,6 +127,7 @@ make clean
 
 echo "[x] Sydr stage"
 export CC=clang
+export CXX=clang++
 export CFLAGS="-g"
 export CXXFLAGS="-g"
 
