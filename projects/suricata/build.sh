@@ -131,6 +131,8 @@ export CC=clang
 export CXX=clang++
 export CFLAGS="-g"
 export CXXFLAGS="-g"
+unset LDFLAGS
+unset RUSTFLAGS
 
 (
 cd pcre2-10.39
