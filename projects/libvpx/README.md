@@ -39,7 +39,7 @@ Collect coverage:
 
 Check security predicates:
 
-    # sydr-fuzz -c vp8.toml security
+    # sydr-fuzz -c vpx_dec_fuzzer_vp8.toml security
 
 ## Supported Targets
 

@@ -21,7 +21,7 @@ args = "-l trace -s 180"
 target = "/libvpx/sydr/vpx_dec_fuzzer_vp8 @@"
 jobs = 1
 
-[[aflplusplus]]
+[aflplusplus]
 args = "-t 100000 -i /corpus -x /libvpx.dict -a binary"
 target = "/libvpx/afl/vpx_dec_fuzzer_vp8 @@"
 jobs = 3

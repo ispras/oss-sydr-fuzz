@@ -89,8 +89,8 @@ for decoder in "${fuzzer_decoders[@]}"; do
 
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
-    -I. \
-    -I tmp/ \
+    -I /libvpx/ \
+    -I /libvpx/tmp/ \
     -Wl,--start-group \
     -fsanitize=fuzzer \
     examples/${fuzzer_src_name}.cc -o afl/${fuzzer_name} \
@@ -128,8 +128,8 @@ for decoder in "${fuzzer_decoders[@]}"; do
 
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
-    -I. \
-    -I tmp/ \
+    -I /libvpx \
+    -I /libvpx/tmp/ \
     -Wl,--start-group \
     $STANDALONE_MAIN \
     examples/${fuzzer_src_name}.cc -o cover/${fuzzer_name} \
@@ -168,8 +168,8 @@ for decoder in "${fuzzer_decoders[@]}"; do
 
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
-    -I. \
-    -I tmp/ \
+    -I /libvpx/ \
+    -I /libvpx/tmp/ \
     -Wl,--start-group \
     $STANDALONE_MAIN \
     examples/${fuzzer_src_name}.cc -o sydr/${fuzzer_name} \
