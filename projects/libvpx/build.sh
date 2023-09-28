@@ -15,27 +15,26 @@
 # limitations under the License.
 #
 ################################################################################
-STANDALONE_MAIN="/opt/StandaloneFuzzTargetMain.c"
+STANDALONE_MAIN="main.cc"
 
 cd /libvpx
 
 echo "[x] Libfuzzer stage"
 export CC=clang
 export CXX=clang++
-export CFLAGS="g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 
-mkdir build
+mkdir tmp
 mkdir libfuzzer
-pushd build
+pushd tmp
 
-LDFLAGS="$CXXFLAGS" LD=$CXX ./configure \
+LDFLAGS="$CXXFLAGS" LD=$CXX /libvpx/configure \
     --enable-vp9-highbitdepth \
     --disable-unit-tests \
     --disable-examples \
     --size-limit=12288x12288 \
-    --extra-cflags="-DVPX_MAX_ALLOCABLE_MEMORY=1073741824" \
     --disable-webm-io \
     --enable-debug \
     --disable-vp8-encoder \
@@ -51,32 +50,31 @@ for decoder in "${fuzzer_decoders[@]}"; do
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
     -I/libvpx \
-    -I/libvpx/build \
+    -I/libvpx/tmp \
     -Wl,--start-group \
     -fsanitize=fuzzer \
     examples/${fuzzer_src_name}.cc -o libfuzzer/${fuzzer_name} \
-    build/libvpx.a \
+    tmp/libvpx.a \
     -Wl,--end-group
 done
-rm -rf build
+rm -rf tmp
 
 echo "[x] AFL++ stage"
 export AFL_LLVM_DICT2FILE=/libvpx.dict
-export CC=afl-clang-lto
-export CXX=afl-clang-lto++
-export CFLAGS="g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CC=afl-clang-fast
+export CXX=afl-clang-fast++
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
-mkdir build
+mkdir tmp
 mkdir afl
-pushd build
+pushd tmp
 
-LDFLAGS="$CXXFLAGS" LD=$CXX ./configure \
+LDFLAGS="$CXXFLAGS" LD=$CXX /libvpx/configure \
     --enable-vp9-highbitdepth \
     --disable-unit-tests \
     --disable-examples \
     --size-limit=12288x12288 \
-    --extra-cflags="-DVPX_MAX_ALLOCABLE_MEMORY=1073741824" \
     --disable-webm-io \
     --enable-debug \
     --disable-vp8-encoder \
@@ -92,30 +90,30 @@ for decoder in "${fuzzer_decoders[@]}"; do
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
     -I. \
-    -I build/ \
+    -I tmp/ \
     -Wl,--start-group \
     -fsanitize=fuzzer \
     examples/${fuzzer_src_name}.cc -o afl/${fuzzer_name} \
-    build/libvpx.a \
+    tmp/libvpx.a \
     -Wl,--end-group
 done
 
-echo "[x] Sydr stage"
+echo "[x] Cover stage"
 export CC=clang
 export CXX=clang++
 export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
-mkdir build
+rm -rf tmp
+mkdir tmp
 mkdir cover
-pushd build
+pushd tmp
 
-LDFLAGS="$CXXFLAGS" LD=$CXX ./configure \
+LDFLAGS="$CXXFLAGS" LD=$CXX /libvpx/configure \
     --enable-vp9-highbitdepth \
     --disable-unit-tests \
     --disable-examples \
     --size-limit=12288x12288 \
-    --extra-cflags="-DVPX_MAX_ALLOCABLE_MEMORY=1073741824" \
     --disable-webm-io \
     --enable-debug \
     --disable-vp8-encoder \
@@ -131,11 +129,12 @@ for decoder in "${fuzzer_decoders[@]}"; do
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
     -I. \
-    -I build/ \
+    -I tmp/ \
     -Wl,--start-group \
     $STANDALONE_MAIN \
     examples/${fuzzer_src_name}.cc -o cover/${fuzzer_name} \
-    build/libvpx.a \
+    tmp/libvpx.a \
+    -lpthread \
     -Wl,--end-group
 done
 
@@ -145,16 +144,16 @@ export CXX=clang++
 unset CFLAGS
 unset CXXFLAGS
 
-mkdir build
+rm -rf tmp
+mkdir tmp
 mkdir sydr
-pushd build
+pushd tmp
 
-LDFLAGS="$CXXFLAGS" LD=$CXX ./configure \
+LDFLAGS="$CXXFLAGS" LD=$CXX /libvpx/configure \
     --enable-vp9-highbitdepth \
     --disable-unit-tests \
     --disable-examples \
     --size-limit=12288x12288 \
-    --extra-cflags="-DVPX_MAX_ALLOCABLE_MEMORY=1073741824" \
     --disable-webm-io \
     --enable-debug \
     --disable-vp8-encoder \
@@ -170,11 +169,12 @@ for decoder in "${fuzzer_decoders[@]}"; do
   $CXX $CXXFLAGS -std=c++11 \
     -DDECODER=${decoder} \
     -I. \
-    -I build/ \
+    -I tmp/ \
     -Wl,--start-group \
     $STANDALONE_MAIN \
     examples/${fuzzer_src_name}.cc -o sydr/${fuzzer_name} \
-    build/libvpx.a \
+    tmp/libvpx.a \
+    -lpthread \
     -Wl,--end-group
 done
 
