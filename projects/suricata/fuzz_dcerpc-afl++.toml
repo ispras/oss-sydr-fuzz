@@ -21,7 +21,7 @@ args = "-l trace -s 180"
 target = "/SRC/suricata/sydr/fuzz_applayerparserparse_dcerpc @@"
 jobs = 1
 
-[[aflplusplus]]
+[aflplusplus]
 args = "-t 100000 -i /corpus_dcerpc/ -x /suricata.dict -a binary"
 target = "/SRC/suricata/afl/fuzz_applayerparserparse_dcerpc @@"
 jobs = 3

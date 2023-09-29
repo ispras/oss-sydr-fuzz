@@ -21,7 +21,7 @@ args = "-l trace -s 180"
 target = "/SRC/suricata/sydr/fuzz_predefpcap_aware @@"
 jobs = 1
 
-[[aflplusplus]]
+[aflplusplus]
 args = "-t 10000000 -i /corpus_predefpcap_aware/ -x /suricata.dict -a binary" 
 target = "/SRC/suricata/afl/fuzz_predefpcap_aware @@"
 jobs = 3

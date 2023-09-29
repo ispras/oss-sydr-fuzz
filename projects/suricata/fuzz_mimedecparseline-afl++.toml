@@ -21,7 +21,7 @@ args = "-l trace -s 180"
 target = "/SRC/suricata/sydr/fuzz_mimedecparseline @@"
 jobs = 1
 
-[[aflplusplus]]
+[aflplusplus]
 args = "-t 10000000 -i /corpus_mimedecparseline/ -x /suricata.dict -a text"
 target = "/SRC/suricata/afl/fuzz_mimedecparseline @@"
 jobs = 3 

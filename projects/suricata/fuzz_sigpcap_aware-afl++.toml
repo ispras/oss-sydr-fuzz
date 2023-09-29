@@ -22,7 +22,7 @@ target = "/SRC/suricata/sydr/fuzz_sigpcap_aware @@"
 jobs = 1
 timeout = 1800
 
-[[aflplusplus]]
+[aflplusplus]
 args = "-t 10000000 -i /corpus_sigpcap_aware/ -x /suricata.dict -a binary"
 target = "/SRC/suricata/afl/fuzz_sigpcap_aware @@"
 jobs = 3
