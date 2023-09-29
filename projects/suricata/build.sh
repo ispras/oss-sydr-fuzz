@@ -76,7 +76,7 @@ make clean
 
 echo "[x] AFL++ stage"
 export CC=afl-clang-fast
-export CXX=afl-clang-lto++
+export CXX=afl-clang-fast++
 export AFL_LLVM_DICT2FILE=/suricata.dict
 export ac_cv_func_malloc_0_nonnull=yes
 export ac_cv_func_realloc_0_nonnull=yes
