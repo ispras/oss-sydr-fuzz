@@ -17,12 +17,12 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN apt update && apt install yasm
+RUN apt-get update && apt-get install -y yasm
 
 RUN git clone https://github.com/webmproject/libvpx.git && cd libvpx && git checkout 58a854fb271f99a15f3d2687587f74a6d12c8512
 ADD https://storage.googleapis.com/downloads.webmproject.org/test_data/fuzzer/vpx_fuzzer_seed_corpus.zip /
 RUN unzip vpx_fuzzer_seed_corpus.zip && mkdir corpus && find / -name "*.ivf" -exec cp {} corpus \;
 
-COPY build.sh vpx_dec_fuzzer.dict .
+COPY build.sh vpx_dec_fuzzer.dict /
 COPY main.cc /libvpx/
 RUN ./build.sh
