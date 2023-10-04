@@ -189,7 +189,9 @@ make clean
 
 echo "[x] Coverage stage"
 export CC=clang
+export CXX=clang++
 export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 export RUSTFLAGS="-Cinstrument-coverage"
 export ac_cv_func_malloc_0_nonnull=yes
 export ac_cv_func_realloc_0_nonnull=yes
