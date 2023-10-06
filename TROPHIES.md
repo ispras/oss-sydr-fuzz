@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-143 new bugs in
+144 new bugs in
 28 open source projects.
 
 * audk:
@@ -160,6 +160,7 @@
     * <https://github.com/tensorflow/tensorflow/pull/56455>
     * <https://github.com/tensorflow/tensorflow/pull/60082>
     * <https://github.com/tensorflow/tensorflow/pull/60933>
+    * <https://github.com/tensorflow/tensorflow/pull/61913>
 * Torchvision:
     * <https://github.com/pytorch/vision/pull/6456>
     * <https://github.com/pytorch/vision/pull/7691>
