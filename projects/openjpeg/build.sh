@@ -47,7 +47,6 @@ then
     export CXXFLAGS="-g"
     export LINK_FLAGS="$CFLAGS"
     export SUFFIX="sydr"
-    export MAIN_LINK="/main.o"
 fi
 
 if [[ $CONFIG = "coverage" ]]
@@ -74,14 +73,14 @@ cd ../tests/fuzzers
 if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
 then
     $CC $CFLAGS -c -o /main.o /opt/StandaloneFuzzTargetMain.c
-    export MAIN_LINK="/main.o"
+    MAIN_LINK="/main.o"
 fi
 
 FuzzerFiles=*.cpp
 for Filename in $FuzzerFiles; do
     TargetName=$(basename $Filename .cpp)_$SUFFIX
     $CXX $LINK_FLAGS -std=c++11 -I$SRC/src/lib/openjp2 -I$SRC/build/src/lib/openjp2 \
-        $Filename $* -o /$TargetName $SRC/build/bin/libopenjp2.a $MAIN_LINK -lm -lpthread
+        $Filename -o /$TargetName $SRC/build/bin/libopenjp2.a $MAIN_LINK -lm -lpthread
 done
 
 # Get corpus.
