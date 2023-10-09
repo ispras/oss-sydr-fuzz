@@ -15,11 +15,12 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz 
-RUN apt-get update && apt-get install -y make cmake g++
+FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN git clone --depth 1 https://github.com/uclouvain/openjpeg openjpeg
-RUN git clone --depth 1 https://github.com/uclouvain/openjpeg-data data
+RUN git clone https://github.com/uclouvain/openjpeg openjpeg && \
+    cd openjpeg && git checkout 6af39314bdb43cb9c7adcdbc7aa9381af42b52ba
+RUN git clone https://github.com/uclouvain/openjpeg-data data && \
+    cd data && git checkout f9991d5fa9a4a08fc9c29bae6405d6c67cf2b8eb
 
 WORKDIR /
 
