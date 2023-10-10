@@ -20,7 +20,7 @@ RUN apt update && apt install flex bison -y
 
 RUN git clone https://github.com/lipnitsk/libcue.git && cd libcue && git checkout fdf72c8bded8d24cfa0608b8e97f2eed210a920e
 
-COPY build.sh fuzz_cue_parse_string.c fuzz_cue_parse_string.toml fuzz_cue_parse_string-afl++.toml /
+COPY build.sh fuzz_cue_parse_string.c /
 
 RUN ./build.sh
 
