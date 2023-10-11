@@ -137,6 +137,6 @@ then
   mkdir /corpus
   cd /boringssl/fuzz/
   cp -R -f -n *_corpus/* /corpus
-  unzip /public.zip /corpus
+  unzip /public.zip -d /corpus
   cd /corpus && find -type f -size +1M -delete
 fi
