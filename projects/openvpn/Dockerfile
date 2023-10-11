@@ -27,7 +27,7 @@ RUN wget https://storage.googleapis.com/openvpn-backup.clusterfuzz-external.apps
 
 WORKDIR /
 
-COPY fuzz*.c fuzz*.cpp build.sh crypto_patch.txt public.zip /
+COPY fuzz*.c fuzz*.cpp build.sh crypto_patch.txt /
 COPY fuzz*.h /openvpn/src/openvpn/
 
 RUN CONFIG="libfuzzer" /build.sh

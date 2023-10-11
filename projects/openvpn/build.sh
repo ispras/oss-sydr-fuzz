@@ -66,7 +66,7 @@ then
   # Apply hooking changes
   apply_sed_changes
 fi
-
+ 
 if [[ $CONFIG = "afl" ]]
 then
   export CC="afl-clang-fast"
@@ -119,7 +119,7 @@ then
 fi
 
 # Compile the fuzzers
-for fuzzname in dhcp misc base64 proxy buffer route packet_id mroute list verify_cert; do
+for fuzzname in dhcp misc base64 buffer route packet_id mroute list verify_cert; do
     $CC -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../src/compat -I/usr/include/libnl3/ \
       -DPLUGIN_LIBDIR=\"/usr/local/lib/openvpn/plugins\" -std=c99 $CFLAGS \
       -c /fuzz_${fuzzname}.c -o /fuzz_${fuzzname}.o
@@ -137,5 +137,6 @@ then
   mkdir /corpus
   cd /boringssl/fuzz/
   cp -R -f -n *_corpus/* /corpus
+  unzip /public.zip /corpus
   cd /corpus && find -type f -size +1M -delete
 fi

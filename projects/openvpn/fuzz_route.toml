@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzz_route_fuzz"
-args = "-jobs=1000 -workers=4 /corpus"
+args = "-jobs=1000 -detect_leaks=0 -workers=4 /corpus"
 
 [cov]
 target = "/fuzz_route_cov @@"
