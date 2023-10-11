@@ -110,7 +110,6 @@ Open /fuzz/cleanpath-cov-html/index.html with browser.
 * one_hot_fuzz
 * parse_tensor_op_fuzz
 * parseURI_fuzz
-* saved_model
 * scatter_nd_fuzz
 * status_fuzz
 * status_group_fuzz
