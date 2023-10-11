@@ -38,7 +38,7 @@ cd ..
 mkdir libfuzzer && cd libfuzzer
 
 CC=clang
-cmake .. -DCMAKE_C_COMPILER=$CC \
+cmake -DCMAKE_C_COMPILER=$CC \
 	-DCMAKE_C_FLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
 	..
 make -j$(nproc)
@@ -51,7 +51,7 @@ mkdir cover && cd cover
 
 TARGET_CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
-cmake .. -DCMAKE_C_COMPILER=$CC \
+cmake -DCMAKE_C_COMPILER=$CC \
 	-DCMAKE_C_FLAGS="$TARGET_CFLAGS" \
 	..
 make -j$(nproc)
@@ -64,7 +64,7 @@ mkdir sydr && cd sydr
 
 TARGET_CFLAGS="-g"
 
-cmake .. -DCMAKE_C_COMPILER=$CC \
+cmake -DCMAKE_C_COMPILER=$CC \
 	-DCMAKE_C_FLAGS="$TARGET_CFLAGS" \
 	..
 make -j$(nproc)
