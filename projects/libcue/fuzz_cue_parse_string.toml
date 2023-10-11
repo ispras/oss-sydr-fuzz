@@ -22,7 +22,7 @@ jobs = 1
 
 [libfuzzer]
 path = "/libcue/libfuzzer/fuzz_cue_parse_string"
-args = "-detect_leaks=0 -jobs=1000 -workers=3 -rss_limit_mb=8192 -dict=/libcue.dict /corpus"
+args = "-jobs=1000 -workers=3 -rss_limit_mb=8192 -dict=/libcue.dict /corpus"
 
 [cov]
 target = "/libcue/cover/fuzz_cue_parse_string @@"

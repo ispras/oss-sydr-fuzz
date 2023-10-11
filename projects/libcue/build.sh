@@ -18,8 +18,6 @@
 
 cd /libcue
 
-sed -i 's/<<EOF>>>/<<EOF>>/g' cue_scanner.l
-
 mkdir afl && cd afl
 
 CC=afl-clang-lto
