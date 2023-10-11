@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-144 new bugs in
+145 new bugs in
 28 open source projects.
 
 * audk:
@@ -28,6 +28,7 @@
     * <https://github.com/johannesvollmer/exrs/pull/166>
 * FFmpeg (torchvision 3rdparty):
     * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230802121410.1141794-1-kobrineli@ispras.ru/>
+    * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20231002091538.4179516-1-mezhuevtp@ispras.ru/>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
