@@ -23,12 +23,12 @@ RUN git clone https://github.com/google/boringssl.git boringssl && \
     cd boringssl && git checkout 6d3db84c47643271cb553593ee67362be3820874
 RUN git clone https://github.com/OpenVPN/openvpn openvpn && \
     cd openvpn && git checkout e8a026ac770592670b0dcf8f81cee6a98b4b4f65
+RUN wget https://storage.googleapis.com/openvpn-backup.clusterfuzz-external.appspot.com/corpus/libFuzzer/openvpn_fuzz_verify_cert/public.zip
 
 WORKDIR /
 
-COPY fuzz*.c fuzz*.cpp build.sh /
+COPY fuzz*.c fuzz*.cpp build.sh crypto_patch.txt public.zip /
 COPY fuzz*.h /openvpn/src/openvpn/
-COPY crypto_patch.txt /
 
 RUN CONFIG="libfuzzer" /build.sh
 RUN CONFIG="afl" /build.sh
