@@ -18,7 +18,7 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN apt update && apt install flex bison -y
 
-RUN git clone https://github.com/lipnitsk/libcue.git && cd libcue && git checkout 0d121303285df1b9f3099e99c168af52f2e41dd9
+RUN git clone https://github.com/lipnitsk/libcue.git && cd libcue && git checkout 3a5c3e01dab910e1b514a15445e9e99f6739746c
 
 COPY build.sh fuzz_cue_parse_string.c /
 
