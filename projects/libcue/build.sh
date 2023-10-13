@@ -46,7 +46,7 @@ cd ..
 
 mkdir cover && cd cover
 
-TARGET_CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+TARGET_CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 
 cmake -DCMAKE_C_COMPILER=$CC \
 	-DCMAKE_C_FLAGS="$TARGET_CFLAGS" \
