@@ -34,3 +34,5 @@ RUN CONFIG="libfuzzer" /build.sh
 RUN CONFIG="afl" /build.sh
 RUN CONFIG="sydr" /build.sh
 RUN CONFIG="coverage" /build.sh
+
+ENV AFL_MAP_SIZE 100000000
