@@ -23,5 +23,8 @@ jobs = 2
 args = "-i /corpus -t 2000"
 target = "/target_dem_afl @@"
 
+[aflplusplus.env]
+AFL_MAP_SIZE = "100000000"
+
 [cov]
 target = "/target_dem_cov @@"
