@@ -22,13 +22,15 @@ RUN git clone https://chromium.googlesource.com/webm/libwebp-test-data
 ADD https://storage.googleapis.com/downloads.webmproject.org/webp/testdata/fuzzer/fuzz_seed_corpus.zip /
 RUN unzip fuzz_seed_corpus.zip -d libwebp-test-data/
 RUN rm fuzz_seed_corpus.zip
-COPY build.sh  /
-COPY  main.c huffman_fuzzer.c vuln.patch /libwebp/
+COPY build.sh libwebp.list  /
+COPY  vhtc.patch /libwebp/
 WORKDIR libwebp
 # CVE-2023-4863
 RUN git checkout 7ba44f80f3b94fc0138db159afea770ef06532a0
-COPY huffman_fuzzer.c /libwebp/tests/fuzzer/
-RUN git apply vuln.patch
-RUN ../build.sh
-
-RUN mkdir /corpus && cp -r /libwebp-test-data/*.webp /corpus/
+WORKDIR /
+RUN ./build.sh
+RUN afl-cmin -i /libwebp-test-data -o /corpus -- ./libwebp-asan/examples/dwebp @@ -o /dev/null
+ENV AFL_FAST_CAL=1
+ENV AFL_IMPORT_FIRST=1
+ENV AFL_DISABLE_TRIM=1
+ENV AFL_AUTORESUME=1

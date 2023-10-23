@@ -1,0 +1,14 @@
+diff --git a/examples/dwebp.c b/examples/dwebp.c
+index 652de6a6..89abbc4e 100644
+--- a/examples/dwebp.c
++++ b/examples/dwebp.c
+@@ -311,6 +311,9 @@ int main(int argc, const char* argv[]) {
+   }
+ 
+   if (quiet) verbose = 0;
++#ifdef __AFL_HAVE_MANUAL_CONTROL
++  __AFL_INIT();
++#endif
+ 
+   {
+     VP8StatusCode status = VP8_STATUS_OK;
