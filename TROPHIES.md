@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-146 new bugs in
+148 new bugs in
 29 open source projects.
 
 * audk:
@@ -155,6 +155,8 @@
     * <https://github.com/rizinorg/rizin/issues/3128>
 * SoX (torchaudio 3rdparty):
     * <https://sourceforge.net/p/sox/patches/126/>
+    * <https://sourceforge.net/p/sox/patches/127/>
+    * <https://sourceforge.net/p/sox/patches/128/>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>
