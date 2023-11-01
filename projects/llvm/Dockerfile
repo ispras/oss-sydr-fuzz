@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN apt-get install -y libncurses5-dev gnutls-dev bison zlib1g-dev ccache \
-    curl bzip2 lz4 liblzma-dev
+RUN apt-get update -y && apt-get install -y autoconf automake libtool curl make g++ unzip wget git \
+    binutils liblzma-dev libz-dev python-all ninja-build subversion \
+    pkg-config
 
-RUN git clone https://github.com/MariaDB/server && cd server && \
-    git checkout 94eb819296c99b2f1d1a68a5a12eabe18e2f4874
+RUN git clone https://github.com/llvm/llvm-project.git && \
+    cd llvm-project && git checkout 499d41cef2e7bbb65804f6a815b9fa8b27efce0f
 
-WORKDIR /
-
-COPY build.sh *.c /
+COPY build.sh /
 
 RUN CONFIG="libfuzzer" /build.sh
-RUN CONFIG="afl" /build.sh
-RUN CONFIG="sydr" /build.sh
-RUN CONFIG="coverage" /build.sh
+#RUN CONFIG="afl" /build.sh
+#RUN CONFIG="sydr" /build.sh
+#RUN CONFIG="coverage" /build.sh

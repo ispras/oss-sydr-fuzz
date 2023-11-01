@@ -1,5 +1,6 @@
-#!/bin/bash
-# Copyright 2023 Google LLC
+#!/bin/bash -eux
+#
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +16,7 @@
 #
 ################################################################################
 
-export MAIN_OBJ=""
+LLVM="/llvm-project/llvm"
 
 if [[ $CONFIG = "libfuzzer" ]]
 then
@@ -24,7 +25,7 @@ then
       export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
       export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-	export SUFFIX="fuzz"
+	    export SUFFIX="fuzz"
 fi
 
 if [[ $CONFIG = "afl" ]]
@@ -34,7 +35,7 @@ then
       export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
       export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
       export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-	export SUFFIX="afl"
+	    export SUFFIX="afl"
 fi
 
 if [[ $CONFIG = "sydr" ]]
@@ -44,7 +45,7 @@ then
       export CFLAGS="-g"
       export CXXFLAGS="$CFLAGS"
       export LINK_FLAGS="$CFLAGS"
-	export SUFFIX="sydr"
+	    export SUFFIX="sydr"
 fi
 
 if [[ $CONFIG = "coverage" ]]
@@ -54,32 +55,39 @@ then
       export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
       export CXXFLAGS="$CFLAGS"
       export LINK_FLAGS="$CFLAGS"
-	export SUFFIX="cov"
+	    export SUFFIX="cov"
 fi
 
-cd server
+cd llvm-project
 rm -rf build
 mkdir build
 cd build
-cmake ../ -DDISABLE_SHARED=ON -LH
-make clean
 
-# Ensure we do static linking
-sed -i 's/libmariadb SHARED/libmariadb STATIC/g' ../libmariadb/libmariadb/CMakeLists.txt
-make
-rm CMakeCache.txt
+cmake -GNinja -DCMAKE_BUILD_TYPE=Release $LLVM \
+    -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
+    -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;compiler-rt" \
+    -DLLVM_ENABLE_ASSERTIONS=ON \
+    -DCMAKE_C_COMPILER="${CC}" \
+    -DCMAKE_CXX_COMPILER="${CXX}" \
+    -DCMAKE_C_FLAGS="${CFLAGS}" \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+    -DLLVM_NO_DEAD_STRIP=ON \
+    -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly \
+    -DCOMPILER_RT_INCLUDE_TESTS=OFF
 
-# Build fuzzers
-if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
-then
-      $CC $CFLAGS -c -o /main.o /opt/StandaloneFuzzTargetMain.c
-      MAIN_OBJ="/main.o"
-fi
+for fuzzer in clang-fuzzer clang-format-fuzzer clang-objc-fuzzer clangd-fuzzer clang-pseudo-fuzzer llvm-itanium-demangle-fuzzer llvm-microsoft-demangle-fuzzer llvm-dwarfdump-fuzzer llvm-special-case-list-fuzzer;
+do
+  ninja $fuzzer
+  cp bin/$fuzzer /
+done
 
-INCLUDE_DIRS="-I/server/wsrep-lib/include -I/server/wsrep-lib/wsrep-API/v26 -I/server/build/include -I/server/include/providers -I/server/include -I/server/sql -I/server/regex -I/server/unittest/mytap"
-$CC $CFLAGS $INCLUDE_DIRS -c /fuzz_json.c -o ./fuzz_json.o
+# 10th August 2022: The lines for building the dictionaries
+# broke the whole build. They are left as a reminder to re-enable
+# them once they have been fixed upstream.
+#ninja clang-fuzzer-dictionary
+#for fuzzer in "${CLANG_DICT_FUZZERS[@]}"; do
+#  bin/clang-fuzzer-dictionary > $OUT/$fuzzer.dict
+#done
 
-# Link with CXX to support centipede
-$CXX $LINK_FLAGS fuzz_json.o -o /fuzz_json_$SUFFIX \
-	-Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
-	./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
+#zip -j "/clang-objc-fuzzer_seed_corpus.zip"  $SRC/$LLVM/../clang/tools/clang-fuzzer/corpus_examples/objc/*
+#zip -j "/clangd-fuzzer_seed_corpus.zip"  $SRC/$LLVM/../clang-tools-extra/clangd/test/*
