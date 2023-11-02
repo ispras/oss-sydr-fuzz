@@ -1,5 +1,4 @@
-# Copyright 2023 Google LLC
-# Modifications copyright (C) 2023 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,19 +14,14 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+[sydr]
+args = "-l debug -j2"
+target = "/fuzz_json_sydr @@"
+jobs = 2
 
-RUN apt-get install -y libncurses5-dev gnutls-dev bison zlib1g-dev ccache \
-    curl bzip2 lz4 liblzma-dev
+[aflplusplus]
+args = "-i /corpus -t 2000"
+target = "/fuzz_json_afl @@"
 
-RUN git clone https://github.com/MariaDB/server && cd server && \
-    git checkout 94eb819296c99b2f1d1a68a5a12eabe18e2f4874
-
-WORKDIR /
-
-COPY build.sh *.c /
-
-RUN CONFIG="libfuzzer" /build.sh
-RUN CONFIG="afl" /build.sh
-RUN CONFIG="sydr" /build.sh
-RUN CONFIG="coverage" /build.sh
+[cov]
+target = "/fuzz_json_cov @@"

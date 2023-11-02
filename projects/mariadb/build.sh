@@ -1,5 +1,6 @@
 #!/bin/bash
 # Copyright 2023 Google LLC
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -83,3 +84,13 @@ $CC $CFLAGS $INCLUDE_DIRS -c /fuzz_json.c -o ./fuzz_json.o
 $CXX $LINK_FLAGS fuzz_json.o -o /fuzz_json_$SUFFIX \
 	-Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
 	./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
+
+# Get corpus.
+if [[ $CONFIG = "coverage" ]]
+then
+      rm -rf /corpus
+      mkdir /corpus
+      cd /server/mysql-test/suite
+      cp -R -f -n */*.* /corpus
+      cd /corpus && find -type f -size +1M -delete
+fi
