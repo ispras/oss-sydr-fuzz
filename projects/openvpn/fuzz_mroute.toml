@@ -14,18 +14,14 @@
 #
 ################################################################################
 
-exit-on-time = 3600
-
 [sydr]
-args = "-l debug"
-target = "/sydr/end_to_end_fuzz --fuzz=End2EndFuzz.FuzzEndToEnd @@"
+args = "-l debug -j2"
+target = "/fuzz_mroute_sydr @@"
+jobs = 2
 
-[aflplusplus]
-args = "-t 60000 -i /corpus/end_to_end"
-target = "/afl/end_to_end_fuzz --fuzz=End2EndFuzz.FuzzEndToEnd @@"
-
-[aflplusplus.env]
-ASAN_OPTIONS = "hard_rss_limit_mb=8192"
+[libfuzzer]
+path = "/fuzz_mroute_fuzz"
+args = "-jobs=1000 -workers=4 /corpus"
 
 [cov]
-target = "/cov/end_to_end_fuzz --fuzz=End2EndFuzz.FuzzEndToEnd @@"
+target = "/fuzz_mroute_cov @@"

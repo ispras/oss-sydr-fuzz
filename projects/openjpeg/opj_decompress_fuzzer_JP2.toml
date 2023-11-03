@@ -16,15 +16,12 @@
 
 [sydr]
 args = "-l debug -j2"
-target = "/target_dem_sydr @@"
+target = "/opj_decompress_fuzzer_JP2_sydr @@"
 jobs = 2
 
-[aflplusplus]
-args = "-i /corpus -t 2000"
-target = "/target_dem_afl @@"
-
-[aflplusplus.env]
-AFL_MAP_SIZE = "100000000"
+[libfuzzer]
+path = "/opj_decompress_fuzzer_JP2_fuzz"
+args = "-jobs=1000 -workers=4 /corpus"
 
 [cov]
-target = "/target_dem_cov @@"
+target = "/opj_decompress_fuzzer_JP2_cov @@"

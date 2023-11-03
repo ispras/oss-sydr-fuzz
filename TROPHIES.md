@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-144 new bugs in
-28 open source projects.
+148 new bugs in
+29 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -28,6 +28,7 @@
     * <https://github.com/johannesvollmer/exrs/pull/166>
 * FFmpeg (torchvision 3rdparty):
     * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230802121410.1141794-1-kobrineli@ispras.ru/>
+    * <https://patchwork.ffmpeg.org/project/ffmpeg/patch/20231002091538.4179516-1-mezhuevtp@ispras.ru/>
 * FreeImage:
     * <https://sourceforge.net/p/freeimage/bugs/343/>
     * <https://sourceforge.net/p/freeimage/bugs/344/>
@@ -152,6 +153,10 @@
     * <https://github.com/rizinorg/rizin/issues/3031>
     * <https://github.com/rizinorg/rizin/issues/3032>
     * <https://github.com/rizinorg/rizin/issues/3128>
+* SoX (torchaudio 3rdparty):
+    * <https://sourceforge.net/p/sox/patches/126/>
+    * <https://sourceforge.net/p/sox/patches/127/>
+    * <https://sourceforge.net/p/sox/patches/128/>
 * Tarantool:
     * <https://github.com/tarantool/tarantool/pull/6614>
     * <https://github.com/tarantool/tarantool/pull/6662>

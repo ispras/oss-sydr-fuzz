@@ -16,15 +16,12 @@
 
 [sydr]
 args = "-l debug -j2"
-target = "/target_dem_sydr @@"
+target = "/fuzz_misc_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /corpus -t 2000"
-target = "/target_dem_afl @@"
-
-[aflplusplus.env]
-AFL_MAP_SIZE = "100000000"
+args = "-i /corpus"
+target = "/fuzz_misc_afl @@"
 
 [cov]
-target = "/target_dem_cov @@"
+target = "/fuzz_misc_cov @@"

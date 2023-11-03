@@ -15,16 +15,12 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j2"
-target = "/target_dem_sydr @@"
-jobs = 2
+args = "-l debug"
+target = "/parse_graph_sydr @@"
 
-[aflplusplus]
-args = "-i /corpus -t 2000"
-target = "/target_dem_afl @@"
-
-[aflplusplus.env]
-AFL_MAP_SIZE = "100000000"
+[libfuzzer]
+path = "/parse_graph_fuzz"
+args = "-jobs=1000 -detect_leaks=0 -rss_limit_mb=30720 -timeout=300 -report_slow_units=350 /corpus"
 
 [cov]
-target = "/target_dem_cov @@"
+target = "/parse_graph_cov @@"

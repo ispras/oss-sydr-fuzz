@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +15,12 @@
 #
 ################################################################################
 
-[sydr]
-args = "-l debug -j2"
-target = "/target_dem_sydr @@"
-jobs = 2
+set -e
 
-[aflplusplus]
-args = "-i /corpus -t 2000"
-target = "/target_dem_afl @@"
+cd /protobuf
+mkdir -p build_source
+cd build_source
 
-[aflplusplus.env]
-AFL_MAP_SIZE = "100000000"
-
-[cov]
-target = "/target_dem_cov @@"
+cmake ../cmake -Dprotobuf_BUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_SYSCONFDIR=/etc -DCMAKE_POSITION_INDEPENDENT_CODE=ON -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
+make install
