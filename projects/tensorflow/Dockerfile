@@ -45,17 +45,17 @@ RUN /build_afl_cc.sh
 
 WORKDIR /
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
-    cd tensorflow_afl && git checkout e713a8a89da4c078bd0c6a24aa62ea1f983cccab && \
+    cd tensorflow_afl && git checkout c6054283bc77827cdbe6f78c32b1b5beedf8bf9e && \
     cd / && cp -r tensorflow_afl tensorflow_fuzz && \
     cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
 
 COPY fuzz_session.h /tensorflow_sydr/tensorflow/core/kernels/fuzzing/fuzz_session.h
 COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session.h
 
-RUN cd /tensorflow_afl && CONFIG=afl /build.sh
+#RUN cd /tensorflow_afl && CONFIG=afl /build.sh
 RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
-RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
-RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
+#RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
+#RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
 # Fix coverage paths.
 RUN /fix_cov.sh
