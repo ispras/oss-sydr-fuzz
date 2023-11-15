@@ -8,7 +8,7 @@ MariaDB was designed as a drop-in replacement of MySQL(R) with more features, ne
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/ffmpeg` directory:
+Unzip Sydr (`sydr.zip`) in `projects/mariadb` directory:
 
     $ unzip sydr.zip
 

@@ -40,12 +40,11 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   memcpy(fuzz_str, data, size);
   fuzz_str[size] = '\0';
 
-  const char *key_start;
-  const char *key_end;
-  int comma_pos;
+  const char *value_start;
+  int value_len;
 
-  json_locate_key(fuzz_str, fuzz_str + size, fuzz_key, &key_start, &key_end,
-                  &comma_pos);
+  json_get_object_key(fuzz_str, fuzz_str + size, fuzz_key, &value_start,
+                      &value_len);
 
   free(fuzz_str);
   free(fuzz_key);
