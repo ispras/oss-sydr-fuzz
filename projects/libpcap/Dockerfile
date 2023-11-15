@@ -1,5 +1,5 @@
 # Copyright 2018 Google Inc.
-# Modifications copyright (C) 2022 ISP RAS
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ RUN mkdir corpus && mv tcpdump/tests/*.pcap corpus/
 
 WORKDIR libpcap
 
-RUN git checkout e0be22909d285fa721379542a754df696c314da3
+RUN git checkout 8b8809e3782cfdf7400d966e36bf6249ea106185
 
 COPY build.sh load_sydr_filter.c load_sydr_pcap.c ./
 

@@ -37,8 +37,8 @@ mkdir libfuzzer && cd libfuzzer
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader_alloc_fail
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_tls_certificate
+$CC $TARGET_CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
+$CC $TARGET_CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_tls_certificate
 
 cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv . 
 
@@ -75,8 +75,8 @@ mkdir afl && cd afl
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/fuzz/fuzz_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_ndpi_reader_alloc_fail
 $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/libfuzzer/libjson-c.a -o fuzz_process_packet
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
-$CC $TARGET_CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_tls_certificate
+$CC $TARGET_CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_quic_get_crypto_data
+$CC $TARGET_CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /nDPI/fuzz/fuzz_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/libfuzzer/libjson-c.a -o fuzz_tls_certificate
 
 cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv . 
 
@@ -112,8 +112,8 @@ mkdir sydr && cd sydr
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/load_sydr_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_ndpi_reader_alloc_fail
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/sydr/libjson-c.a -lm -o load_sydr_process_packet
-$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_quic_get_crypto_data
-$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_tls_certificate
+$CC $CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /opt/StandaloneFuzzTargetMain.c /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_quic_get_crypto_data
+$CC $CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /opt/StandaloneFuzzTargetMain.c /nDPI/fuzz/fuzz_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_sydr_tls_certificate
 
 cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv .
 
@@ -149,8 +149,8 @@ mkdir cover && cd cover
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example /nDPI/load_sydr_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/example -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -DENABLE_MEM_ALLOC_FAILURES /nDPI/load_sydr_ndpi_reader.c /nDPI/fuzz/fuzz_common_code.c /nDPI/example/reader_util.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_ndpi_reader_alloc_fail
 $CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_process_packet.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /libpcap-1.9.1/libpcap.a /json-c/cover/libjson-c.a -lm -o load_cover_process_packet
-$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_quic_get_crypto_data
-$CC $CFLAGS -I $INCLUDE_DIR -I /nDPI/fuzz/ /nDPI/load_sydr_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_tls_certificate
+$CC $CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /opt/StandaloneFuzzTargetMain.c /nDPI/fuzz/fuzz_quic_get_crypto_data.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_quic_get_crypto_data
+$CC $CFLAGS -I $LIB_DIR -I $INCLUDE_DIR -DNDPI_LIB_COMPILATION -I /nDPI/fuzz/ /opt/StandaloneFuzzTargetMain.c /nDPI/fuzz/fuzz_tls_certificate.c /nDPI/fuzz/fuzz_common_code.c $LIB_DIR/libndpi.a /json-c/sydr/libjson-c.a -lm -o load_cover_tls_certificate
 
 cp /nDPI/example/protos.txt /nDPI/example/categories.txt /nDPI/example/risky_domains.txt /nDPI/example/ja3_fingerprints.csv /nDPI/example/sha1_fingerprints.csv .
 

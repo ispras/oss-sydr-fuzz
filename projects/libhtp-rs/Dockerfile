@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 
 WORKDIR /libhtp-rs
 
-RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
+RUN git checkout c6b861a78cf233a678e0edaf81e7209b1bcbf759
 
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
