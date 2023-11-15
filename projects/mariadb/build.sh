@@ -80,7 +80,14 @@ fi
 INCLUDE_DIRS="-I/server/wsrep-lib/include -I/server/wsrep-lib/wsrep-API/v26 -I/server/build/include -I/server/include/providers -I/server/include -I/server/sql -I/server/regex -I/server/unittest/mytap"
 $CC $CFLAGS $INCLUDE_DIRS -c /fuzz_json.c -o ./fuzz_json.o
 
+INCLUDE_DIRS="-I/server/wsrep-lib/include -I/server/wsrep-lib/wsrep-API/v26 -I/server/build/include -I/server/include/providers -I/server/include -I/server/sql -I/server/regex -I/server/unittest/mytap"
+$CC $CFLAGS $INCLUDE_DIRS -c /fuzz_get.c -o ./fuzz_get.o
+
 # Link with CXX to support centipede
 $CXX $LINK_FLAGS fuzz_json.o -o /fuzz_json_$SUFFIX \
+	-Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
+	./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
+
+$CXX $LINK_FLAGS fuzz_get.o -o /fuzz_get_$SUFFIX \
 	-Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
 	./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
