@@ -27,7 +27,7 @@
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   if (size < FUZZ_KEY_SIZE) {
-    return;
+    return -1;
   }
   char *fuzz_key = malloc(FUZZ_KEY_SIZE + 1);
   memcpy(fuzz_key, data, FUZZ_KEY_SIZE);

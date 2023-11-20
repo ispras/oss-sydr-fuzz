@@ -25,7 +25,7 @@ then
     export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
     export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
     export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-	export SUFFIX="fuzz"
+    export SUFFIX="fuzz"
 fi
 
 if [[ $CONFIG = "afl" ]]
@@ -62,13 +62,10 @@ cd server
 rm -rf build
 mkdir build
 cd build
-cmake ../ -DDISABLE_SHARED=ON -LH
-make clean
 
-# Ensure we do static linking
 sed -i 's/libmariadb SHARED/libmariadb STATIC/g' ../libmariadb/libmariadb/CMakeLists.txt
-make
-rm CMakeCache.txt
+cmake ../ -DDISABLE_SHARED=ON -LH
+make -j$(nproc)
 
 # Build fuzzers
 if [[ $CONFIG = "sydr" || $CONFIG = "coverage" ]]
