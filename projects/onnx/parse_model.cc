@@ -37,7 +37,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
             onnx::OnnxParser parser((const char*)data);
             auto status = parser.Parse(proto);
         }
-    } catch (const std::runtime_error &e) {
+    } catch (const std::exception &e) {
         return 0;
     }
 

@@ -34,7 +34,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     const FuzzerTemporaryFile file(data, size);
     try {
         onnx::checker::check_model(file.filename(), true);
-    } catch (const std::runtime_error &e) {
+    } catch (const std::exception &e) {
         return 0;
     }
 
