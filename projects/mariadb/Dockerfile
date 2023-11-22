@@ -25,11 +25,17 @@ RUN git clone https://github.com/MariaDB/server && cd server && \
 
 WORKDIR /
 
-COPY build.sh *.c json.dict corpus.zip /
+COPY build.sh *.c json.dict /
 
 RUN CONFIG="libfuzzer" /build.sh
 RUN CONFIG="afl" /build.sh
 RUN CONFIG="sydr" /build.sh
 RUN CONFIG="coverage" /build.sh
 
-RUN unzip corpus.zip -d /corpus
+RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
+    mkdir /corpus && cp /go-fuzz-corpus/json/corpus/* /corpus && rm -rf /go-fuzz-corpus
+RUN for file in /corpus/*; do \
+        sed -i '/{/s/^/1/' $file; \
+        sed -i '/{/s/^/2/' $file; \
+        sed -i '/{/s/^/3/' $file; \
+        sed -i '/{/s/^/4/' $file; done
