@@ -35,7 +35,7 @@ then
     export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
     export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
     export LINK_FLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-	export SUFFIX="afl"
+    export SUFFIX="afl"
 fi
 
 if [[ $CONFIG = "sydr" ]]
@@ -45,7 +45,7 @@ then
     export CFLAGS="-g"
     export CXXFLAGS="$CFLAGS"
     export LINK_FLAGS="$CFLAGS"
-	export SUFFIX="sydr"
+    export SUFFIX="sydr"
 fi
 
 if [[ $CONFIG = "coverage" ]]
@@ -63,8 +63,8 @@ rm -rf build
 mkdir build
 cd build
 
-sed -i 's/libmariadb SHARED/libmariadb STATIC/g' ../libmariadb/libmariadb/CMakeLists.txt
 cmake ../ -DDISABLE_SHARED=ON -LH
+sed -i 's/libmariadb SHARED/libmariadb STATIC/g' ../libmariadb/libmariadb/CMakeLists.txt
 make -j$(nproc)
 
 # Build fuzzers
@@ -82,9 +82,9 @@ $CC $CFLAGS $INCLUDE_DIRS -c /fuzz_get.c -o ./fuzz_get.o
 
 # Link with CXX to support centipede
 $CXX $LINK_FLAGS fuzz_json.o -o /fuzz_json_$SUFFIX \
-	-Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
-	./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
+    -Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
+    ./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
 
 $CXX $LINK_FLAGS fuzz_get.o -o /fuzz_get_$SUFFIX \
-	-Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
-	./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ
+    -Wl,--start-group ./unittest/mytap/libmytap.a ./strings/libstrings.a \
+    ./dbug/libdbug.a ./mysys/libmysys.a -Wl,--end-group -lz -ldl -lpthread $MAIN_OBJ

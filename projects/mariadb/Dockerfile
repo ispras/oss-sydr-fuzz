@@ -32,5 +32,5 @@ RUN CONFIG="afl" /build.sh
 RUN CONFIG="sydr" /build.sh
 RUN CONFIG="coverage" /build.sh
 
-RUN rm -rf /corpus && mkdir /corpus && /server/mysql-test/suite && \
+RUN rm -rf /corpus && mkdir /corpus && cd /server/mysql-test/suite && \
     cp -R -f -n */*.* /corpus && cd /corpus && find -type f -size +1M -delete
