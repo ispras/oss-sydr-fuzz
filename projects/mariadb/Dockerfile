@@ -25,12 +25,11 @@ RUN git clone https://github.com/MariaDB/server && cd server && \
 
 WORKDIR /
 
-COPY build.sh *.c /
+COPY build.sh *.c json.dict corpus.zip /
 
 RUN CONFIG="libfuzzer" /build.sh
 RUN CONFIG="afl" /build.sh
 RUN CONFIG="sydr" /build.sh
 RUN CONFIG="coverage" /build.sh
 
-RUN rm -rf /corpus && mkdir /corpus && cd /server/mysql-test/suite && \
-    cp -R -f -n */*.* /corpus && cd /corpus && find -type f -size +1M -delete
+RUN unzip corpus.zip -d /corpus

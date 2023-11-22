@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-i /corpus -t 2000"
-target = "/fuzz_get_afl @@"
+target = "-x /json.dict /fuzz_get_afl @@"
 
 [cov]
 target = "/fuzz_get_cov @@"

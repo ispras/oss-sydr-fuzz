@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzz_get_fuzz"
-args = "-jobs=1000 -workers=4 /corpus"
+args = "-dict=/json.dict -jobs=1000 -workers=4 /corpus"
 
 [cov]
 target = "/fuzz_get_cov @@"
