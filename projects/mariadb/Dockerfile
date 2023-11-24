@@ -17,8 +17,8 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN apt-get install -y libncurses5-dev gnutls-dev bison zlib1g-dev ccache \
-    curl bzip2 lz4 liblzma-dev
+RUN apt-get update && \
+    apt-get install -y libncurses5-dev gnutls-dev bison ccache lz4 liblzma-dev
 
 RUN git clone https://github.com/MariaDB/server && cd server && \
     git checkout 94eb819296c99b2f1d1a68a5a12eabe18e2f4874
