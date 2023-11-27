@@ -20,8 +20,8 @@ target = "/fuzz_json_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-i /corpus -t 2000"
-target = "-x /json.dict /fuzz_json_afl @@"
+args = "-i /corpus -t 2000 -x /json.dict"
+target = "/fuzz_json_afl @@"
 
 [cov]
 target = "/fuzz_json_cov @@"
