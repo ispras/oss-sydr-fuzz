@@ -43,5 +43,5 @@ Check security predicates:
 
 Supported fuzz targets:
 
-    # loader_example
-    # fuzz_gltf
+    - loader_example
+    - fuzz_gltf
