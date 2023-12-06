@@ -66,6 +66,8 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   cmsHPROFILE hProfile;
   cmsUInt32Number dwFlags;
   cmsHTRANSFORM hTransform = NULL;
+  if (size < 4)
+    return 0;
 
   // Open all profiles
   memset(Profiles, 0, sizeof(Profiles));
