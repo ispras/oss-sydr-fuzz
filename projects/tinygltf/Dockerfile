@@ -17,7 +17,7 @@
 FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN git clone https://github.com/syoyo/tinygltf.git && cd tinygltf && \
-    git checkout 0fa56e239c77cc864dc248842e8887d985cf8e3f
+    git checkout 6782f887bb100e2bc7e6751ad46fe8288c84f767
 RUN git clone https://github.com/KhronosGroup/glTF-Sample-Models.git gltf-corpus && \
     cd gltf-corpus && git checkout c659bd7d714b74e84f33345cb6365599f2cd0518
 
@@ -30,6 +30,5 @@ RUN CONFIG="afl" /build.sh
 RUN CONFIG="sydr" /build.sh
 RUN CONFIG="coverage" /build.sh
 
-RUN mkdir /corpus && cp -R -f -n gltf-corpus/1.0/*/glTF/*.gltf /corpus && \
-    cp -R -f -n gltf-corpus/2.0/*/glTF/*.gltf /corpus
-
+RUN mkdir /corpus && cp -R -f -n gltf-corpus/2.0/*/glTF/*.gltf \
+    tinygltf/models/*/*.gltf gltf-corpus/1.0/*/glTF/*.gltf /corpus
