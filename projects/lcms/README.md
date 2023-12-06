@@ -52,3 +52,7 @@ Little CMS project has 3 fuzz targets.
 ### cms_transform
 
     # sydr-fuzz -c cms_transform.toml run
+
+### cms_link
+
+    # sydr-fuzz -c cms_link.toml run
