@@ -21,7 +21,7 @@ jobs = 3
 
 [libfuzzer]
 path = "/lcms_fuzz/cms_link_fuzzer"
-args = "-dict=icc.dict -jobs=1000 /corpus"
+args = "-dict=icc.dict -jobs=1000 /link_corpus"
 
 [cov]
 target = "/lcms_cov/cms_link_sydr @@"

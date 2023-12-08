@@ -72,11 +72,12 @@ make -j$(nproc) all
 mkdir /lcms_sydr
 OUT=/lcms_sydr
 FUZZERS="cms_link_sydr cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
+$CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 for F in $FUZZERS; do
     $CC $CFLAGS -c -Iinclude \
         ./$F.c -o ./$F.o
     $CXX $CXXFLAGS \
-        ./$F.o -o $OUT/$F \
+        main.o ./$F.o -o $OUT/$F \
         src/.libs/liblcms2.a
 done
 
@@ -93,10 +94,11 @@ make -j$(nproc) all
 mkdir /lcms_cov
 OUT=/lcms_cov
 FUZZERS="cms_link_sydr cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
+$CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 for F in $FUZZERS; do
     $CC $CFLAGS -c -I /lcms/include \
         /lcms/$F.c -o /lcms/$F.o
     $CXX $CXXFLAGS \
-        /lcms/$F.o -o $OUT/$F \
+        main.o /lcms/$F.o -o $OUT/$F \
         /lcms/src/.libs/liblcms2.a
 done

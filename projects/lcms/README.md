@@ -39,7 +39,7 @@ Collect and report coverage:
 
 ## Alternative Fuzz Targets
 
-Little CMS project has 3 fuzz targets.
+Little CMS project has 4 fuzz targets.
 
 ### cmsIT8_load
 
