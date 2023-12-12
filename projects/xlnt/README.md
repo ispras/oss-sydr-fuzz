@@ -31,4 +31,16 @@ Get LCOV HTML coverage report:
 
 ## Hybrid Fuzzing with AFL++
 
-    # sydr-fuzz -c sydr-fuzz-afl++.toml run
+    # sydr-fuzz -c load-afl++.toml run
+
+## Alternative Fuzz Targets
+
+xlnt project has 2 fuzz targets.
+
+### load
+
+    # sydr-fuzz -c load.toml run
+
+### save
+
+    # sydr-fuzz -c save.toml run
