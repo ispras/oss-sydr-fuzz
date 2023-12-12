@@ -30,8 +30,8 @@ WORKDIR xlnt
 RUN git checkout d88c901faa539f9272a81ba0bab72def70ca18d7 && git submodule update --init --recursive
 
 # Copy build script and targets.
-COPY load_fuzzer.cc load_sydr.cc afl.cc build.sh ./
-
+COPY save.cc load.cc afl.cc build.sh ./
+COPY build_save_corpus.sh /
 
 # Build fuzz targets.
 RUN ./build.sh
@@ -39,3 +39,4 @@ RUN ./build.sh
 WORKDIR ..
 # Prepare seed corpus.
 RUN mkdir /corpus && find /xlnt -name "*.xlsx" | xargs -I {} cp {} /corpus
+RUN /build_save_corpus.sh
