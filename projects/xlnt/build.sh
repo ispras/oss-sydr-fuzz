@@ -28,11 +28,8 @@ CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 CXX="clang++"
 CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o load_fuzzer.o -c ../load.cc
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o save_fuzzer.o -c ../save.cc
-
-$CXX $CXXFLAGS load_fuzzer.o ./source/libxlnt.a  -o /load_fuzzer
-$CXX $CXXFLAGS save_fuzzer.o ./source/libxlnt.a  -o /save_fuzzer
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_fuzzer ../load.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_fuzzer ../save.cc ./source/libxlnt.a
 
 cd .. && rm -rf build && mkdir build && cd build
 
@@ -46,13 +43,9 @@ CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 CXX="afl-clang-fast++"
 CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o load_fuzzer.o -c ../load.cc
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o save_fuzzer.o -c ../save.cc
-
 $CXX $CXXFLAGS -o afl.o -c ../afl.cc
-
-$CXX $CXXFLAGS afl.o load_fuzzer.o ./source/libxlnt.a  -o /load_afl
-$CXX $CXXFLAGS afl.o save_fuzzer.o ./source/libxlnt.a  -o /save_afl
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_afl afl.o ../load.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_afl afl.o ../save.cc ./source/libxlnt.a
 
 cd .. && rm -rf build && mkdir build && cd build
 
@@ -68,13 +61,9 @@ CC="clang"
 CXX="clang++"
 CXXFLAGS="-g"
 
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o load_sydr.o -c ../load.cc
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o save_sydr.o -c ../save.cc
-
 $CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
-
-$CXX $CXXFLAGS main.o load_sydr.o ./source/libxlnt.a  -o /load_sydr
-$CXX $CXXFLAGS main.o save_sydr.o ./source/libxlnt.a  -o /save_sydr
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_sydr main.o ../load.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_sydr main.o ../save.cc ./source/libxlnt.a
 
 # Build cov targets.
 cmake -DSTATIC=ON -D TESTS=OFF \
@@ -89,10 +78,6 @@ CXX="clang++"
 CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 LDFLAGS="-fprofile-instr-generate"
 
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o load_cov.o -c ../load.cc
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o save_cov.o -c ../save.cc
-
 $CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
-
-$CXX $CXXFLAGS main.o load_cov.o ./source/libxlnt.a  -o /load_cov
-$CXX $CXXFLAGS main.o save_cov.o ./source/libxlnt.a  -o /save_cov
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_cov main.o ../load.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_cov main.o ../save.cc ./source/libxlnt.a
