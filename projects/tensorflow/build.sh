@@ -67,10 +67,12 @@ fi
 # Remove configure for runtime_client_fuzz target because it is spoilt
 rm tensorflow/security/fuzzing/cc/core/function/BUILD
 
+# Was in OSS-Fuzz build, don't touch
 mkdir $OUT
 git apply --ignore-space-change --ignore-whitespace /fuzz_patch.patch
 
-# Download patched fuzztest to escape enabling fuzztest signal handlers.
+# Patch fuzztest dependency to escape enabling fuzztest signal handlers and
+# fix the command arguments for afl++ driver.
 git apply --ignore-space-change --ignore-whitespace /fuzztest.patch
 
 # Patch some targets because fuzztest doesn't check arguments constraints in fuzzer mode.
@@ -78,6 +80,7 @@ git apply --ignore-space-change --ignore-whitespace /targets.patch
 
 find tensorflow/ -name "BUILD" -exec sed -i 's/tf_cc_fuzz_test/tf_oss_fuzz_fuzztest/g' {} \;
 
+# Don't touch
 # Overwrite compiler flags that break the oss-fuzz build
 sed -i 's/build:linux --copt=\"-Wno-unknown-warning\"/# overwritten/g' ./.bazelrc
 sed -i 's/build:linux --copt=\"-Wno-array-parameter\"/# overwritten/g' ./.bazelrc
@@ -88,18 +91,25 @@ export TF_PYTHON_VERSION=3.9
 PYTHON=python3
 yes "" | python3 configure.py
 
+# Don't touch
 # Prepare flags for compiling fuzzers.
 export FUZZTEST_EXTRA_ARGS="--jobs=$(nproc) --spawn_strategy=sandboxed --action_env=ASAN_OPTIONS=detect_leaks=0,detect_odr_violation=0 --define force_libcpp=enabled --verbose_failures --copt=-UNDEBUG --config=monolithic"
 
+# Here are directories with fuzztest targets, and extra targets, which we added
+# to OSS-Fuzz (core/kernels/fuzzing)
 # Set fuzz targets
 export FUZZTEST_TARGET_FOLDER="//tensorflow/security/fuzzing/...+//tensorflow/cc/framework/fuzzing/...+//tensorflow/core/common_runtime/...+//tensorflow/core/framework/..."
 export FUZZTEST_EXTRA_TARGETS="//tensorflow/core/kernels/fuzzing:all"
 
+# Don't touch
 echo "  write_to_bazelrc('import %workspace%/tools/bazel.rc')" >> configure.py
 yes "" | ./configure
 
+# Get targets added by us to add build function for them and remove decode_base64
+# (don't remember why, it didn't work)
 declare FUZZERS=$(grep '^tf_ops_fuzz_target' tensorflow/core/kernels/fuzzing/BUILD | cut -d'"' -f2 | grep -v decode_base64)
 
+# Add function for bazel config to build the targets from core/kernels/fuzzing
 cat >> tensorflow/core/kernels/fuzzing/tf_ops_fuzz_target_lib.bzl << END
 def cc_tf(name):
     native.cc_test(
@@ -115,16 +125,21 @@ def cc_tf(name):
     )
 END
 
+# Load added functions for bazel in bazel BUILD file
 cat >> tensorflow/core/kernels/fuzzing/BUILD << END
 load("//tensorflow/core/kernels/fuzzing:tf_ops_fuzz_target_lib.bzl", "cc_tf")
 END
 
+# Just printing
 for fuzzer in ${FUZZERS}; do
     echo cc_tf\(\"${fuzzer}\"\) >> tensorflow/core/kernels/fuzzing/BUILD
 done
 
+# Get the names for our targets again, but with bazel query (this must work
+# because we added build functions for them in previous steps)
 declare FUZZERS=$(bazel query 'kind(cc_.*, tests(//tensorflow/core/kernels/fuzzing/...))' | grep -v decode_base64)
 
+# Compile fuzztests
 /compile_fuzztests.sh
 
 # Copy out all non-fuzztest fuzzers.
@@ -137,6 +152,7 @@ for bazel_target in ${FUZZERS}; do
   cp ${bazel_location} $OUT/$fuzz_name
 done
 
+# Remove all the cache for all configs except of coverage
 if [[ $CONFIG != "coverage" ]]
 then
   rm -f bazel-*

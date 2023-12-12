@@ -34,7 +34,7 @@ RUN curl -Lo /usr/bin/bazel \
 COPY *.patch *.sh *.cc *.c /
 
 ENV JAVA_HOME /usr/lib/jvm/java-15-openjdk-amd64
-# it fails after installing java due to jazzer env variables missing
+# it fails after installing java due to jazzer env variables missing, it's ok.
 RUN /install_java.sh || true
 
 # Setup the environment.
@@ -43,6 +43,7 @@ ENV TF_CPP_MIN_LOG_LEVEL=3
 # Build custom afl-cc to increase MAX_PARAMS_NUM.
 RUN /build_afl_cc.sh
 
+# Clone and build.
 WORKDIR /
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
     cd tensorflow_afl && git checkout c6054283bc77827cdbe6f78c32b1b5beedf8bf9e && \
@@ -57,7 +58,8 @@ RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
 RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
 RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 
-# Fix coverage paths.
+# Fix coverage paths, because bazel builds the project in isolated environment.
+# Probably don't touch, it works.
 RUN /fix_cov.sh
 
 # Prepare corporas and dictionaries.
