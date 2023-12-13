@@ -42,7 +42,9 @@ WORKDIR libxml2
 RUN git checkout c7260a47f19e01f4f663b6a56fbdc2dafd8a6e7e
 
 COPY build.sh ./
+COPY shell.c /libxml2/fuzz/
 
 RUN ./build.sh
 
 WORKDIR /
+RUN for file in /xml_corpus/*; do sed -i '1s/^/\x12\x34\x56\x78/' $file; done
