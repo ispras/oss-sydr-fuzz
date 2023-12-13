@@ -31,9 +31,8 @@ WORKDIR lcms
 RUN git checkout bce906a970683fdb692d4174c067b977c8ab6aa7
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY build.sh cms_link_*.c cmsIT8_load_*.c cms_transform_*.c cms_overwrite_transform_*.c ./
+COPY build.sh cms_link.c cmsIT8_load.c cms_transform.c cms_overwrite_transform.c ./
 COPY afl.cc /
-COPY build_link_corpus.sh /
 
 # Build fuzz targets.
 RUN ./build.sh
@@ -41,4 +40,5 @@ RUN ./build.sh
 WORKDIR ..
 # Prepare seed corpus.
 RUN mkdir /corpus && find . -name "*.icc" | xargs -I {} cp {} /corpus/
-RUN /build_link_corpus.sh
+RUN cp -r /corpus /link_corpus
+RUN for file in /link_corpus/*; do sed -i '1s/^/\x01\x20\x08/' $file; done
