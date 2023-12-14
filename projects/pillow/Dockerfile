@@ -33,8 +33,10 @@ RUN pip install pyinstaller
 
 WORKDIR /
 
-RUN git clone https://github.com/python-pillow/Pillow
-RUN git clone https://github.com/python-pillow/pillow-wheels
+RUN git clone https://github.com/python-pillow/Pillow && \
+    cd Pillow && git checkout e5ee034675491d1f67410022f07256ed583cbbc5
+RUN git clone https://github.com/python-pillow/pillow-wheels && \
+    cd pillow-wheels && git checkout 92612210ec8225018c8a8309d3ddbb19a67dd6ec
 
 RUN mkdir /out \
     && export OUT=/out \
@@ -50,7 +52,7 @@ RUN ln -s /usr/local/bin/python3 /usr/local/bin/python \
     && bash /build_depends.sh
 
 # install extra test images for a better starting corpus
-RUN cd Pillow && depends/install_extra_test_images.sh
+RUN cd Pillow/depends && ./install_extra_test_images.sh
 
 # pillow optional runtime dependencies
 RUN apt-get install -y \
