@@ -25,7 +25,7 @@ export CXXFLAGS="-fsanitize=address,fuzzer-no-link -g"
 rm /usr/bin/x86_64-linux-gnu-gcc
 ln -s /usr/bin/clang /usr/bin/x86_64-linux-gnu-gcc
 
-python3 setup.py build --build-base=/tmp/build install
+python3 -m pip install .
 
 # Build fuzzers in $OUT.
 for fuzzer in $(find $SRC -name 'fuzz_*.py'); do
