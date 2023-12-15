@@ -24,4 +24,4 @@ target = "/lcms_afl/cms_link_fuzzer"
 args = "-t 60000 -i /link_corpus -x icc.dict"
 
 [cov]
-target = "/lcms_cov/cms_link_sydr @@"
+target = "/lcms_cov/cms_link_cov @@"

@@ -90,7 +90,6 @@ export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 ./configure
 make -j$(nproc) all
 
-# build your Sydr targets
 mkdir /lcms_cov
 OUT=/lcms_cov
 FUZZERS="cms_link cmsIT8_load cms_transform cms_overwrite_transform"
@@ -99,6 +98,6 @@ for F in $FUZZERS; do
     $CC $CFLAGS -c -I /lcms/include \
         /lcms/$F.c -o /lcms/$F.o
     $CXX $CXXFLAGS \
-        main.o /lcms/$F.o -o $OUT/$F\_sydr \
+        main.o /lcms/$F.o -o $OUT/$F\_cov \
         /lcms/src/.libs/liblcms2.a
 done
