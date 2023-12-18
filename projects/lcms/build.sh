@@ -26,14 +26,14 @@ CXX=clang++
 # build your fuzzer(s)
 mkdir /lcms_fuzz
 OUT=/lcms_fuzz
-FUZZERS="cms_link_fuzzer cmsIT8_load_fuzzer cms_transform_fuzzer cms_overwrite_transform_fuzzer"
+FUZZERS="cms_link cmsIT8_load cms_transform cms_overwrite_transform"
 CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 for F in $FUZZERS; do
     $CC $CFLAGS -c -Iinclude \
         ./$F.c -o ./$F.o
     $CXX $CXXFLAGS \
-        ./$F.o -o $OUT/$F \
+        ./$F.o -o $OUT/$F\_fuzzer \
         src/.libs/liblcms2.a
 done
 
@@ -46,7 +46,7 @@ CC=afl-clang-lto
 CXX=afl-clang-lto++
 mkdir /lcms_afl
 OUT=/lcms_afl
-FUZZERS="cms_link_fuzzer cmsIT8_load_fuzzer cms_transform_fuzzer cms_overwrite_transform_fuzzer"
+FUZZERS="cms_link cmsIT8_load cms_transform cms_overwrite_transform"
 CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
@@ -55,7 +55,7 @@ for F in $FUZZERS; do
     $CC $CFLAGS -c -Iinclude \
         ./$F.c -o ./$F.o
     $CXX $CXXFLAGS \
-        afl.o ./$F.o -o $OUT/$F \
+        afl.o ./$F.o -o $OUT/$F\_fuzzer \
         src/.libs/liblcms2.a
 done
 
@@ -71,13 +71,13 @@ make -j$(nproc) all
 # build your Sydr targets
 mkdir /lcms_sydr
 OUT=/lcms_sydr
-FUZZERS="cms_link_sydr cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
+FUZZERS="cms_link cmsIT8_load cms_transform cms_overwrite_transform"
 $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 for F in $FUZZERS; do
     $CC $CFLAGS -c -Iinclude \
         ./$F.c -o ./$F.o
     $CXX $CXXFLAGS \
-        main.o ./$F.o -o $OUT/$F \
+        main.o ./$F.o -o $OUT/$F\_sydr \
         src/.libs/liblcms2.a
 done
 
@@ -90,15 +90,14 @@ export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 ./configure
 make -j$(nproc) all
 
-# build your Sydr targets
 mkdir /lcms_cov
 OUT=/lcms_cov
-FUZZERS="cms_link_sydr cmsIT8_load_sydr cms_transform_sydr cms_overwrite_transform_sydr"
+FUZZERS="cms_link cmsIT8_load cms_transform cms_overwrite_transform"
 $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 for F in $FUZZERS; do
     $CC $CFLAGS -c -I /lcms/include \
         /lcms/$F.c -o /lcms/$F.o
     $CXX $CXXFLAGS \
-        main.o /lcms/$F.o -o $OUT/$F \
+        main.o /lcms/$F.o -o $OUT/$F\_cov \
         /lcms/src/.libs/liblcms2.a
 done

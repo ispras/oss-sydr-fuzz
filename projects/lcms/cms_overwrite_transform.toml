@@ -24,4 +24,4 @@ path = "/lcms_fuzz/cms_overwrite_transform_fuzzer"
 args = "-dict=icc.dict -jobs=2 /corpus"
 
 [cov]
-target = "/lcms_cov/cms_overwrite_transform_sydr @@"
+target = "/lcms_cov/cms_overwrite_transform_cov @@"
