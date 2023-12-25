@@ -27,7 +27,12 @@ external repositories.
 
 ## Supported Open Source Projects
 
-Supported projects are located [here](projects).
+Supported projects are located [here](projects). In addition to C/C++ projects Sydr-Fuzz currently supports:
+* Rust: capstone-rs, image-rs, goblin, libhtp-rs, vector-rs, rust-regex, serde-json, gdb-command;
+* Go: image-go;
+* Python: crunch, h5py, msgspec, pillow, pytorch-py, ruamel-yaml, tensorflow-py, ultrajson;
+* Java: hsqldb, json-sanitizer;
+* JavaScript: fast-xml-parser.
 
 ## Contributing
 
