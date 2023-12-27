@@ -2,4 +2,4 @@ exit-on-time = 3600
 
 [jazzer_js]
 path = "/jazzer.js/fast-xml-parser/fuzz.js"
-args = "/corpus --sync -- -workers=2 -jobs=100"
+args = "/corpus --sync -- -workers=2 -jobs=100 -dict=/xml.dict"

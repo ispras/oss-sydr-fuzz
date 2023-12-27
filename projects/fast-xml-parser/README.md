@@ -14,7 +14,7 @@ Unzip Sydr (`sydr.zip`) in `projects/fast-xml-parser` directory:
 
 Run docker (mount project directory to /jazzer.js subdirectory):
 
-    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/jazzer.js/fuzz oss-sydr-fuzz-fastxmlparser /bin/bash
+    $ sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/jazzer.js/fuzz oss-sydr-fuzz-fastxmlparser /bin/bash
 
 Change directory to `/jazzer.js/fuzz`:
 

@@ -29,6 +29,7 @@ RUN git clone --depth 1 https://github.com/NaturalIntelligence/fast-xml-parser &
 COPY fuzz.js fast-xml-parser/
 RUN chmod +x fast-xml-parser/fuzz.js
 
-# Prepare seed corpus.
+# Prepare seed corpus and dict.
+COPY xml.dict /
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus
 RUN cp -r /go-fuzz-corpus/xml/corpus /corpus
