@@ -11,90 +11,86 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include <libxml/debugXML.h>
-#include <libxml/catalog.h>
-#include <string.h>
 #include "fuzz.h"
+#include <libxml/catalog.h>
+#include <libxml/debugXML.h>
+#include <string.h>
 
-int
-LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
-                     char ***argv ATTRIBUTE_UNUSED) {
-    xmlInitParser();
+int LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
+                         char ***argv ATTRIBUTE_UNUSED) {
+  xmlInitParser();
 #ifdef LIBXML_CATALOG_ENABLED
-    xmlInitializeCatalog();
+  xmlInitializeCatalog();
 #endif
-    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
+  xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
-    return 0;
+  return 0;
 }
 
-char* input(char *prompt) {
-    static int counter = 0, MAX_LEN=100;
-    const char *args[] = {
-        "base",
-        "cat",
-        "cat item",
-        "cd",
-        "cd item",
-        "dir",
-        "dir item",
-        "du",
-        "du item",
-        "free",
-        "ls",
-        "ls item",
-        "pwd",
-        "whereis",
-        "grep xml",
-        "setrootns",
-        "xpath /no/such/path",
-        "write",
-        "write /dev/null",
-        "save",
-        "validate",
-        "free",
-        "help",
-        "ls",
-        "bye",
-    };
-    if (counter > 24) {
-	    return NULL;
-    }
-    char *ret = (char *)malloc(MAX_LEN * sizeof(*ret));
-    strncpy(ret, args[counter++], MAX_LEN);
-    return ret;
+char *input(char *prompt) {
+  static int counter = 0, MAX_LEN = 100;
+  const char *args[] = {
+      "base",
+      "cat",
+      "cat item",
+      "cd",
+      "cd item",
+      "dir",
+      "dir item",
+      "du",
+      "du item",
+      "free",
+      "ls",
+      "ls item",
+      "pwd",
+      "whereis",
+      "grep xml",
+      "setrootns",
+      "xpath /no/such/path",
+      "write",
+      "write /dev/null",
+      "save",
+      "validate",
+      "free",
+      "help",
+      "ls",
+      "bye",
+  };
+  if (counter > 24) {
+    return NULL;
+  }
+  char *ret = (char *)malloc(MAX_LEN * sizeof(*ret));
+  strncpy(ret, args[counter++], MAX_LEN);
+  return ret;
 }
 
-int
-LLVMFuzzerTestOneInput(const char *data, size_t size) {
-    static const size_t maxChunkSize = 128;
-    xmlDocPtr doc;
-    xmlOutputBufferPtr out;
-    const char *docBuffer, *docUrl;
-    char *filename = "output.txt";
-    size_t docSize, consumed, chunkSize;
-    int opts = 0;
+int LLVMFuzzerTestOneInput(const char *data, size_t size) {
+  static const size_t maxChunkSize = 128;
+  xmlDocPtr doc;
+  xmlOutputBufferPtr out;
+  const char *docBuffer, *docUrl;
+  char *filename = "output.txt";
+  size_t docSize, consumed, chunkSize;
+  int opts = 0;
 
-    xmlFuzzDataInit(data, size);
-    opts = xmlFuzzReadInt();
-    opts = ~XML_PARSE_XINCLUDE;
+  xmlFuzzDataInit(data, size);
+  opts = xmlFuzzReadInt();
+  opts = ~XML_PARSE_XINCLUDE;
 
-    docBuffer = xmlFuzzReadRemaining(&docSize);
-    if (docBuffer == NULL) {
-        xmlFuzzDataCleanup();
-        return(0);
-    }
-
-    doc = xmlReadMemory(docBuffer, docSize, docUrl, NULL, opts);
-    xmlShell(doc, filename, input, NULL); 
-    xmlFreeDoc(doc);
-
-
-    /* Cleanup */
-
+  docBuffer = xmlFuzzReadRemaining(&docSize);
+  if (docBuffer == NULL) {
     xmlFuzzDataCleanup();
-    xmlResetLastError();
+    return (0);
+  }
 
-    return(0);
+  doc = xmlReadMemory(docBuffer, docSize, docUrl, NULL, opts);
+  xmlShell(doc, filename, input, NULL);
+  xmlFreeDoc(doc);
+
+  /* Cleanup */
+
+  xmlFuzzDataCleanup();
+  xmlResetLastError();
+
+  return (0);
 }
-
