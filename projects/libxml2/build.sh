@@ -39,7 +39,7 @@ make -j$(nproc)
 
 mkdir libfuzzer
 
-for target in xml html regexp schema uri xinclude xpath
+for target in xml html regexp schema uri xinclude xpath shell
 do
     $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o libfuzzer/fuzz_$target
 done
@@ -58,7 +58,7 @@ make -j$(nproc)
 
 mkdir afl++
 
-for target in xml html regexp schema uri xinclude xpath
+for target in xml html regexp schema uri xinclude xpath shell
 do
     $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++/fuzz_$target
 done
@@ -78,7 +78,7 @@ make -j$(nproc)
 
 mkdir afl++-cmplog
 
-for target in xml html regexp schema uri xinclude xpath
+for target in xml html regexp schema uri xinclude xpath shell
 do
     $CC $TARGET_CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o afl++-cmplog/fuzz_$target
 done
@@ -96,7 +96,7 @@ make -j$(nproc)
 
 mkdir sydr
 
-for target in xml html regexp schema uri xinclude xpath
+for target in xml html regexp schema uri xinclude xpath shell
 do
     $CC $CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $STANDALONE_MAIN $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o sydr/fuzz_$target
 done
@@ -114,7 +114,7 @@ make -j$(nproc)
 
 mkdir cover
 
-for target in xml html regexp schema uri xinclude xpath
+for target in xml html regexp schema uri xinclude xpath shell
 do
     $CC $CFLAGS -I $INCLUDE_DIR -I $FUZZ_DIR $STANDALONE_MAIN $FUZZ_DIR/$target.c $FUZZ_DIR/fuzz.c $LIB_DIR -lz -llzma -lm -o cover/fuzz_$target
 done
