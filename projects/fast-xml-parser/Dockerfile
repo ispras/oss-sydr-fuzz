@@ -22,7 +22,7 @@ RUN npm install strnum
 ENV PATH=$PATH:/jazzer.js/fuzz/sydr
 
 # Clone target from GitHub.
-RUN git clone --depth 1 https://github.com/NaturalIntelligence/fast-xml-parser && \
+RUN git clone https://github.com/NaturalIntelligence/fast-xml-parser && \
     cd fast-xml-parser && git checkout 940a1421a9155cc2642725263fc7ccedbe914e35
 
 # Copy build script and targets.
