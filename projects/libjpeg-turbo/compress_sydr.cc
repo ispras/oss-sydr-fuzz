@@ -88,6 +88,9 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
       flags |= TJFLAG_PROGRESSIVE;
     if (ti != 2)
       flags |= TJFLAG_NOREALLOC;
+#ifdef YUV
+    flags |= TJ_YUV;
+#endif
 
     /* tjLoadImage() refuses to load images larger than 1 Megapixel when
        FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION is defined (yes, that's a dirty
@@ -102,15 +105,23 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
         goto bailout;
     } else
       dstBuf = NULL;
-
+#ifdef YUV
+    dstSize = tjBufSizeYUV(width, height, tests[ti].subsamp);
+    if (tjEncodeYUV2(handle, srcBuf, width, 0, height, pf, dstBuf,
+                    tests[ti].subsamp, flags) == 0) {
+#else
     if (tjCompress2(handle, srcBuf, width, 0, height, pf, &dstBuf, &dstSize,
                     tests[ti].subsamp, tests[ti].quality, flags) == 0) {
+#endif
       /* Touch all of the output pixels in order to catch uninitialized reads
          when using MemorySanitizer. */
       for (i = 0; i < dstSize; i++)
         sum += dstBuf[i];
     }
 
+#ifdef YUV
+    tjSaveImage("/dev/null", dstBuf, width, 0, height, pf, flags);
+#endif
     free(dstBuf);
     dstBuf = NULL;
     tjFree(srcBuf);

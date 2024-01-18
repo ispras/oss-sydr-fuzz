@@ -81,16 +81,25 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
       w = (width + 1) / 2;
       h = (height + 1) / 2;
     }
+#ifdef YUV
+    flags |= TJ_YUV;
+#endif
 
     if ((dstBuf = (unsigned char *)malloc(w * h * tjPixelSize[pf])) == NULL)
       goto bailout;
-
+#ifdef YUV
+    if (tjDecompressToYUV2(handle, data, size, dstBuf, 0, 4, 0, flags) == 0) {
+#else
     if (tjDecompress2(handle, data, size, dstBuf, w, 0, h, pf, flags) == 0) {
+#endif
       /* Touch all of the output pixels in order to catch uninitialized reads
          when using MemorySanitizer. */
       for (i = 0; i < w * h * tjPixelSize[pf]; i++)
         sum += dstBuf[i];
     }
+#ifdef YUV
+    tjSaveImage("/dev/null", dstBuf, w, 0, h, pf, flags);
+#endif
 
     free(dstBuf);
     dstBuf = NULL;
