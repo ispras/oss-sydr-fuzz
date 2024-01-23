@@ -99,28 +99,42 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
                               flags)) == NULL)
       continue;
 
+#ifdef YUV
+    dstSize = maxBufSize = tjBufSizeYUV(width, height, tests[ti].subsamp);
+#else
     maxBufSize = tjBufSize(width, height, tests[ti].subsamp);
+#endif
     if (flags & TJFLAG_NOREALLOC) {
       if ((dstBuf = (unsigned char *)malloc(maxBufSize)) == NULL)
         goto bailout;
     } else
       dstBuf = NULL;
 #ifdef YUV
-    dstSize = tjBufSizeYUV(width, height, tests[ti].subsamp);
     if (tjEncodeYUV2(handle, srcBuf, width, 0, height, pf, dstBuf,
                     tests[ti].subsamp, flags) == 0) {
+        free(srcBuf);
+
+        srcBuf = dstBuf;
+        if (flags & TJFLAG_NOREALLOC) {
+          if ((dstBuf = (unsigned char *)malloc(maxBufSize)) == NULL)
+            goto bailout;
+        } else
+          dstBuf = NULL;
+
+        if (tjCompressFromYUV(handle, srcBuf, width, 1, height, tests[ti].subsamp,
+                    &dstBuf, &dstSize, tests[ti].quality, flags) == 0) {
+
+            tjSaveImage("/dev/null", dstBuf, width, 0, height, pf, flags);
+        }
+    }
 #else
     if (tjCompress2(handle, srcBuf, width, 0, height, pf, &dstBuf, &dstSize,
                     tests[ti].subsamp, tests[ti].quality, flags) == 0) {
-#endif
       /* Touch all of the output pixels in order to catch uninitialized reads
          when using MemorySanitizer. */
       for (i = 0; i < dstSize; i++)
         sum += dstBuf[i];
     }
-
-#ifdef YUV
-    tjSaveImage("/dev/null", dstBuf, width, 0, height, pf, flags);
 #endif
     free(dstBuf);
     dstBuf = NULL;
