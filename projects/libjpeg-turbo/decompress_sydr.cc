@@ -39,7 +39,7 @@
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
   tjhandle handle = NULL;
-  unsigned char *dstBuf = NULL;
+  unsigned char *dstBuf = NULL, *srcBuf = NULL;
   int width = 0, height = 0, jpegSubsamp, jpegColorspace, pfi;
   /* TJPF_RGB-TJPF_BGR share the same code paths, as do TJPF_RGBX-TJPF_XRGB and
      TJPF_RGBA-TJPF_ARGB.  Thus, the pixel formats below should be the minimum
@@ -81,28 +81,37 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
       w = (width + 1) / 2;
       h = (height + 1) / 2;
     }
+
 #ifdef YUV
     flags |= TJ_YUV;
-#endif
+    unsigned long dstSize = tjBufSizeYUV2(w, 1, h, jpegSubsamp);
+    if ((dstBuf = (unsigned char *)malloc(dstSize)) == NULL)
+      goto bailout;
+    tjDecompressToYUV2(handle, data, size, dstBuf, w, 1, h, flags);
+    srcBuf = dstBuf;
 
     if ((dstBuf = (unsigned char *)malloc(w * h * tjPixelSize[pf])) == NULL)
       goto bailout;
-#ifdef YUV
-    if (tjDecompressToYUV2(handle, data, size, dstBuf, 0, 4, 0, flags) == 0) {
+
+    if (tjDecodeYUV(handle, srcBuf, 1, jpegSubsamp, dstBuf, w, 0,
+                 h, pf, flags) == 0) {
+
+      tjSaveImage("/dev/null", dstBuf, w, 0, h, pf, flags);
+    }
 #else
+    if ((dstBuf = (unsigned char *)malloc(w * h * tjPixelSize[pf])) == NULL)
+      goto bailout;
     if (tjDecompress2(handle, data, size, dstBuf, w, 0, h, pf, flags) == 0) {
-#endif
       /* Touch all of the output pixels in order to catch uninitialized reads
          when using MemorySanitizer. */
       for (i = 0; i < w * h * tjPixelSize[pf]; i++)
         sum += dstBuf[i];
     }
-#ifdef YUV
-    tjSaveImage("/dev/null", dstBuf, w, 0, h, pf, flags);
 #endif
-
     free(dstBuf);
     dstBuf = NULL;
+    free(srcBuf);
+    srcBuf = NULL;
 
     /* Prevent the code above from being optimized out.  This test should never
        be true, but the compiler doesn't know that. */
@@ -112,6 +121,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 
 bailout:
   free(dstBuf);
+  free(srcBuf);
   if (handle) tjDestroy(handle);
   return 0;
 }
