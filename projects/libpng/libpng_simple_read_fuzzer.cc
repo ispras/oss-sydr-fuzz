@@ -23,11 +23,6 @@ limitations under the License.
 #include "png.h"
 
 void *limited_malloc(png_alloc_size_t size) {
-  // libpng may allocate large amounts of memory that the fuzzer reports as
-  // an error. In order to silence these errors, make libpng fail when trying
-  // to allocate a large amount. This allocator used to be in the Chromium
-  // version of this fuzzer.
-  // This number is chosen to match the default png_user_chunk_malloc_max.
   if (size > 8000000)
     return nullptr;
 
