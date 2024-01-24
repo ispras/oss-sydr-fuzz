@@ -41,15 +41,23 @@ Collect and report coverage:
 
 ## Alternative Fuzz Targets
 
-libjpeg-turbo project has 3 fuzz targets.
+libjpeg-turbo project has 5 fuzz targets.
 
 ### compress
 
     # sydr-fuzz -c compress.toml run
 
+### compress\_yuv
+
+    # sydr-fuzz -c compress_yuv.toml run
+
 ### decompress
 
     # sydr-fuzz -c decompress.toml run
+
+### decompress\_yuv
+
+    # sydr-fuzz -c decompress_yuv.toml run
 
 ### transform
 
