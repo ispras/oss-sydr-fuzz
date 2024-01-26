@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 # Copyright 2017-2018 Glenn Randers-Pehrson
 # Copyright 2016 Google Inc.
-# Modifications copyright (C) 2022 ISP RAS
+# Modifications copyright (C) 2024 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,9 +26,7 @@
 
 # Disable logging via library build configuration control.
 cat scripts/pnglibconf.dfa | \
-  sed -e "s/option STDIO/option STDIO disabled/" \
-      -e "s/option WARNING /option WARNING disabled/" \
-      -e "s/option WRITE enables WRITE_INT_FUNCTIONS/option WRITE disabled/" \
+  sed -e "s/option WARNING /option WARNING disabled/" \
 > scripts/pnglibconf.dfa.temp
 mv scripts/pnglibconf.dfa.temp scripts/pnglibconf.dfa
 
@@ -61,6 +59,10 @@ $CXX $CXXFLAGS -std=c++11 -I. \
      $SRC/libpng_read_fuzzer.cc \
      -o /libpng_read_fuzzer \
      .libs/libpng16.a -lz
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_simple_read_fuzzer.cc \
+     -o /libpng_simple_read_fuzzer \
+     .libs/libpng16.a -lz
 
 # Build targets for AFL++
 
@@ -80,6 +82,10 @@ $CC $CFLAGS -I. afl.cc -c -o afl.o
 $CXX $CXXFLAGS -std=c++11 -I. \
      $SRC/libpng_read_fuzzer.cc \
      -o /libpng_read_afl \
+     afl.o .libs/libpng16.a -lz
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_simple_read_fuzzer.cc \
+     -o /libpng_simple_read_afl \
      afl.o .libs/libpng16.a -lz
 
 # Build targets for Sydr
@@ -101,6 +107,10 @@ $CXX $CXXFLAGS -std=c++11 -I. \
      $SRC/libpng_read_fuzzer.cc \
      -o /libpng_read_sydr \
      main.o .libs/libpng16.a -lz
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_simple_read_fuzzer.cc \
+     -o /libpng_simple_read_sydr \
+     main.o .libs/libpng16.a -lz
 
 # Build targets for llvm-cov
 
@@ -118,4 +128,8 @@ $CC $CFLAGS -I. main.c -c -o main.o
 $CXX $CXXFLAGS -std=c++11 -I. \
      $SRC/libpng_read_fuzzer.cc \
      -o /libpng_read_cov \
+     main.o .libs/libpng16.a -lz
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_simple_read_fuzzer.cc \
+     -o /libpng_simple_read_cov \
      main.o .libs/libpng16.a -lz

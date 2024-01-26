@@ -38,3 +38,15 @@ Get LCOV HTML coverage report:
 ### Hybrid fuzzing with AFL++
 
     # sydr-fuzz -c libpng_read-afl++.toml run
+
+## Alternative Fuzz Targets
+
+libpng project has 2 fuzz targets
+
+### read
+
+    # sydr-fuzz -c libpng_read.toml run
+
+### simple\_read
+
+    # sydr-fuzz -c libpng_simple_read.toml run
