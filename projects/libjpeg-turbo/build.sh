@@ -3,6 +3,9 @@
 set -u
 set -e
 
+git apply /compress_yuv.patch
+git apply /decompress_yuv.patch
+
 # build targets for fuzzer
 mkdir build
 cd build
@@ -19,15 +22,15 @@ CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divid
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
     ../fuzz/compress.cc -o /compress_fuzzer \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include -DYUV\
-    ../fuzz/compress.cc -o /compress_yuv_fuzzer \
+$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
+    ../fuzz/compress_yuv.cc -o /compress_yuv_fuzzer \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
     ../fuzz/decompress.cc -o /decompress_fuzzer \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include -DYUV\
-    ../fuzz/decompress.cc -o /decompress_yuv_fuzzer \
+$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
+    ../fuzz/decompress_yuv.cc -o /decompress_yuv_fuzzer \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
@@ -52,15 +55,15 @@ CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-ze
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
     ../fuzz/afl.cc ../fuzz/compress.cc -o /compress_afl \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include -DYUV\
-    ../fuzz/afl.cc ../fuzz/compress.cc -o /compress_yuv_afl \
+$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
+    ../fuzz/afl.cc ../fuzz/compress_yuv.cc -o /compress_yuv_afl \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
     ../fuzz/afl.cc ../fuzz/decompress.cc -o /decompress_afl \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include -DYUV\
-    ../fuzz/afl.cc ../fuzz/decompress.cc -o /decompress_yuv_afl \
+$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
+    ../fuzz/afl.cc ../fuzz/decompress_yuv.cc -o /decompress_yuv_afl \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
@@ -80,24 +83,28 @@ cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_STATIC=1 -DENABLE_SHARED=0 \
 make "-j$(nproc)" "--load-average=$(nproc)"
 make install
 
+CC=clang
 CXX=clang++
 CXXFLAGS="-g"
+
+$CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
+
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
-    ../fuzz/compress_sydr.cc -o /compress_sydr \
+    main.o ../fuzz/compress.cc -o /compress_sydr \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include -DYUV\
-    ../fuzz/compress_sydr.cc -o /compress_yuv_sydr \
+$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
+    main.o ../fuzz/compress_yuv.cc -o /compress_yuv_sydr \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
-    ../fuzz/decompress_sydr.cc -o /decompress_sydr \
+    main.o ../fuzz/decompress.cc -o /decompress_sydr \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include -DYUV\
-    ../fuzz/decompress_sydr.cc -o /decompress_yuv_sydr \
+$CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
+    main.o ../fuzz/decompress_yuv.cc -o /decompress_yuv_sydr \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I.. -Iinstall/include \
-    ../fuzz/transform_sydr.cc -o /transform_sydr \
+    main.o ../fuzz/transform.cc -o /transform_sydr \
     "install/lib/libturbojpeg.a"
 
 # build targets for llvm-cov
@@ -113,22 +120,26 @@ cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_STATIC=1 -DENABLE_SHARED=0 \
 make "-j$(nproc)" "--load-average=$(nproc)"
 make install
 
+CC=clang
 CXX=clang++
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+
+$CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
+
 $CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include \
-    /libjpeg-turbo/fuzz/compress_sydr.cc -o /compress_cov \
+    main.o /libjpeg-turbo/fuzz/compress.cc -o /compress_cov \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include -DYUV\
-    /libjpeg-turbo/fuzz/compress_sydr.cc -o /compress_yuv_cov \
+$CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include \
+    main.o /libjpeg-turbo/fuzz/compress_yuv.cc -o /compress_yuv_cov \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include \
-    /libjpeg-turbo/fuzz/decompress_sydr.cc -o /decompress_cov \
+    main.o /libjpeg-turbo/fuzz/decompress.cc -o /decompress_cov \
     "install/lib/libturbojpeg.a"
-$CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include -DYUV\
-    /libjpeg-turbo/fuzz/decompress_sydr.cc -o /decompress_yuv_cov \
+$CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include \
+    main.o /libjpeg-turbo/fuzz/decompress_yuv.cc -o /decompress_yuv_cov \
     "install/lib/libturbojpeg.a"
 
 $CXX $CXXFLAGS -std=c++11 -I/libjpeg-turbo -I/libjpeg-turbo/build/install/include \
-    /libjpeg-turbo/fuzz/transform_sydr.cc -o /transform_cov \
+    main.o /libjpeg-turbo/fuzz/transform.cc -o /transform_cov \
     "install/lib/libturbojpeg.a"

@@ -1,0 +1,17 @@
+diff --git a/fuzz/decompress_yuv.cc b/fuzz/decompress_yuv.cc
+index d603fd81..a52665c5 100644
+--- a/fuzz/decompress_yuv.cc
++++ b/fuzz/decompress_yuv.cc
+@@ -86,10 +86,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
+     if (tjDecompressToYUV2(handle, data, size, yuvBuf, w, 1, h, flags) == 0 &&
+         tjDecodeYUV(handle, yuvBuf, 1, jpegSubsamp, dstBuf, w, 0, h, pf,
+                     flags) == 0) {
+-      /* Touch all of the output pixels in order to catch uninitialized reads
+-         when using MemorySanitizer. */
+-      for (i = 0; i < w * h * tjPixelSize[pf]; i++)
+-        sum += dstBuf[i];
++
++      tjSaveImage("/dev/null", dstBuf, w, 0, h, pf, flags);
+     }
+ 
+     free(dstBuf);
