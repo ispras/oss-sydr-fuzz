@@ -1,0 +1,17 @@
+diff --git a/fuzz/compress_yuv.cc b/fuzz/compress_yuv.cc
+index 021d6615..8e08f8b6 100644
+--- a/fuzz/compress_yuv.cc
++++ b/fuzz/compress_yuv.cc
+@@ -116,10 +116,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
+                      tests[ti].subsamp, flags) == 0 &&
+         tjCompressFromYUV(handle, yuvBuf, width, 1, height, tests[ti].subsamp,
+                           &dstBuf, &dstSize, tests[ti].quality, flags) == 0) {
+-      /* Touch all of the output pixels in order to catch uninitialized reads
+-         when using MemorySanitizer. */
+-      for (i = 0; i < dstSize; i++)
+-        sum += dstBuf[i];
++
++      tjSaveImage("/dev/null", dstBuf, width, 0, height, pf, flags);
+     }
+ 
+     free(dstBuf);
