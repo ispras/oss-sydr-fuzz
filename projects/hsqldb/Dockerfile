@@ -16,7 +16,7 @@
 
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-RUN curl -L https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.12-bin.zip -o ant.zip && \
+RUN curl -L https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.14-bin.zip -o ant.zip && \
     unzip ant.zip -d /ant && \
     rm -rf ant.zip
 
