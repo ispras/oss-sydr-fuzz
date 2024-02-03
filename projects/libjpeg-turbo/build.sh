@@ -3,7 +3,6 @@
 set -u
 set -e
 
-git apply /compress_yuv.patch
 git apply /decompress_yuv.patch
 
 # build targets for fuzzer
