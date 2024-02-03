@@ -46,7 +46,7 @@ RUN /build_afl_cc.sh
 # Clone and build.
 WORKDIR /
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
-    cd tensorflow_afl && git checkout c6054283bc77827cdbe6f78c32b1b5beedf8bf9e && \
+    cd tensorflow_afl && git checkout 98be9ede944cdf95fafcdbaa0527affca00062ea && \
     cd / && cp -r tensorflow_afl tensorflow_fuzz && \
     cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
 
