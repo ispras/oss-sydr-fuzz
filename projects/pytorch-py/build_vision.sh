@@ -26,6 +26,6 @@ CFLAGS="-fPIC -g -fsanitize=fuzzer-no-link,address"
 CXXFLAGS=$CFLAGS
 ASAN_LIB=$(find /usr/local/lib -name 'asan_with_fuzzer.so')
 
-ASAN_OPTIONS=detect_leaks=0 LD_PRELOAD=$ASAN_LIB \
+ASAN_OPTIONS="detect_leaks=0,detect_odr_violation=0" LD_PRELOAD=$ASAN_LIB \
     CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS \
     python3 setup.py install

@@ -22,17 +22,17 @@ RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch/ /pytorch
 RUN cd /pytorch && \
-    git checkout 49444c3e546bf240bed24a101e747422d1f8a0ee && \
+    git checkout v2.2.0 && \
     git submodule update --init --recursive --jobs 0
 
 RUN git clone https://github.com/pytorch/vision/ /vision
 RUN cd /vision && \
-    git checkout 1f4a98468a74f3f3739fc05bd15a014b3f8b1fab && \
+    git checkout v0.17.0 && \
     git submodule update --init --recursive --jobs 0
 
 RUN git clone https://github.com/pytorch/text /text
 RUN cd /text && \
-    git checkout 9a7bf8b643274e10e10c419a352fd41bb4a8c1c4 && \
+    git checkout v0.17.0 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
@@ -54,5 +54,5 @@ RUN /build_text.sh
 
 # Prepare initial corporas.
 RUN unzip load_fuzz.zip
-RUN mkdir /parse_native_yaml
-COPY /pytorch/aten/src/ATen/native/*.yaml /parse_native_yaml
+RUN mkdir /parse_native_yaml && \
+    find /pytorch/aten/src/ATen/native -name "*.yaml" | xargs -I {} cp {} /parse_native_yaml
