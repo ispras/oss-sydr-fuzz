@@ -35,11 +35,11 @@ public class Program
             catch (System.InvalidOperationException) { }
             catch (System.ArgumentNullException) { }
             catch (System.ArgumentException) { }
-            catch (Exception ex) {
+            /*catch (Exception ex) {
                 Console.WriteLine( "\nMessage ---\n{0}", ex.Message );
                 Console.WriteLine(ex.GetType().ToString());
                 //throw;
-            }
+            }*/
 		});
 	}
 }
