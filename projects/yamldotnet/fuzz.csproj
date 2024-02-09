@@ -12,7 +12,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="/YamlDotNet/YamlDotNet.csproj" />
+		<ProjectReference Include="/YamlDotNet/YamlDotNet/YamlDotNet.csproj" />
 	</ItemGroup>
 
 </Project>
