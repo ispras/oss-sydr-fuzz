@@ -8,7 +8,7 @@ YamlDotNet is a YAML library for netstandard and other .NET runtimes.
 
 ## Run Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/ffmpeg` directory:
+Unzip Sydr (`sydr.zip`) in `projects/yamldotnet` directory:
 
     $ unzip sydr.zip
 
