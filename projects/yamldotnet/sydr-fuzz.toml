@@ -24,4 +24,3 @@ jobs = 2
 fuzz_target = "/build_cov/Program.cs"
 source = "/YamlDotNet"
 build_dir = "/build_cov"
-minicover = "/minicover"

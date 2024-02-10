@@ -25,7 +25,7 @@ rm -rf /Program.cs /fuzz.csproj
 # Build target for fuzzing.
 cd /build_fuzz
 dotnet publish fuzz.csproj -c release -o bin
-/sharpfuzz bin/YamlDotNet.dll
+sharpfuzz bin/YamlDotNet.dll
 
 # Build target for coverage.
 cd /build_cov
