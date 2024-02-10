@@ -129,7 +129,8 @@ RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsof
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         dotnet-sdk-8.0
-RUN dotnet tool install SharpFuzz.CommandLine --tool-path /
-RUN dotnet tool install minicover --tool-path /
+RUN dotnet tool install SharpFuzz.CommandLine --global
+RUN dotnet tool install minicover --global
+ENV PATH=$PATH:/root/.dotnet/tools
 
 WORKDIR /
