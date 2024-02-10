@@ -11,8 +11,8 @@
     <PackageReference Include="SharpFuzz" Version="2.1.1" />
   </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="/YamlDotNet/YamlDotNet/YamlDotNet.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="/YamlDotNet/YamlDotNet/YamlDotNet.csproj" />
+  </ItemGroup>
 
 </Project>
