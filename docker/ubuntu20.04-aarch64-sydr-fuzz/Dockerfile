@@ -105,7 +105,7 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
 
 # Install .NET, Sharpfuzz, minicover.
 RUN wget https://download.visualstudio.microsoft.com/download/pr/092bec24-9cad-421d-9b43-458b3a7549aa/84280dbd1eef750f9ed1625339235c22/dotnet-sdk-8.0.101-linux-arm64.tar.gz
-RUN mkdir -p /dotnet && tar zxf dotnet-sdk-8.0.101-linux-arm64.tar.gz -C /dotnet && rm -rf dotnet-sdk-8.0.101-linux-arm64.tar.gz
+RUN mkdir /dotnet && tar zxf dotnet-sdk-8.0.101-linux-arm64.tar.gz -C /dotnet && rm -rf dotnet-sdk-8.0.101-linux-arm64.tar.gz
 ENV DOTNET_ROOT=/dotnet
 ENV PATH=$PATH:/dotnet
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
