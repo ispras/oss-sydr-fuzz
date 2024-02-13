@@ -49,6 +49,6 @@ RUN test/fuzz/build.sh
 WORKDIR /
 
 # Get new corpus directories
-RUN git clone https://github.com/ligurio/tarantool-corpus && cd /tarantool-corpus && \
-    git checkout 4e2e6c8c1533f8c6989d10b34cae6b9081d4a707 && mv mp_datetime/ datetime_strptime/ datetime_parse_full/ / && \
-	cd .. && rm -rf tarantool-corpus
+COPY tarantool-corpus.tar.gz /
+RUN tar -xf tarantool-corpus.tar.gz && \
+    mv tarantool-corpus/* . &&  rm tarantool-corpus*
