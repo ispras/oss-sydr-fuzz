@@ -51,4 +51,4 @@ WORKDIR /
 # Get new corpus directories
 COPY tarantool-corpus.tar.gz /
 RUN tar -xf tarantool-corpus.tar.gz && \
-    mv tarantool-corpus/* . &&  rm tarantool-corpus*
+    mv tarantool-corpus/* . &&  rm -rf tarantool-corpus*
