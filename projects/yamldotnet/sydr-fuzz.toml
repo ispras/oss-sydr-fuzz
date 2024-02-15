@@ -21,6 +21,6 @@ cmin = 4
 jobs = 2
 
 [cov]
-fuzz_target = "/build_cov/Program.cs"
+target = "/build_cov/Program.cs"
 source = "/YamlDotNet"
 build_dir = "/build_cov"

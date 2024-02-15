@@ -1,0 +1,26 @@
+Stack overflow.
+   at YamlDotNet.Core.Parser.ParseNode(Boolean, Boolean)
+   at YamlDotNet.Core.Parser.ParseFlowSequenceEntry(Boolean)
+   at YamlDotNet.Core.Parser.StateMachine()
+   at YamlDotNet.Core.Parser.MoveNext()
+   at YamlDotNet.Core.ParserExtensions.Consume[[System.__Canon, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]](YamlDotNet.Core.IParser)
+   at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.DeserializeHelper(System.Type, YamlDotNet.Core.IParser, System.Func`3<YamlDotNet.Core.IParser,System.Type,System.Object>, System.Collections.IList, Boolean, YamlDotNet.Serialization.INamingConvention)
+   at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.Deserialize(YamlDotNet.Core.IParser, System.Type, System.Func`3<YamlDotNet.Core.IParser,System.Type,System.Object>, System.Object ByRef)
+   at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue(YamlDotNet.Core.IParser, System.Type, YamlDotNet.Serialization.Utilities.SerializerState, YamlDotNet.Serialization.IValueDeserializer)
+   at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue(YamlDotNet.Core.IParser, System.Type, YamlDotNet.Serialization.Utilities.SerializerState, YamlDotNet.Serialization.IValueDeserializer)
+
+   x4000
+   
+   at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer+<>c__DisplayClass5_0.<DeserializeValue>b__0(YamlDotNet.Core.IParser, System.Type)
+   at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.DeserializeHelper(System.Type, YamlDotNet.Core.IParser, System.Func`3<YamlDotNet.Core.IParser,System.Type,System.Object>, System.Collections.IList, Boolean, YamlDotNet.Serialization.INamingConvention)
+   at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.Deserialize(YamlDotNet.Core.IParser, System.Type, System.Func`3<YamlDotNet.Core.IParser,System.Type,System.Object>, System.Object ByRef)
+   at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue(YamlDotNet.Core.IParser, System.Type, YamlDotNet.Serialization.Utilities.SerializerState, YamlDotNet.Serialization.IValueDeserializer)
+   at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue(YamlDotNet.Core.IParser, System.Type, YamlDotNet.Serialization.Utilities.SerializerState, YamlDotNet.Serialization.IValueDeserializer)
+   
+   at YamlDotNet.Serialization.Deserializer.Deserialize(YamlDotNet.Core.IParser, System.Type)
+   at YamlDotNet.Serialization.Deserializer.Deserialize(System.IO.TextReader, System.Type)
+   at YamlDotNet.Serialization.Deserializer.Deserialize(System.IO.TextReader)
+   at Program+<>c__DisplayClass0_0.<Main>b__0(System.IO.Stream)
+   at SharpFuzz.Fuzzer.RunWithoutAflFuzz(System.Action`1<System.IO.Stream>, System.IO.Stream)
+   at SharpFuzz.Fuzzer+OutOfProcess.Run(System.Action`1<System.IO.Stream>)
+   at Program.Main(System.String[])
