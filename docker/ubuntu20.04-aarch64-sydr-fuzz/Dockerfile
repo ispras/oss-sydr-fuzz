@@ -112,6 +112,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 ENV DOTNET_UPGRADEASSISTANT_TELEMETRY_OPTOUT=1
 RUN dotnet tool install SharpFuzz.CommandLine --global
 RUN dotnet tool install minicover --global
+RUN dotnet tool install altcover.global --global
 ENV PATH=$PATH:/root/.dotnet/tools
 
 ENV PATH=$PATH:/fuzz/sydr
