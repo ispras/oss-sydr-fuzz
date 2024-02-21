@@ -103,7 +103,7 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     export LD_LIBRARY_PATH="$(llvm-config-14 --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
-# Install .NET, Sharpfuzz, minicover.
+# Install .NET, Sharpfuzz, minicover, altcover.
 RUN wget https://download.visualstudio.microsoft.com/download/pr/092bec24-9cad-421d-9b43-458b3a7549aa/84280dbd1eef750f9ed1625339235c22/dotnet-sdk-8.0.101-linux-arm64.tar.gz
 RUN mkdir /dotnet && tar zxf dotnet-sdk-8.0.101-linux-arm64.tar.gz -C /dotnet && rm -rf dotnet-sdk-8.0.101-linux-arm64.tar.gz
 ENV DOTNET_ROOT=/dotnet
@@ -112,6 +112,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 ENV DOTNET_UPGRADEASSISTANT_TELEMETRY_OPTOUT=1
 RUN dotnet tool install SharpFuzz.CommandLine --global
 RUN dotnet tool install minicover --global
+RUN dotnet tool install altcover.global --global
 ENV PATH=$PATH:/root/.dotnet/tools
 
 ENV PATH=$PATH:/fuzz/sydr
