@@ -43,7 +43,7 @@ RUN curl -Lo /usr/bin/bazel \
     chmod +x /usr/bin/bazel
 
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow && \
-    cd tensorflow && git checkout 6621be46794781c2ecdb0fa1db52b5544ccdfbcb
+    cd tensorflow && git checkout 98be9ede944cdf95fafcdbaa0527affca00062ea
 
 WORKDIR /tensorflow
 
