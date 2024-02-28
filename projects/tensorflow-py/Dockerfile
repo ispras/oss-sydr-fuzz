@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         rsync \
         vim \
         moreutils \
+        patchelf \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
