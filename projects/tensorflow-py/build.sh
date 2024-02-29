@@ -22,6 +22,7 @@ export CXX="clang++"
 export CXXFLAGS="-fsanitize=fuzzer-no-link,address -g -shared-libasan"
 
 export LD_LIBRARY_PATH="$(dirname $(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1))"
+export TF_PYTHON_VERSION=3.9
 
 declare EXTRA_FLAGS="\
 $(

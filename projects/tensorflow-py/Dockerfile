@@ -29,8 +29,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install python3.9
+RUN apt update && apt install -y python3.9 python3.9-dev
+RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3
 RUN python3 -m pip install --upgrade pip
-
 RUN python3 -m pip install --upgrade pyinstaller
 
 # Due to Bazel bug, need to symlink python3 to python
