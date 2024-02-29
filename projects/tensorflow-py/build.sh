@@ -36,7 +36,7 @@ done
 
 sed -i -e 's/$(location @nasm\/\/:nasm) -f elf64/ASAN_OPTIONS=detect_leaks=0 $(location @nasm\/\/:nasm) -f elf64/' third_party/jpeg/jpeg.BUILD
 
-python3 -m pip install numpy wheel packaging requests opt_einsum
+python3 -m pip install numpy wheel packaging requests opt_einsum toml
 python3 -m pip install keras_preprocessing --no-deps
 
 bazel clean --expunge
