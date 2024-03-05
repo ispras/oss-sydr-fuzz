@@ -27,10 +27,6 @@ cd /build_fuzz
 dotnet publish fuzz.csproj -c release -o bin
 sharpfuzz bin/YamlDotNet.dll
 
-# Build target for coverage.
-cd /build_cov
-dotnet build
-
 # Get corpus.
 mkdir /corpus
 cp /YamlDotNet/YamlDotNet.Test/files/*.yaml /corpus
