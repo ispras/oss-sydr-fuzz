@@ -22,6 +22,7 @@ export CXX="clang++"
 export CXXFLAGS="-fsanitize=fuzzer-no-link,address -g -shared-libasan"
 
 export LD_LIBRARY_PATH="$(dirname $(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1))"
+export TF_PYTHON_VERSION=3.9
 
 declare EXTRA_FLAGS="\
 $(
@@ -35,7 +36,7 @@ done
 
 sed -i -e 's/$(location @nasm\/\/:nasm) -f elf64/ASAN_OPTIONS=detect_leaks=0 $(location @nasm\/\/:nasm) -f elf64/' third_party/jpeg/jpeg.BUILD
 
-python3 -m pip install numpy wheel packaging requests opt_einsum
+python3 -m pip install numpy wheel packaging requests opt_einsum toml
 python3 -m pip install keras_preprocessing --no-deps
 
 bazel clean --expunge
