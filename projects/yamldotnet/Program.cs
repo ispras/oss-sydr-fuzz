@@ -1,4 +1,4 @@
-﻿// Copyright 2023 ISP RAS
+﻿// Copyright 2024 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ using YamlDotNet.RepresentationModel;
 public class Program
 {
     public static void Main(string[] args)
-	{
+    {
         Fuzzer.OutOfProcess.Run(stream =>
-		{
+        {
             try {
                 string yml = File.ReadAllText(args[0]);
                 var input = new StringReader(yml);
