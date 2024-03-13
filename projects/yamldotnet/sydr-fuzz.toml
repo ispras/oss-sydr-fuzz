@@ -17,7 +17,6 @@
 [sharpfuzz]
 args = "-i /corpus -t 10000 -x /yaml.dict"
 target = "/build_fuzz/bin/fuzz.dll @@"
-cmin = 4
 jobs = 2
 
 [cov]

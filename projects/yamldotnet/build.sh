@@ -20,7 +20,6 @@
 mkdir -p /build_fuzz /build_cov
 cp /Program.cs /fuzz.csproj /build_fuzz
 cp /Program.cs /fuzz.csproj /build_cov
-rm -rf /Program.cs /fuzz.csproj
 
 # Build target for fuzzing.
 cd /build_fuzz
