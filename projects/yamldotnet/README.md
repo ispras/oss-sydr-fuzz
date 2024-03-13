@@ -22,12 +22,12 @@ Change directory to `/fuzz`:
 
 Run fuzzing with afl++:
 
-    # sydr-fuzz run
+    # sydr-fuzz -c parse_yaml.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz cmin
+    # sydr-fuzz -c parse_yaml.toml cmin
 
 Collect coverage:
 
-    # sydr-fuzz cov-html
+    # sydr-fuzz -c parse_yaml.toml cov-html
