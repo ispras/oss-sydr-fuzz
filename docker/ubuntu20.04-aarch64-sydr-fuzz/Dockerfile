@@ -7,12 +7,18 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y build-essential gcc g++ gcc-9-plugin-dev \
         gcc-multilib-arm-linux-gnueabi g++-multilib-arm-linux-gnueabi \
-        libglib2.0-dev libtool python-dev python3-pip lsb-release pkg-config \
-        vim curl lcov gnuplot wget unzip m4 software-properties-common \
-        zlib1g-dev git texinfo bison zip htop psutils
+        libglib2.0-dev libtool python3.9 python3.9-dev python3-pip \
+        lsb-release pkg-config vim curl lcov gnuplot wget unzip m4 \
+        software-properties-common zlib1g-dev git texinfo bison zip htop psutils
 
-# Add gcc repository
-RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3
+RUN pip3 install --upgrade pip
+
+# Fix add-apt-repository for python3.9
+RUN cd /usr/lib/python3/dist-packages && cp apt_pkg.cpython-38-aarch64-linux-gnu.so apt_pkg.so && \
+    apt-get install -y libcairo2-dev libgirepository1.0-dev && \
+    pip3 install --ignore-installed PyGObject && \
+    sed -i 's/isAlive()/is_alive()/g' /usr/lib/python3/dist-packages/softwareproperties/SoftwareProperties.py
 
 # Add clang repositories
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
