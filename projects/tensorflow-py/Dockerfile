@@ -29,9 +29,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install python3.9
-RUN apt update && apt install -y python3.9 python3.9-dev
-RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --upgrade pyinstaller
 
@@ -46,7 +43,7 @@ RUN curl -Lo /usr/bin/bazel \
     chmod +x /usr/bin/bazel
 
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow && \
-    cd tensorflow && git checkout 98be9ede944cdf95fafcdbaa0527affca00062ea
+    cd tensorflow && git checkout v2.16.1
 
 WORKDIR /tensorflow
 
