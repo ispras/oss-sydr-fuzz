@@ -22,23 +22,23 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run
+    # sydr-fuzz -c parse_json.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz cmin
+    # sydr-fuzz -c parse_json.toml cmin
 
 Check security predicates:
 
-    # sydr-fuzz security
+    # sydr-fuzz -c parse_json.toml security
 
 Crash triage with CASR:
 
-    # sydr-fuzz casr
+    # sydr-fuzz -c parse_json.toml casr
 
 Get LCOV HTML coverage report:
 
-    # sydr-fuzz cov-html
+    # sydr-fuzz -c parse_json.toml cov-html
 
 ## Alternative Fuzz Targets
 
