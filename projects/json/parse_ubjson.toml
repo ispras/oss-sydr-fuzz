@@ -23,5 +23,9 @@ jobs = 2
 path = "/lf_targets/fuzzer-parse_ubjson_fuzzer"
 args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /corpus_ubjson"
 
+[aflplusplus]
+target = "/afl_targets/fuzzer-parse_ubjson_afl @@"
+args = "-t 10000 -i /corpus_ubjson"
+
 [cov]
 target = "/cov_targets/fuzzer-parse_ubjson_cov @@"
