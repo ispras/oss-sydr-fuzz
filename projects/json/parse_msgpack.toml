@@ -21,11 +21,12 @@ jobs = 2
 
 [libfuzzer]
 path = "/lf_targets/fuzzer-parse_msgpack_fuzzer"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /corpus_msgpack"
+args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=2 /corpus_msgpack"
 
 [aflplusplus]
 target = "/afl_targets/fuzzer-parse_msgpack_afl @@"
 args = "-t 10000 -i /corpus_msgpack"
+jobs = 2
 
 [cov]
 target = "/cov_targets/fuzzer-parse_msgpack_cov @@"
