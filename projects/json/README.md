@@ -24,6 +24,18 @@ Run hybrid fuzzing:
 
     # sydr-fuzz run
 
+Minimize corpus:
+
+    # sydr-fuzz cmin
+
+Check security predicates:
+
+    # sydr-fuzz security
+
+Crash triage with CASR:
+
+    # sydr-fuzz casr
+
 Get LCOV HTML coverage report:
 
     # sydr-fuzz cov-html
