@@ -22,6 +22,4 @@ cmin = false
 jobs = 4
 
 [cov]
-target = "/build_cov/Parser.cs"
-source = "/CppSharp"
 build_dir = "/build_cov"

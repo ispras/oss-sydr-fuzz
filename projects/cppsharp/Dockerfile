@@ -29,3 +29,9 @@ WORKDIR /
 RUN /build.sh
 
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/CppSharp/bin/Release_x64/
+
+#COPY Generator.cs fuzz_gen.csproj build_target.sh /
+#RUN /build_target.sh
+
+RUN git clone https://github.com/headshog/prac.git && \
+	cd prac && cp *.cpp /corpus
