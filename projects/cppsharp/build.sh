@@ -48,5 +48,5 @@ cp -r /CppSharp/bin/Release_x64/lib bin/Debug/net8.0
 
 # Get corpus (TODO, this corpus is temporary).
 mkdir /corpus
-cd /doomgeneric/doomgeneric
-cp *.c *.h /corpus
+cd /Cpp-Sharp
+cp -R -f -n */*.cpp */*.hpp */*.h /corpus
