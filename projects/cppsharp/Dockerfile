@@ -17,10 +17,10 @@
 FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN git clone https://github.com/mono/CppSharp.git && \
-	cd CppSharp && git checkout 81e0a931cf6116951e37b0fa763e1974bc753a83
+    cd CppSharp && git checkout 81e0a931cf6116951e37b0fa763e1974bc753a83
 
 RUN git clone https://github.com/Mooophy/Cpp-Primer.git && \
-	cd Cpp-Primer && git checkout abcb44b77668abaca539c482d359d17f5a0e3d7f
+    cd Cpp-Primer && git checkout abcb44b77668abaca539c482d359d17f5a0e3d7f
 
 COPY build.sh Parser.cs fuzz.csproj /
 

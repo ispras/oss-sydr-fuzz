@@ -31,3 +31,7 @@ Minimize corpus:
 Collect coverage:
 
     # sydr-fuzz -c parse_yaml.toml cov-html
+
+Crash triage with Casr:
+
+    # sydr-fuzz -c parse_yaml.toml casr
