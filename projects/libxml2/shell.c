@@ -68,7 +68,7 @@ int LLVMFuzzerTestOneInput(const char *data, size_t size) {
   static const size_t maxChunkSize = 128;
   xmlDocPtr doc;
   xmlOutputBufferPtr out;
-  const char *docBuffer, *docUrl;
+  const char *docBuffer;
   char *filename = "output.txt";
   size_t docSize, consumed, chunkSize;
   int opts = 0;
@@ -83,7 +83,7 @@ int LLVMFuzzerTestOneInput(const char *data, size_t size) {
     return (0);
   }
 
-  doc = xmlReadMemory(docBuffer, docSize, docUrl, NULL, opts);
+  doc = xmlReadMemory(docBuffer, docSize, NULL, NULL, opts);
   xmlShell(doc, filename, input, NULL);
   xmlFreeDoc(doc);
 
