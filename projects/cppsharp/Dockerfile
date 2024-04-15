@@ -14,11 +14,18 @@
 #
 ################################################################################
 
-[sharpfuzz]
-args = "-i /corpus -t 10000 -x /yaml.dict"
-target = "/build_fuzz/bin/fuzz.dll @@"
-casr_bin = "/build_fuzz/bin/release/net8.0/fuzz.dll"
-jobs = 2
+FROM sydr/ubuntu20.04-sydr-fuzz
 
-[cov]
-build_dir = "/build_cov"
+RUN git clone https://github.com/mono/CppSharp.git && \
+    cd CppSharp && git checkout 81e0a931cf6116951e37b0fa763e1974bc753a83
+
+RUN git clone https://github.com/Mooophy/Cpp-Primer.git && \
+    cd Cpp-Primer && git checkout abcb44b77668abaca539c482d359d17f5a0e3d7f
+
+COPY build.sh Parser.cs fuzz.csproj /
+
+WORKDIR /
+
+RUN /build.sh
+
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/CppSharp/bin/Release_x64/

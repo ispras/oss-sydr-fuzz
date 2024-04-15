@@ -48,9 +48,6 @@ public class Program
                 yaml.Load(input);
             }
             catch (YamlException) { }
-            catch (System.InvalidOperationException) { }
-            catch (System.ArgumentNullException) { }
-            catch (System.ArgumentException) { }
         });
     }
 }

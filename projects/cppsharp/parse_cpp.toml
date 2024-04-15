@@ -15,10 +15,11 @@
 ################################################################################
 
 [sharpfuzz]
-args = "-i /corpus -t 10000 -x /yaml.dict"
+args = "-i /corpus -t 10000"
 target = "/build_fuzz/bin/fuzz.dll @@"
 casr_bin = "/build_fuzz/bin/release/net8.0/fuzz.dll"
-jobs = 2
+cmin = false
+jobs = 4
 
 [cov]
 build_dir = "/build_cov"

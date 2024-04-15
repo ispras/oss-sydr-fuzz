@@ -17,7 +17,7 @@
 FROM sydr/ubuntu20.04-sydr-fuzz
 
 RUN git clone https://github.com/aaubry/YamlDotNet.git && \
-	cd YamlDotNet && git checkout 19d7875b240c28516ef24c40485e29eaca9b9418
+    cd YamlDotNet && git checkout 19d7875b240c28516ef24c40485e29eaca9b9418
 
 COPY build.sh Program.cs fuzz.csproj yaml.dict /
 
