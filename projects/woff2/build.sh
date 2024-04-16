@@ -42,10 +42,6 @@ for fuzzer_archive in ./src/*fuzzer*.a; do
   -o ./targets/$fuzzer_name
 done
 
-# # Run fuzzing
-# ./targets/convert_woff2ttf_fuzzer -close_fd_mask=3 ./corpus
-# ./targets/convert_woff2ttf_fuzzer_new_entry -close_fd_mask=3 ./corpus
-
 # Build targets for Sydr
 export CFLAGS="-g"
 export CXXFLAGS="-g"
@@ -61,10 +57,6 @@ for fuzzer_archive in ./src/*fuzzer*.a; do
   -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
   -o ./targets/${fuzzer_name}_Sydr
 done
-
-# # Run Sydr
-# sydr-fuzz ./targets/convert_woff2ttf_fuzzer_Sydr @@ -l debug -j4 ./corpus
-# sydr-fuzz ./targets/convert_woff2ttf_fuzzer_new_entry_Sydr @@ -l debug -j4 ./corpus
 
 # Build targets for coverage
 export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
@@ -82,28 +74,17 @@ for fuzzer_archive in ./src/*fuzzer*.a; do
   -o ./targets/${fuzzer_name}_cov
 done
 
-# # Getting coverage
-# mkdir -p ./coverage/raw && cd ./coverage/raw
-#
-# for file in /src/woff2/corpus/*; do
-#   LLVM_PROFILE_FILE=./$(basename "$file").profraw /src/woff2/targets/convert_woff2ttf_fuzzer_new_entry_cov "$file"
-# done
-#
-# cd ../ && find raw/ > cov.lst
-# llvm-profdata merge --input-files=cov.lst -o cov.profdata
-#
-# llvm-cov export /src/woff2/targets/convert_woff2ttf_fuzzer_cov -instr-profile cov.profdata -format=lcov > cov.lcov
-# genhtml -o cov-html cov.lcov
-# cp cov-html /fuzz -r
-
 # Build targets for afl++
 export CC="afl-clang-fast"
 export CXX="afl-clang-fast++"
-export CFLAGS="-g -O0 -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -std=c++11 -O0 -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -O0 -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -std=c++11 -O0 -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 make clean -j$(nproc)
 make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
+
+export CFLAGS="-g -O0 -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -std=c++11 -O0 -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 ${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
 
@@ -113,7 +94,3 @@ for fuzzer_archive in ./src/*fuzzer*.a; do
   -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
   -o ./targets/${fuzzer_name}_afl
 done
-
-# # Run afl++ fuzzer
-# AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_SKIP_CPUFREQ=1 afl-fuzz -i ./corpus -o ./afl_output -D ./targets/convert_woff2ttf_fuzzer_afl @@
-# AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_SKIP_CPUFREQ=1 afl-fuzz -i ./corpus -o ./afl_output -D ./targets/convert_woff2ttf_fuzzer_new_entry_afl @@
