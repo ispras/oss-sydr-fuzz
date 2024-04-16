@@ -1,4 +1,5 @@
 # Copyright 2016 Google Inc.
+# Modifications copyright (C) 2024 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +20,15 @@ RUN apt-get update && apt-get install -y make autoconf automake libtool libbrotl
 
 MAINTAINER Vladislav Zagorodnyuk
 
-RUN git clone --depth 1 --recursive https://github.com/google/woff2 /src/woff2
+RUN git clone --recursive https://github.com/google/woff2 /src/woff2
 WORKDIR /src/woff2
 RUN git checkout 0f4d304faa1c62994536dc73510305c7357da8d4
-COPY ./build.sh ./*.cc ./
+COPY ./build.sh ./
 RUN mkdir -p ./targets
 COPY ./*.options ./targets
-RUN mkdir -p ./corpus
-COPY ./corpus ./corpus
+COPY ./corpus.zip ./
+RUN unzip ./corpus.zip
+RUN rm ./corpus.zip
 
 RUN chmod +x ./build.sh
 RUN ./build.sh

@@ -1,4 +1,6 @@
-# Copyright 2024 ISP RAS
+#!/bin/bash -eu
+# Copyright 2016 Google Inc.
+# Modifications copyright (C) 2024 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +16,6 @@
 #
 ################################################################################
 
-#!/bin/bash
-
 export CC=clang
 export CXX=clang++
 export SRC=.
@@ -29,15 +29,16 @@ mv brotli/shared.mk.temp brotli/shared.mk
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
-make clean
-make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING=
+make clean -j$(nproc)
+make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
 
 export CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
-  $CXX $CXXFLAGS ./${fuzzer_name}.cc $fuzzer_archive -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
+  $CXX $CXXFLAGS ./src/${fuzzer_name}.cc $fuzzer_archive \
+  -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
   -o ./targets/$fuzzer_name
 done
 
@@ -49,12 +50,15 @@ done
 export CFLAGS="-g"
 export CXXFLAGS="-g"
 
-make clean
-make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING=
+make clean -j$(nproc)
+make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
+
+${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
-  $CXX $CXXFLAGS ./${fuzzer_name}_Sydr.cc $fuzzer_archive -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
+  $CXX $CXXFLAGS ./src/${fuzzer_name}.cc  /opt/StandaloneFuzzTargetMain.o $fuzzer_archive \
+  -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
   -o ./targets/${fuzzer_name}_Sydr
 done
 
@@ -66,12 +70,15 @@ done
 export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
-make clean
-make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING=
+make clean -j$(nproc)
+make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
+
+${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
-  $CXX $CXXFLAGS ./${fuzzer_name}_Sydr.cc $fuzzer_archive -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
+  $CXX $CXXFLAGS ./src/${fuzzer_name}.cc  /opt/StandaloneFuzzTargetMain.o $fuzzer_archive \
+  -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
   -o ./targets/${fuzzer_name}_cov
 done
 
@@ -95,12 +102,15 @@ export CXX="afl-clang-fast++"
 export CFLAGS="-g -O0 -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -std=c++11 -O0 -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
-make clean
-make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING=
+make clean -j$(nproc)
+make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
+
+${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
-  $CXX $CXXFLAGS ./${fuzzer_name}_Sydr.cc $fuzzer_archive -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
+  $CXX $CXXFLAGS ./src/${fuzzer_name}.cc /opt/StandaloneFuzzTargetMain.o $fuzzer_archive \
+  -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
   -o ./targets/${fuzzer_name}_afl
 done
 

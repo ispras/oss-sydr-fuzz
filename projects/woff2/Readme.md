@@ -24,14 +24,22 @@ Unzip Sydr (`sydr.zip`) in `projects/woff2` directory:
 
     # sydr-fuzz -c convert_woff2ttf_fuzzing.toml run
 
+## Minimize corpus:
+
+    # sydr-fuzz -c convert_woff2ttf_fuzzing.toml cmin
+
+## Check security predicates:
+
+    # sydr-fuzz -c convert_woff2ttf_fuzzing.toml security
+
+## Crash triage with CASR:
+
+    # sydr-fuzz -c convert_woff2ttf_fuzzing.toml casr
+
 ## Get LCOV HTML coverage report:
 
     # sydr-fuzz -c convert_woff2ttf_fuzzing.toml cov-export -- -format=lcov > convert_woff2ttf_fuzzing.lcov
     # genhtml -o convert_woff2ttf_fuzzing-html convert_woff2ttf_fuzzing.lcov
-
-## Minimize corpus:
-
-    # sydr-fuzz -c convert_woff2ttf_fuzzing.toml cmin
 
 ## Run hybrid fuzzing with afl++:
 
