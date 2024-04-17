@@ -21,8 +21,7 @@ jobs = 4
 
 [libfuzzer]
 path = "/src/woff2/targets/convert_woff2ttf_fuzzer_new_entry"
-args = "-close_fd_mask=3 /src/woff2/corpus"
-max_len = 1000000
+args = "-close_fd_mask=3 -max_len = 1000000 /src/woff2/corpus"
 
 [cov]
 target = "/src/woff2/targets/convert_woff2ttf_fuzzer_new_entry_cov @@"
