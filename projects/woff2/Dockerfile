@@ -16,19 +16,15 @@
 ################################################################################
 
 FROM sydr/ubuntu20.04-sydr-fuzz
-RUN apt-get update && apt-get install -y make autoconf automake libtool libbrotli-dev
-
-MAINTAINER Vladislav Zagorodnyuk
+RUN apt-get update && apt-get install -y libbrotli-dev
 
 RUN git clone --recursive https://github.com/google/woff2 /src/woff2
 WORKDIR /src/woff2
 RUN git checkout 0f4d304faa1c62994536dc73510305c7357da8d4
 COPY ./build.sh ./
 RUN mkdir -p ./targets
-COPY ./*.options ./targets
 COPY ./corpus.zip ./
 RUN unzip ./corpus.zip
 RUN rm ./corpus.zip
 
-RUN chmod +x ./build.sh
 RUN ./build.sh

@@ -38,8 +38,7 @@ Unzip Sydr (`sydr.zip`) in `projects/woff2` directory:
 
 ## Get LCOV HTML coverage report:
 
-    # sydr-fuzz -c convert_woff2ttf_fuzzing.toml cov-export -- -format=lcov > convert_woff2ttf_fuzzing.lcov
-    # genhtml -o convert_woff2ttf_fuzzing-html convert_woff2ttf_fuzzing.lcov
+    # sydr-fuzz -c convert_woff2ttf_fuzzing.toml cov-html
 
 ## Run hybrid fuzzing with afl++:
 
@@ -47,7 +46,7 @@ Unzip Sydr (`sydr.zip`) in `projects/woff2` directory:
 
 ## Alternative Fuzz Targets
 
-woff2 project has 2 fuzz targets.
+woff2 project has 2 alternative fuzz targets.
 
 ### convert_woff2ttf_fuzzing
 
