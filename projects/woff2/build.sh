@@ -18,14 +18,13 @@
 
 export CC=clang
 export CXX=clang++
-export SRC=.
 
 # Build the library. Actually there is no 'library' target, so we use .o files.
 # '-no-canonical-prefixes' flag makes clang crazy. Need to avoid it.
 cat brotli/shared.mk | sed -e "s/-no-canonical-prefixes//" > brotli/shared.mk.temp
 mv brotli/shared.mk.temp brotli/shared.mk
 
-# Build targets for fuzzing
+# Build targets for libFuzzer
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
 
@@ -39,7 +38,7 @@ for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
   $CXX $CXXFLAGS ./src/${fuzzer_name}.cc $fuzzer_archive \
   -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
-  -o ./targets/$fuzzer_name
+  -o /$fuzzer_name
 done
 
 # Build targets for Sydr
@@ -49,13 +48,13 @@ export CXXFLAGS="-g"
 make clean -j$(nproc)
 make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
 
-${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
+$CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
   $CXX $CXXFLAGS ./src/${fuzzer_name}.cc  /opt/StandaloneFuzzTargetMain.o $fuzzer_archive \
   -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
-  -o ./targets/${fuzzer_name}_Sydr
+  -o /${fuzzer_name}_sydr
 done
 
 # Build targets for coverage
@@ -65,32 +64,30 @@ export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 make clean -j$(nproc)
 make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
 
-${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
+$CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
   $CXX $CXXFLAGS ./src/${fuzzer_name}.cc  /opt/StandaloneFuzzTargetMain.o $fuzzer_archive \
   -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
-  -o ./targets/${fuzzer_name}_cov
+  -o /${fuzzer_name}_cov
 done
 
 # Build targets for afl++
 export CC="afl-clang-fast"
 export CXX="afl-clang-fast++"
-export CFLAGS="-g -O0 -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -std=c++11 -O0 -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -std=c++11 -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
 make clean -j$(nproc)
 make CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS" CANONICAL_PREFIXES= all NOISY_LOGGING= -j$(nproc)
 
-export CFLAGS="-g -O0 -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -std=c++11 -O0 -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-
-${CC} $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /opt/StandaloneFuzzTargetMain.o
+export CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -std=c++11 -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
 for fuzzer_archive in ./src/*fuzzer*.a; do
   fuzzer_name=$(basename ${fuzzer_archive%.a})
-  $CXX $CXXFLAGS ./src/${fuzzer_name}.cc /opt/StandaloneFuzzTargetMain.o $fuzzer_archive \
+  $CXX $CXXFLAGS ./src/${fuzzer_name}.cc $fuzzer_archive \
   -I ./src -I ./include -I ./brotli/c/dec -I ./brotli/c/common \
-  -o ./targets/${fuzzer_name}_afl
+  -o /${fuzzer_name}_afl
 done

@@ -15,13 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j4"
-target = "/src/woff2/targets/convert_woff2ttf_fuzzer_new_entry_Sydr @@"
-jobs = 4
+args = "-l debug"
+target = "/convert_woff2ttf_fuzzer_new_entry_sydr @@"
+jobs = 2
 
 [aflplusplus]
-args = "-i /src/woff2/corpus -o /src/woff2/afl_output -D"
-target = "/src/woff2/targets/convert_woff2ttf_fuzzer_new_entry_afl @@"
+args = "-i /corpus -D"
+target = "/convert_woff2ttf_fuzzer_new_entry_afl @@"
+jobs = 2
 
 [cov]
-target = "/src/woff2/targets/convert_woff2ttf_fuzzer_new_entry_cov @@"
+target = "/convert_woff2ttf_fuzzer_new_entry_cov @@"

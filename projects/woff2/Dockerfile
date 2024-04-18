@@ -16,15 +16,20 @@
 ################################################################################
 
 FROM sydr/ubuntu20.04-sydr-fuzz
+
 RUN apt-get update && apt-get install -y libbrotli-dev
 
 RUN git clone --recursive https://github.com/google/woff2 /src/woff2
-WORKDIR /src/woff2
-RUN git checkout 0f4d304faa1c62994536dc73510305c7357da8d4
-COPY ./build.sh ./
-RUN mkdir -p ./targets
-COPY ./corpus.zip ./
-RUN unzip ./corpus.zip
-RUN rm ./corpus.zip
 
+WORKDIR /src/woff2
+
+RUN git checkout 0f4d304faa1c62994536dc73510305c7357da8d4
+
+COPY build.sh ./
+
+RUN mkdir -p targets
 RUN ./build.sh
+
+WORKDIR /
+COPY corpus.zip /
+RUN unzip corpus.zip && rm corpus.zip
