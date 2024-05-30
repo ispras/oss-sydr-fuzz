@@ -42,7 +42,7 @@
 #include <torch/script.h>
 
 bool exactlyEqual(const at::Tensor &a, const at::Tensor &b) {
-  return torch::equal(a, b);
+  return torch::equal(a, b) || (at::isnan(a).any().item<bool>() && at::isnan(b).any().item<bool>());
 }
 
 bool exactlyEqual(const std::vector<at::Tensor> &a,
