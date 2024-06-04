@@ -90,6 +90,7 @@
     * <https://github.com/uclouvain/openjpeg/pull/1490>
     * <https://github.com/uclouvain/openjpeg/pull/1491>
     * <https://github.com/uclouvain/openjpeg/pull/1492>
+    * <https://github.com/uclouvain/openjpeg/pull/1530>
 * OpenXLSX:
     * <https://github.com/troldal/OpenXLSX/issues/140>
     * <https://github.com/troldal/OpenXLSX/issues/139>
