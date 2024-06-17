@@ -88,6 +88,8 @@ RUN rustup component add llvm-tools-preview
 
 RUN rustup component add rust-src --toolchain nightly
 
+RUN rustup component add rustfmt clippy
+
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 
@@ -105,9 +107,9 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.09c && export CC=clang-14 && export CXX=clang++-14 && \
+    git checkout v4.21c && export CC=clang-14 && export CXX=clang++-14 && \
     export LD_LIBRARY_PATH="$(llvm-config-14 --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
-    make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
+    PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 # Install .NET, Sharpfuzz, minicover, altcover.
 RUN wget https://download.visualstudio.microsoft.com/download/pr/092bec24-9cad-421d-9b43-458b3a7549aa/84280dbd1eef750f9ed1625339235c22/dotnet-sdk-8.0.101-linux-arm64.tar.gz
