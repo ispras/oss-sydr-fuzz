@@ -23,7 +23,7 @@ args = "-t 4000+ -i /rizin-fuzzing/corpus"
 target = "/rizin-fuzzing/afl-asan/bin/rz-fuzz"
 jobs = 7
 [aflplusplus.env]
-ASAN_OPTIONS = "hard_rss_limit_mb=16000"
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
 
 [cov]
 # Collect coverage for main binary
