@@ -123,9 +123,9 @@ RUN mkdir -p /etc/apt/keyrings && \
     export NODE_MAJOR=20 && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt update && apt install -y nodejs
-RUN mkdir jazzer.js
+RUN git clone --depth 1 -b v2.1.0 https://github.com/CodeIntelligenceTesting/jazzer.js
 WORKDIR /jazzer.js
-RUN npm install --save-dev @jazzer.js/core
+RUN npm install --save-dev
 
 # Install .NET, Sharpfuzz, minicover, altcover
 RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
