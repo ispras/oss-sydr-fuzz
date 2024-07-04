@@ -24,7 +24,7 @@ RUN git checkout 27aa4d38bf93f3eef7c46f65cc0d0ef3681137eb \
 
 WORKDIR /
 
-COPY process_json.py process_pdf.py /
+COPY retriever.py process_json.py process_pdf.py /
 
 # Prepare pdf corpus
 RUN git clone https://github.com/mozilla/pdf.js pdf.js && \

@@ -36,3 +36,4 @@ Collect coverage:
 
 * process_json
 * process_pdf 
+* retriever 
