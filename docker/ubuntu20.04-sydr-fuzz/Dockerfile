@@ -125,7 +125,9 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt update && apt install -y nodejs
 RUN git clone --depth 1 -b v2.1.0 https://github.com/CodeIntelligenceTesting/jazzer.js
 WORKDIR /jazzer.js
-RUN npm install --save-dev
+RUN npm install && \
+    npm run build && \
+    npm install --save-dev
 
 # Install .NET, Sharpfuzz, minicover, altcover
 RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
