@@ -30,10 +30,10 @@ external repositories.
 Supported projects are located [here](projects). In addition to C/C++ projects Sydr-Fuzz currently supports:
 * Rust: capstone-rs, image-rs, goblin, libhtp-rs, vector-rs, rust-regex, serde-json, gdb-command;
 * Go: image-go;
-* Python: crunch, h5py, msgspec, pillow, pytorch-py, ruamel-yaml, tensorflow-py, ultrajson;
+* Python: crunch, h5py, msgspec, pillow, pytorch-py, ruamel-yaml, tensorflow-py, ultrajson, langchain;
 * Java: hsqldb, json-sanitizer;
 * JavaScript: fast-xml-parser, node-xml2js;
-* С#: yamldotnet.
+* С#: yamldotnet, cppsharp.
 
 ## Contributing
 
