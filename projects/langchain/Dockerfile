@@ -20,7 +20,7 @@ RUN git clone https://github.com/langchain-ai/langchain.git
 WORKDIR /langchain
 
 RUN git checkout 27aa4d38bf93f3eef7c46f65cc0d0ef3681137eb \
-    && python3 -m pip install libs/langchain libs/community pypdf cryptography==3.1
+    && python3 -m pip install libs/langchain libs/community pypdf faiss-cpu cryptography==3.1
 
 WORKDIR /
 
