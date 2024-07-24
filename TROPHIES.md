@@ -94,6 +94,8 @@
 * OpenXLSX:
     * <https://github.com/troldal/OpenXLSX/issues/140>
     * <https://github.com/troldal/OpenXLSX/issues/139>
+* pypdf (langchain 3rdparty):
+    * <https://github.com/langchain-ai/langchain/issues/24439>
 * Poppler:
     * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1268>
     * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1269> ([PR](https://gitlab.freedesktop.org/poppler/poppler/-/merge_requests/1221))
