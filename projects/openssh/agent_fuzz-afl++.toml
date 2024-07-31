@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 1000 -i /agent_corpus"
-target = "/afl/agent_fuzz_afl"
+target = "/afl/agent_fuzz_afl @@"
 
 [cov]
 target = "/cov/agent_fuzz_cov @@"

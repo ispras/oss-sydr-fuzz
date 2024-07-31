@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 1000 -i /key_corpus"
-target = "/afl/authkeys_fuzz_afl"
+target = "/afl/authkeys_fuzz_afl @@"
 
 [cov]
 target = "/cov/authkeys_fuzz_cov @@"

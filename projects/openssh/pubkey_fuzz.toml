@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/lf/pubkey_fuzz_lf"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /pubkey_corpus"
+args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /key_corpus"
 
 [cov]
 target = "/cov/pubkey_fuzz_cov @@"
