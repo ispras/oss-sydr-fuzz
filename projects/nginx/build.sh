@@ -16,18 +16,10 @@
 #
 ################################################################################
 
-# Save fuzz target
-mkdir /nginx/src/fuzz
-cd /nginx/src/fuzz
-wget https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/http_request_fuzzer.cc
-wget https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/http_request_proto.proto
-wget https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/wrappers.c
-
-# Save additional files for libFuzzer and AFL++ builds
-cd /
-wget https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/add_fuzzers.diff
-wget https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/make_fuzzers
-wget https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/http_request_fuzzer.dict
+# Build protobuf
+mkdir LPM && cd LPM && \
+    cmake ../libprotobuf-mutator -GNinja -DLIB_PROTO_MUTATOR_DOWNLOAD_PROTOBUF=ON \
+        -DLIB_PROTO_MUTATOR_TESTING=OFF -DCMAKE_BUILD_TYPE=Release && ninja
 
 # Make a copy for Sydr and cov builds
 cp -r /nginx /nginx_sydr
@@ -59,8 +51,7 @@ make -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
-    fuzzer_name=$(basename $fuzzer)
-    fuzzer_name=${fuzzer_name::-7}
+    fuzzer_name=$(basename -s _fuzzer $fuzzer)
     cp $fuzzer /${fuzzer_name}_lf
 done
 
@@ -83,8 +74,7 @@ make -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
-    fuzzer_name=$(basename $fuzzer)
-    fuzzer_name=${fuzzer_name::-7}
+    fuzzer_name=$(basename -s _fuzzer $fuzzer)
     cp $fuzzer /${fuzzer_name}_afl
 done
 
@@ -110,8 +100,7 @@ make -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
-    fuzzer_name=$(basename $fuzzer)
-    fuzzer_name=${fuzzer_name::-7}
+    fuzzer_name=$(basename -s _fuzzer $fuzzer)
     cp $fuzzer /${fuzzer_name}_sydr
 done
 
@@ -128,15 +117,6 @@ make -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
-    fuzzer_name=$(basename $fuzzer)
-    fuzzer_name=${fuzzer_name::-7}
+    fuzzer_name=$(basename -s _fuzzer $fuzzer)
     cp $fuzzer /${fuzzer_name}_cov
 done
-
-# Prepare seed corpora
-cd /
-git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus
-cp -r /go-fuzz-corpus/http2/corpus /corpus
-cp /go-fuzz-corpus/httpreq/corpus/* /corpus
-rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-2
-rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-1
