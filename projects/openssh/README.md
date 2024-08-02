@@ -28,9 +28,17 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c pubkey_fuzz.toml run
 
+Minimize corpus:
+
+    # sydr-fuzz -c pubkey_fuzz.toml cmin
+
 Collect and report coverage:
 
-    # sydr-fuzz -c pubkey_fuzz.toml cov-report
+    # sydr-fuzz -c pubkey_fuzz.toml cov-html
+
+Crash triage with Casr:
+
+    # sydr-fuzz -c pubkey_fuzz.toml casr
 
 ## Hybrid Fuzzing with AFL++
 
