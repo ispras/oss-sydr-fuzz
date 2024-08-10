@@ -136,7 +136,7 @@ if [[ $CONFIG = "coverage" ]]
 then
   mkdir /corpus
   cd /boringssl/fuzz/
-  cp -R -f -n *_corpus/* /corpus
   unzip /public.zip -d /corpus
+  cp -R -f -n *_corpus/* /corpus
   cd /corpus && find -type f -size +1M -delete
 fi
