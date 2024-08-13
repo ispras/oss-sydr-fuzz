@@ -20,7 +20,7 @@ target = "/http_request_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 2000 -x /http_request_fuzzer.dict -i /corpus"
+args = "-t 10000 -x /http_request_fuzzer.dict -i /corpus"
 target = "/http_request_afl @@"
 jobs = 4
 
