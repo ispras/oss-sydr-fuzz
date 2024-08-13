@@ -15,13 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2"
+args = "-l debug"
 target = "/http_request_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/http_request_lf"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /corpus"
+args = "-rss_limit_mb=8192 -timeout=20 -dict=/http_request_fuzzer.dict -jobs=1000 -workers=4 /corpus"
 
 [cov]
 target = "/http_request_cov @@"

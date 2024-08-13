@@ -15,12 +15,12 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2"
+args = "-l debug"
 target = "/http_request_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /corpus"
+args = "-t 2000 -x /http_request_fuzzer.dict -i /corpus"
 target = "/http_request_afl @@"
 
 [cov]
