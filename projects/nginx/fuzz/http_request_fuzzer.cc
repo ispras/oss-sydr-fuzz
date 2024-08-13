@@ -19,6 +19,7 @@ extern "C" {
 #include <ngx_event.h>
 #include <ngx_http.h>
 }
+#include <cassert>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -176,7 +177,8 @@ extern "C" long int invalid_call(ngx_connection_s *a, ngx_chain_s *b,
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   if (size < 60) return 0;
 
-  if (InitializeNginx() != 0) return 0;
+  static int init = InitializeNginx();
+  assert(init == 0);
 
   // have two free connections, one for client, one for upstream
   ngx_event_t read_event1 = {};
@@ -265,6 +267,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     }
     ngx_close_connection(c);
   }
+  free(copy_req);
+  free(copy_rep);
 
   return 0;
 }

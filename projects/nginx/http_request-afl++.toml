@@ -22,6 +22,7 @@ jobs = 2
 [aflplusplus]
 args = "-t 2000 -x /http_request_fuzzer.dict -i /corpus"
 target = "/http_request_afl @@"
+jobs = 4
 
 [cov]
 target = "/http_request_cov @@"

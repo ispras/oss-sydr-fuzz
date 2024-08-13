@@ -36,7 +36,7 @@ RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
     rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-1 && \
     rm -rf /go-fuzz-corpus
 # Duplicate file contents to use it for request and reply.
-RUN for file in /corpus; do echo `cat /corpus/$file` >>/corpus/$file; done;
+RUN for file in /corpus/*; do echo `cat $file` >>$file; done;
 
 # Save fuzz target and additional files for libFuzzer, AFL++, and Sydr builds.
 RUN mkdir /nginx/src/fuzz
