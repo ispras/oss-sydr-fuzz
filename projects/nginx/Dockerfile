@@ -19,27 +19,9 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 # Install build dependencies.
 RUN apt-get update && apt-get install -y libpcre3-dev zlib1g-dev mercurial ninja-build liblzma-dev \
     libz-dev binutils libtool build-essential libssl-dev
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1.tar.gz && \
-    tar xf cmake-3.30.1.tar.gz && \
-    cd cmake-3.30.1 && \
-    ./configure && \
-    make
-
-RUN git clone --depth 1 https://github.com/google/libprotobuf-mutator.git
-RUN git clone --depth 1 https://github.com/google/fuzzer-test-suite
 
 # Clone target from GitHub. Checkout specified commit. It could be updated later.
 RUN hg clone http://hg.nginx.org/nginx/ -u d1b8568f3042
-
-# Save fuzz target and additional files for libFuzzer and AFL++ builds
-RUN mkdir /nginx/src/fuzz
-ADD https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/http_request_fuzzer.cc /nginx/src/fuzz/http_request_fuzzer.cc
-ADD https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/http_request_proto.proto /nginx/src/fuzz/http_request_proto.proto
-ADD https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/wrappers.c /nginx/src/fuzz/wrappers.c
-
-ADD https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/add_fuzzers.diff /add_fuzzers.diff
-ADD https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/make_fuzzers /make_fuzzers
-ADD https://raw.githubusercontent.com/google/oss-fuzz/master/projects/nginx/fuzz/http_request_fuzzer.dict /http_request_fuzzer.dict
 
 # Prepare seed corpora
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
@@ -48,9 +30,20 @@ RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
     rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-2 && \
     rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-1 && \
     rm -rf /go-fuzz-corpus
+# Duplicate file contents to use it for request and reply.
+RUN for file in /corpus/*; do echo `cat $file` >>$file; done;
 
-# Copy build script and additional files for Sydr build.
-COPY build.sh add_sydr.diff make_sydr /
+# Save fuzz target and additional files for libFuzzer, AFL++, and Sydr builds.
+RUN mkdir /nginx/src/fuzz
+COPY fuzz /nginx/src/fuzz/
+COPY add_fuzzers.diff \
+     add_sydr.diff \
+     make_fuzzers \
+     make_sydr \
+     http_request_fuzzer.dict \
+     http_config.conf \
+     build.sh \
+     /
 
 # Build fuzz targets.
 RUN /build.sh

@@ -16,11 +16,6 @@
 #
 ################################################################################
 
-# Build protobuf
-mkdir LPM && cd LPM && \
-    cmake ../libprotobuf-mutator -GNinja -DLIB_PROTO_MUTATOR_DOWNLOAD_PROTOBUF=ON \
-        -DLIB_PROTO_MUTATOR_TESTING=OFF -DCMAKE_BUILD_TYPE=Release && ninja
-
 # Make a copy for Sydr and cov builds
 cp -r /nginx /nginx_sydr
 cd /nginx
@@ -28,10 +23,6 @@ cd /nginx
 # Apply diff for libFuzzer and AFL++ builds
 hg import /add_fuzzers.diff --no-commit
 cp /make_fuzzers auto/make_fuzzers
-
-cd src/fuzz
-rm -rf genfiles && mkdir genfiles && /LPM/external.protobuf/bin/protoc http_request_proto.proto --cpp_out=genfiles
-cd ../..
 
 # Build targets for libfuzzer
 export CC=clang
@@ -82,10 +73,6 @@ done
 cd ../nginx_sydr
 hg import /add_sydr.diff --no-commit
 cp /make_sydr auto/make_sydr
-
-cd src/fuzz
-rm -rf genfiles && mkdir genfiles && /LPM/external.protobuf/bin/protoc http_request_proto.proto --cpp_out=genfiles
-cd ../..
 
 # Build targets for Sydr
 export CC=clang
