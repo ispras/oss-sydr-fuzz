@@ -153,6 +153,7 @@ extern "C" int InitializeNginx(void) {
   init_cycle.conf_file.data = (unsigned char *) config_file;
 
   cycle = ngx_init_cycle(&init_cycle);
+  if (!cycle) return 1;
 
   ngx_os_status(cycle->log);
   ngx_cycle = cycle;
