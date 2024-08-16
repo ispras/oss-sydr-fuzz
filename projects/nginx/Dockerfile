@@ -19,11 +19,6 @@ FROM sydr/ubuntu20.04-sydr-fuzz
 # Install build dependencies.
 RUN apt-get update && apt-get install -y libpcre3-dev zlib1g-dev mercurial ninja-build liblzma-dev \
     libz-dev binutils libtool build-essential libssl-dev
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1.tar.gz && \
-    tar xf cmake-3.30.1.tar.gz && \
-    cd cmake-3.30.1 && \
-    ./configure && \
-    make
 
 # Clone target from GitHub. Checkout specified commit. It could be updated later.
 RUN hg clone http://hg.nginx.org/nginx/ -u d1b8568f3042
