@@ -11,6 +11,9 @@ RUN apt-get update && \
                        gcc-10-plugin-dev gcc-10-multilib python3.9 python3.9-dev \
                        python3-pip libtool gnuplot binutils-dev zip htop psutils openjdk-17-jdk
 
+RUN dpkg --add-architecture i386 && \
+    apt update && apt install -y zlib1g:i386 zlib1g-dev:i386
+
 RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3
 RUN pip3 install --upgrade pip
 
@@ -106,6 +109,7 @@ RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-f
 RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
+    git checkout d2cbfdcfc5363593f36cd972b849cc3ab070c90a && \
     bazel build --java_runtime_version=local_jdk_17 -c opt \
     --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
     cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
