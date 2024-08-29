@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y libz-dev libssl1.1 libssl-dev \
                         libtirpc-dev libedit-dev
 
 # Clone target from GitHub.
-RUN git clone --depth 1 https://github.com/openssh/openssh-portable openssh
+RUN git clone https://github.com/openssh/openssh-portable openssh
 RUN git clone --depth 1 https://github.com/djmdjm/openssh-fuzz-cases
 
 WORKDIR openssh

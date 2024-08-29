@@ -1,0 +1,16 @@
+diff --git a/regress/misc/fuzz-harness/kex_fuzz.cc b/regress/misc/fuzz-harness/kex_fuzz.cc
+index f126d93f6..eeb74d83b 100644
+--- a/regress/misc/fuzz-harness/kex_fuzz.cc
++++ b/regress/misc/fuzz-harness/kex_fuzz.cc
+@@ -406,6 +406,11 @@ kex_tests(struct shared_state *st, struct test_state *ts)
+ 	do_kex(st, ts, "ecdh-sha2-nistp256");
+ 	do_kex(st, ts, "diffie-hellman-group1-sha1");
+ 	do_kex(st, ts, "diffie-hellman-group-exchange-sha1");
++	// New: diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,curve25519-sha256@libssh.org,ecdh-sha2-nistp384,ecdh-sha2-nistp521
++	do_kex(st, ts, "diffie-hellman-group14-sha256");
++	do_kex(st, ts, "diffie-hellman-group16-sha512");
++	do_kex(st, ts, "ecdh-sha2-nistp384");
++	do_kex(st, ts, "ecdh-sha2-nistp521");
+ }
+ 
+ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size)

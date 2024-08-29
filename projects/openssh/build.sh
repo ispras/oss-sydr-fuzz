@@ -18,6 +18,12 @@
 
 git apply ssh.patch
 
+# Fix AFL++ build for sig_fuzz
+sed -i '3140s/no]) ]/no]) enable_nistp521=1 ]/' configure.ac
+
+# Add extra algorithms for kex_fuzz
+git apply kex_fuzz.patch
+
 EXTRA_CFLAGS="-DCIPHER_NONE_AVAIL=1"
 STATIC_CRYPTO="-Wl,-Bstatic -lcrypto -Wl,-Bdynamic"
 SK_NULL=ssh-sk-null.o
