@@ -19,8 +19,7 @@
 git apply ssh.patch
 
 # Fix AFL++ build for sig_fuzz
-sed -i '3140s/no]) ]/no]) enable_nistp521=1 ]/' configure.ac
-
+sed -i '3140s/no]) ]/no])\n enable_nistp521=1 ]/' configure.ac
 # Add extra algorithms for kex_fuzz
 git apply kex_fuzz.patch
 
@@ -29,7 +28,7 @@ STATIC_CRYPTO="-Wl,-Bstatic -lcrypto -Wl,-Bdynamic"
 SK_NULL=ssh-sk-null.o
 SK_DUMMY=sk-dummy.o
 AUTH_PUBKEY=auth2-pubkeyfile.o
-
+SSHD_SERV=""
 
 # Build libFuzzer fuzz targets.
 
@@ -64,9 +63,9 @@ do
     echo "Compiling $fuzz_target"
     filename=$(basename -- "$fuzz_target")
     filename="${filename%.*}"
-    
+
     AUTH_PUBKEY=""
-    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" ]]; then
+    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
             continue
@@ -74,14 +73,19 @@ do
         SK_NULL=""
         SSH_SK=ssh-sk.o
         SK_DUMMY=sk-dummy.o
+        if [[ $filename == "lsc_fuzz" ]]; then
+            SSHD_SERV="groupaccess.o auth2-methods.o servconf.o"
+            AUTH_PUBKEY=""
+        fi
     else
+        SSHD_SERV=""
         SK_NULL=ssh-sk-null.o
         SSH_SK=""
         SK_DUMMY=""
     fi
     $CXX $CXXFLAGS -std=c++11 $EXTRA_CFLAGS -I. -L. -Lopenbsd-compat -g \
         $fuzz_target -o /lf/$filename\_lf $SK_DUMMY agent_fuzz_helper.o $SSH_SK \
-        auth-options.o $AUTH_PUBKEY sshsig.o -lssh -lz -lopenbsd-compat $SK_NULL $STATIC_CRYPTO
+        auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat $SK_NULL $STATIC_CRYPTO
 done
 
 # Build AFL++ fuzz targets.
@@ -118,23 +122,29 @@ do
     echo "Compiling $fuzz_target"
     filename=$(basename -- "$fuzz_target")
     filename="${filename%.*}"
-    
+
     AUTH_PUBKEY=""
-    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" ]]; then
+    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
+            continue
         fi
         SK_NULL=""
         SSH_SK=ssh-sk.o
         SK_DUMMY=sk-dummy.o
+        if [[ $filename == "lsc_fuzz" ]]; then
+            SSHD_SERV="groupaccess.o auth2-methods.o servconf.o"
+            AUTH_PUBKEY=""
+        fi
     else
+        SSHD_SERV=""
         SK_NULL=ssh-sk-null.o
         SSH_SK=""
         SK_DUMMY=""
     fi
     $CXX $CXXFLAGS -std=c++11 $EXTRA_CFLAGS -I. -L. -Lopenbsd-compat -g \
         $fuzz_target -o /afl/$filename\_afl $SK_DUMMY agent_fuzz_helper.o $SSH_SK \
-        auth-options.o $AUTH_PUBKEY sshsig.o -lssh -lz -lopenbsd-compat $SK_NULL $STATIC_CRYPTO
+        auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat $SK_NULL $STATIC_CRYPTO
 done
 
 # Build Sydr fuzz targets.
@@ -172,23 +182,29 @@ do
     echo "Compiling $fuzz_target"
     filename=$(basename -- "$fuzz_target")
     filename="${filename%.*}"
-    
+
     AUTH_PUBKEY=""
-    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" ]]; then
+    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
+            continue
+        fi
+        if [[  $filename == "lsc_fuzz" ]]; then
+            SSHD_SERV="groupaccess.o auth2-methods.o servconf.o"
+            AUTH_PUBKEY=""
         fi
         SK_NULL=""
         SSH_SK=ssh-sk.o
         SK_DUMMY=sk-dummy.o
     else
+        SSHD_SERV=""
         SK_NULL=ssh-sk-null.o
         SSH_SK=""
         SK_DUMMY=""
     fi
     $CXX $CXXFLAGS -std=c++11 $EXTRA_CFLAGS -I. -L. -Lopenbsd-compat -g \
         main.o $fuzz_target -o /sydr/$filename\_sydr $SK_DUMMY agent_fuzz_helper.o \
-        $SSH_SK auth-options.o $AUTH_PUBKEY sshsig.o -lssh -lz -lopenbsd-compat \
+        $SSH_SK auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat \
         $SK_NULL -lpthread -ldl $STATIC_CRYPTO
 done
 
@@ -227,23 +243,29 @@ do
     echo "Compiling $fuzz_target"
     filename=$(basename -- "$fuzz_target")
     filename="${filename%.*}"
-    
+
     AUTH_PUBKEY=""
-    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" ]]; then
+    if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
+            continue
         fi
         SK_NULL=""
         SSH_SK=ssh-sk.o
         SK_DUMMY=sk-dummy.o
+        if [[ $filename == "lsc_fuzz" ]]; then
+            SSHD_SERV="groupaccess.o auth2-methods.o servconf.o"
+            AUTH_PUBKEY=""
+        fi
     else
+        SSHD_SERV=""
         SK_NULL=ssh-sk-null.o
         SSH_SK=""
         SK_DUMMY=""
     fi
     $CXX $CXXFLAGS -std=c++11 $EXTRA_CFLAGS -I. -L. -Lopenbsd-compat -g \
         main.o $fuzz_target -o /cov/$filename\_cov $SK_DUMMY agent_fuzz_helper.o \
-        $SSH_SK auth-options.o $AUTH_PUBKEY sshsig.o -lssh -lz -lopenbsd-compat \
+        $SSH_SK auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat \
         $SK_NULL -lpthread -ldl $STATIC_CRYPTO
 done
 
@@ -251,9 +273,10 @@ done
 CASES="/openssh-fuzz-cases"
 (set -e ; mkdir /key_corpus       ; cd ${CASES}/key       ; find . -type f -exec cp {} /key_corpus \;)
 (set -e ; mkdir /privkey_corpus   ; cd ${CASES}/privkey   ; find . -type f -exec cp {} /privkey_corpus \;)
-(set -e ; mkdir /sig_corpus       ; cd ${CASES}/sig       ; find . -type f -exec cp {} /sig_corpus \;) 
-(set -e ; mkdir /authopt_corpus   ; cd ${CASES}/authopt   ; find . -type f -exec cp {} /authopt_corpus \;) 
-(set -e ; mkdir /sshsig_corpus    ; cd ${CASES}/sshsig    ; find . -type f -exec cp {} /sshsig_corpus \;) 
+(set -e ; mkdir /sig_corpus       ; cd ${CASES}/sig       ; find . -type f -exec cp {} /sig_corpus \;)
+(set -e ; mkdir /authopt_corpus   ; cd ${CASES}/authopt   ; find . -type f -exec cp {} /authopt_corpus \;)
+(set -e ; mkdir /sshsig_corpus    ; cd ${CASES}/sshsig    ; find . -type f -exec cp {} /sshsig_corpus \;)
 (set -e ; mkdir /sshsigopt_corpus ; cd ${CASES}/sshsigopt ; find . -type f -exec cp {} /sshsigopt_corpus \;)
-(set -e ; mkdir /kex_corpus       ; cd ${CASES}/kex       ; find . -type f -exec cp {} /kex_corpus \;) 
-(set -e ; mkdir /agent_corpus     ; cd ${CASES}/agent     ; find . -type f -exec cp {} /agent_corpus \;) 
+(set -e ; mkdir /kex_corpus       ; cd ${CASES}/kex       ; find . -type f -exec cp {} /kex_corpus \;)
+(set -e ; mkdir /agent_corpus     ; cd ${CASES}/agent     ; find . -type f -exec cp {} /agent_corpus \;)
+(set -e ; mkdir /lsc_corpus       ; cd /openssh           ; find . -name "sshd_config" -exec cp {} /lsc_corpus \;)
