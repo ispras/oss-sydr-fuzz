@@ -31,7 +31,7 @@ WORKDIR openssh
 RUN git checkout 1ec0a64c5dc57b8a2053a93b5ef0d02ff8598e5c
 
 # Copy build script and fuzz targets for libFuzzer and Sydr.
-COPY ssh.patch kex_fuzz.patch build.sh fuzzer_temp_file.h ./
+COPY sshd_session_fuzz.cc ssh.patch build.sh fuzzer_temp_file.h ./
 
 # Build fuzz targets.
 COPY server_config_fuzz.cc ./regress/misc/fuzz-harness/lsc_fuzz.cc

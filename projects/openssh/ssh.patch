@@ -1,5 +1,5 @@
 diff --git a/cipher.c b/cipher.c
-index f12daa1..d36b44e 100644
+index f12daa123..d36b44ea0 100644
 --- a/cipher.c
 +++ b/cipher.c
 @@ -75,7 +75,7 @@ struct sshcipher {
@@ -12,7 +12,7 @@ index f12daa1..d36b44e 100644
  	const EVP_CIPHER	*(*evptype)(void);
  #else
 diff --git a/includes.h b/includes.h
-index 6d17ef6..ff5d31e 100644
+index 6d17ef6da..ff5d31e10 100644
 --- a/includes.h
 +++ b/includes.h
 @@ -111,7 +111,7 @@
@@ -24,8 +24,24 @@ index 6d17ef6..ff5d31e 100644
  #endif
  #ifdef USE_PAM
  #if defined(HAVE_SECURITY_PAM_APPL_H)
+diff --git a/regress/misc/fuzz-harness/kex_fuzz.cc b/regress/misc/fuzz-harness/kex_fuzz.cc
+index f126d93f6..eeb74d83b 100644
+--- a/regress/misc/fuzz-harness/kex_fuzz.cc
++++ b/regress/misc/fuzz-harness/kex_fuzz.cc
+@@ -406,6 +406,11 @@ kex_tests(struct shared_state *st, struct test_state *ts)
+ 	do_kex(st, ts, "ecdh-sha2-nistp256");
+ 	do_kex(st, ts, "diffie-hellman-group1-sha1");
+ 	do_kex(st, ts, "diffie-hellman-group-exchange-sha1");
++	// New: diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,curve25519-sha256@libssh.org,ecdh-sha2-nistp384,ecdh-sha2-nistp521
++	do_kex(st, ts, "diffie-hellman-group14-sha256");
++	do_kex(st, ts, "diffie-hellman-group16-sha512");
++	do_kex(st, ts, "ecdh-sha2-nistp384");
++	do_kex(st, ts, "ecdh-sha2-nistp521");
+ }
+ 
+ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size)
 diff --git a/ssh-agent.c b/ssh-agent.c
-index d35741a..657ee12 100644
+index d35741a86..657ee12f3 100644
 --- a/ssh-agent.c
 +++ b/ssh-agent.c
 @@ -1495,7 +1495,7 @@ process_lock_agent(SocketEntry *e, int lock)
@@ -37,3 +53,32 @@ index d35741a..657ee12 100644
  		}
  		explicit_bzero(passwdhash, sizeof(passwdhash));
  	} else if (!locked && lock) {
+diff --git a/sshd-session.c b/sshd-session.c
+index 1060ff7d8..195020796 100644
+--- a/sshd-session.c
++++ b/sshd-session.c
+@@ -732,7 +732,7 @@ parse_hostkeys(struct sshbuf *hostkeys)
+ 	sensitive_data.num_hostkeys = num_keys;
+ }
+ 
+-static void
++void
+ recv_rexec_state(int fd, struct sshbuf *conf, uint64_t *timing_secretp)
+ {
+ 	struct sshbuf *m, *inc, *hostkeys;
+@@ -865,6 +865,7 @@ set_process_rdomain(struct ssh *ssh, const char *name)
+ /*
+  * Main program for the daemon.
+  */
++#ifndef FUZZER
+ int
+ main(int ac, char **av)
+ {
+@@ -1390,6 +1391,7 @@ main(int ac, char **av)
+ 
+ 	exit(0);
+ }
++#endif
+ 
+ int
+ sshd_hostkey_sign(struct ssh *ssh, struct sshkey *privkey,

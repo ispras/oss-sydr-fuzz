@@ -46,7 +46,7 @@ Crash triage with Casr:
 
 ## Alternative Fuzz Targets
 
-OpenSSH project has 8 fuzz targets.
+OpenSSH project has 9 fuzz targets.
 
 ### agent
 
@@ -79,3 +79,7 @@ OpenSSH project has 8 fuzz targets.
 ### sshsigopt
 
     # sydr-fuzz -c sshsigopt_fuzz.toml run
+
+### sshd\_session\_fuzz
+
+    # sydr-fuzz -c sshd_session_fuzz-afl++.toml run
