@@ -20,8 +20,6 @@ git apply ssh.patch
 
 # Fix AFL++ build for sig_fuzz
 sed -i '3140s/no]) ]/no])\n enable_nistp521=1 ]/' configure.ac
-# Add extra algorithms for kex_fuzz
-git apply kex_fuzz.patch
 
 EXTRA_CFLAGS="-DCIPHER_NONE_AVAIL=1"
 STATIC_CRYPTO="-Wl,-Bstatic -lcrypto -Wl,-Bdynamic"
@@ -29,6 +27,18 @@ SK_NULL=ssh-sk-null.o
 SK_DUMMY=sk-dummy.o
 AUTH_PUBKEY=auth2-pubkeyfile.o
 SSHD_SERV=""
+
+SSHD_SESSION_OBJS="auth-rhosts.o auth-passwd.o audit.o audit-bsm.o
+                  audit-linux.o platform.o sshpty.o sshlogin.o servconf.o
+                  serverloop.o auth.o auth2.o auth2-methods.o auth-options.o
+                  session.o auth2-chall.o groupaccess.o auth-bsdauth.o
+                  auth2-hostbased.o auth2-kbdint.o auth2-none.o auth2-passwd.o
+                  auth2-pubkey.o auth2-pubkeyfile.o monitor.o monitor_wrap.o
+                  auth-krb5.o auth2-gss.o gss-serv.o loginrec.o auth-pam.o
+                  auth-shadow.o auth-sia.o sftp-server.o sftp-common.o
+                  sandbox-null.o sandbox-rlimit.o sandbox-systrace.o
+                  sandbox-darwin.o sandbox-seccomp-filter.o sandbox-capsicum.o
+                  sandbox-pledge.o sandbox-solaris.o uidswap.o"
 
 # Build libFuzzer fuzz targets.
 
@@ -88,6 +98,16 @@ do
         auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat $SK_NULL $STATIC_CRYPTO
 done
 
+# Compile sshd-session fuzzer separately
+#$CC -c ./sshd-session.c -DFUZZER \
+#    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -L. -Lopenbsd-compat  $CFLAGS \
+#    -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
+#$CXX -c ./sshd_session_fuzz.cc -I. -I/usr/lib/clang/14.0.6/include/fuzzer $CFLAGS
+#
+#$CXX -o /lf/sshd_session_fuzz_lf ./sshd_session_fuzz.o ./sshd-session.o  \
+#    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -I/usr/lib/clang/14.0.6/include/fuzzer -L. -Lopenbsd-compat  $CXXFLAGS \
+#    -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
+
 # Build AFL++ fuzz targets.
 
 export CC="afl-clang-fast"
@@ -107,7 +127,7 @@ make clean
     --with-sandbox=no
 make -j$(nproc) all
 
-$CC $CFLAGS $EXTRA_CFLAGS -I. -g -c \
+$CXX $CFLAGS $EXTRA_CFLAGS -I. -g -c \
         regress/misc/fuzz-harness/ssh-sk-null.cc -o ssh-sk-null.o
 $CC $CFLAGS $EXTRA_CFLAGS -I. -g -c \
         -DSK_DUMMY_INTEGRATE=1 regress/misc/sk-dummy/sk-dummy.c -o sk-dummy.o
@@ -146,6 +166,16 @@ do
         $fuzz_target -o /afl/$filename\_afl $SK_DUMMY agent_fuzz_helper.o $SSH_SK \
         auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat $SK_NULL $STATIC_CRYPTO
 done
+
+# Compile sshd-session fuzzer separately
+$CC -c ./sshd-session.c -DFUZZER \
+    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -L. -Lopenbsd-compat  $CFLAGS \
+    -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
+$CXX -c ./sshd_session_fuzz.cc -I. -I/usr/lib/clang/14.0.6/include/fuzzer $CFLAGS
+
+$CXX -o /afl/sshd_session_fuzz_afl ./sshd_session_fuzz.o ./sshd-session.o  \
+    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -I/usr/lib/clang/14.0.6/include/fuzzer -L. -Lopenbsd-compat  $CXXFLAGS \
+    -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
 
 # Build Sydr fuzz targets.
 
@@ -208,6 +238,16 @@ do
         $SK_NULL -lpthread -ldl $STATIC_CRYPTO
 done
 
+# Compile sshd-session fuzzer separately
+$CC -c ./sshd-session.c -DFUZZER \
+    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -L. -Lopenbsd-compat  $CFLAGS \
+    -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
+$CXX -c ./sshd_session_fuzz.cc -I. -I/usr/lib/clang/14.0.6/include/fuzzer $CFLAGS
+
+$CXX -o /sydr/sshd_session_fuzz_sydr main.o ./sshd_session_fuzz.o ./sshd-session.o  \
+    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -I/usr/lib/clang/14.0.6/include/fuzzer -L. -Lopenbsd-compat  $CXXFLAGS \
+    -lcrypt -lpthread -ldl -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
+
 # Build coverage targets.
 
 export CC="clang"
@@ -268,6 +308,16 @@ do
         $SSH_SK auth-options.o $AUTH_PUBKEY $SSHD_SERV sshsig.o -lssh -lz -lopenbsd-compat \
         $SK_NULL -lpthread -ldl $STATIC_CRYPTO
 done
+
+# Compile sshd-session fuzzer separately
+$CC -c ./sshd-session.c -DFUZZER \
+    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -L. -Lopenbsd-compat  $CFLAGS \
+    -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
+$CXX -c ./sshd_session_fuzz.cc -I. -I/usr/lib/clang/14.0.6/include/fuzzer $CFLAGS
+
+$CXX -o /cov/sshd_session_fuzz_cov main.o ./sshd_session_fuzz.o ./sshd-session.o  \
+    $SSHD_SESSION_OBJS ssh-sk-null.o -I. -I/usr/lib/clang/14.0.6/include/fuzzer -L. -Lopenbsd-compat  $CXXFLAGS \
+    -lcrypt -lpthread -ldl -lssh -lz -lopenbsd-compat -lresolv -lutil $STATIC_CRYPTO
 
 # Prepare seed corpora
 CASES="/openssh-fuzz-cases"
