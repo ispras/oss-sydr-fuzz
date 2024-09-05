@@ -32,10 +32,10 @@ extern "C" int	 ssh_msg_send(int, u_char, struct sshbuf *);
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size)
 {
     FuzzedDataProvider data_provider(data, size);
-    const std::string sconfig = data_provider.ConsumeRandomLengthString().c_str(),
-               spriv_key = data_provider.ConsumeRandomLengthString(8192).c_str(),
-               spub_key = data_provider.ConsumeRandomLengthString(8192).c_str(),
-               scert = data_provider.ConsumeRandomLengthString(8192).c_str();
+    const std::string sconfig = data_provider.ConsumeRandomLengthString(),
+               spriv_key = data_provider.ConsumeRandomLengthString(8192),
+               spub_key = data_provider.ConsumeRandomLengthString(8192),
+               scert = data_provider.ConsumeRandomLengthString(8192);
     const char *config   =   sconfig.c_str(), 
                *priv_key = spriv_key.c_str(),
                *pub_key  =  spub_key.c_str(),
