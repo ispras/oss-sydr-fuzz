@@ -16,13 +16,11 @@
 #
 ################################################################################
 
-# Make a copy for Sydr and cov builds
-cp -r /nginx /nginx_sydr
 cd /nginx
 
 # Apply diff for libFuzzer and AFL++ builds
-hg import /add_fuzzers.diff --no-commit
-cp /make_fuzzers auto/make_fuzzers
+hg import src/request_fuzz/add_fuzzers.diff --no-commit
+cp src/request_fuzz/make_fuzzers auto/make_fuzzers
 
 # Build targets for libfuzzer
 export CC=clang
@@ -32,13 +30,13 @@ export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefi
 
 auto/configure \
     --with-http_v2_module
-make -f objs/Makefile modules
+make -j$(nproc) -f objs/Makefile modules
 
 export CC=clang
 export CXX=clang++
 export CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
-make -f objs/Makefile fuzzers
+make -j$(nproc) -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
@@ -54,25 +52,25 @@ export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divid
 
 auto/configure \
     --with-http_v2_module
-make -f objs/Makefile modules
+make -j$(nproc) -f objs/Makefile modules
 
 export CC=afl-clang-fast
 export CXX=afl-clang-fast++
 export CFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 export CXXFLAGS="-g -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero"
 
-make -f objs/Makefile fuzzers
+make -j$(nproc) -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
     fuzzer_name=$(basename -s _fuzzer $fuzzer)
-    cp $fuzzer /${fuzzer_name}_afl
+    cp $fuzzer /${fuzzer_name}_afl++
 done
 
 # Apply diff for Sydr and cov builds
-cd ../nginx_sydr
-hg import /add_sydr.diff --no-commit
-cp /make_sydr auto/make_sydr
+hg revert --all
+hg import src/request_fuzz/add_sydr.diff --no-commit
+cp src/request_fuzz/make_sydr auto/make_sydr
 
 # Build targets for Sydr
 export CC=clang
@@ -83,7 +81,7 @@ export CXXFLAGS="-g -fPIE"
 auto/configure \
     --with-http_v2_module
 
-make -f objs/Makefile fuzzers
+make -j$(nproc) -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
@@ -100,10 +98,12 @@ export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIE"
 auto/configure \
     --with-http_v2_module
 
-make -f objs/Makefile fuzzers
+make -j$(nproc) -f objs/Makefile fuzzers
 
 for fuzzer in objs/*_fuzzer;
 do
     fuzzer_name=$(basename -s _fuzzer $fuzzer)
     cp $fuzzer /${fuzzer_name}_cov
 done
+
+hg revert --all

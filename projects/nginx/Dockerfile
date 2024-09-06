@@ -16,12 +16,53 @@
 ################################################################################
 FROM sydr/ubuntu20.04-sydr-fuzz
 
-# Install build dependencies.
-RUN apt-get update && apt-get install -y libpcre3-dev zlib1g-dev mercurial ninja-build liblzma-dev \
-    libz-dev binutils libtool build-essential libssl-dev
+# UPDATE + dep for nginx, preeny
+RUN : \
+    && apt-get update \
+    && apt-get dist-upgrade -y \
+    && apt-get install -y \
+    libpcre3-dev zlib1g-dev mercurial ninja-build liblzma-dev \
+    libz-dev binutils libtool build-essential libssl-dev libseccomp-dev \
+    libini-config-dev \
+    && apt-get autoclean \
+    && :
 
-# Clone target from GitHub. Checkout specified commit. It could be updated later.
-RUN hg clone http://hg.nginx.org/nginx/ -u d1b8568f3042
+# ansifilter
+ARG GIT_ANSIFILTER_TAG="2.18"
+ARG ANSIFILTER_SRC_DIR="/ansifilter"
+RUN : \
+    && git clone --depth=1 https://gitlab.com/saalen/ansifilter.git \
+        -b ${GIT_ANSIFILTER_TAG} ${ANSIFILTER_SRC_DIR} \
+    && cd ${ANSIFILTER_SRC_DIR} \
+    && env CC=clang CXX=clang++ make \
+    && make install \
+    && cd / \
+    && rm -rf ${ANSIFILTER_SRC_DIR} \
+    && :
+
+# geckodriver for selenium
+RUN : \
+    && cd /usr/bin \
+    && curl https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz -L \
+        | tar zxv \
+    && :
+
+# Settings
+RUN : \
+    && echo -e "set -g mouse on\nset -g mode-mouse on\n" > /etc/tmux.conf \
+    && sh -c 'echo set encoding=utf-8 > /root/.vimrc' \
+    && echo '. /usr/share/bash-completion/bash_completion' >> ~/.bashrc \
+    && echo "export PS1='"'[fuzzuser \h] \w \$ '"'" >> ~/.bashrc \
+    && git config --global advice.detachedHead false \
+    && :
+
+        # Clone target from GitHub. Checkout specified commit. It could be updated later.
+RUN hg clone http://hg.nginx.org/nginx/ -u d1b8568f3042 /nginx
+
+RUN : \
+    && git clone https://github.com/zardus/preeny.git \
+    && cd preeny \
+    && make
 
 # Prepare seed corpora
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
@@ -30,20 +71,22 @@ RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
     rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-2 && \
     rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-1 && \
     rm -rf /go-fuzz-corpus
+COPY auth_fuzz/inputs/ /corpus
 # Duplicate file contents to use it for request and reply.
 RUN for file in /corpus/*; do echo `cat $file` >>$file; done;
 
 # Save fuzz target and additional files for libFuzzer, AFL++, and Sydr builds.
-RUN mkdir /nginx/src/fuzz
-COPY fuzz /nginx/src/fuzz/
-COPY add_fuzzers.diff \
-     add_sydr.diff \
-     make_fuzzers \
-     make_sydr \
-     http_request_fuzzer.dict \
-     http_config.conf \
-     build.sh \
-     /
+RUN mkdir /nginx/src/request_fuzz
+COPY request_fuzz /nginx/src/request_fuzz/
+COPY request_fuzz/http_request_fuzzer.dict request_fuzz/http_config.conf /
 
-# Build fuzz targets.
-RUN /build.sh
+# Build http_request fuzz targets.
+RUN /nginx/src/request_fuzz/build.sh
+
+# Save fuzz target and additional files for libFuzzer, AFL++, and Sydr builds.
+RUN mkdir /nginx/src/auth_fuzz
+COPY auth_fuzz /nginx/src/auth_fuzz/
+ENV AFL_USE_ASAN=1
+
+# Build auth fuzz targets.
+RUN /nginx/src/auth_fuzz/build.sh /nginx/ /nginx/src/auth_fuzz/ all
