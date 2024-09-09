@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/http_request_lf"
-args = "-detect_leaks=0 -rss_limit_mb=8192 -timeout=10 -dict=/http_request_fuzzer.dict -jobs=1000 -workers=4 /corpus"
+args = "-detect_leaks=0 -rss_limit_mb=8192 -timeout=10 -dict=/http_request_fuzzer.dict -jobs=1000 -workers=4 /corpus_request"
 
 [cov]
 target = "/http_request_cov @@"

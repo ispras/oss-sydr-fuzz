@@ -13,16 +13,26 @@
 # limitations under the License.
 #
 ################################################################################
+exit_on_time = 7200
 
 [sydr]
-args = "-l debug"
-target = "/http_request_sydr @@"
+args = "-l debug -j2 -s 180"
+target = "/http_auth_sydr --sydr @@"
 jobs = 2
+corpus = "/corpus_auth"
+[sydr.env]
+LD_PRELOAD="/preeny/x86_64-linux-gnu/desock.so"
 
 [aflplusplus]
-args = "-t 10000 -x /http_request_fuzzer.dict -i /corpus"
-target = "/http_request_afl @@"
+args = "-i /corpus_auth -t 100000"
+target = "/http_auth_afl++ --afl @@"
 jobs = 4
+[aflplusplus.env]
+AFL_PRELOAD="/preeny/x86_64-linux-gnu/desock.so"
+AFL_SKIP_CPUFREQ="1"
+AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES="1"
 
 [cov]
-target = "/http_request_cov @@"
+target = "/http_auth_cov --sydr @@"
+[cov.env]
+LD_PRELOAD="/preeny/x86_64-linux-gnu/desock.so"

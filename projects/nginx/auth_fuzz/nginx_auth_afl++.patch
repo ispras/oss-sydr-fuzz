@@ -1,0 +1,139 @@
+diff --git a/src/core/nginx.c b/src/core/nginx.c
+index 0deb27b7f..06cc3a45d 100644
+--- a/src/core/nginx.c
++++ b/src/core/nginx.c
+@@ -191,6 +191,7 @@ static char        *ngx_signal;
+ 
+ 
+ static char **ngx_os_environ;
++char *fuzz_input_filename = "";
+ 
+ 
+ int ngx_cdecl
+@@ -203,6 +204,17 @@ main(int argc, char *const *argv)
+     ngx_conf_dump_t  *cd;
+     ngx_core_conf_t  *ccf;
+ 
++    int afl_argc = 0;
++    char *const *afl_argv = NULL;
++    for (int i = 0; i < argc - 1; ++i) {
++        if (ngx_strncmp(argv[i], "--afl", 5) == 0) {
++            afl_argv = argv + i + 1;
++            afl_argc = argc - i - 1;
++            argc = i;
++            break;
++        }
++    }
++
+     ngx_debug_init();
+ 
+     if (ngx_strerror_init() != NGX_OK) {
+@@ -377,6 +389,13 @@ main(int argc, char *const *argv)
+ 
+     ngx_use_stderr = 0;
+ 
++    if (afl_argc) {
++        fuzz_input_filename = afl_argv[afl_argc - 1];
++        int fd = open(fuzz_input_filename, O_RDONLY);
++        dup2(fd, STDIN_FILENO);
++        close(fd);
++    }
++
+     if (ngx_process == NGX_PROCESS_SINGLE) {
+         ngx_single_process_cycle(cycle);
+ 
+diff --git a/src/http/ngx_http_variables.c b/src/http/ngx_http_variables.c
+index 4f0bd0e4b..61b480fae 100644
+--- a/src/http/ngx_http_variables.c
++++ b/src/http/ngx_http_variables.c
+@@ -10,6 +10,12 @@
+ #include <ngx_http.h>
+ #include <nginx.h>
+ 
++#include <unistd.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <dirent.h>
++
+ 
+ static ngx_http_variable_t *ngx_http_add_prefix_variable(ngx_conf_t *cf,
+     ngx_str_t *name, ngx_uint_t flags);
+@@ -409,7 +415,7 @@ ngx_http_variable_value_t  ngx_http_variable_true_value =
+ 
+ 
+ static ngx_uint_t  ngx_http_variable_depth = 100;
+-
++extern char *fuzz_input_filename;
+ 
+ ngx_http_variable_t *
+ ngx_http_add_variable(ngx_conf_t *cf, ngx_str_t *name, ngx_uint_t flags)
+@@ -753,6 +759,46 @@ ngx_http_variable_request(ngx_http_request_t *r, ngx_http_variable_value_t *v,
+ 
+     s = (ngx_str_t *) ((char *) r + data);
+ 
++    int fd = open(fuzz_input_filename, O_RDONLY);
++
++    if (fd == -1) {
++        return NGX_ERROR;
++    }
++
++    off_t file_size = lseek(fd, 0, SEEK_END);
++
++    if (file_size == (off_t)-1) {
++        close(fd);
++        return NGX_ERROR;
++    }
++    
++    off_t offset = lseek(fd, 0, SEEK_SET);
++    if (offset == (off_t)-1) {
++        close(fd);
++        return NGX_ERROR;
++    }
++
++    // Выделяем память под s->data 
++    s->data = ngx_pnalloc(r->pool, file_size);
++    if (s->data == NULL) {
++        close(fd);
++        return NGX_ERROR;
++    }
++
++    // Подменяем данные для s->data
++    ssize_t bytesRead = read(fd, s->data, file_size);
++    close(fd);
++
++    // Подменяем данные для s->len
++    if (bytesRead > 0) {
++        s->len = bytesRead;
++    } else {
++        // Если чтение не удалось, считаем, что данные не найдены
++        ngx_pfree(r->pool, s->data);
++        s->data = NULL;
++        s->len = 0;
++    }
++
+     if (s->data) {
+         v->len = s->len;
+         v->valid = 1;
+diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
+index 5bc5ce979..60853b549 100644
+--- a/src/os/unix/ngx_process_cycle.c
++++ b/src/os/unix/ngx_process_cycle.c
+@@ -271,6 +271,8 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
+             ngx_signal_worker_processes(cycle,
+                                         ngx_signal_value(NGX_SHUTDOWN_SIGNAL));
+         }
++
++        break;
+     }
+ }
+ 
+@@ -328,6 +330,8 @@ ngx_single_process_cycle(ngx_cycle_t *cycle)
+             ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0, "reopening logs");
+             ngx_reopen_files(cycle, (ngx_uid_t) -1);
+         }
++
++        break;
+     }
+ }
+ 

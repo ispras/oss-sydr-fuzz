@@ -43,3 +43,4 @@ Crash triage with Casr:
 ## Supported Targets
 
 * http_request
+* http_auth_request (AFL++ only)
