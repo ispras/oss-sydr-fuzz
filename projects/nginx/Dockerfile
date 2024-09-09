@@ -26,10 +26,7 @@ RUN apt-get update \
     && apt-get autoclean
 
 # ansifilter
-ARG GIT_ANSIFILTER_TAG="2.18"
-ARG ANSIFILTER_SRC_DIR="/ansifilter"
-RUN git clone --depth=1 https://gitlab.com/saalen/ansifilter.git \
-    -b ${GIT_ANSIFILTER_TAG} ${ANSIFILTER_SRC_DIR}
+RUN git clone --depth=1 https://gitlab.com/saalen/ansifilter.git -b 2.18 /ansifilter
 
 # geckodriver for selenium
 RUN cd /usr/bin \
