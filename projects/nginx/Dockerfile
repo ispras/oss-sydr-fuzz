@@ -17,63 +17,51 @@
 FROM sydr/ubuntu20.04-sydr-fuzz
 
 # UPDATE + dep for nginx, preeny
-RUN : \
-    && apt-get update \
+RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get install -y \
     libpcre3-dev zlib1g-dev mercurial ninja-build liblzma-dev \
     libz-dev binutils libtool build-essential libssl-dev libseccomp-dev \
     libini-config-dev \
-    && apt-get autoclean \
-    && :
+    && apt-get autoclean
 
 # ansifilter
 ARG GIT_ANSIFILTER_TAG="2.18"
 ARG ANSIFILTER_SRC_DIR="/ansifilter"
-RUN : \
-    && git clone --depth=1 https://gitlab.com/saalen/ansifilter.git \
-        -b ${GIT_ANSIFILTER_TAG} ${ANSIFILTER_SRC_DIR} \
-    && cd ${ANSIFILTER_SRC_DIR} \
-    && env CC=clang CXX=clang++ make \
-    && make install \
-    && cd / \
-    && rm -rf ${ANSIFILTER_SRC_DIR} \
-    && :
+RUN git clone --depth=1 https://gitlab.com/saalen/ansifilter.git \
+    -b ${GIT_ANSIFILTER_TAG} ${ANSIFILTER_SRC_DIR}
 
 # geckodriver for selenium
-RUN : \
-    && cd /usr/bin \
+RUN cd /usr/bin \
     && curl https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz -L \
-        | tar zxv \
-    && :
+    | tar zxv
 
 # Settings
-RUN : \
-    && echo -e "set -g mouse on\nset -g mode-mouse on\n" > /etc/tmux.conf \
+RUN echo -e "set -g mouse on\nset -g mode-mouse on\n" > /etc/tmux.conf \
     && sh -c 'echo set encoding=utf-8 > /root/.vimrc' \
     && echo '. /usr/share/bash-completion/bash_completion' >> ~/.bashrc \
     && echo "export PS1='"'[fuzzuser \h] \w \$ '"'" >> ~/.bashrc \
-    && git config --global advice.detachedHead false \
-    && :
+    && git config --global advice.detachedHead false
 
-        # Clone target from GitHub. Checkout specified commit. It could be updated later.
+# Clone target from GitHub. Checkout specified commit. It could be updated later.
 RUN hg clone http://hg.nginx.org/nginx/ -u d1b8568f3042 /nginx
 
-RUN : \
-    && git clone https://github.com/zardus/preeny.git \
-    && cd preeny \
-    && make
+# preeny
+RUN git clone https://github.com/zardus/preeny.git
 
 # Prepare seed corpora
 RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus && \
-    cp -r /go-fuzz-corpus/http2/corpus /corpus && \
-    cp /go-fuzz-corpus/httpreq/corpus/* /corpus && \
-    rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-2 && \
-    rm /corpus/da39a3ee5e6b4b0d3255bfef95601890afd80709-1 && \
+    cp -r /go-fuzz-corpus/http2/corpus /corpus_auth && \
+    cp /go-fuzz-corpus/httpreq/corpus/* /corpus_auth && \
+    rm /corpus_auth/da39a3ee5e6b4b0d3255bfef95601890afd80709-2 && \
+    rm /corpus_auth/da39a3ee5e6b4b0d3255bfef95601890afd80709-1 && \
     rm -rf /go-fuzz-corpus
-COPY auth_fuzz/inputs/ /corpus
+COPY auth_fuzz/inputs.zip /
+RUN unzip /inputs.zip -d /corpus_auth
+RUN rm /inputs.zip
 # Duplicate file contents to use it for request and reply.
-RUN for file in /corpus/*; do echo `cat $file` >>$file; done;
+RUN cp -r /corpus_auth /corpus_request
+RUN for file in /corpus_request/*; do echo `cat $file` >>$file; done;
 
 # Save fuzz target and additional files for libFuzzer, AFL++, and Sydr builds.
 RUN mkdir /nginx/src/request_fuzz
@@ -86,6 +74,9 @@ RUN /nginx/src/request_fuzz/build.sh
 # Save fuzz target and additional files for libFuzzer, AFL++, and Sydr builds.
 RUN mkdir /nginx/src/auth_fuzz
 COPY auth_fuzz /nginx/src/auth_fuzz/
+COPY auth_fuzz/auth_config.conf nginx/conf/nginx.conf
+COPY auth_fuzz/auth_config.conf /usr/local/nginx/conf/nginx.conf
+
 ENV AFL_USE_ASAN=1
 
 # Build auth fuzz targets.

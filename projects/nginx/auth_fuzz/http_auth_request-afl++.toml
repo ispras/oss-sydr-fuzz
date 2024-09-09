@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2024 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ exit_on_time = 7200
 args = "-l debug -j2 -s 180"
 target = "/http_auth_sydr --sydr @@"
 jobs = 2
-corpus = "/corpus"
+corpus = "/corpus_auth"
 [sydr.env]
 LD_PRELOAD="/preeny/x86_64-linux-gnu/desock.so"
 
 [aflplusplus]
-args = "-i /corpus -t 100000"
+args = "-i /corpus_auth -t 100000"
 target = "/http_auth_afl++ --afl @@"
 jobs = 4
 [aflplusplus.env]
