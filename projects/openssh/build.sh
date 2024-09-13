@@ -330,3 +330,4 @@ CASES="/openssh-fuzz-cases"
 (set -e ; mkdir /kex_corpus       ; cd ${CASES}/kex       ; find . -type f -exec cp {} /kex_corpus \;)
 (set -e ; mkdir /agent_corpus     ; cd ${CASES}/agent     ; find . -type f -exec cp {} /agent_corpus \;)
 (set -e ; mkdir /lsc_corpus       ; cd /openssh           ; find . -name "sshd_config" -exec cp {} /lsc_corpus \;)
+(set -e ; mkdir /fp_corpus        ; cd ${CASES}/key       ; find . -type f -exec cp {} /fp_corpus \;)
