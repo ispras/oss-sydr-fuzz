@@ -22,6 +22,7 @@ jobs = 2
 [aflplusplus]
 args = "-t 1000 -i /lsc_corpus"
 target = "/afl/sshd_session_fuzz_afl @@"
+jobs = 4
 
 [cov]
 target = "/cov/sshd_session_fuzz_cov @@"

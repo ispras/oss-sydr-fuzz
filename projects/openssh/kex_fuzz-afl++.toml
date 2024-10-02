@@ -22,6 +22,7 @@ jobs = 2
 [aflplusplus]
 args = "-t 1000 -i /kex_corpus"
 target = "/afl/kex_fuzz_afl @@"
+jobs = 4
 
 [cov]
 target = "/cov/kex_fuzz_cov @@"

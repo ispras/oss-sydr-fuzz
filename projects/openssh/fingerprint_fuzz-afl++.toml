@@ -15,13 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2"
+args = "-l info"
 target = "/sydr/fingerprint_fuzz_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /fp_corpus"
+args = "-t 1000 -i /fingerprint_corpus"
 target = "/afl/fingerprint_fuzz_afl @@"
+jobs = 4
 
 [cov]
 target = "/cov/fingerprint_fuzz_cov @@"

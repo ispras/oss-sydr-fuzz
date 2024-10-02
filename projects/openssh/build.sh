@@ -19,7 +19,9 @@
 git apply ssh.patch
 
 # Fix AFL++ build for sig_fuzz
-sed -i '3140s/no]) ]/no])\n enable_nistp521=1 ]/' configure.ac
+line=$(grep -n "enable_nistp521=1 ]," configure.ac | cut -d ':' -f 1)
+line=$((line + 1))
+sed -i "${line}s/no]) ]/no])\n enable_nistp521=1 ]/" configure.ac
 
 EXTRA_CFLAGS="-DCIPHER_NONE_AVAIL=1"
 STATIC_CRYPTO="-Wl,-Bstatic -lcrypto -Wl,-Bdynamic"
@@ -330,4 +332,4 @@ CASES="/openssh-fuzz-cases"
 (set -e ; mkdir /kex_corpus       ; cd ${CASES}/kex       ; find . -type f -exec cp {} /kex_corpus \;)
 (set -e ; mkdir /agent_corpus     ; cd ${CASES}/agent     ; find . -type f -exec cp {} /agent_corpus \;)
 (set -e ; mkdir /lsc_corpus       ; cd /openssh           ; find . -name "sshd_config" -exec cp {} /lsc_corpus \;)
-(set -e ; mkdir /fp_corpus        ; cd ${CASES}/key       ; find . -type f -exec cp {} /fp_corpus \;)
+cd / && tar -xf fingerprint_corpus.tar.gz && rm fingerprint_corpus.tar.gz
