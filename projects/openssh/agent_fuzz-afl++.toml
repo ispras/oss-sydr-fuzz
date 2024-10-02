@@ -20,7 +20,7 @@ target = "/sydr/agent_fuzz_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /agent_corpus"
+args = "-t 10000 -i /agent_corpus"
 target = "/afl/agent_fuzz_afl @@"
 jobs = 4
 

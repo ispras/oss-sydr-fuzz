@@ -23,6 +23,10 @@ line=$(grep -n "enable_nistp521=1 ]," configure.ac | cut -d ':' -f 1)
 line=$((line + 1))
 sed -i "${line}s/no]) ]/no])\n enable_nistp521=1 ]/" configure.ac
 
+# Fix authkeys_fuzz
+sed -i '/AC_FUNC_MALLOC/d' configure.ac
+sed -i '/AC_FUNC_REALLOC/d' configure.ac
+
 EXTRA_CFLAGS="-DCIPHER_NONE_AVAIL=1"
 STATIC_CRYPTO="-Wl,-Bstatic -lcrypto -Wl,-Bdynamic"
 SK_NULL=ssh-sk-null.o
@@ -80,7 +84,6 @@ do
     if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
-            continue
         fi
         SK_NULL=""
         SSH_SK=ssh-sk.o
@@ -149,7 +152,6 @@ do
     if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
-            continue
         fi
         SK_NULL=""
         SSH_SK=ssh-sk.o
@@ -219,7 +221,6 @@ do
     if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
-            continue
         fi
         if [[  $filename == "lsc_fuzz" ]]; then
             SSHD_SERV="groupaccess.o auth2-methods.o servconf.o"
@@ -290,7 +291,6 @@ do
     if [[ $filename == "agent_fuzz" || $filename == "authkeys_fuzz" || $filename == "lsc_fuzz" ]]; then
         if [[  $filename == "authkeys_fuzz" ]]; then
             AUTH_PUBKEY=auth2-pubkeyfile.o
-            continue
         fi
         SK_NULL=""
         SSH_SK=ssh-sk.o

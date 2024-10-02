@@ -19,10 +19,9 @@ args = "-l debug -j 2"
 target = "/sydr/authkeys_fuzz_sydr @@"
 jobs = 2
 
-[aflplusplus]
-args = "-t 1000 -i /key_corpus"
-target = "/afl/authkeys_fuzz_afl @@"
-jobs = 4
+[libfuzzer]
+path = "/lf/authkeys_fuzz_lf"
+args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /key_corpus"
 
 [cov]
 target = "/cov/authkeys_fuzz_cov @@"
