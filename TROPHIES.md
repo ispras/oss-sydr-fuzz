@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-171 new bugs in
+172 new bugs in
 30 open source projects.
 
 * audk:
