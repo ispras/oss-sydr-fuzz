@@ -1,7 +1,7 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-166 new bugs in
+172 new bugs in
 30 open source projects.
 
 * audk:
@@ -99,6 +99,8 @@
     * <https://github.com/py-pdf/pypdf/issues/2815>
     * <https://github.com/py-pdf/pypdf/issues/2817>
     * <https://github.com/py-pdf/pypdf/issues/2843>
+    * <https://github.com/py-pdf/pypdf/issues/2866>
+    * <https://github.com/py-pdf/pypdf/issues/2875>
 * Poppler:
     * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1268>
     * <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1269> ([PR](https://gitlab.freedesktop.org/poppler/poppler/-/merge_requests/1221))
