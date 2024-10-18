@@ -58,7 +58,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     memcpy(str, header, header_size);
     str[header_size] = '.';
     memcpy(str + header_size + 1, body, body_size);
-    str[header_size] = '.';
     str[header_size + body_size + 1] = '.';
     memcpy(str + header_size + body_size + 2, sign, sign_size);
 
