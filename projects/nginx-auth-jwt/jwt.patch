@@ -1,0 +1,14 @@
+diff --git a/src/jwt/jwt.c b/src/jwt/jwt.c
+index 982d718..481fade 100644
+--- a/src/jwt/jwt.c
++++ b/src/jwt/jwt.c
+@@ -682,6 +682,9 @@ int jwt_decode(jwt_t **jwt, const char *token, const unsigned char *key,
+ 	if (new->alg != JWT_ALG_NONE) {
+ 		const char *sig = token + (payload_len + 1);
+ 		ret = jwt_verify(new, token, payload_len, sig);
++#ifdef FUZZER
++		ret = 0; // Do not return error if verification fails.
++#endif
+ 	} else {
+ 		ret = 0;
+ 	}
