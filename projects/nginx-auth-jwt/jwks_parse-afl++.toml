@@ -24,7 +24,7 @@ args = "-t 10000 -i /corpus -x /json.dict"
 target = "/jwks_parse_afl @@"
 jobs = 4
 [aflplusplus.env]
-    ASAAN_OPTIONS="detect_leaks=0"
+    ASAN_OPTIONS="detect_leaks=0"
 
 [cov]
 target = "/jwks_parse_cov @@"
