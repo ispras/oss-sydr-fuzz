@@ -30,7 +30,7 @@ RUN git clone https://github.com/kjdev/nginx-auth-jwt.git
 # Copy build script and fuzz targets.
 COPY build.sh prepare_corpus.py jwt.patch ./
 RUN mkdir /fuzz_targets
-COPY jwt_parse.c jwt_claim.c jwks_parse.c /fuzz_targets/
+COPY jwt_parse.c jwt_claim.c jwks_parse.c jwk_import_string.c /fuzz_targets/
 
 # Build fuzz targets.
 RUN ./build.sh
