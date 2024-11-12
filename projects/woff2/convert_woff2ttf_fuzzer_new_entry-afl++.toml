@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
+args = "--wait-jobs -s 90 -j2"
 target = "/convert_woff2ttf_fuzzer_new_entry_sydr @@"
 jobs = 2
 

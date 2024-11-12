@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
+args = "--wait-jobs -s 90 -j2"
 target = "/jit_differential_sydr @@"
 
 [aflplusplus]

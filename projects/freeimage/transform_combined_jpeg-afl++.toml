@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug --solving-timeout 30"
+args = "--wait-jobs --solving-timeout 30 -j2"
 target = "/transform_combined_jpeg_sydr @@"
 jobs = 2
 

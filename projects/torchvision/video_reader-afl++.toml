@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
+args = "--wait-jobs -s 90 -j2"
 target = "/video_reader_sydr @@"
 timeout = 2700
 

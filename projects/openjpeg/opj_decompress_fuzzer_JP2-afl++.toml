@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j2"
+args = "--wait-jobs -s 90 -j2"
 target = "/opj_decompress_fuzzer_JP2_sydr @@"
 jobs = 2
 

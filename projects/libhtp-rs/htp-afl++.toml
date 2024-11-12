@@ -16,7 +16,7 @@
 exit_on_time = 7200
 
 [sydr]
-args = "-l debug"
+args = "--wait-jobs -s 90 -j2"
 target = "/sydr_fuzz_htp_rs @@"
 
 [aflplusplus]

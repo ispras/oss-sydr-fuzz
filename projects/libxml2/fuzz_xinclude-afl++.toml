@@ -17,7 +17,7 @@
 exit_on_time = 7200
 
 [sydr]
-args = "-l debug -j2"
+args = "--wait-jobs -s 90 -j2"
 target = "/libxml2/sydr/fuzz_xinclude @@"
 jobs = 3
 

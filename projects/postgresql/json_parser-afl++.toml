@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2"
+args = "--wait-jobs -s 90 -j2"
 target = "/out/json_parser_sydr @@"
 jobs = 4
 
