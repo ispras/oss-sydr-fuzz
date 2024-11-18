@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr_from_gdb @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/from_gdb"

@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr/fuzz_csv_reader @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_csv_reader"

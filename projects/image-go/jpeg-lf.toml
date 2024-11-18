@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/image/cmd/sydr_jpeg/sydr_jpeg @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/image/fuzz_jpeg"

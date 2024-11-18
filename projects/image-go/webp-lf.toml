@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/image/cmd/sydr_webp/sydr_webp @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/image/fuzz_webp"

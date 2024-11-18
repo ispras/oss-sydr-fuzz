@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr_regex_match @@"
+args = "-s 90 --wait-jobs"
 
 [libfuzzer]
 path = "/fuzz_regex_match"

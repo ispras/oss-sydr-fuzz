@@ -16,6 +16,7 @@
 
 exit-on-time = 3600
 [sydr]
+args = "-s 90 --wait-jobs -j2"
 target = "/ydbwork/build-sydr/library/cpp/containers/flat_hash/flat_map_sydr @@"
 timeout = 150
 jobs = 2

@@ -17,7 +17,7 @@
 exit-on-time = 7200
 
 [sydr]
-args = "-l trace -s 180"
+args = "-s 180 --wait-jobs -j2"
 target = "/SRC/suricata/sydr/fuzz_applayerparserparse_http1 @@"
 jobs = 1
 

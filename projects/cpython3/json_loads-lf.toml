@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr/fuzz_json_loads @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_json_loads"

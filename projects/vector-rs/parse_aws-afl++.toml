@@ -14,12 +14,13 @@
 #
 ################################################################################
 [sydr]
-target = "/sydr/cov_xml"
-args= "--sym-stdin -l debug"
+target = "/sydr/cov_aws"
+args= "--sym-stdin -s 90 --wait-jobs -j2"
 
 [aflplusplus]
-target = "/fuzzer/fuzz_xml"
-args = "-i /vector/lib/vrl/stdlib/fuzzing/in_xml -x /dict/xml.dict"
+target = "/fuzzer/fuzz_aws"
+args = "-i /vector/lib/vrl/stdlib/fuzzing/in_aws"
+jobs = 4
 
 [cov]
-target = "/cov/cov_xml"
+target = "/cov/cov_aws"

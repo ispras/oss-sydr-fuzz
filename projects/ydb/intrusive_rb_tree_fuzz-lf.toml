@@ -16,6 +16,7 @@
 
 exit-on-time = 3600
 [sydr]
+args = "-s 90 --wait-jobs -j2"
 target = "/ydbwork/build-sydr/library/cpp/containers/intrusive_rb_tree/intrusive_rb_tree_sydr @@"
 timeout = 150
 jobs = 2

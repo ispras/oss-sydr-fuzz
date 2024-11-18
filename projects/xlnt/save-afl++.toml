@@ -22,7 +22,7 @@ jobs = 2
 [aflplusplus]
 args = "-t 10000 -i /save_corpus"
 target = "/save_afl"
-jobs = 2
+jobs = 4
 
 [cov]
 target = "/save_cov @@"

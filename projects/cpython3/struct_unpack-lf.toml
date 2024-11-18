@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr/fuzz_struct_unpack @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_struct_unpack"

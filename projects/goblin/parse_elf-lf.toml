@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr_parse_elf @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/parse_elf"

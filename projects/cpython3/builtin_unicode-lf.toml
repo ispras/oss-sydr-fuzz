@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr/fuzz_builtin_unicode @@"
+args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/fuzzer/fuzz_builtin_unicode"

@@ -14,12 +14,13 @@
 #
 ################################################################################
 [sydr]
-target = "/sydr/cov_json"
-args = "--sym-stdin -l debug"
+target = "/sydr/cov_csv"
+args= "--sym-stdin -s 90 --wait-jobs -j2"
 
 [aflplusplus]
-target = "/fuzzer/fuzz_json"
-args = "-i /vector/lib/vrl/stdlib/fuzzing/in_json -x /dict/json.dict"
+target = "/fuzzer/fuzz_csv"
+args = "-i /vector/lib/vrl/stdlib/fuzzing/in_csv -x /dict/csv.dict"
+jobs = 4
 
 [cov]
-target = "/cov/cov_json"
+target = "/cov/cov_csv"

@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr/fuzz_codecs_encode @@"
+args = "-s 90 --wait-jobs -j2"
 
 [aflplusplus]
 target = "/afl/fuzz_codecs_encode @@"
