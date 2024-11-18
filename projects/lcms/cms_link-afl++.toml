@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 4"
+args = "--wait-jobs -s 90 -j2"
 target = "/lcms_sydr/cms_link_sydr @@"
 jobs = 3
 

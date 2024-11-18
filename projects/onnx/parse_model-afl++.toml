@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug"
+args = "--wait-jobs -s 90 -j2"
 target = "/parse_model_sydr @@"
 
 [aflplusplus]

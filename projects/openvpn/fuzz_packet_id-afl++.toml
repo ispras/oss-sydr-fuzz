@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j2"
+args = "--wait-jobs -s 90 -j2"
 target = "/fuzz_packet_id_sydr @@"
 jobs = 2
 

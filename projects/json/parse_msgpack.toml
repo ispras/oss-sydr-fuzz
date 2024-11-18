@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j 2"
+args = "--wait-jobs -s 90 -j2"
 target = "/sydr_targets/fuzzer-parse_msgpack_sydr @@"
 jobs = 2
 

@@ -15,7 +15,7 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j2"
+args = "--wait-jobs -s 90 -j2"
 target = "/libpcap/sydr/load_sydr_pcap @@"
 jobs = 2
 

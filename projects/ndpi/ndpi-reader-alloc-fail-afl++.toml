@@ -16,7 +16,7 @@
 exit_on_time = 7200
 
 [sydr]
-args = "-l debug -j2 -s 180"
+args = "--wait-jobs -s 180 -j2"
 target = "/nDPI/sydr/load_sydr_ndpi_reader_alloc_fail @@"
 jobs = 2
 

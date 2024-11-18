@@ -16,6 +16,7 @@
 
 [sydr]
 target = "/sydr/fuzz_builtin_float @@"
+args = "-s 90 --wait-jobs -j2"
 
 [aflplusplus]
 target = "/afl/fuzz_builtin_float @@"

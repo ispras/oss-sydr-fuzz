@@ -17,7 +17,7 @@
 exit-on-time = 3600
 
 [sydr]
-args = "-l debug"
+args = "--wait-jobs -s 90 -j2"
 target = "/sydr/decode_compressed_fuzz @@"
 
 [aflplusplus]

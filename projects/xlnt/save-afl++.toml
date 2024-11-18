@@ -15,13 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "-l debug -j2"
+args = "--wait-jobs -s 90 -j2"
 target = "/save_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 1000 -i /save_corpus"
+args = "-t 10000 -i /save_corpus"
 target = "/save_afl"
+jobs = 4
 
 [cov]
 target = "/save_cov @@"
