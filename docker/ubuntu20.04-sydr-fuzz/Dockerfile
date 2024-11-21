@@ -79,25 +79,20 @@ RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd 
 ENV LLVM_CONFIG=llvm-config
 ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 ENV IS_DOCKER="1"
-
-RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.21c && export CC=clang && export CXX=clang++ && \
-    export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
-    PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
-
 ENV PATH=$PATH:/fuzz/sydr
-
-RUN git clone https://github.com/google/atheris && cd atheris && \
-    git checkout edf3eebfd028a2822db5037b8f95e5432990fd03 && \
-    pip3 install . && cd .. && rm -rf atheris
 
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 
+# Install Atheris
+RUN git clone https://github.com/google/atheris && cd atheris && \
+    git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
+    pip3 install . && cd .. && rm -rf atheris
+
 # Install Go
 RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.19 && \
+    SHELL="bash" ./installer_linux -version=1.22.9 && \
     rm -rf ./installer_linux
 
 ENV GOPATH=/root/go
@@ -144,5 +139,11 @@ RUN dotnet tool install SharpFuzz.CommandLine --global
 RUN dotnet tool install minicover --global
 RUN dotnet tool install altcover.global --global
 ENV PATH=$PATH:/root/.dotnet/tools
+
+# Install AFLplusplus
+RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
+    git checkout v4.21c && export CC=clang && export CXX=clang++ && \
+    export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
+    PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 WORKDIR /

@@ -66,9 +66,9 @@ RUN git clone https://github.com/ninja-build/ninja.git && cd ninja && \
     mv build-cmake/ninja /usr/bin && cd .. && rm -rf ninja
 
 # Install Go
-RUN wget https://go.dev/dl/go1.19.10.linux-arm64.tar.gz && \
-    tar -C /root -xf go1.19.10.linux-arm64.tar.gz && \
-    rm go1.19.10.linux-arm64.tar.gz
+RUN wget https://go.dev/dl/go1.22.9.linux-arm64.tar.gz && \
+    tar -C /root -xf go1.22.9.linux-arm64.tar.gz && \
+    rm go1.22.9.linux-arm64.tar.gz
 
 ENV GOPATH=/root/go
 ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
@@ -94,7 +94,7 @@ ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driv
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 
 RUN git clone https://github.com/google/atheris && cd atheris && \
-    git checkout edf3eebfd028a2822db5037b8f95e5432990fd03 && \
+    git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
     LIBFUZZER_LIB=/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer_no_main-aarch64.a \
     MAKEFLAGS="-j$(nproc)" pip3 install . && \
     cd .. && rm -rf atheris
