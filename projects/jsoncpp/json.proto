@@ -1,4 +1,5 @@
 // Copyright 2020 Google Inc.
+// Modifications copyright (C) 2024 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,13 +24,26 @@ package json_proto;
 
 message JsonParseAPI {
   required int32 settings = 1;
-  required JsonObject object_value = 2;
+  required JsonStarter starter = 2;
+}
+
+message JsonStarter {
+  oneof value {
+    // object list: one or multiple json objects
+    JsonObjectList object_list_value = 1;
+
+    // array: an array of values
+    ArrayValue array_value = 2;
+  }
 }
 
 message JsonObject {
-  required int32 settings = 1;
   required string name = 2;
   required JsonValue value = 3;
+}
+
+message JsonObjectList {
+  repeated JsonObject object_value = 1;
 }
 
 message JsonValue {
@@ -38,8 +52,8 @@ message JsonValue {
 
     // null: null, will be used when 'oneof' contains nothing
 
-    // object: another json object of any type
-    JsonObject object_value = 1;
+    // object list: one or multiple json objects
+    JsonObjectList object_list_value = 1;
 
     // array: an array of values
     ArrayValue array_value = 2;

@@ -49,7 +49,7 @@ void FuzzJson(std::string data_str, int32_t hash_settings) {
   builder.settings_["allowTrailingCommas_"] = hash_settings & (1 << 10);
 
   std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
-  
+
   const char* begin = data_str.c_str();
   const char* end = begin + data_str.length();
 
@@ -62,7 +62,7 @@ void FuzzJson(std::string data_str, int32_t hash_settings) {
 
 DEFINE_PROTO_FUZZER(const json_proto::JsonParseAPI &json_proto) {
   json_proto::JsonProtoConverter converter;
-  std::string data_str = converter.Convert(json_proto.object_value());
+  std::string data_str = converter.Convert(json_proto.starter());
   int32_t hash_settings = json_proto.settings();
   FuzzJson(data_str, hash_settings);
 }
