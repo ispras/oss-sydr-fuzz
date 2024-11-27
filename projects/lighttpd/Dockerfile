@@ -15,7 +15,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://github.com/lighttpd/lighttpd1.4
 WORKDIR /lighttpd1.4

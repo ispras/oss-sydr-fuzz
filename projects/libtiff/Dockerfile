@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://gitlab.com/libtiff/libtiff && \
     cd libtiff && git checkout cb88a5b6bf1757060ec4d50055fa852fd7830cfe

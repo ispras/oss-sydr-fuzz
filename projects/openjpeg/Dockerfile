@@ -15,7 +15,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://github.com/uclouvain/openjpeg openjpeg && \
     cd openjpeg && git checkout 6af39314bdb43cb9c7adcdbc7aa9381af42b52ba

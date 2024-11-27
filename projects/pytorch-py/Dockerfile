@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 # Install build dependencies.
 RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions

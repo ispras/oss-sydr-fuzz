@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN apt-get update && apt-get install -y flex bison
 

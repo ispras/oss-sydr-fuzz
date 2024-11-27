@@ -15,7 +15,9 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
+
 RUN apt-get update && apt-get install -y libssl-dev liblzo2-dev libpam-dev \
     libnl-3-dev libnl-genl-3-dev libcap-ng-dev
 

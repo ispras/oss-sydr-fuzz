@@ -68,7 +68,7 @@ RUN git clone https://github.com/ninja-build/ninja.git && cd ninja && \
 # Install Go
 RUN wget https://go.dev/dl/go1.22.9.linux-arm64.tar.gz && \
     tar -C /root -xf go1.22.9.linux-arm64.tar.gz && \
-    rm go1.22.9.linux-arm64.tar.gz
+    mv /root/go /root/.go && rm go1.22.9.linux-arm64.tar.gz
 
 ENV GOPATH=/root/go
 ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin

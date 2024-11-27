@@ -13,7 +13,9 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sydr/ubuntu20.04-sydr-fuzz
+
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://github.com/langchain-ai/langchain.git
 

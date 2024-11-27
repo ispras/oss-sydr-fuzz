@@ -15,8 +15,8 @@
 #
 ################################################################################
 
-# Default OS  is Ubuntu 20.04 with clang-13
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 # Set author of this docker container.
 MAINTAINER Andrey Fedotov

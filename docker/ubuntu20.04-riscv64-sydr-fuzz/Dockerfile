@@ -62,7 +62,7 @@ RUN cd /llvm-project-llvmorg-15.0.7/build && \
 # Install Go
 RUN wget https://go.dev/dl/go1.23.3.linux-riscv64.tar.gz && \
     tar -C /root -xf go1.23.3.linux-riscv64.tar.gz && \
-    rm go1.23.3.linux-riscv64.tar.gz
+    mv /root/go /root/.go && rm go1.23.3.linux-riscv64.tar.gz
 ENV PATH=$PATH:/root/.go/bin:/root/go/bin
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 

@@ -15,7 +15,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN apt-get update && apt-get install -y autoconf automake libtool make pkg-config \
 					python flex bison libmagic-dev libcap-ng-dev libyaml-dev libjansson-dev libpcap-dev

@@ -14,7 +14,9 @@
 # limitations under the License.
 #
 ################################################################################
-FROM sydr/ubuntu20.04-sydr-fuzz
+
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 # UPDATE + dep for nginx, preeny
 RUN apt-get update \

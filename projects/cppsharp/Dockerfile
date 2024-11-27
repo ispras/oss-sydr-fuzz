@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://github.com/mono/CppSharp.git && \
     cd CppSharp && git checkout 81e0a931cf6116951e37b0fa763e1974bc753a83

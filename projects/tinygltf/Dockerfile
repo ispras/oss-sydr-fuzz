@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://github.com/syoyo/tinygltf.git && cd tinygltf && \
     git checkout 6782f887bb100e2bc7e6751ad46fe8288c84f767

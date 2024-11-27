@@ -15,7 +15,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN apt-get update && apt-get install -y \
 	libass-dev libfreetype6-dev libsdl1.2-dev pkg-config libbz2-dev chrpath python \

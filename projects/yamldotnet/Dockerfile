@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM sydr/ubuntu20.04-sydr-fuzz
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
 RUN git clone https://github.com/aaubry/YamlDotNet.git && \
     cd YamlDotNet && git checkout 19d7875b240c28516ef24c40485e29eaca9b9418
