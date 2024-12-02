@@ -140,6 +140,10 @@ RUN dotnet tool install minicover --global
 RUN dotnet tool install altcover.global --global
 ENV PATH=$PATH:/root/.dotnet/tools
 
+# Support files for hybrid fuzzing with LPM
+ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/packer_macro.h /opt/
+ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/main_packer.cc /opt/
+
 # Install AFLplusplus
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
     git checkout v4.21c && export CC=clang && export CXX=clang++ && \

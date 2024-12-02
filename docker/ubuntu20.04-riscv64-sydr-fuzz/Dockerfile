@@ -104,6 +104,10 @@ RUN wget https://ftp.gnu.org/gnu/gdb/gdb-15.2.tar.xz && \
     ./configure --prefix=/usr && make -j$(nproc) && make install && cd .. && \
     rm -rf gdb-*
 
+# Support files for hybrid fuzzing with LPM
+ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/packer_macro.h /opt/
+ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/main_packer.cc /opt/
+
 ENV PATH=$PATH:/fuzz/sydr
 
 WORKDIR /

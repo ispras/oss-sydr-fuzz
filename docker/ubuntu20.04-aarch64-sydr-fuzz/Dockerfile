@@ -111,6 +111,10 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     export LD_LIBRARY_PATH="$(llvm-config-14 --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
+# Support files for hybrid fuzzing with LPM
+ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/packer_macro.h /opt/
+ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/main_packer.cc /opt/
+
 # Install .NET, Sharpfuzz, minicover, altcover.
 RUN wget https://download.visualstudio.microsoft.com/download/pr/092bec24-9cad-421d-9b43-458b3a7549aa/84280dbd1eef750f9ed1625339235c22/dotnet-sdk-8.0.101-linux-arm64.tar.gz
 RUN mkdir /dotnet && tar zxf dotnet-sdk-8.0.101-linux-arm64.tar.gz -C /dotnet && rm -rf dotnet-sdk-8.0.101-linux-arm64.tar.gz
