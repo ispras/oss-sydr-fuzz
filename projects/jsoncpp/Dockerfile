@@ -32,7 +32,7 @@ RUN (mkdir LPM && cd LPM && cmake ../libprotobuf-mutator -GNinja -DLIB_PROTO_MUT
 
 COPY build.sh .
 RUN mkdir /proto
-COPY *.proto *.h *.cc /proto/
+COPY *.proto *.h *.cc packer/* /proto/
 COPY *.dict /
 
 RUN ./build.sh
@@ -47,3 +47,6 @@ WORKDIR /
 RUN rm -rf json_test_data
 # remove empty file from corpus
 RUN rm corpus/n_structure_no_data.json
+
+COPY prepare_corpus.sh /prepare_corpus.sh
+RUN /prepare_corpus.sh

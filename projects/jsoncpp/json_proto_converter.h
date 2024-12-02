@@ -1,4 +1,5 @@
 // Copyright 2020 Google Inc.
+// Modifications copyright (C) 2024 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +27,7 @@ namespace json_proto {
 
 class JsonProtoConverter {
  public:
-  std::string Convert(const json_proto::JsonObject&);
-  std::string Convert(const json_proto::ArrayValue&);
+  std::string Convert(const json_proto::JsonStarter&);
 
  private:
   std::stringstream data_;
@@ -35,6 +35,8 @@ class JsonProtoConverter {
   void AppendArray(const json_proto::ArrayValue&);
   void AppendNumber(const json_proto::NumberValue&);
   void AppendObject(const json_proto::JsonObject&);
+  void AppendObjectList(const json_proto::JsonObjectList&);
+  void AppendStarter(const json_proto::JsonStarter&);
   void AppendValue(const json_proto::JsonValue&);
 };
 

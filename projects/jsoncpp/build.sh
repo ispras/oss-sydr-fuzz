@@ -52,6 +52,37 @@ $CXX $CXXFLAGS -DNDEBUG -I genfiles -I .. -I ../libprotobuf-mutator/ -I ../LPM/e
     /jsoncpp/build/lib/libjsoncpp.a
 fi
 
+# json-protobuf packer
+cd ..
+rm -rf build
+mkdir build
+cd build
+
+CC=clang
+CXX=clang++
+CFLAGS="-g"
+CXXFLAGS="-g"
+OUT="pack"
+
+cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS="$CFLAGS" \
+    -DBUILD_SHARED_LIBS=OFF -G "Unix Makefiles"
+make "-j$(nproc)"
+
+mkdir /$OUT
+
+if [[ $CFLAGS != *sanitize=memory* ]]; then
+# Compile json proto.
+rm -rf genfiles && mkdir genfiles && ../LPM/external.protobuf/bin/protoc /proto/json.proto \
+    --cpp_out=genfiles --proto_path=/proto
+
+# Compile both-sided json-protobuf packer.
+clang++ -g -I genfiles -I ../LPM/external.protobuf/include -I ../libprotobuf-mutator/ -I .. -I /proto \
+  genfiles/json.pb.cc /proto/json_proto_converter.cc /proto/main_packer.cc /proto/json_packer.cc \
+  ../LPM/src/libfuzzer/libprotobuf-mutator-libfuzzer.a ../LPM/src/libprotobuf-mutator.a \
+  -Wl,--start-group ../LPM/external.protobuf/lib/lib*.a -Wl,--end-group \
+  -o /$OUT/json_packer -lpthread
+fi
+
 # AFL
 cd ..
 rm -rf build

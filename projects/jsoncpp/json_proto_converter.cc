@@ -1,4 +1,5 @@
 // Copyright 2020 Google Inc.
+// Modifications copyright (C) 2024 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,14 +54,14 @@ void JsonProtoConverter::AppendNumber(const NumberValue& number_value) {
 }
 
 void JsonProtoConverter::AppendObject(const JsonObject& json_object) {
-  data_ << '{' << '"' << json_object.name() << '"' << ':';
+  data_ << '"' << json_object.name() << '"' << ':';
   AppendValue(json_object.value());
-  data_ << '}';
+
 }
 
 void JsonProtoConverter::AppendValue(const JsonValue& json_value) {
-  if (json_value.has_object_value()) {
-    AppendObject(json_value.object_value());
+  if (json_value.has_object_list_value()) {
+    AppendObjectList(json_value.object_list_value());
   } else if (json_value.has_array_value()) {
     AppendArray(json_value.array_value());
   } else if (json_value.has_number_value()) {
@@ -74,14 +75,32 @@ void JsonProtoConverter::AppendValue(const JsonValue& json_value) {
   }
 }
 
-std::string JsonProtoConverter::Convert(const JsonObject& json_object) {
-  AppendObject(json_object);
-  return data_.str();
+void JsonProtoConverter::AppendObjectList(const JsonObjectList& json_object_list) {
+  data_ << '{';
+  bool need_comma = false;
+  for (const auto& object : json_object_list.object_value()) {
+    if (need_comma)
+      data_ << ',';
+    else
+      need_comma = true;
+
+    AppendObject(object);
+  }
+  if (!need_comma)
+    data_ << "null";  // empty list
+  data_ << '}';
 }
 
-std::string JsonProtoConverter::Convert(
-    const json_proto::ArrayValue& json_array) {
-  AppendArray(json_array);
+void JsonProtoConverter::AppendStarter(const JsonStarter& starter) {
+  if (starter.has_object_list_value()) {
+    AppendObjectList(starter.object_list_value());
+  } else if (starter.has_array_value()) {
+    AppendArray(starter.array_value());
+  }
+}
+
+std::string JsonProtoConverter::Convert(const JsonStarter& starter) {
+  AppendStarter(starter);
   return data_.str();
 }
 
