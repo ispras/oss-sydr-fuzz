@@ -16,7 +16,7 @@
 
 [sydr]
 args = "-l debug --solving-timeout 30 -j 2"
-target = "/sydr/jsoncpp_proto_fuzz_sydr @@"
+target = "/sydr/jsoncpp_fuzz_sydr @@"
 jobs = 2
 
 [libfuzzer]
@@ -25,4 +25,5 @@ args = "-dict=/json.dict /corpus"
 proto_packer_path = "/pack/json_packer"
 
 [cov]
-target = "/cov/jsoncpp_proto_fuzz_cov @@"
+target = "/cov/jsoncpp_fuzz_cov @@"
+proto_to_native_cov = true
