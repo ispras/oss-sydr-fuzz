@@ -54,10 +54,9 @@ RUN wget -q https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-15.0.
         -DLLVM_INCLUDE_TESTS="OFF" \
         -DLLVM_LINK_LLVM_DYLIB="ON" \
         -GNinja  ../llvm/
-RUN cat //llvm-project-llvmorg-15.0.7/compiler-rt/cmake/Modules/AllSupportedArchDefs.cmake
 RUN cd /llvm-project-llvmorg-15.0.7/build && \
     CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && \
-    cmake --install . && cd ../.. && rm -rf llvm-project
+    cmake --install . && cd ../.. && rm -rf llvm-project*
 
 # Install Go
 RUN wget https://go.dev/dl/go1.23.3.linux-riscv64.tar.gz && \
@@ -90,10 +89,11 @@ RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd 
 
 ENV LLVM_CONFIG=llvm-config
 ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
+ENV AFL_SYNC_TIME=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.21c && export CC=clang && export CXX=clang++ && \
+    git checkout v4.30c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 

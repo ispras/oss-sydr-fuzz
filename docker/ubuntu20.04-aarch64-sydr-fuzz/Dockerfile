@@ -104,10 +104,11 @@ RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd 
 
 ENV LLVM_CONFIG=llvm-config-14
 ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
+ENV AFL_SYNC_TIME=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.21c && export CC=clang-14 && export CXX=clang++-14 && \
+    git checkout v4.30c && export CC=clang-14 && export CXX=clang++-14 && \
     export LD_LIBRARY_PATH="$(llvm-config-14 --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
