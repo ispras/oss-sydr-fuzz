@@ -79,8 +79,11 @@ DEFINE_CONVERT_DATA(json_proto::JsonParseAPI &msg, std::string data) {
   data.erase(std::remove(data.begin(), data.end(), ' '), data.end());
   size_ = data.size();
   jstr_ = data.c_str();
-
-  msg.set_settings(1);
+  // Skip settings bytes if this doesn't look like valid json start.
+  if (size_ > 4 && jstr_[0] != '{' && jstr_[0] != '[') {
+    size_ -= sizeof(uint32_t);
+    jstr_ += sizeof(uint32_t);
+  }
 
   // Parse Json
   std::string n(jstr_, size_);
@@ -100,6 +103,7 @@ DEFINE_CONVERT_DATA(json_proto::JsonParseAPI &msg, std::string data) {
       *av = ParseArrayValue(0, endpos, arena);
       st->set_allocated_array_value(av);
     }
+    msg.set_settings(1);
     msg.set_allocated_starter(st);
   }
   else {
