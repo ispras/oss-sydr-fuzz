@@ -82,9 +82,6 @@ ENV AFL_SYNC_TIME=1
 ENV IS_DOCKER="1"
 ENV PATH=$PATH:/fuzz/sydr
 
-ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
-ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
-
 # Install Atheris
 RUN git clone https://github.com/google/atheris && cd atheris && \
     git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
@@ -141,7 +138,18 @@ RUN dotnet tool install minicover --global
 RUN dotnet tool install altcover.global --global
 ENV PATH=$PATH:/root/.dotnet/tools
 
-# Support files for hybrid fuzzing with LPM
+# Install Honggfuzz
+RUN apt-get install -y libunwind-dev libblocksruntime-dev
+RUN git clone https://github.com/google/honggfuzz && cd honggfuzz && \
+    make -j && cp honggfuzz /usr/local/bin/ && \
+    cd hfuzz_cc && cp hfuzz-cc /usr/local/bin/ && \
+    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-clang && \
+    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-clang++ && \
+    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-gcc && \
+    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-g++
+
+ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
+ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
 ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/packer_macro.h /opt/
 ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsoncpp/packer/main_packer.cc /opt/
 
