@@ -19,10 +19,10 @@
 # Build libFuzzer targets.
 mkdir build
 cd build
-cmake -D STATIC=ON -D TESTS=OFF \
+cmake -DSTATIC=ON -DTESTS=OFF \
    -DCMAKE_CXX_COMPILER=clang++ \
-    -DCMAKE_CXX_FLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
-     ..
+   -DCMAKE_CXX_FLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" \
+   ..
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 CXX="clang++"
@@ -33,11 +33,12 @@ $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_fuzze
 
 cd .. && rm -rf build && mkdir build && cd build
 
+
 # Build AFL++ targets.
-cmake -D STATIC=ON -D TESTS=OFF \
+cmake -DSTATIC=ON -DTESTS=OFF \
    -DCMAKE_CXX_COMPILER=afl-clang-fast++ \
-    -DCMAKE_CXX_FLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
-     ..
+   -DCMAKE_CXX_FLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" \
+   ..
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 CXX="afl-clang-fast++"
@@ -49,12 +50,28 @@ $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_afl a
 
 cd .. && rm -rf build && mkdir build && cd build
 
+
+# Build Honggfuzz targets.
+cmake -DSTATIC=ON -DTESTS=OFF \
+   -DCMAKE_CXX_COMPILER=hfuzz-clang++ \
+   -DCMAKE_CXX_FLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" \
+   ..
+CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
+
+CXX="hfuzz-clang++"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_hf ../load.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_hf ../save.cc ./source/libxlnt.a
+
+cd .. && rm -rf build && mkdir build && cd build
+
+
 # Build Sydr targets.
-cmake -DSTATIC=ON -D TESTS=OFF \
+cmake -DSTATIC=ON -DTESTS=OFF \
     -DCMAKE_CXX_COMPILER=clang++ \
     -DCMAKE_CXX_FLAGS=-g \
     ..
-
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 CC="clang"
@@ -65,12 +82,14 @@ $CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_sydr main.o ../load.cc ./source/libxlnt.a
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_sydr main.o ../save.cc ./source/libxlnt.a
 
+cd .. && rm -rf build && mkdir build && cd build
+
+
 # Build cov targets.
-cmake -DSTATIC=ON -D TESTS=OFF \
+cmake -DSTATIC=ON -DTESTS=OFF \
     -DCMAKE_CXX_COMPILER=clang++ \
     -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" \
     ..
-
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
 CC="clang"
@@ -81,3 +100,5 @@ LDFLAGS="-fprofile-instr-generate"
 $CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_cov main.o ../load.cc ./source/libxlnt.a
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_cov main.o ../save.cc ./source/libxlnt.a
+
+cd .. && rm -rf build && mkdir build && cd build
