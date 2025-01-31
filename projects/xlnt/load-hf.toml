@@ -15,23 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90"
-target = "/save_sydr @@"
-jobs = 3
-
-[aflplusplus]
-args = "-t 10000 -i /save_corpus"
-target = "/save_afl"
-jobs = 3
-
-[libfuzzer]
-path = "/save_fuzzer"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=3 /save_corpus"
+args = "--wait-jobs -s 90 -j2"
+target = "/load_sydr @@"
+jobs = 2
 
 [honggfuzz]
-args = "-t 10 -i /save_corpus"
-target = "/save_hf"
-jobs = 3
+args = "-t 10 -i /corpus"
+target = "/load_hf"
+jobs = 4
 
 [cov]
-target = "/save_cov @@"
+target = "/load_cov @@"

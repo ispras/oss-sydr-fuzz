@@ -19,9 +19,6 @@ FROM $BASE_IMAGE
 
 MAINTAINER Alexey Vishnyakov
 
-# Install build dependencies.
-#RUN apt-get update && apt-get install -y make autoconf automake libtool curl tcl zlib1g-dev
-
 # Clone target from GitHub.
 RUN git clone https://github.com/tfussell/xlnt
 
