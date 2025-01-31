@@ -15,13 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs --solving-timeout 30 -j2"
+args = "--wait-jobs --solving-timeout 30"
 target = "/transform_combined_jpeg_sydr @@"
 jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus_jpeg"
 target = "/transform_combined_jpeg_afl @@"
+jobs = 4
 
 [cov]
 target = "/transform_combined_jpeg_cov @@"
