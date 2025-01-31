@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 [sydr]
 args = "--wait-jobs -s 90"
-target = "/load_from_memory_tiff_sydr @@"
+target = "/load_from_memory_sydr @@"
 jobs = 2
 
-[aflplusplus]
-target = "/load_from_memory_tiff_afl @@"
-args = "-t 60000 -i /corpus_tiff"
+[honggfuzz]
+args = "-t 60 -i /corpus_bmp"
+target = "/load_from_memory_hf"
 jobs = 4
 
 [cov]
-target = "/load_from_memory_tiff_cov @@"
+target = "/load_from_memory_cov @@"
