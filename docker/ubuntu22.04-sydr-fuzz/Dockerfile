@@ -117,9 +117,6 @@ ENV AFL_SYNC_TIME=1
 ENV IS_DOCKER="1"
 ENV PATH=$PATH:/fuzz/sydr
 
-ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
-ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
-
 # Install Atheris
 RUN git clone https://github.com/google/atheris && cd atheris && \
     git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
@@ -163,6 +160,7 @@ WORKDIR /jazzer.js
 RUN npm install && \
     npm run build && \
     npm install --save-dev
+WORKDIR /
 
 # Install .NET, Sharpfuzz, minicover, altcover
 RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
@@ -179,21 +177,17 @@ ENV PATH=$PATH:/root/.dotnet/tools
 # Install Honggfuzz
 RUN apt-get install -y libunwind-dev libblocksruntime-dev
 RUN git clone https://github.com/google/honggfuzz && cd honggfuzz && \
-    make -j && cp honggfuzz /usr/local/bin/ && \
-    cd hfuzz_cc && cp hfuzz-cc /usr/local/bin/ && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-clang && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-clang++ && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-gcc && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-g++
+    make -j && make install && cd .. && rm -rf honggfuzz
 
 # Install luajit
 RUN wget https://github.com/tarantool/luajit/archive/refs/tags/v2.1.0-beta3.tar.gz
-RUN  tar zxpf v2.1.0-beta3.tar.gz
+RUN  tar zxpf v2.1.0-beta3.tar.gz && rm v2.1.0-beta3.tar.gz
 WORKDIR luajit-2.1.0-beta3
 RUN make && make install && ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
 
 # Install fresh Lua package manager version
-RUN wget https://luarocks.org/releases/luarocks-3.11.1.tar.gz && tar zxpf luarocks-3.11.1.tar.gz
+RUN wget https://luarocks.org/releases/luarocks-3.11.1.tar.gz && \
+    tar zxpf luarocks-3.11.1.tar.gz && rm luarocks-3.11.1.tar.gz
 WORKDIR luarocks-3.11.1 
 RUN ./configure && make && make install
 
@@ -203,12 +197,8 @@ RUN luarocks install cluacov
 WORKDIR /
 
 #Install luzer
-RUN git clone https://github.com/azanegin/luzer.git
-WORKDIR /luzer
-RUN git checkout 77642ba37430eded66d171a68d7e9c3f6347d625 && luarocks build
-
-WORKDIR /
-
+RUN git clone https://github.com/azanegin/luzer.git && cd luzer && \
+    git checkout 77642ba37430eded66d171a68d7e9c3f6347d625 && luarocks build
 RUN rm -rf /luzer /luarocks-3.11.1
 
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/

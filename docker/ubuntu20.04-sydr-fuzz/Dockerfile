@@ -68,7 +68,7 @@ RUN wget -q https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-14.0.
         -DLLVM_LINK_LLVM_DYLIB="ON" \
         -GNinja  ../llvm/ && \
     CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && \
-    cmake --install . && cd ../.. && rm -rf llvm-project
+    cmake --install . && cd ../.. && rm -rf llvm-project*
 
 RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
     ldconfig
@@ -125,6 +125,7 @@ WORKDIR /jazzer.js
 RUN npm install && \
     npm run build && \
     npm install --save-dev
+WORKDIR /
 
 # Install .NET, Sharpfuzz, minicover, altcover
 RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
@@ -138,15 +139,29 @@ RUN dotnet tool install minicover --global
 RUN dotnet tool install altcover.global --global
 ENV PATH=$PATH:/root/.dotnet/tools
 
+# Install new binutils for Honggfuzz
+RUN apt-get install -y texinfo
+RUN wget https://ftp.gnu.org/gnu/binutils/binutils-2.38.tar.bz2 && tar -xf binutils-2.38.tar.bz2
+RUN cd binutils-2.38 && mkdir build && cd build && \
+    ../configure --prefix=/usr   \
+             --enable-gold       \
+             --enable-ld=default \
+             --enable-plugins    \
+             --enable-shared     \
+             --disable-werror    \
+             --enable-64-bit-bfd \
+             --with-system-zlib && \
+    make tooldir=/lib -j && make tooldir=/lib install
+RUN cd /lib/x86_64-linux-gnu && rm libbfd.so libctf* libopcodes.so && \
+    ln -s /lib/libbfd-2.38.so libbfd.so && ln -s /lib/libctf.so.0.0.0 libctf.so && \
+    ln -s /lib/libctf.so.0.0.0 libctf.so.0 && ln -s /lib/libctf-nobfd.so.0.0.0 libctf-nobfd.so && \
+    ln -s /lib/libctf-nobfd.so.0.0.0 libctf-nobfd.so.0 && ln -s /lib/libopcodes-2.38.so libopcodes.so
+RUN rm -rf binutils-2.38*
+
 # Install Honggfuzz
 RUN apt-get install -y libunwind-dev libblocksruntime-dev
-RUN git clone https://github.com/google/honggfuzz && cd honggfuzz && \
-    make -j && cp honggfuzz /usr/local/bin/ && \
-    cd hfuzz_cc && cp hfuzz-cc /usr/local/bin/ && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-clang && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-clang++ && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-gcc && \
-    ln -s /usr/local/bin/hfuzz-cc /usr/local/bin/hfuzz-g++
+RUN git clone https://github.com/google/honggfuzz.git && cd honggfuzz && \
+    make -j && make install && cd .. && rm -rf /honggfuzz
 
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/
