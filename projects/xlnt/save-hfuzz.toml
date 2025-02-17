@@ -15,14 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/load_sydr @@"
+args = "--wait-jobs -s 90 "
+target = "/save_sydr @@"
 jobs = 2
 
 [honggfuzz]
-args = "-t 10 -i /corpus"
-target = "/load_hf"
+args = "-t 10 -i /save_corpus"
+target = "/save_hfuzz"
 jobs = 4
 
 [cov]
-target = "/load_cov @@"
+target = "/save_cov @@"
