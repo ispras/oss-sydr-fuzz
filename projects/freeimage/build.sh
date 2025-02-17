@@ -105,15 +105,15 @@ make -j$(nproc)
 cd /
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
-  -o /load_from_memory_hf
+  -o /load_from_memory_hfuzz
 
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
-  -o /load_from_memory_tiff_hf
+  -o /load_from_memory_tiff_hfuzz
 
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
-  -o /transform_combined_jpeg_hf
+  -o /transform_combined_jpeg_hfuzz
 
 
 # Build targets for llvm-cov
