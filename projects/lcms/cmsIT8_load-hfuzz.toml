@@ -1,0 +1,28 @@
+# Copyright 2022 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/lcms_sydr/cmsIT8_load_sydr @@"
+jobs = 3
+
+[honggfuzz]
+target = "/lcms_hfuzz/cmsIT8_load_fuzzer"
+args = "-t 60 -i /corpus --dict icc.dict"
+jobs = 4
+
+[cov]
+target = "/lcms_cov/cmsIT8_load_cov @@"
