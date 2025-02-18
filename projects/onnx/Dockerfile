@@ -40,6 +40,7 @@ RUN cd /protobuf && \
 # Build fuzz targets.
 RUN TARGET="afl" /build.sh
 RUN TARGET="fuzz" /build.sh
+RUN TARGET="hfuzz" /build.sh
 RUN TARGET="sydr" /build.sh
 RUN TARGET="cov" /build.sh
 
