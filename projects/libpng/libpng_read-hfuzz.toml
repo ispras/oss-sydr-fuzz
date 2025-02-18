@@ -15,14 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/lcms_sydr/cms_link_sydr @@"
-jobs = 3
+args = "--wait-jobs -s 90"
+target = "/libpng_read_sydr @@"
+jobs = 2
 
 [honggfuzz]
-target = "/lcms_hfuzz/cms_link_fuzzer"
-args = "-t 60 -i /link_corpus --dict icc.dict"
+args = "--dict png.dict -t 60 -i /corpus"
+target = "/libpng_read_hfuzz"
 jobs = 4
-cmin=false
+
 [cov]
-target = "/lcms_cov/cms_link_cov @@"
+target = "/libpng_read_cov @@"
