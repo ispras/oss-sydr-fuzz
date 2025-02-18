@@ -37,3 +37,5 @@ COPY *.c* build.sh \
          ./
 
 RUN ./build.sh
+
+WORKDIR /
