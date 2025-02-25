@@ -30,7 +30,7 @@ Minimize corpus:
 
 Collect and report coverage:
 
-    # sydr-fuzz -c FuzzReader.toml cov-html -s /java-diff-util/gson/src/main/java
+    # sydr-fuzz -c FuzzReader.toml cov-html -s /gson/gson/src/main/java
 
 ## Alternative Fuzz Targets
 
