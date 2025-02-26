@@ -61,8 +61,8 @@ CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 CXX="hfuzz-clang++"
 CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_hf ../load.cc ./source/libxlnt.a
-$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_hf ../save.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_hfuzz ../load.cc ./source/libxlnt.a
+$CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_hfuzz ../save.cc ./source/libxlnt.a
 
 cd .. && rm -rf build && mkdir build && cd build
 

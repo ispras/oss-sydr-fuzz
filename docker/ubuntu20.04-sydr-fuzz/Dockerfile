@@ -161,7 +161,7 @@ RUN rm -rf binutils-2.38*
 # Install Honggfuzz
 RUN apt-get install -y libunwind-dev libblocksruntime-dev
 RUN git clone https://github.com/google/honggfuzz.git && cd honggfuzz && \
-    make -j && make install && cd .. && rm -rf /honggfuzz
+    git checkout master && make -j && make install && cd .. && rm -rf /honggfuzz
 
 ADD https://raw.githubusercontent.com/vanhauser-thc/qemu_driver/master/qemu_driver.c /opt/
 ADD https://raw.githubusercontent.com/llvm/llvm-project/main/compiler-rt/lib/fuzzer/standalone/StandaloneFuzzTargetMain.c /opt/

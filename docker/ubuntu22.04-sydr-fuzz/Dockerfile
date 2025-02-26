@@ -177,7 +177,7 @@ ENV PATH=$PATH:/root/.dotnet/tools
 # Install Honggfuzz
 RUN apt-get install -y libunwind-dev libblocksruntime-dev
 RUN git clone https://github.com/google/honggfuzz && cd honggfuzz && \
-    make -j && make install && cd .. && rm -rf honggfuzz
+    git checkout master && make -j && make install && cd .. && rm -rf honggfuzz
 
 # Install luajit
 RUN wget https://github.com/tarantool/luajit/archive/refs/tags/v2.1.0-beta3.tar.gz
