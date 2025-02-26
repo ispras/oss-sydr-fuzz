@@ -31,7 +31,7 @@ Supported projects are located [here](projects). In addition to C/C++ projects S
 * Rust: capstone-rs, image-rs, goblin, libhtp-rs, vector-rs, rust-regex, serde-json, gdb-command;
 * Go: image-go;
 * Python: crunch, h5py, msgspec, pillow, pytorch-py, ruamel-yaml, tensorflow-py, ultrajson, langchain;
-* Java: hsqldb, json-sanitizer;
+* Java: hsqldb, json-sanitizer, java-diff-utils, gson, fuzzywuzzy, joda-time, janino;
 * JavaScript: fast-xml-parser, node-xml2js;
 * С#: yamldotnet, cppsharp.
 
