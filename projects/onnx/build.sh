@@ -41,6 +41,12 @@ then
     CXX=afl-clang-fast++
     CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
     CXXFLAGS=$CFLAGS
+elif [[ $TARGET == "hfuzz" ]]
+then
+    CC=hfuzz-clang
+    CXX=hfuzz-clang++
+    CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+    CXXFLAGS=$CFLAGS
 elif [[ $TARGET == "sydr" ]]
 then
     CC=clang
@@ -66,6 +72,9 @@ MAIN=""
 if [[ $TARGET == "fuzz" || $TARGET == "afl" ]]
 then
     TARGET_FLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+elif [[ $TARGET == "hfuzz" ]]
+then
+    TARGET_FLAGS="-fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
 else
     $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o ./main.o
     MAIN="./main.o"
@@ -81,11 +90,9 @@ build_target(){
     echo "=========== Build target ${target}_$TARGET ==========="
     # Build target
     $CXX -g -O2 -DONNX_ML=ON -DONNX_NAMESPACE=onnx $TARGET_FLAGS \
-	-I/onnx/build/lib.linux-x86_64-3.8 \
+	-I/onnx/build/`ls /onnx/build` \
 	-I/onnx/.setuptools-cmake-build \
 	-I/onnx/.setuptools-cmake-build/third_party \
-	-I/onnx/build/lib.linux-x86_64-3.8 \
-	-I/onnx/.setuptools-cmake-build \
 	/$target.cc -c -o ./$target.o
 
     # Link target
@@ -93,7 +100,6 @@ build_target(){
         -Wl,--whole-archive,"/onnx/.setuptools-cmake-build/libonnx.a" -Wl,--no-whole-archive \
         -Wl,--whole-archive,"/onnx/.setuptools-cmake-build/libonnx_proto.a" -Wl,--no-whole-archive \
         /protobuf/build_source/libprotobuf.a \
-        -L/onnx/build/lib.linux-x86_64-3.8 \
         -lrt -lm -ldl \
         -pthread \
         -o /${target}_$TARGET

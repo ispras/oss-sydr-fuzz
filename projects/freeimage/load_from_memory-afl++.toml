@@ -15,12 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90 -j2"
+args = "--wait-jobs -s 90"
 target = "/load_from_memory_sydr @@"
+jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus_bmp"
 target = "/load_from_memory_afl @@"
+jobs = 4
 
 [cov]
 target = "/load_from_memory_cov @@"

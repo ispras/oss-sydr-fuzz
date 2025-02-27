@@ -38,11 +38,11 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     }
     catch (const Zippy::ZipRuntimeError &e)
     {
-        return 1;
+        return 0;
     }
     catch (const OpenXLSX::XLInternalError &e)
     {
-        return 1;
+        return 0;
     }
     doc.close();
     unlink(name);
