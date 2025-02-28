@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-172 new bugs in
-30 open source projects.
+175 new bugs in
+31 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -207,3 +207,7 @@
     * <https://github.com/tfussell/xlnt/issues/598>
     * <https://github.com/tfussell/xlnt/issues/616>
     * <https://github.com/tfussell/xlnt/issues/626>
+* xml2lua:
+    * <https://github.com/manoelcampos/xml2lua/issues/106>
+    * <https://github.com/manoelcampos/xml2lua/issues/107>
+    * <https://github.com/manoelcampos/xml2lua/issues/108>
