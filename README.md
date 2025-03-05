@@ -33,7 +33,8 @@ Supported projects are located [here](projects). In addition to C/C++ projects S
 * Python: crunch, h5py, msgspec, pillow, pytorch-py, ruamel-yaml, tensorflow-py, ultrajson, langchain;
 * Java: hsqldb, json-sanitizer, java-diff-utils, gson, fuzzywuzzy, joda-time, janino;
 * JavaScript: fast-xml-parser, node-xml2js;
-* С#: yamldotnet, cppsharp.
+* С#: yamldotnet, cppsharp;
+* Lua: xml2lua.
 
 ## Contributing
 

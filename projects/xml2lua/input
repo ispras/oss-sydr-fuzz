@@ -1,0 +1,10 @@
+<people>
+  <person type="natural">
+    <name>Manoel</name>
+    <city>Palmas-TO</city>
+  </person>
+  <person type="legal">
+    <name>University of Brasília</name>
+    <city>Brasília-DF</city>
+  </person>
+</people>
