@@ -28,10 +28,5 @@ jobs = 3
 path = "/load_fuzzer"
 args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=3 /corpus"
 
-[honggfuzz]
-args = "-t 10 -i /corpus"
-target = "/load_hf"
-jobs = 3
-
 [cov]
 target = "/load_cov @@"
