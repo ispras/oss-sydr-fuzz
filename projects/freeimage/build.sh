@@ -18,14 +18,19 @@
 
 # b44ExpLogTable.cpp only contains a definition of main().
 sed -i 's/Source\/OpenEXR\/IlmImf\/b44ExpLogTable.cpp//' Makefile.srcs
-CXX="clang++" CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" make -j$(nproc)
-
 INSTALL_DIR="Dist"
 
-cd /
-CXX="clang++"
-CXXFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
 
+# Build targets for libFuzzer
+export CXX="clang++"
+export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+export CC="clang"
+export CFLAGS=$CXXFLAGS
+make -j$(nproc)
+
+cd /
+export CXXFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+export CFLAGS=$CXXFLAGS
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_fuzzer
@@ -34,49 +39,46 @@ $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_tiff_fuzzer
 
-cd -
-make clean
-CXX="clang++" CXXFLAGS="-g" make  -j$(nproc)
-
-cd /
-$CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
-  load_from_memory_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
-  -o /load_from_memory_sydr
-
-$CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
-  load_from_memory_tiff_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
-  -o /load_from_memory_tiff_sydr
-
-cd -
-make clean
-CXX="clang++" CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero" make -j$(nproc)
-
-cd /
-CXX="clang++"
-CXXFLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero -g"
-
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/ \
   transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /transform_combined_jpeg_fuzzer
 
+
+# Build targets for Sydr
 cd -
 make clean
-CXX="clang++" CXXFLAGS="-g" make  -j$(nproc)
+export CXX="clang++"
+export CXXFLAGS="-g"
+export CC="clang"
+export CFLAGS=$CXXFLAGS
+make -j$(nproc)
 
 cd /
-$CXX -g -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/ \
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_sydr
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_tiff_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_tiff_sydr
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/ \
 	transform_combined_jpeg_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
 	-o /transform_combined_jpeg_sydr
 
-# Build targets for AFL++
 
+# Build targets for AFL++
 cd -
 make clean
-CXX="afl-clang-fast++" CXXFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero" make  -j$(nproc)
+export CXX="afl-clang-fast++"
+export CXXFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+export CC="afl-clang-fast"
+export CFLAGS=$CXXFLAGS
+make -j$(nproc)
 
 cd /
-CXX="afl-clang-fast++"
-CXXFLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero -g"
+export CXXFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+export CFLAGS=$CXXFLAGS
 
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
@@ -90,16 +92,40 @@ $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /transform_combined_jpeg_afl
 
-# Build targets for llvm-cov
 
+# Build targets for Honggfuzz
 cd -
 make clean
-CXX="clang++" CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping" make  -j$(nproc)
+export CXX="hfuzz-clang++"
+export CXXFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+export CC="hfuzz-clang"
+export CFLAGS=$CXXFLAGS
+make -j$(nproc)
 
 cd /
-CXX="clang++"
-CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping -g"
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_hfuzz
 
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  load_from_memory_tiff_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /load_from_memory_tiff_hfuzz
+
+$CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
+  transform_combined_jpeg_fuzzer.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
+  -o /transform_combined_jpeg_hfuzz
+
+
+# Build targets for llvm-cov
+cd -
+make clean
+export CXX="clang++"
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CC="clang"
+export CFLAGS=$CXXFLAGS
+make -j$(nproc)
+
+cd /
 $CXX $CXXFLAGS -I/freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/  \
   load_from_memory_sydr.cc /freeimage-svn/FreeImage/trunk/${INSTALL_DIR}/libfreeimage.a \
   -o /load_from_memory_cov
