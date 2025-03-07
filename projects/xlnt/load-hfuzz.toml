@@ -23,6 +23,8 @@ jobs = 2
 args = "-t 10 -i /corpus"
 target = "/load_hfuzz"
 jobs = 4
+cmin = false
+libfuzzer_merge_target = "/load_fuzzer"
 
 [cov]
 target = "/load_cov @@"
