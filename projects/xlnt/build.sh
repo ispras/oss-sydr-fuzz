@@ -101,4 +101,4 @@ $CC $CXXFLAGS /opt/StandaloneFuzzTargetMain.c -c -o main.o
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /load_cov main.o ../load.cc ./source/libxlnt.a
 $CXX $CXXFLAGS -I/xlnt/include -I/xlnt/third-party/libstudxml -O2 -o /save_cov main.o ../save.cc ./source/libxlnt.a
 
-cd .. && rm -rf build && mkdir build && cd build
+cd .. && rm -rf build
