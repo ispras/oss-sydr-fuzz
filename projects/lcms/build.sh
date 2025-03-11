@@ -59,6 +59,26 @@ for F in $FUZZERS; do
         src/.libs/liblcms2.a
 done
 
+# build targets for Honggfuzz
+make clean
+./configure CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" CC=hfuzz-clang CXX=hfuzz-clang++
+make -j$(nproc) all
+
+CC=hfuzz-clang
+CXX=hfuzz-clang++
+mkdir /lcms_hfuzz
+OUT=/lcms_hfuzz
+FUZZERS="cms_link cmsIT8_load cms_transform cms_overwrite_transform"
+CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+for F in $FUZZERS; do
+    $CC $CFLAGS -c -Iinclude \
+        ./$F.c -o ./$F.o
+    $CXX $CXXFLAGS \
+        ./$F.o -o $OUT/$F\_fuzzer \
+        src/.libs/liblcms2.a
+done
+
 # build targets for Sydr
 make clean
 export CC=clang

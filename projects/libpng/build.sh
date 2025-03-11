@@ -88,6 +88,28 @@ $CXX $CXXFLAGS -std=c++11 -I. \
      -o /libpng_simple_read_afl \
      afl.o .libs/libpng16.a -lz
 
+# Build targets for Honggfuzz
+
+make clean
+
+export CC=hfuzz-clang
+export CXX=hfuzz-clang++
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+./configure
+make -j$(nproc) clean
+make -j$(nproc) all
+
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_read_fuzzer.cc \
+     -o /libpng_read_hfuzz \
+     .libs/libpng16.a -lz
+$CXX $CXXFLAGS -std=c++11 -I. \
+     $SRC/libpng_simple_read_fuzzer.cc \
+     -o /libpng_simple_read_hfuzz \
+     .libs/libpng16.a -lz
+
 # Build targets for Sydr
 
 make clean
