@@ -21,5 +21,8 @@ casr_bin = "/build_fuzz/bin/release/net8.0/fuzz.dll"
 cmin = false
 jobs = 4
 
+[sydr]
+target = "/build_sydr/bin/parser @@"
+
 [cov]
 build_dir = "/build_cov"

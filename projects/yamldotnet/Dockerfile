@@ -20,7 +20,7 @@ FROM $BASE_IMAGE
 RUN git clone https://github.com/aaubry/YamlDotNet.git && \
     cd YamlDotNet && git checkout 19d7875b240c28516ef24c40485e29eaca9b9418
 
-COPY build.sh Program.cs fuzz.csproj yaml.dict /
+COPY build.sh Program_fuzz.cs Program_sydr.cs *.csproj yaml.dict /
 
 WORKDIR /
 
