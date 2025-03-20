@@ -14,16 +14,19 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
+# Fix Native AOT build
+COPY dir.patch /
+
 RUN git clone https://github.com/mono/CppSharp.git && \
-    cd CppSharp && git checkout 81e0a931cf6116951e37b0fa763e1974bc753a83
+    cd CppSharp && git checkout 81e0a931cf6116951e37b0fa763e1974bc753a83 && git apply /dir.patch
 
 RUN git clone https://github.com/Mooophy/Cpp-Primer.git && \
     cd Cpp-Primer && git checkout abcb44b77668abaca539c482d359d17f5a0e3d7f
 
-COPY build.sh Parser.cs fuzz.csproj /
+COPY build.sh Parser_fuzz.cs Parser_sydr.cs *.csproj /
 
 WORKDIR /
 

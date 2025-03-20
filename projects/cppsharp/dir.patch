@@ -1,0 +1,18 @@
+diff --git a/src/Parser/ParserOptions.cs b/src/Parser/ParserOptions.cs
+index 51170944..91fe59cb 100644
+--- a/src/Parser/ParserOptions.cs
++++ b/src/Parser/ParserOptions.cs
+@@ -390,11 +390,11 @@ public string BuiltinsDir
+         {
+             get
+             {
+-                var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
++                var assemblyDir = Path.GetDirectoryName(AppContext.BaseDirectory);
+                 if (assemblyDir == null)
+                     throw new InvalidOperationException();
+ 
+-                return Path.Combine(assemblyDir, BuiltinsDirBasePath);
++                return Path.Combine("/", BuiltinsDirBasePath);
+             }
+         }
+ 

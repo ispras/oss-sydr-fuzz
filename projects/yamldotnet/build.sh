@@ -17,14 +17,19 @@
 
 
 # Make directories for fuzzing and coverage.
-mkdir -p /build_fuzz /build_cov
-cp /Program.cs /fuzz.csproj /build_fuzz
-cp /Program.cs /fuzz.csproj /build_cov
+mkdir -p /build_fuzz /build_cov /build_sydr
+cp /Program_fuzz.cs /fuzz.csproj /build_fuzz
+cp /Program_fuzz.cs /fuzz.csproj /build_cov
+cp /Program_sydr.cs /program.csproj /build_sydr
 
 # Build target for fuzzing.
 cd /build_fuzz
 dotnet publish fuzz.csproj -c release -o bin
 sharpfuzz bin/YamlDotNet.dll
+
+# Build aot target for Sydr.
+cd /build_sydr
+dotnet publish program.csproj -c release -o bin
 
 # Get corpus.
 mkdir /corpus

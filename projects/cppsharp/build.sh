@@ -26,9 +26,10 @@ cd /CppSharp/build
 ./build.sh -configuration Release -platform x64 -target-framework net8.0
 
 # Make directories for fuzzing and coverage.
-mkdir -p /build_fuzz /build_cov
-cp /Parser.cs /fuzz.csproj /build_fuzz
-cp /Parser.cs /fuzz.csproj /build_cov
+mkdir -p /build_fuzz /build_cov /build_sydr
+cp /Parser_fuzz.cs /fuzz.csproj /build_fuzz
+cp /Parser_fuzz.cs /fuzz.csproj /build_cov
+cp /Parser_sydr.cs /parser.csproj /build_sydr
 
 # Build target for fuzzing.
 cd /build_fuzz
@@ -40,6 +41,10 @@ sharpfuzz bin/CppSharp.Parser.CSharp.dll
 sharpfuzz bin/CppSharp.Parser.dll
 sharpfuzz bin/CppSharp.Runtime.dll
 sharpfuzz bin/CppSharp.dll
+
+# Build executable target for Sydr.
+cd /build_sydr
+dotnet publish parser.csproj -c release -o bin
 
 # Build target for coverage.
 cd /build_cov
