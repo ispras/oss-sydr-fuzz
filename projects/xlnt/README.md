@@ -6,6 +6,10 @@ xlnt is a modern C++ library for manipulating spreadsheets in memory and reading
 
     $ sudo docker build -t oss-sydr-fuzz-xlnt .
 
+## Build LibAFL-DiFuzz Docker
+
+    $ sudo docker --build-arg BASE_IMAGE="LIBAFL_DOCKER_NAME" build -t oss-sydr-fuzz-libafl-xlnt -f ./Dockerfile_libafl .
+
 ## Run Hybrid Fuzzing
 
 Unzip Sydr (`sydr.zip`) in `projects/xlnt` directory:
@@ -33,14 +37,22 @@ Get LCOV HTML coverage report:
 
     # sydr-fuzz -c load-afl++.toml run
 
+## Hybrid Fuzzing with HonggFuzz
+
+    # sydr-fuzz -c load-hluzz.toml run
+
+## Hybrid Fuzzing with LibAFL-DiFuzz
+
+    # sydr-fuzz -c load-libafl.toml run
+
 ## Alternative Fuzz Targets
 
 xlnt project has 2 fuzz targets.
 
 ### load
 
-    # sydr-fuzz -c load.toml run
+    # sydr-fuzz -c load-lf.toml run
 
 ### save
 
-    # sydr-fuzz -c save.toml run
+    # sydr-fuzz -c save-lf.toml run
