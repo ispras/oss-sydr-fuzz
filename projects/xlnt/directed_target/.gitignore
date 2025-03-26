@@ -9,3 +9,5 @@ xlnt/
 difuzz/
 check
 difuzz_fuzzer_*
+target
+Cargo*
