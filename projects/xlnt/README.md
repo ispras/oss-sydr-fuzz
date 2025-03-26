@@ -20,13 +20,17 @@ Run docker:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-xlnt /bin/bash
 
+Run docker for LibAFL-DiFuzz:
+
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libafl-xlnt /bin/bash
+
 Change directory to `/fuzz`:
 
     # cd /fuzz
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run
+    # sydr-fuzz -c load-lf.toml run
 
 Get LCOV HTML coverage report:
 
