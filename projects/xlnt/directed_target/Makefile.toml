@@ -1,0 +1,219 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+# Variables
+[env]
+PROJECT_DIR = { script = ["pwd"] }
+EXAMPLE_DIR = { value = "/xlnt" }
+LIBAFL_DIR = { value = "/libafl", condition = { env_not_set = ["LIBAFL_DIR"] } }
+OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
+DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
+  "CARGO_TARGET_DIR",
+] } }
+PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
+LIBAFL_CC = '${CARGO_TARGET_DIR}/${PROFILE}/libafl_cc'
+LIBAFL_CXX = '${CARGO_TARGET_DIR}/${PROFILE}/libafl_cxx'
+FUZZER = '${OUT_DIR}/difuzz_fuzzer_xlnt'
+
+[tasks.unsupported]
+script_runner = "@shell"
+script = '''
+echo "Cargo-make not integrated yet on this"
+'''
+
+[tasks.libs]
+linux_alias = "libs_unix"
+mac_alias = "libs_unix"
+windows_alias = "unsupported"
+
+[tasks.libs_unix]
+script_runner = "@shell"
+script = '''
+mkdir -p ${CARGO_TARGET_DIR}/${PROFILE}
+cp -r ${LIBAFL_DIR}/libdifuzz/target/release/* ${CARGO_TARGET_DIR}/${PROFILE}
+cp -r ${LIBAFL_DIR}/libforkserver/target/release/liblibforkserver.* ${CARGO_TARGET_DIR}/${PROFILE}
+'''
+
+# Compilers
+[tasks.cxx]
+linux_alias = "cxx_unix"
+mac_alias = "cxx_unix"
+windows_alias = "unsupported"
+
+[tasks.cxx_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+cargo rustc --profile ${PROFILE} --bin libafl_cxx -- -L target/${PROFILE}
+'''
+dependencies = ["libs"]
+
+[tasks.cc]
+linux_alias = "cc_unix"
+mac_alias = "cc_unix"
+windows_alias = "unsupported"
+
+[tasks.cc_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+cargo rustc --profile ${PROFILE} --bin libafl_cc -- -L target/${PROFILE}
+'''
+dependencies = ["libs"]
+
+[tasks.fuzzer]
+linux_alias = "fuzzer_unix"
+mac_alias = "fuzzer_unix"
+windows_alias = "unsupported"
+
+[tasks.fuzzer_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+cargo rustc --profile ${PROFILE} --bin difuzz_fuzzer_xlnt -- -L target/${PROFILE}
+mv ${CARGO_TARGET_DIR}/${PROFILE}/difuzz_fuzzer_xlnt ${FUZZER}
+'''
+dependencies = ["libs"]
+
+[tasks.debug]
+linux_alias = "debug_unix"
+mac_alias = "debug_unix"
+windows_alias = "unsupported"
+
+[tasks.debug_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=clang; export CXX=clang++
+export CXXFLAGS="-g"
+${PROJECT_DIR}/build_libafl_load.sh
+mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_sydr
+${PROJECT_DIR}/build_libafl_save.sh
+mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_sydr
+'''
+
+[tasks.coverage]
+linux_alias = "coverage_unix"
+mac_alias = "coverage_unix"
+windows_alias = "unsupported"
+
+[tasks.coverage_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=clang; export CXX=clang++
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+${LIBAFL_DIR}/scripts/insert_forkserver.py --sig -a insert -l c -f /opt/StandaloneFuzzTargetMain.c
+${PROJECT_DIR}/build_libafl_load.sh
+mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_cov
+${PROJECT_DIR}/build_libafl_save.sh
+mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_cov
+${LIBAFL_DIR}/scripts/insert_forkserver.py --sig -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
+'''
+
+[tasks.difuzz]
+linux_alias = "difuzz_unix"
+mac_alias = "difuzz_unix"
+windows_alias = "unsupported"
+
+[tasks.difuzz_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=wllvm; export CXX=wllvm++
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a insert -l c -f /opt/StandaloneFuzzTargetMain.c
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a comment -l c -f /opt/StandaloneFuzzTargetMain.c
+cd ${OUT_DIR}
+${PROJECT_DIR}/build_libafl_load.sh
+${LIBAFL_DIR}/bin/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/load_libafl -e ${OUT_DIR}/ets_load.toml ${DIFUZZ_ARGS}
+${PROJECT_DIR}/build_libafl_save.sh
+${LIBAFL_DIR}/bin/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/save_libafl -e ${OUT_DIR}/ets_save.toml ${DIFUZZ_ARGS}
+'''
+
+# Harness
+[tasks.target]
+linux_alias = "target_unix"
+mac_alias = "target_unix"
+windows_alias = "unsupported"
+
+[tasks.target_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export CC=${LIBAFL_CC}
+export CXX=${LIBAFL_CXX}
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_load
+${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_save
+${LIBAFL_DIR}/bin/ETSSharedManager -a create -n xlnt_load
+${LIBAFL_DIR}/bin/ETSSharedManager -a create -n xlnt_save
+${LIBAFL_DIR}/bin/ETSSharedManager -a parse -n xlnt_load -i ${OUT_DIR}/ets_load.toml
+${LIBAFL_DIR}/bin/ETSSharedManager -a parse -n xlnt_save -i ${OUT_DIR}/ets_save.toml
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a uncomment -l c -f /opt/StandaloneFuzzTargetMain.c
+export LIBAFL_SHARED_NAME="xlnt_load"
+${PROJECT_DIR}/build_libafl_load.sh
+mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_libafl_target
+export LIBAFL_SHARED_NAME="xlnt_save"
+${PROJECT_DIR}/build_libafl_save.sh
+mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_libafl_target
+${LIBAFL_DIR}/bin/ETSSharedManager -a dump -n xlnt_load -o ${OUT_DIR}/ets_load.toml
+${LIBAFL_DIR}/bin/ETSSharedManager -a dump -n xlnt_save -o ${OUT_DIR}/ets_save.toml
+${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_load
+${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_save
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
+'''
+dependencies = ["cxx", "cc", "fuzzer", "difuzz"]
+
+# Run the fuzzer
+[tasks.run]
+linux_alias = "run_unix"
+mac_alias = "run_unix"
+windows_alias = "unsupported"
+
+[tasks.run_unix]
+script_runner = "@shell"
+script = '''
+LIBAFL_DEBUG_OUTPUT=1 ${FUZZER} -- ${TARGET} @@
+'''
+dependencies = ["target"]
+
+# Clean all built artifacts
+[tasks.cleanall]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+rm -rf corpus crashes target difuzz check difuzz_fuzzer_* difuzz_target_* debug_* coverage_* Cargo.lock ets.toml ETSSharedManager* fuzzer.log target.log .cur_input* xlnt
+pkill difuzz_ || true
+'''
+
+[tasks.check]
+linux_alias = "check_unix"
+mac_alias = "check_unix"
+windows_alias = "unsupported"
+
+[tasks.check_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+cargo rustc --profile ${PROFILE} --bin check -- -L target/${PROFILE}
+mv ${CARGO_TARGET_DIR}/${PROFILE}/check ${OUT_DIR}/check
+'''
+dependencies = ["target", "debug", "coverage"]
