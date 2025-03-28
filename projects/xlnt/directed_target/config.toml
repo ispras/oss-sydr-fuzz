@@ -15,21 +15,29 @@
 ################################################################################
 
 [[target]]
-file = "source/detail/cryptography/compound_document.cpp"
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
 line = 975
 
 [[target]]
-file = "source/detail/cryptography/compound_document.cpp"
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
 line = 723
 
 [[target]]
-file = "source/detail/cryptography/compound_document.cpp"
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
 line = 126
 
 [[target]]
-file = "source/detail/serialization/xlsx_consumer.cpp"
+file = "/xlnt/source/detail/serialization/xlsx_consumer.cpp"
 line = 2031
 
 [[target]]
-file = "source/detail/serialization/zstream.cpp"
+file = "/xlnt/source/detail/serialization/zstream.cpp"
 line = 269
+
+[[target]]
+file = "/xlnt/source/utils/path.cpp"
+line = 185
+
+[[target]]
+file = "/xlnt/source/worksheet/worksheet.cpp"
+line = 1086
