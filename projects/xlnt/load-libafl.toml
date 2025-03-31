@@ -22,7 +22,7 @@ jobs = 2
 [libafl]
 path = "/difuzz_fuzzer_xlnt"
 target = "/load_libafl_target @@"
-args = "-j4 -i /corpus -e /ets_load.toml"
+args = "-j4 -l64 -i /corpus -e /ets_load.toml"
 casr_bin = "/load_sydr"
 
 [cov]

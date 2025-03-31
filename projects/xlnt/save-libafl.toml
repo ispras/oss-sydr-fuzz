@@ -22,7 +22,7 @@ jobs = 2
 [libafl]
 path = "/difuzz_fuzzer_xlnt"
 target = "/save_libafl_target @@"
-args = "-j4 -i /save_corpus -e /ets_save.toml"
+args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
 casr_bin = "/save_sydr"
 
 [cov]
