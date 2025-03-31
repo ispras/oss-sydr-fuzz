@@ -20,7 +20,7 @@ PROJECT_DIR = { script = ["pwd"] }
 EXAMPLE_DIR = { value = "/xlnt" }
 LIBAFL_DIR = { value = "/libafl", condition = { env_not_set = ["LIBAFL_DIR"] } }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
-DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls strong", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls weak", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
