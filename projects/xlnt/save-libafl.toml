@@ -23,7 +23,7 @@ jobs = 2
 path = "/difuzz_fuzzer_xlnt"
 target = "/save_libafl_target @@"
 args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_sydr"
+casr_bin = "/save_casr"
 
 [cov]
 target = "/save_cov @@"

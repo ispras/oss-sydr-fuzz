@@ -107,6 +107,24 @@ ${PROJECT_DIR}/build_libafl_save.sh
 mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_sydr
 '''
 
+[tasks.casr]
+linux_alias = "casr_unix"
+mac_alias = "casr_unix"
+windows_alias = "unsupported"
+
+[tasks.casr_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=clang; export CXX=clang++
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+${PROJECT_DIR}/build_libafl_load.sh
+mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_casr
+${PROJECT_DIR}/build_libafl_save.sh
+mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_casr
+'''
+
 [tasks.coverage]
 linux_alias = "coverage_unix"
 mac_alias = "coverage_unix"
@@ -216,4 +234,4 @@ cd ${PROJECT_DIR}
 cargo rustc --profile ${PROFILE} --bin check -- -L target/${PROFILE}
 mv ${CARGO_TARGET_DIR}/${PROFILE}/check ${OUT_DIR}/check
 '''
-dependencies = ["target", "debug", "coverage"]
+dependencies = ["target", "debug", "coverage", "casr"]
