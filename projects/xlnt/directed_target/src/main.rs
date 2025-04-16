@@ -101,6 +101,30 @@ pub fn main() {
                 .value_parser(clap::value_parser!(u64)),
         )
         .arg(
+            Arg::new("iters")
+                .long("iters")
+                .action(ArgAction::Set)
+                .default_value("1000000")
+                .help("Number of fuzzer iterations.")
+                .value_parser(clap::value_parser!(u64)),
+        )
+        .arg(
+            Arg::new("cool-time")
+                .long("cool-time")
+                .action(ArgAction::Set)
+                .default_value("7200")
+                .help("Time (in seconds) to collect coverage.")
+                .value_parser(clap::value_parser!(f64)),
+        )
+        .arg(
+            Arg::new("beta")
+                .long("beta")
+                .action(ArgAction::Set)
+                .default_value("0.5")
+                .help("Beta parameter for gMaxCov metric.")
+                .value_parser(clap::value_parser!(f64)),
+        )
+        .arg(
             Arg::new("port")
                 .short('p')
                 .action(ArgAction::Set)
@@ -133,6 +157,7 @@ pub fn main() {
     let sync_dir = matches.get_one::<PathBuf>("sync");
     let port = matches.get_one::<u16>("port").copied().unwrap();
     let stack_limit = matches.get_one::<u64>("limit").copied().unwrap() * 1024 * 1024;
+    let iters = matches.get_one::<u64>("iters").copied().unwrap();
     let forced = matches.get_flag("forced");
     let jobs = matches
         .get_one::<usize>("jobs")
@@ -155,6 +180,16 @@ pub fn main() {
         if matches.get_flag("exit-on-all") {"1"} else {"0"},
     );
 
+    set_var(
+        "ETS_COOL_TIME",
+        matches.get_one::<f64>("cool-time").unwrap().to_string(),
+    );
+
+    set_var(
+        "ETS_BETA",
+        matches.get_one::<f64>("beta").unwrap().to_string(),
+    );
+
     let bin_path = PathBuf::from(&args[0]);
     args.remove(0);
 
@@ -172,6 +207,7 @@ pub fn main() {
         port,
         jobs,
         forced,
+        iters,
     )
     .expect("An error occurred while fuzzing");
 }
