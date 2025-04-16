@@ -11,9 +11,9 @@ use libdifuzz::fuzz_one;
 // #[cfg(not(test))]
 #[allow(clippy::similar_names)]
 pub fn main() {
-    let matches = clap::Command::new("difuzz_check_{{PROJECT_NAME}}")
+    let matches = clap::Command::new("difuzz_check_xlnt")
         .version(clap::crate_version!())
-        .about("Fuzzer binary for checking reached target points for {{PROJECT_NAME}} project.")
+        .about("Fuzzer binary for checking reached target points for xlnt project.")
         .term_width(90)
         .arg(
             Arg::new("input")

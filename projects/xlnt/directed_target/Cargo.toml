@@ -15,7 +15,7 @@
 ################################################################################
 
 [package]
-name = "difuzz_fuzzer_xlnt"
+name = "xlnt_libafl_fuzzer"
 version = "0.1.0"
 edition = "2021"
 
