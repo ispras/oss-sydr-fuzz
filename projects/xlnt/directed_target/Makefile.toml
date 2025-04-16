@@ -27,7 +27,7 @@ CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set 
 PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
 LIBAFL_CC = '${CARGO_TARGET_DIR}/${PROFILE}/libafl_cc'
 LIBAFL_CXX = '${CARGO_TARGET_DIR}/${PROFILE}/libafl_cxx'
-FUZZER = '${OUT_DIR}/difuzz_fuzzer_xlnt'
+FUZZER = '${OUT_DIR}/xlnt_libafl_fuzzer'
 
 [tasks.unsupported]
 script_runner = "@shell"
@@ -84,8 +84,8 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-cargo rustc --profile ${PROFILE} --bin difuzz_fuzzer_xlnt -- -L target/${PROFILE}
-mv ${CARGO_TARGET_DIR}/${PROFILE}/difuzz_fuzzer_xlnt ${FUZZER}
+cargo rustc --profile ${PROFILE} --bin xlnt_libafl_fuzzer -- -L target/${PROFILE}
+mv ${CARGO_TARGET_DIR}/${PROFILE}/xlnt_libafl_fuzzer ${FUZZER}
 '''
 dependencies = ["libs"]
 
@@ -218,7 +218,7 @@ dependencies = ["target"]
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-rm -rf corpus crashes target difuzz check difuzz_fuzzer_* difuzz_target_* debug_* coverage_* Cargo.lock ets.toml ETSSharedManager* fuzzer.log target.log .cur_input* xlnt
+rm -rf corpus crashes target difuzz check difuzz_fuzzer_* difuzz_target_* debug_* coverage_* Cargo.lock ets.toml ETSSharedManager* fuzzer.log target.log .cur_input* xlnt xlnt_libafl_fuzzer
 pkill difuzz_ || true
 '''
 

@@ -43,7 +43,7 @@ Get LCOV HTML coverage report:
 
 ## Hybrid Fuzzing with HonggFuzz
 
-    # sydr-fuzz -c load-hluzz.toml run
+    # sydr-fuzz -c load-hfuzz.toml run
 
 ## Hybrid Fuzzing with LibAFL-DiFuzz
 
