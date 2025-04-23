@@ -2,7 +2,7 @@
 #
 # Copyright 2021 Google LLC
 # Modifications copyright (C) 2021 ISP RAS
-# Modifications copyright (C) 2023 Sergey Bronnikov
+# Modifications copyright (C) 2023-2025 Sergey Bronnikov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,9 +28,11 @@ cd /testdir
 : ${LD:="${CXX}"}
 : ${LDFLAGS:="${CXXFLAGS}"}  # to make sure we link with sanitizer runtime
 
+GIT_HASH=3dbb1a4b894c0744a331d4319d8d1704dc4ad943
+
 cmake_args=(
     -DUSE_LUA=ON
-    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UBSAN=ON
@@ -65,7 +67,7 @@ do
   echo "Copying for $module";
   cp $f /
   [[ -e $corpus_dir ]] && cp -r $corpus_dir /corpus_$module
-  [[ -e $corpus_dir.dict ]] && cp $corpus_dir.dict /$module.dict
+  [[ -e ${corpus_dir}_test.dict ]] && cp ${corpus_dir}_test.dict /$module.dict
 done
 
 # Build the project for AFL++.
@@ -78,7 +80,7 @@ export AFL_LLVM_DICT2FILE=/afl++.dict
 export AFL_LLVM_DICT2FILE_NO_MAIN=1
 cmake_args=(
     -DUSE_LUA=ON
-    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UBSAN=ON
@@ -116,7 +118,7 @@ unset AFL_LLVM_DICT2FILE_NO_MAIN
 export AFL_LLVM_CMPLOG=1
 cmake_args=(
     -DUSE_LUA=ON
-    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=OFF
     -DENABLE_ASAN=ON
     -DENABLE_UBSAN=ON
@@ -158,7 +160,7 @@ LDFLAGS=""
 
 cmake_args=(
     -DUSE_LUA=ON
-    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF
@@ -203,7 +205,7 @@ LDFLAGS=""
 
 cmake_args=(
     -DUSE_LUA=ON
-    -DLUA_VERSION=6443185167c77adcc8552a3fee7edab7895db1a9
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
     -DENABLE_ASAN=OFF

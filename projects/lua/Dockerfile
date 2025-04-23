@@ -1,4 +1,4 @@
-# Copyright 2023 Sergey Bronnikov
+# Copyright 2023-2025 Sergey Bronnikov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ RUN git clone https://github.com/ligurio/lua-c-api-tests testdir
 WORKDIR testdir
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout f0b2821c0defc86b0755fc0cf96ad9386bfcfe44
+RUN git checkout dece9f2ad54ab2b117e00805010e389f5db0204c
 
 # Clone corpus from GitHub.
 RUN git clone --depth 1 https://github.com/ligurio/lua-c-api-corpus corpus
@@ -56,3 +56,5 @@ WORKDIR /
 # We comment this, because all of the afl++ fuzz targets are
 # failing due to invalid pointer pairs errors.
 # ENV ASAN_OPTIONS="detect_invalid_pointer_pairs=2"
+
+RUN find corpus_* -type f -empty | xargs rm
