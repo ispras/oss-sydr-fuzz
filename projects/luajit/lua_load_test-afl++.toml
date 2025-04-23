@@ -16,16 +16,22 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/luaL_dostring_sydr @@"
+target = "/lua_load_sydr @@"
 jobs = 2
 
 [[aflplusplus]]
-args = "-t 60000 -i /corpus_luaL_dostring -x /luaL_dostring.dict -x /afl++.dict"
-target = "/luaL_dostring_afl @@"
+args = "-t 60000 -i /corpus_lua_load -x /lua_load.dict -x /afl++.dict"
+target = "/lua_load_afl @@"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=0,malloc_context_size=100"
+UBSAN_OPTIONS = "malloc_context_size=100"
 
 [[aflplusplus]]
-args = "-m none -l AT -c /luaL_dostring_cmplog -t 60000 -i /corpus_luaL_dostring -x /luaL_dostring.dict -x /afl++.dict"
-target = "/luaL_dostring_afl @@"
+args = "-m none -l AT -c /lua_load_cmplog -t 60000 -i /corpus_lua_load -x /lua_load.dict -x /afl++.dict"
+target = "/lua_load_afl @@"
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=0,malloc_context_size=100"
+UBSAN_OPTIONS = "malloc_context_size=100"
 
 [cov]
-target = "/luaL_dostring_cov @@"
+target = "/lua_load_cov @@"

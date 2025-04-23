@@ -2,7 +2,7 @@
 #
 # Copyright 2021 Google LLC
 # Modifications copyright (C) 2021 ISP RAS
-# Modifications copyright (C) 2023 Sergey Bronnikov
+# Modifications copyright (C) 2023-2025 Sergey Bronnikov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,20 +20,22 @@
 
 CC=clang
 CXX=clang++
-CFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
-CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,integer,bounds,null,undefined,float-divide-by-zero"
+CFLAGS="-g"
+CXXFLAGS="-g"
 
 cd /testdir
 
 : ${LD:="${CXX}"}
 : ${LDFLAGS:="${CXXFLAGS}"}  # to make sure we link with sanitizer runtime
 
+GIT_HASH=eec7a8016c3381b949b5d84583800d05897fa960
+
 cmake_args=(
     -DUSE_LUAJIT=ON
-    -DLUA_VERSION=ff6c496ba1b51ed360065cbc5259f62becd70daa
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=OFF
-    -DENABLE_ASAN=OFF
-    -DENABLE_UBSAN=OFF
+    -DENABLE_ASAN=ON
+    -DENABLE_UBSAN=ON
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -61,7 +63,7 @@ for f in $(find build/tests/ -name '*_test' -type f);
 do
   name=$(basename $f);
   module=$(echo $name | sed 's/_test//')
-  corpus_dir="corpus/$module"
+  corpus_dir="corpus/corpus/${module}_test"
   echo "Copying for $module";
   cp $f /
   [[ -e $corpus_dir ]] && cp -r $corpus_dir /corpus_$module
@@ -79,10 +81,10 @@ export AFL_LLVM_DICT2FILE_NO_MAIN=1
 
 cmake_args=(
     -DUSE_LUAJIT=ON
-    -DLUA_VERSION=ff6c496ba1b51ed360065cbc5259f62becd70daa
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=OFF
-    -DENABLE_ASAN=OFF
-    -DENABLE_UBSAN=OFF
+    -DENABLE_ASAN=ON
+    -DENABLE_UBSAN=ON
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -117,10 +119,10 @@ unset AFL_LLVM_DICT2FILE_NO_MAIN
 export AFL_LLVM_CMPLOG=1
 cmake_args=(
     -DUSE_LUAJIT=ON
-    -DLUA_VERSION=ff6c496ba1b51ed360065cbc5259f62becd70daa
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=OFF
-    -DENABLE_ASAN=OFF
-    -DENABLE_UBSAN=OFF
+    -DENABLE_ASAN=ON
+    -DENABLE_UBSAN=ON
     -DCMAKE_BUILD_TYPE=Debug
 
     # C compiler
@@ -159,11 +161,11 @@ LDFLAGS=""
 
 cmake_args=(
     -DUSE_LUAJIT=ON
-    -DLUA_VERSION=ff6c496ba1b51ed360065cbc5259f62becd70daa
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
-    -DENABLE_ASAN=OFF
-    -DENABLE_UBSAN=OFF
+    -DENABLE_ASAN=ON
+    -DENABLE_UBSAN=ON
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -204,11 +206,11 @@ LDFLAGS=""
 
 cmake_args=(
     -DUSE_LUAJIT=ON
-    -DLUA_VERSION=ff6c496ba1b51ed360065cbc5259f62becd70daa
+    -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
-    -DENABLE_ASAN=OFF
-    -DENABLE_UBSAN=OFF
+    -DENABLE_ASAN=ON
+    -DENABLE_UBSAN=ON
     -DENABLE_COV=ON
 
     # C compiler
