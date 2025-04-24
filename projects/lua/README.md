@@ -47,7 +47,7 @@ Building HTML report:
 
 ## Alternative Fuzz Targets
 
-Lua project has 13 fuzz targets.
+Lua project has 15 fuzz targets.
 
 ### lua_dump
 
@@ -104,5 +104,9 @@ Lua project has 13 fuzz targets.
 ### lua_stringtonumber
 
     # sydr-fuzz -c lua_stringtonumber.toml run
+
+### torture
+
+    # sydr-fuzz -c torture.toml run
 
 [lua-homepage]: https://www.lua.org/about.html
