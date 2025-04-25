@@ -45,7 +45,7 @@ Building HTML report:
 
 ## Alternative Fuzz Targets
 
-LuaJIT project has 7 fuzz targets.
+LuaJIT project has 9 fuzz targets.
 
 ### lua_dump
 
@@ -78,5 +78,9 @@ LuaJIT project has 7 fuzz targets.
 ### luaL_traceback
 
     # sydr-fuzz -c luaL_traceback.toml run
+
+### torture
+
+    # sydr-fuzz -c torture.toml run
 
 [luajit-homepage]: http://luajit.org/
