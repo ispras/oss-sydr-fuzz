@@ -42,4 +42,4 @@ RUN testdir/build.sh
 
 WORKDIR /
 
-RUN find corpus_* -type d -exec rm -rf "{}" \;
+RUN find corpus_* -type f -empty | xargs rm
