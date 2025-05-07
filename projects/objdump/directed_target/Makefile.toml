@@ -1,0 +1,163 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+# Variables
+[env]
+PROJECT_DIR = { script = ["pwd"] }
+EXAMPLE_DIR = { value = "/CVE-2017-8392" }
+LIBAFL_DIR = { value = "/libafl", condition = { env_not_set = ["LIBAFL_DIR"] } }
+OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
+DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls strong", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
+  "CARGO_TARGET_DIR",
+] } }
+PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
+LIBAFL_CC = '${LIBAFL_DIR}/bin/libafl_cc'
+LIBAFL_CXX = '${LIBAFL_DIR}/bin/libafl_cxx'
+FUZZER = '${LIBAFL_DIR}/bin/libafl_difuzz'
+ETS_SHARED_MANAGER = '${LIBAFL_DIR}/bin/ETSSharedManager'
+TARGET = '${OUT_DIR}/difuzz_target_{{PROJECT_NAME}}'
+
+[tasks.unsupported]
+script_runner = "@shell"
+script = '''
+echo "Cargo-make not integrated yet on this"
+'''
+
+[tasks.debug]
+linux_alias = "debug_unix"
+mac_alias = "debug_unix"
+windows_alias = "unsupported"
+
+[tasks.debug_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=clang; export CXX=clang++
+export CXXFLAGS="-g"
+${PROJECT_DIR}/build_libafl_objdump.sh
+mv ${EXAMPLE_DIR}/build/binutils/objdump ${OUT_DIR}/objdump_sydr
+'''
+
+[tasks.casr]
+linux_alias = "casr_unix"
+mac_alias = "casr_unix"
+windows_alias = "unsupported"
+
+[tasks.casr_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=clang; export CXX=clang++
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+${PROJECT_DIR}/build_libafl_objdump.sh
+mv ${EXAMPLE_DIR}/build/binutils/objdump ${OUT_DIR}/objdump_casr
+'''
+
+[tasks.coverage]
+linux_alias = "coverage_unix"
+mac_alias = "coverage_unix"
+windows_alias = "unsupported"
+
+[tasks.coverage_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=clang; export CXX=clang++
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+${LIBAFL_DIR}/scripts/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/binutils/objdump.c
+${PROJECT_DIR}/build_libafl_objdump.sh
+mv ${EXAMPLE_DIR}/build/binutils/objdump ${OUT_DIR}/objdump_cov
+${LIBAFL_DIR}/scripts/insert_forkserver.py --sig -a remove -l c -f ${EXAMPLE_DIR}/binutils/objdump.c
+'''
+
+[tasks.difuzz]
+linux_alias = "difuzz_unix"
+mac_alias = "difuzz_unix"
+windows_alias = "unsupported"
+
+[tasks.difuzz_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export LLVM_COMPILER=clang
+export CC=wllvm; export CXX=wllvm++
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/binutils/objdump.c
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/binutils/objdump.c
+cd ${OUT_DIR}
+${PROJECT_DIR}/build_libafl_objdump.sh
+${LIBAFL_DIR}/bin/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/binutils/objdump -e ${OUT_DIR}/ets_objdump.toml ${DIFUZZ_ARGS}
+'''
+
+# Harness
+[tasks.target]
+linux_alias = "target_unix"
+mac_alias = "target_unix"
+windows_alias = "unsupported"
+
+[tasks.target_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export CC=${LIBAFL_CC}
+export CXX=${LIBAFL_CXX}
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+${ETS_SHARED_MANAGER} -a remove -n objdump
+${ETS_SHARED_MANAGER} -a create -n objdump
+${ETS_SHARED_MANAGER} -a parse -n objdump -i ${OUT_DIR}/ets_objdump.toml
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a uncomment -l c -f ${EXAMPLE_DIR}/binutils/objdump.c
+export LIBAFL_SHARED_NAME="objdump"
+${PROJECT_DIR}/build_libafl_objdump.sh
+mv ${EXAMPLE_DIR}/build/binutils/objdump ${OUT_DIR}/objdump_libafl_target
+${ETS_SHARED_MANAGER} -a dump -n objdump -o ${OUT_DIR}/ets_objdump.toml
+${ETS_SHARED_MANAGER} -a remove -n objdump
+python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a remove -l c -f ${EXAMPLE_DIR}/binutils/objdump.c
+'''
+dependencies = ["difuzz"]
+
+# Run the fuzzer
+[tasks.run]
+linux_alias = "run_unix"
+mac_alias = "run_unix"
+windows_alias = "unsupported"
+
+[tasks.run_unix]
+script_runner = "@shell"
+script = '''
+LIBAFL_DEBUG_OUTPUT=1 ${FUZZER} -- ${TARGET}
+'''
+dependencies = ["target"]
+
+# Clean all built artifacts
+[tasks.cleanall]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+rm -rf corpus crashes target difuzz difuzz_target_* debug_* coverage_* ets.toml fuzzer.log target.log .cur_input*
+pkill difuzz_ || true
+'''
+
+[tasks.all]
+linux_alias = "all_unix"
+mac_alias = "all_unix"
+windows_alias = "unsupported"
+
+[tasks.all_unix]
+dependencies = ["target", "debug", "coverage", "casr"]

@@ -1,0 +1,10 @@
+.cur_input_*
+corpus/
+crashes/
+ets.toml
+difuzz_target_*
+debug_*
+coverage_*
+cxxfilt-CVE-2016-4487/
+difuzz/
+target
