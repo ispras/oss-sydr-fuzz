@@ -164,8 +164,8 @@ cmake_args=(
     -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
-    -DENABLE_ASAN=ON
-    -DENABLE_UBSAN=ON
+    -DENABLE_ASAN=OFF
+    -DENABLE_UBSAN=OFF
 
     # C compiler
     -DCMAKE_C_COMPILER="${CC}"
@@ -209,8 +209,8 @@ cmake_args=(
     -DLUA_VERSION="${GIT_HASH}"
     -DOSS_FUZZ=ON
     -DCMAKE_BUILD_TYPE=Debug
-    -DENABLE_ASAN=ON
-    -DENABLE_UBSAN=ON
+    -DENABLE_ASAN=OFF
+    -DENABLE_UBSAN=OFF
     -DENABLE_COV=ON
 
     # C compiler
