@@ -14,13 +14,15 @@
 #
 ################################################################################
 
+exit-on-time = 7200
+
 [sydr]
 args = "--wait-jobs -s 90 -j2"
 target = "/load_sydr @@"
 jobs = 2
 
 [libafl]
-path = "/libafl/libafl_difuzz"
+path = "/libafl/bin/libafl_difuzz"
 target = "/load_libafl_target @@"
 args = "-j4 -l64 -i /corpus -e /ets_load.toml"
 casr_bin = "/load_casr"
