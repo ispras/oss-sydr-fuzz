@@ -25,69 +25,16 @@ CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set 
   "CARGO_TARGET_DIR",
 ] } }
 PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
-LIBAFL_CC = '${CARGO_TARGET_DIR}/${PROFILE}/libafl_cc'
-LIBAFL_CXX = '${CARGO_TARGET_DIR}/${PROFILE}/libafl_cxx'
-FUZZER = '${OUT_DIR}/xlnt_libafl_fuzzer'
+LIBAFL_CC = '${LIBAFL_DIR}/bin/libafl_cc'
+LIBAFL_CXX = '${LIBAFL_DIR}/bin/libafl_cxx'
+FUZZER = '${LIBAFL_DIR}/bin/libafl_difuzz'
+ETS_SHARED_MANAGER = '${LIBAFL_DIR}/bin/ETSSharedManager'
 
 [tasks.unsupported]
 script_runner = "@shell"
 script = '''
 echo "Cargo-make not integrated yet on this"
 '''
-
-[tasks.libs]
-linux_alias = "libs_unix"
-mac_alias = "libs_unix"
-windows_alias = "unsupported"
-
-[tasks.libs_unix]
-script_runner = "@shell"
-script = '''
-mkdir -p ${CARGO_TARGET_DIR}/${PROFILE}
-cp -r ${LIBAFL_DIR}/libdifuzz/target/release/* ${CARGO_TARGET_DIR}/${PROFILE}
-cp -r ${LIBAFL_DIR}/libforkserver/target/release/liblibforkserver.* ${CARGO_TARGET_DIR}/${PROFILE}
-'''
-
-# Compilers
-[tasks.cxx]
-linux_alias = "cxx_unix"
-mac_alias = "cxx_unix"
-windows_alias = "unsupported"
-
-[tasks.cxx_unix]
-script_runner = "@shell"
-script = '''
-cd ${PROJECT_DIR}
-cargo rustc --profile ${PROFILE} --bin libafl_cxx -- -L target/${PROFILE}
-'''
-dependencies = ["libs"]
-
-[tasks.cc]
-linux_alias = "cc_unix"
-mac_alias = "cc_unix"
-windows_alias = "unsupported"
-
-[tasks.cc_unix]
-script_runner = "@shell"
-script = '''
-cd ${PROJECT_DIR}
-cargo rustc --profile ${PROFILE} --bin libafl_cc -- -L target/${PROFILE}
-'''
-dependencies = ["libs"]
-
-[tasks.fuzzer]
-linux_alias = "fuzzer_unix"
-mac_alias = "fuzzer_unix"
-windows_alias = "unsupported"
-
-[tasks.fuzzer_unix]
-script_runner = "@shell"
-script = '''
-cd ${PROJECT_DIR}
-cargo rustc --profile ${PROFILE} --bin xlnt_libafl_fuzzer -- -L target/${PROFILE}
-mv ${CARGO_TARGET_DIR}/${PROFILE}/xlnt_libafl_fuzzer ${FUZZER}
-'''
-dependencies = ["libs"]
 
 [tasks.debug]
 linux_alias = "debug_unix"
@@ -179,12 +126,12 @@ cd ${PROJECT_DIR}
 export CC=${LIBAFL_CC}
 export CXX=${LIBAFL_CXX}
 export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_load
-${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_save
-${LIBAFL_DIR}/bin/ETSSharedManager -a create -n xlnt_load
-${LIBAFL_DIR}/bin/ETSSharedManager -a create -n xlnt_save
-${LIBAFL_DIR}/bin/ETSSharedManager -a parse -n xlnt_load -i ${OUT_DIR}/ets_load.toml
-${LIBAFL_DIR}/bin/ETSSharedManager -a parse -n xlnt_save -i ${OUT_DIR}/ets_save.toml
+${ETS_SHARED_MANAGER} -a remove -n xlnt_load
+${ETS_SHARED_MANAGER} -a remove -n xlnt_save
+${ETS_SHARED_MANAGER} -a create -n xlnt_load
+${ETS_SHARED_MANAGER} -a create -n xlnt_save
+${ETS_SHARED_MANAGER} -a parse -n xlnt_load -i ${OUT_DIR}/ets_load.toml
+${ETS_SHARED_MANAGER} -a parse -n xlnt_save -i ${OUT_DIR}/ets_save.toml
 python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a uncomment -l c -f /opt/StandaloneFuzzTargetMain.c
 export LIBAFL_SHARED_NAME="xlnt_load"
 ${PROJECT_DIR}/build_libafl_load.sh
@@ -192,13 +139,13 @@ mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_libafl_target
 export LIBAFL_SHARED_NAME="xlnt_save"
 ${PROJECT_DIR}/build_libafl_save.sh
 mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_libafl_target
-${LIBAFL_DIR}/bin/ETSSharedManager -a dump -n xlnt_load -o ${OUT_DIR}/ets_load.toml
-${LIBAFL_DIR}/bin/ETSSharedManager -a dump -n xlnt_save -o ${OUT_DIR}/ets_save.toml
-${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_load
-${LIBAFL_DIR}/bin/ETSSharedManager -a remove -n xlnt_save
+${ETS_SHARED_MANAGER} -a dump -n xlnt_load -o ${OUT_DIR}/ets_load.toml
+${ETS_SHARED_MANAGER} -a dump -n xlnt_save -o ${OUT_DIR}/ets_save.toml
+${ETS_SHARED_MANAGER} -a remove -n xlnt_load
+${ETS_SHARED_MANAGER} -a remove -n xlnt_save
 python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
 '''
-dependencies = ["cxx", "cc", "fuzzer", "difuzz"]
+dependencies = ["difuzz"]
 
 # Run the fuzzer
 [tasks.run]
@@ -218,20 +165,14 @@ dependencies = ["target"]
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-rm -rf corpus crashes target difuzz check difuzz_fuzzer_* difuzz_target_* debug_* coverage_* Cargo.lock ets.toml ETSSharedManager* fuzzer.log target.log .cur_input* xlnt xlnt_libafl_fuzzer
+rm -rf corpus crashes target difuzz difuzz_target_* debug_* coverage_* ets.toml fuzzer.log target.log .cur_input* xlnt
 pkill difuzz_ || true
 '''
 
-[tasks.check]
-linux_alias = "check_unix"
-mac_alias = "check_unix"
+[tasks.all]
+linux_alias = "all_unix"
+mac_alias = "all_unix"
 windows_alias = "unsupported"
 
-[tasks.check_unix]
-script_runner = "@shell"
-script = '''
-cd ${PROJECT_DIR}
-cargo rustc --profile ${PROFILE} --bin check -- -L target/${PROFILE}
-mv ${CARGO_TARGET_DIR}/${PROFILE}/check ${OUT_DIR}/check
-'''
+[tasks.all_unix]
 dependencies = ["target", "debug", "coverage", "casr"]
