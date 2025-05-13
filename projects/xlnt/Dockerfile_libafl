@@ -36,7 +36,7 @@ COPY directed_target /directed_target
 WORKDIR /directed_target
 
 # Build xlnt for LibAFL-DiFuzz.
-RUN OUT_DIR=/ cargo make check
+RUN OUT_DIR=/ cargo make all
 
 # Prepare seed corpus.
 RUN mkdir /corpus && find /xlnt -name "*.xlsx" | xargs -I {} cp {} /corpus
