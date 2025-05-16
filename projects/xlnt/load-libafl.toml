@@ -21,9 +21,9 @@ args = "--wait-jobs -s 90 -j2"
 target = "/load_sydr @@"
 jobs = 2
 
-[libafl]
+[difuzz]
 path = "/libafl/bin/libafl_difuzz"
-target = "/load_libafl_target @@"
+target = "/load_libafl @@"
 args = "-j4 -l64 -i /corpus -e /ets_load.toml"
 casr_bin = "/load_casr"
 
