@@ -135,10 +135,10 @@ ${ETS_SHARED_MANAGER} -a parse -n xlnt_save -i ${OUT_DIR}/ets_save.toml
 python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a uncomment -l c -f /opt/StandaloneFuzzTargetMain.c
 export LIBAFL_SHARED_NAME="xlnt_load"
 ${PROJECT_DIR}/build_libafl_load.sh
-mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_libafl_target
+mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR}/load_libafl
 export LIBAFL_SHARED_NAME="xlnt_save"
 ${PROJECT_DIR}/build_libafl_save.sh
-mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_libafl_target
+mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR}/save_libafl
 ${ETS_SHARED_MANAGER} -a dump -n xlnt_load -o ${OUT_DIR}/ets_load.toml
 ${ETS_SHARED_MANAGER} -a dump -n xlnt_save -o ${OUT_DIR}/ets_save.toml
 ${ETS_SHARED_MANAGER} -a remove -n xlnt_load
