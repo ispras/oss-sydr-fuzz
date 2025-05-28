@@ -1,0 +1,13 @@
+.cur_input_*
+corpus/
+crashes/
+ets.toml
+difuzz_target_*
+debug_*
+coverage_*
+xlnt/
+difuzz/
+check
+difuzz_fuzzer_*
+target
+Cargo*

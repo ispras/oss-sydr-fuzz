@@ -6,6 +6,10 @@ xlnt is a modern C++ library for manipulating spreadsheets in memory and reading
 
     $ sudo docker build -t oss-sydr-fuzz-xlnt .
 
+## Build LibAFL-DiFuzz Docker
+
+    $ sudo docker build --build-arg BASE_IMAGE="LIBAFL_DOCKER_NAME" -t oss-sydr-fuzz-libafl-xlnt -f ./Dockerfile_libafl .
+
 ## Run Hybrid Fuzzing
 
 Unzip Sydr (`sydr.zip`) in `projects/xlnt` directory:
@@ -16,13 +20,17 @@ Run docker:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-xlnt /bin/bash
 
+Run docker for LibAFL-DiFuzz:
+
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libafl-xlnt /bin/bash
+
 Change directory to `/fuzz`:
 
     # cd /fuzz
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz run
+    # sydr-fuzz -c load-lf.toml run
 
 Get LCOV HTML coverage report:
 
@@ -33,14 +41,22 @@ Get LCOV HTML coverage report:
 
     # sydr-fuzz -c load-afl++.toml run
 
+## Hybrid Fuzzing with HonggFuzz
+
+    # sydr-fuzz -c load-hfuzz.toml run
+
+## Hybrid Fuzzing with LibAFL-DiFuzz
+
+    # sydr-fuzz -c load-libafl.toml run
+
 ## Alternative Fuzz Targets
 
 xlnt project has 2 fuzz targets.
 
 ### load
 
-    # sydr-fuzz -c load.toml run
+    # sydr-fuzz -c load-lf.toml run
 
 ### save
 
-    # sydr-fuzz -c save.toml run
+    # sydr-fuzz -c save-lf.toml run
