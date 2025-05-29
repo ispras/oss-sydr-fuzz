@@ -1,6 +1,6 @@
 # giflib
 
-giflib
+giflib is a library for manipulating GIF files.
 
 ## Build LibAFL-DiFuzz Docker
 

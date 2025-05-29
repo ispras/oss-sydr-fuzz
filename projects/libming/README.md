@@ -1,6 +1,6 @@
 # libming
 
-libming
+libming is a Flash (SWF) output library.
 
 ## Build LibAFL-DiFuzz Docker
 

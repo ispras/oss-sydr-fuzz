@@ -19,7 +19,7 @@ args = "--wait-jobs -s 90 -j2 --sym-stdin"
 target = "/giflib_sydr"
 jobs = 2
 
-[libafl]
+[difuzz]
 path = "/libafl/bin/libafl_difuzz"
 target = "/giflib_libafl_target"
 args = "-j4 -l64 -i /corpus -e /ets_giflib.toml"

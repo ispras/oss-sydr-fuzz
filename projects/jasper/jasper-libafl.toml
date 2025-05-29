@@ -19,7 +19,7 @@ args = "--wait-jobs -s 90 -j2"
 target = "/jasper_sydr -f @@ -t mif -F /tmp/out -T jpg"
 jobs = 2
 
-[libafl]
+[difuzz]
 path = "/libafl/bin/libafl_difuzz"
 target = "/jasper_libafl_target -f @@ -t mif -F /tmp/out -T jpg"
 args = "-j4 -l64 -i /corpus -e /ets_jasper.toml"

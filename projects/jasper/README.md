@@ -1,6 +1,6 @@
 # jasper
 
-jasper
+jasper is a library for manipulating JPEG 2000 images.
 
 ## Build LibAFL-DiFuzz Docker
 

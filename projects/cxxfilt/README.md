@@ -1,6 +1,6 @@
 # cxxfilt
 
-cxxfilt
+cxxfilt is a tool for demangling C++ symbols.
 
 ## Build LibAFL-DiFuzz Docker
 

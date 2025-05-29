@@ -29,7 +29,7 @@ LIBAFL_CC = '${LIBAFL_DIR}/bin/libafl_cc'
 LIBAFL_CXX = '${LIBAFL_DIR}/bin/libafl_cxx'
 FUZZER = '${LIBAFL_DIR}/bin/libafl_difuzz'
 ETS_SHARED_MANAGER = '${LIBAFL_DIR}/bin/ETSSharedManager'
-TARGET = '${OUT_DIR}/difuzz_target_{{PROJECT_NAME}}'
+TARGET = '${OUT_DIR}/{{PROJECT_NAME}}_libafl_target'
 
 [tasks.unsupported]
 script_runner = "@shell"
@@ -150,7 +150,7 @@ dependencies = ["target"]
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-rm -rf corpus crashes target difuzz difuzz_target_* debug_* coverage_* ets.toml fuzzer.log target.log .cur_input*
+rm -rf corpus crashes target difuzz *_libafl_target *_sydr *_casr *_cov ets_*.toml fuzzer.log target.log .cur_input*
 pkill difuzz_ || true
 '''
 

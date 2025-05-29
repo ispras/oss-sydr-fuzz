@@ -19,7 +19,7 @@ args = "--wait-jobs -s 90 -j2"
 target = "/objdump_sydr -SD @@"
 jobs = 2
 
-[libafl]
+[difuzz]
 path = "/libafl/bin/libafl_difuzz"
 target = "/objdump_libafl_target -SD @@"
 args = "-j4 -l64 -i /corpus -e /ets_objdump.toml"

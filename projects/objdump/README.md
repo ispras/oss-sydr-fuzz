@@ -1,6 +1,6 @@
 # objdump
 
-objdump
+objdump is a tool for displaying information about one or more object files.
 
 ## Build LibAFL-DiFuzz Docker
 

@@ -19,7 +19,7 @@ args = "--wait-jobs -s 90 -j2"
 target = "/libxml_sydr --valid --recover @@"
 jobs = 2
 
-[libafl]
+[difuzz]
 path = "/libafl/bin/libafl_difuzz"
 target = "/libxml_libafl_target --valid --recover @@"
 args = "-j4 -l64 -i /corpus -e /ets_libxml.toml"
