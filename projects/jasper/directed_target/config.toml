@@ -1,0 +1,57 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+# Target point 1
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/mif/mif_cod.c"
+line = 491
+
+# Targets from AFLGO
+[[target]]
+file = "/jasper-CVE-2015-5221/src/appl/jasper.c"
+line = 229
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/base/jas_tvp.c"
+line = 111
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/base/jas_tvp.c"
+line = 96
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/base/jas_image.c"
+line = 372
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/mif/mif_cod.c"
+line = 587
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/mif/mif_cod.c"
+line = 497
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/mif/mif_cod.c"
+line = 166
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/mif/mif_cod.c"
+line = 573
+
+[[target]]
+file = "/jasper-CVE-2015-5221/src/libjasper/mif/mif_cod.c"
+line = 536

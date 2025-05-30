@@ -1,0 +1,11 @@
+.cur_input_*
+corpus/
+crashes/
+ets_*.toml
+*_libafl_target
+*_sydr
+*_casr
+*_cov
+CVE-2017-8392/
+difuzz/
+target

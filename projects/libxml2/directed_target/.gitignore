@@ -1,0 +1,11 @@
+.cur_input_*
+corpus/
+crashes/
+ets_*.toml
+*_libafl_target
+*_sydr
+*_casr
+*_cov
+libxml2_ef709ce2/
+difuzz/
+target

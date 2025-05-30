@@ -1,0 +1,11 @@
+.cur_input_*
+corpus/
+crashes/
+ets_*.toml
+*_libafl_target
+*_sydr
+*_casr
+*_cov
+libming-CVE-2018-8807/
+difuzz/
+target

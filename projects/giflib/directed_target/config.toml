@@ -1,0 +1,53 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 44
+
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 76
+
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 81
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 92
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 1144
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 802
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 764
+
+# Target point 1
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 59
+
+# Target from AFLGo
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 62
