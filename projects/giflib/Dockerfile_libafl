@@ -24,7 +24,6 @@ RUN git clone https://git.code.sf.net/p/giflib/code giflib-bugs-74
 
 WORKDIR /giflib-bugs-74
 
-# Checkout specified commit. It could be updated later.
 RUN git checkout 72e31ff && git submodule update --init --recursive
 
 # Copy LibAFL-DiFuzz target template.

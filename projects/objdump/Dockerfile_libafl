@@ -27,7 +27,6 @@ RUN git clone git://sourceware.org/git/binutils-gdb.git CVE-2017-8392
 
 WORKDIR /CVE-2017-8392
 
-# Checkout specified commit. It could be updated later.
 RUN git checkout a6c21d4a553de184562fd8409a5bcd3f2cc2561a && git submodule update --init --recursive
 
 # Copy LibAFL-DiFuzz target template.

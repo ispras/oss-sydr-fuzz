@@ -27,7 +27,6 @@ RUN git clone git://sourceware.org/git/binutils-gdb.git cxxfilt-CVE-2016-4487
 
 WORKDIR /cxxfilt-CVE-2016-4487
 
-# Checkout specified commit. It could be updated later.
 RUN git checkout 2c49145 && git submodule update --init --recursive
 COPY patch /
 RUN git apply /patch

@@ -29,7 +29,7 @@ LIBAFL_CC = '${LIBAFL_DIR}/bin/libafl_cc'
 LIBAFL_CXX = '${LIBAFL_DIR}/bin/libafl_cxx'
 FUZZER = '${LIBAFL_DIR}/bin/libafl_difuzz'
 ETS_SHARED_MANAGER = '${LIBAFL_DIR}/bin/ETSSharedManager'
-TARGET = '${OUT_DIR}/{{PROJECT_NAME}}_libafl_target'
+TARGET = '${OUT_DIR}/objdump_libafl_target'
 
 [tasks.unsupported]
 script_runner = "@shell"
