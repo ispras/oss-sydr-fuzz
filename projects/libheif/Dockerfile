@@ -16,8 +16,7 @@
 
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
-
-WORKDIR /src
+ARG CMAKE_VERSION=3.27.6
 
 RUN apt-get update && apt-get install -y \
     autoconf \
@@ -32,12 +31,18 @@ RUN apt-get update && apt-get install -y \
     yasm \
     zlib1g-dev
 
+WORKDIR /opt
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
+    tar -xzf cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
+    mv cmake-${CMAKE_VERSION}-linux-x86_64 /opt/cmake && \
+    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
+    rm cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
 
-RUN git clone \
-    --depth 1 \
-    --branch master \
-    https://github.com/strukturag/libde265.git \
-    libde265
+WORKDIR /src
+    
+RUN git clone https://github.com/strukturag/libde265.git libde265 && \
+    cd libde265 && \
+    git checkout 6783111
 
 RUN git clone \
     https://bitbucket.org/multicoreware/x265_git/src/stable/ \

@@ -21,7 +21,7 @@ export CXX=clang++
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 
-export LIB_FUZZING_ENGINE=/usr/lib/clang/18/lib/linux/libclang_rt.fuzzer-x86_64.a
+export LIB_FUZZING_ENGINE=/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer-x86_64.a
 
 export DEPS_PATH="$(pwd)/deps"
 mkdir -p "$DEPS_PATH"
@@ -78,7 +78,6 @@ cd ../../../libheif
 mkdir build
 cd build
 cmake .. --preset=fuzzing \
-      -DFUZZING_COMPILE_OPTIONS="" \
       -DFUZZING_LINKER_OPTIONS="$LIB_FUZZING_ENGINE" \
       -DFUZZING_C_COMPILER=$CC -DFUZZING_CXX_COMPILER=$CXX \
       -DWITH_DEFLATE_HEADER_COMPRESSION=OFF \
@@ -97,8 +96,12 @@ make -j$(nproc)
 #make clean
 #make -j$(nproc)
 
-cp fuzzing/*_fuzzer .
-cp ../fuzzing/data/dictionary.txt ./box-fuzzer.dict
-cp ../fuzzing/data/dictionary.txt ./file-fuzzer.dict
 
-zip -r ./file-fuzzer_seed_corpus.zip ../fuzzing/data/corpus/*.heic
+cd ../../../
+
+cp src/libheif/build/fuzzing/*_fuzzer .
+cp src/libheif/fuzzing/data/dictionary.txt ./box-fuzzer.dict
+cp src/libheif/fuzzing/data/dictionary.txt ./file-fuzzer.dict
+
+zip -r ./file-fuzzer_seed_corpus.zip src/libheif/fuzzing/data/corpus/*.heic
+unzip file-fuzzer_seed_corpus.zip -d file-fuzzer_seed_corpus
