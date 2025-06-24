@@ -21,8 +21,10 @@ export CXX=clang++
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 
-export DEPS_PATH=/deps
-mkdir -p $DEPS_PATH
+export LIB_FUZZING_ENGINE=/usr/lib/clang/18/lib/linux/libclang_rt.fuzzer-x86_64.a
+
+export DEPS_PATH="$(pwd)/deps"
+mkdir -p "$DEPS_PATH"
 
 cd x265/build/linux
 cmake -G "Unix Makefiles" \
@@ -35,7 +37,7 @@ make clean
 make -j$(nproc) x265-static
 make install
 
-cd libde265
+cd ../../../libde265
 ./autogen.sh
 ./configure \
     --prefix="$DEPS_PATH" \
@@ -50,8 +52,8 @@ make clean
 make -j$(nproc)
 make install
 
-mkdir -p aom/build/linux
-cd aom/build/linux
+mkdir -p ../aom/build/linux
+cd ../aom/build/linux
 cmake -G "Unix Makefiles" \
   -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
   -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
@@ -72,9 +74,7 @@ make install
 rm -f $DEPS_PATH/lib/*.so
 rm -f $DEPS_PATH/lib/*.so.*
 
-export LIB_FUZZING_ENGINE="/usr/lib/clang/18/lib/linux/libclang_rt.fuzzer-x86_64.a"
-
-cd libheif
+cd ../../../libheif
 mkdir build
 cd build
 cmake .. --preset=fuzzing \
@@ -98,7 +98,7 @@ make -j$(nproc)
 #make -j$(nproc)
 
 cp fuzzing/*_fuzzer .
-cp ../fuzzing/data/dictionary.txt box-fuzzer.dict
-cp ../fuzzing/data/dictionary.txt file-fuzzer.dict
+cp ../fuzzing/data/dictionary.txt ./box-fuzzer.dict
+cp ../fuzzing/data/dictionary.txt ./file-fuzzer.dict
 
-zip -r file-fuzzer_seed_corpus.zip ../fuzzing/data/corpus/*.heic
+zip -r ./file-fuzzer_seed_corpus.zip ../fuzzing/data/corpus/*.heic

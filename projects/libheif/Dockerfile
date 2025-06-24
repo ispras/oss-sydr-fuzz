@@ -17,6 +17,7 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
+WORKDIR /src
 
 RUN apt-get update && apt-get install -y \
     autoconf \
@@ -31,9 +32,12 @@ RUN apt-get update && apt-get install -y \
     yasm \
     zlib1g-dev
 
-RUN git clone https://github.com/strukturag/libheif.git && \
-    cd libheif && \
-    git checkout 4a011482cf07ad497f7ea49ad3394c538bc691be
+
+RUN git clone \
+    --depth 1 \
+    --branch master \
+    https://github.com/strukturag/libde265.git \
+    libde265
 
 RUN git clone \
     https://bitbucket.org/multicoreware/x265_git/src/stable/ \
@@ -45,7 +49,11 @@ RUN git clone \
     https://aomedia.googlesource.com/aom \
     aom
 
-WORKDIR /
 
-COPY build.sh .
+RUN git clone https://github.com/strukturag/libheif.git libheif && \
+    cd libheif && \
+    git checkout 83617f6e49e247f274b6d8826548ff6a63f56e5a
+
+COPY build.sh build.sh    
 RUN chmod +x build.sh && ./build.sh
+
