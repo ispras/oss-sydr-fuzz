@@ -1,5 +1,4 @@
-#!/bin/bash -eu
-# Copyright 2019 Google Inc.
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +13,7 @@
 # limitations under the License.
 #
 ################################################################################
+
 
 # Build dependencies.
 export CC=clang
@@ -74,6 +74,8 @@ make install
 rm -f $DEPS_PATH/lib/*.so
 rm -f $DEPS_PATH/lib/*.so.*
 
+
+#build fuzzers
 cd ../../../libheif
 mkdir build
 cd build
@@ -85,23 +87,74 @@ cmake .. --preset=fuzzing \
 
 make -j$(nproc)
 
-#./autogen.sh
-#PKG_CONFIG="pkg-config --static" PKG_CONFIG_PATH="$DEPS_PATH/lib/pkgconfig" ./configure \
-#    --disable-shared \
-#    --enable-static \
-#    --disable-examples \
-#    --disable-go \
-#    --enable-libfuzzer="$LIB_FUZZING_ENGINE" \
-#    CPPFLAGS="-I$DEPS_PATH/include"
-#make clean
-#make -j$(nproc)
+cd ../
 
+#build coverage fuzzers
+export CFLAGS="-O1 -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-O1 -fprofile-instr-generate -fcoverage-mapping"
+export CC=clang
+export CXX=clang++
+
+mkdir -p coverage_build
+cd coverage_build
+cmake .. --preset=fuzzing \
+    -DCMAKE_C_COMPILER=$CC \
+    -DCMAKE_CXX_COMPILER=$CXX \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DWITH_DEFLATE_HEADER_COMPRESSION=OFF
+
+make -j$(nproc)
+
+#build for sydr
 
 cd ../../../
 
-cp src/libheif/build/fuzzing/*_fuzzer .
+clang -c /opt/StandaloneFuzzTargetMain.c -o StandaloneFuzzTargetMain.o
+
+cd src/libheif
+
+export CFLAGS="-g"
+export CXXFLAGS="-g"
+export CC=clang
+export CXX=clang++
+export LIB_FUZZING_ENGINE="/StandaloneFuzzTargetMain.o"  
+
+mkdir -p sydr_build
+cd sydr_build
+cmake .. --preset=fuzzing \
+    -DCMAKE_C_COMPILER=$CC \
+    -DCMAKE_CXX_COMPILER=$CXX \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DFUZZING_ENGINE="$LIB_FUZZING_ENGINE"
+    
+make -j$(nproc)
+
+cd ../../../
+
+#copy builded fuzzers
+
+mkdir fuzzers
+mkdir coverage_fuzzers
+mkdir sydr_fuzzers
+
+cp src/libheif/build/fuzzing/*_fuzzer ./fuzzers
+
+for fuzzer in src/libheif/coverage_build/fuzzing/*_fuzzer; do
+  base=$(basename "$fuzzer")                
+  cp "$fuzzer" "./coverage_fuzzers/${base}_coverage"
+done
+
+for fuzzer in src/libheif/sydr_build/fuzzing/*_fuzzer; do
+  base=$(basename "$fuzzer")                
+  cp "$fuzzer" "./sydr_fuzzers/${base}_sydr"
+done
+
 cp src/libheif/fuzzing/data/dictionary.txt ./box-fuzzer.dict
 cp src/libheif/fuzzing/data/dictionary.txt ./file-fuzzer.dict
 
 zip -r ./file-fuzzer_seed_corpus.zip src/libheif/fuzzing/data/corpus/*.heic
 unzip file-fuzzer_seed_corpus.zip -d file-fuzzer_seed_corpus
+
+rm -rf file-fuzzer_seed_corpus.zip

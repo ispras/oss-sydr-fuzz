@@ -1,4 +1,4 @@
-# Copyright 2019 Google Inc.
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 ################################################################################
+
 
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
@@ -59,6 +60,7 @@ RUN git clone https://github.com/strukturag/libheif.git libheif && \
     cd libheif && \
     git checkout 83617f6e49e247f274b6d8826548ff6a63f56e5a
 
-COPY build.sh build.sh    
+COPY build.sh build.sh  
+
 RUN chmod +x build.sh && ./build.sh
 
