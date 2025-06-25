@@ -14,19 +14,21 @@ Unzip Sydr (`sydr.zip`) in `projects/libjpeg` directory:
 
 Run docker:
 
-    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libjpeg /bin/bash
+```
+   $ sudo docker run --rm -it -v "$PWD/":/fuzzing oss-sydr-fuzz-libheif /bin/bash
+```
 
-Change directory to `/fuzz`:
+Change directory:
 
-    # cd /fuzz
+    # cd ../fuzzing
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c compress.toml run
+    # sydr-fuzz -c config/file_fuzzer.toml run
 
 Get LCOV HTML coverage report:
 
-    # sydr-fuzz -c compress.toml cov-export -- -format=lcov > compress.lcov
+    # sydr-fuzz -c file_fuzzer.toml cov-export -- -format=lcov > compress.lcov
     # genhtml -o compress-html compress.lcov
 
 ## Alternative Fuzz Targets

@@ -154,7 +154,7 @@ done
 cp src/libheif/fuzzing/data/dictionary.txt ./box-fuzzer.dict
 cp src/libheif/fuzzing/data/dictionary.txt ./file-fuzzer.dict
 
-zip -r ./file-fuzzer_seed_corpus.zip src/libheif/fuzzing/data/corpus/*.heic
+find src/libheif/fuzzing/data/corpus -type f -name "*.heic" -exec zip -j file-fuzzer_seed_corpus.zip {} +
 unzip file-fuzzer_seed_corpus.zip -d file-fuzzer_seed_corpus
 
 rm -rf file-fuzzer_seed_corpus.zip

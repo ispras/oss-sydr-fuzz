@@ -64,3 +64,4 @@ COPY build.sh build.sh
 
 RUN chmod +x build.sh && ./build.sh
 
+RUN rm -rf build.sh
