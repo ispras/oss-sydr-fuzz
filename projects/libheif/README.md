@@ -24,7 +24,7 @@ Change directory:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c config/file_fuzzer.toml run
+    # sydr-fuzz -c config/sydr/file_fuzzer.toml run
 
 Get LCOV HTML coverage report:
 
@@ -33,13 +33,27 @@ Get LCOV HTML coverage report:
 
 ## Alternative Fuzz Targets
 
-libjpeg project has 2 fuzz targets.
+libjpeg project has more fuzz targets.
 
-### compress
+### sydr
 
-    # sydr-fuzz -c compress.toml run
+    # sydr-fuzz -c config/sydr/file_fuzzer.toml run
+    # sydr-fuzz -c config/sydr/box_fuzzer.toml run
+    # sydr-fuzz -c config/sydr/color_conversion_fuzzer.toml run
+    # sydr-fuzz -c config/sydr/encoder_fuzzer.toml run
 
-### decompress
 
-    # sydr-fuzz -c decompress.toml run
+### afl++
+
+    # sydr-fuzz -c config/afl++/file_fuzzer_afl++.toml run
+    # sydr-fuzz -c config/afl++/box_fuzzer_afl++.toml run
+    # sydr-fuzz -c config/afl++/color_conversion_fuzzer_afl++.toml run
+    # sydr-fuzz -c config/afl++/encoder_fuzzer_afl++.toml run
+
+### Honggfuzz
+
+    # sydr-fuzz -c config/hfuzz/file_fuzzer_hfuzz.toml run
+    # sydr-fuzz -c config/hfuzz/box_fuzzer_hfuzz.toml run
+    # sydr-fuzz -c config/hfuzz/color_conversion_fuzzer_hfuzz.toml run
+    # sydr-fuzz -c config/hfuzz/encoder_fuzzer_hfuzz.toml run    
 

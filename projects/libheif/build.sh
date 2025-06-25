@@ -131,6 +131,44 @@ cmake .. --preset=fuzzing \
     
 make -j$(nproc)
 
+cd ../
+
+#build for AFL++
+
+export CC=afl-clang-fast
+export CXX=afl-clang-fast++
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+mkdir -p afl_build
+cd afl_build
+cmake .. --preset=fuzzing \
+    -DCMAKE_C_COMPILER=$CC \
+    -DCMAKE_CXX_COMPILER=$CXX \
+    -DWITH_DEFLATE_HEADER_COMPRESSION=OFF
+
+make -j$(nproc)
+
+cd ../
+
+#build for Honggfuzz
+
+export CC=hfuzz-clang
+export CXX=hfuzz-clang++
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+
+mkdir -p hfuzz_build
+cd hfuzz_build
+cmake .. --preset=fuzzing \
+    -DCMAKE_C_COMPILER=$CC \
+    -DCMAKE_CXX_COMPILER=$CXX \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DWITH_DEFLATE_HEADER_COMPRESSION=OFF
+
+make -j$(nproc)
+
 cd ../../../
 
 #copy builded fuzzers
@@ -138,6 +176,8 @@ cd ../../../
 mkdir fuzzers
 mkdir coverage_fuzzers
 mkdir sydr_fuzzers
+mkdir hfuzz_fuzzers
+mkdir afl_fuzzers
 
 cp src/libheif/build/fuzzing/*_fuzzer ./fuzzers
 
@@ -151,10 +191,20 @@ for fuzzer in src/libheif/sydr_build/fuzzing/*_fuzzer; do
   cp "$fuzzer" "./sydr_fuzzers/${base}_sydr"
 done
 
+for fuzzer in src/libheif/afl_build/fuzzing/*_fuzzer; do
+  base=$(basename "$fuzzer")                
+  cp "$fuzzer" "./afl_fuzzers/${base}_afl"
+done
+
+for fuzzer in src/libheif/hfuzz_build/fuzzing/*_fuzzer; do
+  base=$(basename "$fuzzer")                
+  cp "$fuzzer" "./hfuzz_fuzzers/${base}_hfuzz"
+done
+
 cp src/libheif/fuzzing/data/dictionary.txt ./box-fuzzer.dict
 cp src/libheif/fuzzing/data/dictionary.txt ./file-fuzzer.dict
 
-find src/libheif/fuzzing/data/corpus -type f -name "*.heic" -exec zip -j file-fuzzer_seed_corpus.zip {} +
-unzip file-fuzzer_seed_corpus.zip -d file-fuzzer_seed_corpus
+find src/libheif/fuzzing/data/corpus -type f -name "*.heic" -exec zip -j corpus.zip {} +
+unzip corpus.zip -d corpus
 
-rm -rf file-fuzzer_seed_corpus.zip
+rm -rf corpus.zip

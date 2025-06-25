@@ -19,9 +19,12 @@ args = "--wait-jobs -s 90 -j2"
 target = "/sydr_fuzzers/color_conversion_fuzzer_sydr @@"
 jobs = 2
 
-[libfuzzer]
-path = "/fuzzers/color_conversion_fuzzer"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /file-fuzzer_seed_corpus"
+[honggfuzz]
+args = "-t 10 -i /corpus"
+target = "/hfuzz_fuzzers/color_conversion_fuzzer_hfuzz"
+jobs = 4
+cmin = false
+libfuzzer_merge_target = "/hfuzz_fuzzers/color_conversion_fuzzer_hfuzz"
 
 [cov]
 target = "/coverage_fuzzers/color_conversion_fuzzer_coverage @@"

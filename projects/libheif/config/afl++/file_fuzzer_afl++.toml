@@ -16,12 +16,13 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr_fuzzers/encoder_fuzzer_sydr @@"
+target = "/sydr_fuzzers/file_fuzzer_sydr @@"
 jobs = 2
 
-[libfuzzer]
-path = "/fuzzers/cencoder_fuzzer"
-args = "-rss_limit_mb=8192 -timeout=10 -jobs=1000 -workers=4 /file-fuzzer_seed_corpus"
+[aflplusplus]
+args = "-t 10000 -i /corpus"
+target = "afl_fuzzers/file_fuzzer_afl"
+jobs = 4
 
 [cov]
-target = "/coverage_fuzzers/encoder_fuzzer_coverage @@"
+target = "/coverage_fuzzers/file_fuzzer_coverage @@"
