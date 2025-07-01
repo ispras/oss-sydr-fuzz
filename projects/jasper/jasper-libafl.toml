@@ -20,7 +20,7 @@ target = "/jasper_sydr -f @@ -t mif -F /tmp/out -T jpg"
 jobs = 2
 
 [difuzz]
-path = "/libafl/bin/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/jasper_libafl_target -f @@ -t mif -F /tmp/out -T jpg"
 args = "-j4 -l64 -i /corpus -e /ets_jasper.toml"
 casr_bin = "/jasper_casr"

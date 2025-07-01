@@ -4,7 +4,9 @@ cxxfilt is a tool for demangling C++ symbols.
 
 ## Build LibAFL-DiFuzz Docker
 
-    $ sudo docker build --build-arg BASE_IMAGE="LIBAFL_DOCKER_NAME" -t oss-sydr-fuzz-libafl-cxxfilt -f ./Dockerfile_libafl .
+Pass `sydr.zip` as an argument:
+
+    $ sudo docker build --build-arg SYDR_ARCHIVE="sydr.zip" -t oss-sydr-fuzz-libafl-cxxfilt -f ./Dockerfile_libafl .
 
 ## Run Hybrid Fuzzing
 

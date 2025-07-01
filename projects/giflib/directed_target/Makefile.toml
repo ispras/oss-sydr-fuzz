@@ -18,18 +18,20 @@
 [env]
 PROJECT_DIR = { script = ["pwd"] }
 EXAMPLE_DIR = { value = "/giflib-bugs-74" }
-LIBAFL_DIR = { value = "/libafl", condition = { env_not_set = ["LIBAFL_DIR"] } }
+DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
+DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
+OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
 DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls strong", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
 PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
-LIBAFL_CC = '${LIBAFL_DIR}/bin/libafl_cc'
-LIBAFL_CXX = '${LIBAFL_DIR}/bin/libafl_cxx'
-FUZZER = '${LIBAFL_DIR}/bin/libafl_difuzz'
-ETS_SHARED_MANAGER = '${LIBAFL_DIR}/bin/ETSSharedManager'
-TARGET = '${OUT_DIR}/giflib_libafl_target'
+LIBAFL_CC = '${DIFUZZ_DIR_ABS}/libafl_cc'
+LIBAFL_CXX = '${DIFUZZ_DIR_ABS}/libafl_cxx'
+FUZZER = '${DIFUZZ_DIR_ABS}/libafl_difuzz'
+ETS_SHARED_MANAGER = '${DIFUZZ_DIR_ABS}/ETSSharedManager'
+TARGET = '${OUT_DIR_ABS}/giflib_libafl_target'
 
 [tasks.unsupported]
 script_runner = "@shell"
@@ -50,7 +52,7 @@ export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CXXFLAGS="-g"
 ${PROJECT_DIR}/build_libafl_giflib.sh
-mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR}/giflib_sydr
+mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR_ABS}/giflib_sydr
 '''
 
 [tasks.casr]
@@ -66,7 +68,7 @@ export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 ${PROJECT_DIR}/build_libafl_giflib.sh
-mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR}/giflib_casr
+mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR_ABS}/giflib_casr
 '''
 
 [tasks.coverage]
@@ -81,10 +83,10 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-${LIBAFL_DIR}/scripts/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
 ${PROJECT_DIR}/build_libafl_giflib.sh
-mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR}/giflib_cov
-${LIBAFL_DIR}/scripts/insert_forkserver.py --sig -a remove -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
+mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR_ABS}/giflib_cov
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
 '''
 
 [tasks.difuzz]
@@ -99,11 +101,11 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
 export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
-python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
-cd ${OUT_DIR}
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
+cd ${OUT_DIR_ABS}
 ${PROJECT_DIR}/build_libafl_giflib.sh
-${LIBAFL_DIR}/bin/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/util/gifsponge -e ${OUT_DIR}/ets_giflib.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/util/gifsponge -e ${OUT_DIR_ABS}/ets_giflib.toml ${DIFUZZ_ARGS}
 '''
 
 # Harness
@@ -121,14 +123,14 @@ export CXX=${LIBAFL_CXX}
 export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
 ${ETS_SHARED_MANAGER} -a remove -n giflib
 ${ETS_SHARED_MANAGER} -a create -n giflib
-${ETS_SHARED_MANAGER} -a parse -n giflib -i ${OUT_DIR}/ets_giflib.toml
-python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a uncomment -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
+${ETS_SHARED_MANAGER} -a parse -n giflib -i ${OUT_DIR_ABS}/ets_giflib.toml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
 export LIBAFL_SHARED_NAME="giflib"
 ${PROJECT_DIR}/build_libafl_giflib.sh
-mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR}/giflib_libafl_target
-${ETS_SHARED_MANAGER} -a dump -n giflib -o ${OUT_DIR}/ets_giflib.toml
+mv ${EXAMPLE_DIR}/build/util/gifsponge ${OUT_DIR_ABS}/giflib_libafl_target
+${ETS_SHARED_MANAGER} -a dump -n giflib -o ${OUT_DIR_ABS}/ets_giflib.toml
 ${ETS_SHARED_MANAGER} -a remove -n giflib
-python3 ${LIBAFL_DIR}/scripts/insert_forkserver.py -a remove -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f ${EXAMPLE_DIR}/util/gifsponge.c
 '''
 dependencies = ["difuzz"]
 

@@ -20,7 +20,7 @@ target = "/objdump_sydr -SD @@"
 jobs = 2
 
 [difuzz]
-path = "/libafl/bin/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/objdump_libafl_target -SD @@"
 args = "-j4 -l64 -i /corpus -e /ets_objdump.toml"
 casr_bin = "/objdump_casr"

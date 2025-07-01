@@ -20,7 +20,7 @@ target = "/giflib_sydr"
 jobs = 2
 
 [difuzz]
-path = "/libafl/bin/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/giflib_libafl_target"
 args = "-j4 -l64 -i /corpus -e /ets_giflib.toml"
 casr_bin = "/giflib_casr"

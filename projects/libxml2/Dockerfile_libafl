@@ -14,8 +14,10 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE=""
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
+
+ARG SYDR_ARCHIVE
 
 WORKDIR /
 
@@ -34,6 +36,8 @@ COPY directed_target /directed_target
 WORKDIR /directed_target
 
 # Build libxml for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
 RUN OUT_DIR=/ cargo make all
 
 # Prepare seed corpus.

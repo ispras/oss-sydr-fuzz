@@ -20,7 +20,7 @@ target = "/libming_sydr @@"
 jobs = 2
 
 [difuzz]
-path = "/libafl/bin/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/libming_libafl_target @@"
 args = "-j4 -l64 -i /corpus -e /ets_libming.toml"
 casr_bin = "/libming_casr"

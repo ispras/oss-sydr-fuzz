@@ -4,7 +4,9 @@ libming is a Flash (SWF) output library.
 
 ## Build LibAFL-DiFuzz Docker
 
-    $ sudo docker build --build-arg BASE_IMAGE="LIBAFL_DOCKER_NAME" -t oss-sydr-fuzz-libafl-libming -f ./Dockerfile_libafl .
+Pass `sydr.zip` as an argument:
+
+    $ sudo docker build --build-arg SYDR_ARCHIVE="sydr.zip" -t oss-sydr-fuzz-libafl-libming -f ./Dockerfile_libafl .
 
 ## Run Hybrid Fuzzing
 

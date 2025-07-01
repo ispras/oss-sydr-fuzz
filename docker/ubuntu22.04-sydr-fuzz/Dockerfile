@@ -125,7 +125,7 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
 # Install Go
 RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.22.9 && \
+    SHELL="bash" ./installer_linux -version=1.23.0 && \
     rm -rf ./installer_linux
 
 ENV GOPATH=/root/go
@@ -134,10 +134,13 @@ ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
 # Install Jazzer
-RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
-    git checkout d2cbfdcfc5363593f36cd972b849cc3ab070c90a && \
+    git checkout efbc6354e412ce221ad3b18a6fdd32bf12241825 && \
+    echo "bazel_dep(name = \"rules_python\", version = \"0.23.0\", dev_dependency = True)" >> MODULE.bazel && \
+    echo "python = use_extension(\"@rules_python//python/extensions:python.bzl\", \"python\")" >> MODULE.bazel && \
+    echo "python.toolchain(is_default = True, python_version = \"3.10\", ignore_root_user_error = True)" >> MODULE.bazel && \
     bazel build --java_runtime_version=local_jdk_17 -c opt \
     --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
     cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
@@ -211,3 +214,19 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     git checkout v4.30c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
+
+# Install LibAFL-DiFuzz
+RUN cargo install --locked sccache
+RUN cargo install cargo-make
+
+ENV HOME=/root
+RUN curl -fsSL https://pyenv.run | bash
+ENV PYENV_ROOT="$HOME/.pyenv"
+ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+RUN pyenv install 3.11 && pyenv install 3.8
+RUN eval "$(pyenv init - bash)" 
+RUN pyenv exec python3 -m pip install wllvm watchdog scipy numpy concurrencytest psutil toml coverage
+
+ENV PATH=$PATH:/fuzz/sydr/difuzz
+
+RUN apt-get install -y libboost-all-dev

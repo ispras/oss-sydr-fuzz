@@ -22,7 +22,7 @@ target = "/save_sydr @@"
 jobs = 2
 
 [difuzz]
-path = "/libafl/bin/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/save_libafl @@"
 args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
 casr_bin = "/save_casr"

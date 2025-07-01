@@ -22,7 +22,7 @@ target = "/load_sydr @@"
 jobs = 2
 
 [difuzz]
-path = "/libafl/bin/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/load_libafl @@"
 args = "-j4 -l64 -i /corpus -e /ets_load.toml"
 casr_bin = "/load_casr"

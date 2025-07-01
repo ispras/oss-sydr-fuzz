@@ -4,7 +4,9 @@ objdump is a tool for displaying information about one or more object files.
 
 ## Build LibAFL-DiFuzz Docker
 
-    $ sudo docker build --build-arg BASE_IMAGE="LIBAFL_DOCKER_NAME" -t oss-sydr-fuzz-libafl-objdump -f ./Dockerfile_libafl .
+Pass `sydr.zip` as an argument:
+
+    $ sudo docker build --build-arg SYDR_ARCHIVE="sydr.zip" -t oss-sydr-fuzz-libafl-objdump -f ./Dockerfile_libafl .
 
 ## Run Hybrid Fuzzing
 
