@@ -81,7 +81,7 @@ RUN llvm-config --version
 
 RUN python3 -m pip install coverage toml concurrencytest psutil wllvm
 
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.sh && \
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-linux-x86_64.sh && \
     mkdir /cmake && \
     bash cmake-*.sh --prefix=/cmake --exclude-subdir --skip-license && \
     ln -s /cmake/bin/cmake /bin/cmake && \
@@ -94,7 +94,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN cargo install cargo-fuzz
 
-RUN cargo install afl@0.13.5
+RUN cargo install cargo-afl
 
 RUN rustup component add llvm-tools-preview
 
@@ -125,7 +125,7 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
 # Install Go
 RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.23.0 && \
+    SHELL="bash" ./installer_linux -version=1.24.4 && \
     rm -rf ./installer_linux
 
 ENV GOPATH=/root/go
@@ -224,7 +224,7 @@ RUN curl -fsSL https://pyenv.run | bash
 ENV PYENV_ROOT="$HOME/.pyenv"
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 RUN pyenv install 3.11 && pyenv install 3.8
-RUN eval "$(pyenv init - bash)" 
+RUN eval "$(pyenv init - bash)"
 RUN pyenv exec python3 -m pip install wllvm watchdog scipy numpy concurrencytest psutil toml coverage
 
 ENV PATH=$PATH:/fuzz/sydr/difuzz

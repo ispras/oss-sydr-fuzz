@@ -50,7 +50,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-export CXXFLAGS="-g"
+export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_cxxfilt.sh
 mv ${EXAMPLE_DIR}/build/binutils/cxxfilt ${OUT_DIR_ABS}/cxxfilt_sydr
 '''
@@ -66,7 +66,8 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
+export ASAN_OPTIONS="detect_leaks=0"
 ${PROJECT_DIR}/build_libafl_cxxfilt.sh
 mv ${EXAMPLE_DIR}/build/binutils/cxxfilt ${OUT_DIR_ABS}/cxxfilt_casr
 '''
@@ -82,7 +83,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"; export CXXFLAGS="$CFLAGS"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/binutils/cxxfilt.c
 ${PROJECT_DIR}/build_libafl_cxxfilt.sh
 mv ${EXAMPLE_DIR}/build/binutils/cxxfilt ${OUT_DIR_ABS}/cxxfilt_cov
@@ -100,7 +101,8 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
+export ASAN_OPTIONS="detect_leaks=0"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/binutils/cxxfilt.c
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/binutils/cxxfilt.c
 cd ${OUT_DIR_ABS}
@@ -120,7 +122,8 @@ script = '''
 cd ${PROJECT_DIR}
 export CC=${LIBAFL_CC}
 export CXX=${LIBAFL_CXX}
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
+export ASAN_OPTIONS="detect_leaks=0"
 ${ETS_SHARED_MANAGER} -a remove -n cxxfilt
 ${ETS_SHARED_MANAGER} -a create -n cxxfilt
 ${ETS_SHARED_MANAGER} -a parse -n cxxfilt -i ${OUT_DIR_ABS}/ets_cxxfilt.toml

@@ -50,7 +50,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-export CXXFLAGS="-g"
+export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_libxml.sh
 mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_sydr
 '''
@@ -66,7 +66,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_libxml.sh
 mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_casr
 '''
@@ -82,7 +82,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"; export CXXFLAGS="$CFLAGS"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/xmllint.c
 ${PROJECT_DIR}/build_libafl_libxml.sh
 mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_cov
@@ -100,7 +100,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/xmllint.c
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/xmllint.c
 cd ${OUT_DIR_ABS}
@@ -120,7 +120,7 @@ script = '''
 cd ${PROJECT_DIR}
 export CC=${LIBAFL_CC}
 export CXX=${LIBAFL_CXX}
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
 ${ETS_SHARED_MANAGER} -a remove -n libxml
 ${ETS_SHARED_MANAGER} -a create -n libxml
 ${ETS_SHARED_MANAGER} -a parse -n libxml -i ${OUT_DIR_ABS}/ets_libxml.toml
