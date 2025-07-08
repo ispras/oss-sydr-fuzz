@@ -1,0 +1,13 @@
+diff --git a/binutils/cxxfilt.c b/binutils/cxxfilt.c
+index 2da511fe8d8..1ff7f91f6a0 100644
+--- a/binutils/cxxfilt.c
++++ b/binutils/cxxfilt.c
+@@ -165,8 +165,6 @@ hp_symbol_characters (void)
+   return "_$.<>#,*&[]:(){}";
+ }
+ 
+-extern int main (int, char **);
+-
+ int
+ main (int argc, char **argv)
+ {

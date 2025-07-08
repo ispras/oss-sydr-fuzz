@@ -14,18 +14,29 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
-jobs = 2
+ARG SYDR_ARCHIVE="./sydr.zip"
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+WORKDIR /
 
-[cov]
-target = "/save_cov @@"
+# Clone target from GitHub.
+RUN git clone https://git.code.sf.net/p/giflib/code giflib-bugs-74
+
+WORKDIR /giflib-bugs-74
+
+RUN git checkout 72e31ff && git submodule update --init --recursive
+
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
+
+WORKDIR /directed_target
+
+# Build giflib for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
+
+# Prepare seed corpus.
+RUN mkdir /corpus; echo "GIF" > /corpus/in

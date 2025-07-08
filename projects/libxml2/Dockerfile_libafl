@@ -22,27 +22,23 @@ ARG SYDR_ARCHIVE="./sydr.zip"
 WORKDIR /
 
 # Clone target from GitHub.
-RUN git clone https://github.com/tfussell/xlnt
+RUN git clone https://gitlab.gnome.org/GNOME/libxml2.git libxml2_ef709ce2
 
-WORKDIR /xlnt
+WORKDIR /libxml2_ef709ce2
 
-# Checkout specified commit. It could be updated later.
-RUN git checkout 3a279fcaab3432bb851c7976d4591f9505c3462a && git submodule update --init --recursive
-
-# Copy build script and targets.
-COPY save.cc load.cc ./
+RUN git checkout ef709ce2 && git submodule update --init --recursive
+COPY patch /
+RUN git apply /patch
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
 
 WORKDIR /directed_target
 
-# Build xlnt for LibAFL-DiFuzz.
+# Build libxml for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
 RUN OUT_DIR=/ cargo make all
 
 # Prepare seed corpus.
-RUN mkdir /corpus && find /xlnt -name "*.xlsx" | xargs -I {} cp {} /corpus
-RUN cp -r /corpus /save_corpus
-RUN for file in /save_corpus/*; do sed -i '1s/^/\x00\x05/' $file; done
+RUN mkdir /corpus; cp -r /libxml2_ef709ce2/test/dtd* /corpus; cp -r /libxml2_ef709ce2/test/dtds/* /corpus; rm /corpus/dtd1

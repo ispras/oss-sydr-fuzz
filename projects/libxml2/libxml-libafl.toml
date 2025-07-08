@@ -14,18 +14,16 @@
 #
 ################################################################################
 
-exit-on-time = 7200
-
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
+target = "/libxml_sydr --valid --recover @@"
 jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+target = "/libxml_libafl_target --valid --recover @@"
+args = "-j4 -l64 -i /corpus -e /ets_libxml.toml"
+casr_bin = "/libxml_casr"
 
 [cov]
-target = "/save_cov @@"
+target = "/libxml_cov --valid --recover @@"

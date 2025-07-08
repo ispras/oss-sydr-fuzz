@@ -14,18 +14,14 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+#!/bin/bash -eu
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
-jobs = 2
+# Build LibAFL-DiFuzz giflib target.
+cd /giflib-bugs-74
+rm -rf build && mkdir -p build/temp
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+export ADDITIONAL="-g"
 
-[cov]
-target = "/save_cov @@"
+./autogen.sh; make distclean
+cd build; CFLAGS="$ADDITIONAL $CFLAGS" CXXFLAGS="$ADDITIONAL $CXXFLAGS" ../configure --disable-shared --prefix=`pwd`
+make clean; make -j4

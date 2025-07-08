@@ -14,18 +14,13 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+#!/bin/bash -eu
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
-jobs = 2
+# Build LibAFL-DiFuzz cxxfilt target.
+cd /cxxfilt-CVE-2016-4487
+rm -rf build && mkdir -p build/temp
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+export ADDITIONAL="-DFORTIFY_SOURCE=2 -fstack-protector-all -fno-omit-frame-pointer -g -Wno-error"
 
-[cov]
-target = "/save_cov @@"
+cd build; CFLAGS="$ADDITIONAL $CFLAGS" CXXFLAGS="$ADDITIONAL $CXXFLAGS" LDFLAGS="-ldl -lutil" ../configure --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-ld
+make clean; make

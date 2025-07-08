@@ -14,18 +14,31 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
-jobs = 2
+ARG SYDR_ARCHIVE="./sydr.zip"
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+WORKDIR /
 
-[cov]
-target = "/save_cov @@"
+# Clone target from GitHub.
+RUN git clone https://github.com/mdadams/jasper.git jasper-CVE-2015-5221
+
+WORKDIR /jasper-CVE-2015-5221
+
+RUN git checkout 142245b && git submodule update --init --recursive
+COPY patch /
+RUN git apply /patch
+
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
+
+WORKDIR /directed_target
+
+# Build jasper for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
+
+# Prepare seed corpus.
+RUN mkdir /corpus; echo "" > /corpus/in

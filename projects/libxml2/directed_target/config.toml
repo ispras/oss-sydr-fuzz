@@ -14,18 +14,28 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+[[target]]
+file = "/libxml2_ef709ce2/valid.c"
+line = 2637
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
-jobs = 2
+[[target]]
+file = "/libxml2_ef709ce2/valid.c"
+line = 2638
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+[[target]]
+file = "/libxml2_ef709ce2/valid.c"
+line = 2639
 
-[cov]
-target = "/save_cov @@"
+[[target]]
+file = "/libxml2_ef709ce2/valid.c"
+line = 2640
+
+# Targets from AFLGO
+[[target]]
+file = "/libxml2_ef709ce2/valid.c"
+line = 1189
+
+# Additional target
+[[target]]
+file = "/libxml2_ef709ce2/valid.c"
+line = 1181

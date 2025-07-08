@@ -17,12 +17,12 @@
 # Variables
 [env]
 PROJECT_DIR = { script = ["pwd"] }
-EXAMPLE_DIR = { value = "/xlnt" }
+EXAMPLE_DIR = { value = "/libxml2_ef709ce2" }
 DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
-DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls weak", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls strong", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
@@ -31,6 +31,7 @@ LIBAFL_CC = '${DIFUZZ_DIR_ABS}/libafl_cc'
 LIBAFL_CXX = '${DIFUZZ_DIR_ABS}/libafl_cxx'
 FUZZER = '${DIFUZZ_DIR_ABS}/libafl_difuzz'
 ETS_SHARED_MANAGER = '${DIFUZZ_DIR_ABS}/ETSSharedManager'
+TARGET = '${OUT_DIR_ABS}/libxml_libafl_target'
 
 [tasks.unsupported]
 script_runner = "@shell"
@@ -50,10 +51,8 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
-${PROJECT_DIR}/build_libafl_load.sh
-mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR_ABS}/load_sydr
-${PROJECT_DIR}/build_libafl_save.sh
-mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR_ABS}/save_sydr
+${PROJECT_DIR}/build_libafl_libxml.sh
+mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_sydr
 '''
 
 [tasks.casr]
@@ -68,10 +67,8 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
-${PROJECT_DIR}/build_libafl_load.sh
-mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR_ABS}/load_casr
-${PROJECT_DIR}/build_libafl_save.sh
-mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR_ABS}/save_casr
+${PROJECT_DIR}/build_libafl_libxml.sh
+mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_casr
 '''
 
 [tasks.coverage]
@@ -86,12 +83,10 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"; export CXXFLAGS="$CFLAGS"
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f /opt/StandaloneFuzzTargetMain.c
-${PROJECT_DIR}/build_libafl_load.sh
-mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR_ABS}/load_cov
-${PROJECT_DIR}/build_libafl_save.sh
-mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR_ABS}/save_cov
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/xmllint.c
+${PROJECT_DIR}/build_libafl_libxml.sh
+mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_cov
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f ${EXAMPLE_DIR}/xmllint.c
 '''
 
 [tasks.difuzz]
@@ -106,13 +101,11 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f /opt/StandaloneFuzzTargetMain.c
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f /opt/StandaloneFuzzTargetMain.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/xmllint.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/xmllint.c
 cd ${OUT_DIR_ABS}
-${PROJECT_DIR}/build_libafl_load.sh
-${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/load_libafl -e ${OUT_DIR_ABS}/ets_load.toml ${DIFUZZ_ARGS}
-${PROJECT_DIR}/build_libafl_save.sh
-${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/save_libafl -e ${OUT_DIR_ABS}/ets_save.toml ${DIFUZZ_ARGS}
+${PROJECT_DIR}/build_libafl_libxml.sh
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/xmllint -e ${OUT_DIR_ABS}/ets_libxml.toml ${DIFUZZ_ARGS}
 '''
 
 # Harness
@@ -128,24 +121,16 @@ cd ${PROJECT_DIR}
 export CC=${LIBAFL_CC}
 export CXX=${LIBAFL_CXX}
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
-${ETS_SHARED_MANAGER} -a remove -n xlnt_load
-${ETS_SHARED_MANAGER} -a remove -n xlnt_save
-${ETS_SHARED_MANAGER} -a create -n xlnt_load
-${ETS_SHARED_MANAGER} -a create -n xlnt_save
-${ETS_SHARED_MANAGER} -a parse -n xlnt_load -i ${OUT_DIR_ABS}/ets_load.toml
-${ETS_SHARED_MANAGER} -a parse -n xlnt_save -i ${OUT_DIR_ABS}/ets_save.toml
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f /opt/StandaloneFuzzTargetMain.c
-export LIBAFL_SHARED_NAME="xlnt_load"
-${PROJECT_DIR}/build_libafl_load.sh
-mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR_ABS}/load_libafl
-export LIBAFL_SHARED_NAME="xlnt_save"
-${PROJECT_DIR}/build_libafl_save.sh
-mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR_ABS}/save_libafl
-${ETS_SHARED_MANAGER} -a dump -n xlnt_load -o ${OUT_DIR_ABS}/ets_load.toml
-${ETS_SHARED_MANAGER} -a dump -n xlnt_save -o ${OUT_DIR_ABS}/ets_save.toml
-${ETS_SHARED_MANAGER} -a remove -n xlnt_load
-${ETS_SHARED_MANAGER} -a remove -n xlnt_save
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
+${ETS_SHARED_MANAGER} -a remove -n libxml
+${ETS_SHARED_MANAGER} -a create -n libxml
+${ETS_SHARED_MANAGER} -a parse -n libxml -i ${OUT_DIR_ABS}/ets_libxml.toml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f ${EXAMPLE_DIR}/xmllint.c
+export LIBAFL_SHARED_NAME="libxml"
+${PROJECT_DIR}/build_libafl_libxml.sh
+mv ${EXAMPLE_DIR}/build/xmllint ${OUT_DIR_ABS}/libxml_libafl_target
+${ETS_SHARED_MANAGER} -a dump -n libxml -o ${OUT_DIR_ABS}/ets_libxml.toml
+${ETS_SHARED_MANAGER} -a remove -n libxml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f ${EXAMPLE_DIR}/xmllint.c
 '''
 dependencies = ["difuzz"]
 
@@ -158,7 +143,7 @@ windows_alias = "unsupported"
 [tasks.run_unix]
 script_runner = "@shell"
 script = '''
-LIBAFL_DEBUG_OUTPUT=1 ${FUZZER} -- ${TARGET} @@
+LIBAFL_DEBUG_OUTPUT=1 ${FUZZER} -- ${TARGET}
 '''
 dependencies = ["target"]
 
@@ -167,7 +152,7 @@ dependencies = ["target"]
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-rm -rf corpus crashes target difuzz difuzz_target_* debug_* coverage_* ets.toml fuzzer.log target.log .cur_input* xlnt
+rm -rf corpus crashes target difuzz *_libafl_target *_sydr *_casr *_cov ets_*.toml fuzzer.log target.log .cur_input*
 pkill difuzz_ || true
 '''
 
