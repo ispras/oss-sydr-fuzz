@@ -23,7 +23,10 @@ RUN apt-get update && apt-get install --yes cmake mercurial
 RUN git clone https://gitlab.com/libeigen/eigen.git && cd eigen && git checkout 6de0515fa6b923a8fc1436e3b8c6f2a4ce565484
 
 COPY build.sh *.cc /
-COPY corpus_solver /corpus_solver
-COPY corpus_basicstuff /corpus_basicstuff
+COPY corpus_solver.tar.xz /corpus_solver.tar.xz
+COPY corpus_basicstuff.tar.xz /corpus_basicstuff.tar.xz
+
+# unzip corpus and rm archives
+RUN tar --extract corpus_solver -f corpus_solver.tar.xz && tar --extract corpus_basicstuff -f corpus_basicstuff.tar.xz && rm corpus_solver.tar.xz corpus_basicstuff.tar.xz
 
 RUN /build.sh
