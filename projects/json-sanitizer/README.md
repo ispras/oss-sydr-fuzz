@@ -32,4 +32,4 @@ Minimize corpus:
 
 Collect and report coverage:
 
-    # sydr-fuzz -c DenylistFuzzer.toml cov-html -s /json-sanitizer/src/main/java
+    # sydr-fuzz -c DenylistFuzzer.toml cov-html
