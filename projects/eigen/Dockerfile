@@ -17,14 +17,13 @@
 
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
+
 RUN apt-get update && apt-get install --yes cmake mercurial
-RUN git clone https://gitlab.com/libeigen/eigen.git
+# checkout to latest commit that passed all pipeline stages
+RUN git clone https://gitlab.com/libeigen/eigen.git && cd eigen && git checkout 6de0515fa6b923a8fc1436e3b8c6f2a4ce565484
 
 COPY build.sh *.cc /
+COPY corpus_solver /corpus_solver
+COPY corpus_basicstuff /corpus_basicstuff
 
-WORKDIR /eigen
-
-# latest commit that passed all pipeline stages
-RUN git checkout 6de0515fa6b923a8fc1436e3b8c6f2a4ce565484
-COPY build.sh *.cc /
 RUN /build.sh

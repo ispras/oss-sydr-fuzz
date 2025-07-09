@@ -16,15 +16,14 @@
 #
 ################################################################################
 
-mkdir /corpus_basicstuff
-mkdir /corpus_solver
-
 # gen for libFuzzer
 
 export CC=clang
 export CXX=clang++
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+
+cd eigen
 
 mkdir build_dir && cd build_dir
 cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS=$CXXFLAGS -DCMAKE_C_FLAGS=$CFLAGS ..

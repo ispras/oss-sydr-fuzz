@@ -21,6 +21,7 @@ target = "/solver_sydr @@"
 [aflplusplus]
 args = "-i /corpus_solver"
 target = "/solver_afl @@"
+jobs = 4
 
 [cov]
 target = "/solver_cov @@"

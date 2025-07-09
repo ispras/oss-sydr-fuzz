@@ -41,8 +41,7 @@ Crash triage with CASR:
 
 Get LCOV HTML coverage report:
 
-    # sydr-fuzz -c basicstuff-lf.toml cov-export -- -format=lcov > eigen.lcov
-    # genhtml -o eigen-html eigen.lcov
+    # sydr-fuzz -c basicstuff-lf.toml cov-html   
 
 ## Hybrid Fuzzing with AFL++:
 

@@ -20,7 +20,7 @@ target = "/solver_sydr @@"
 
 [libfuzzer]
 path = "/solver_fuzzer"
-args = "-jobs=1000 -workers=8 /corpus_solver"
+args = "-jobs=100 -workers=4 /corpus_solver"
 
 [cov]
 target = "/solver_cov @@"

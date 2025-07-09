@@ -21,6 +21,7 @@ target = "/basicstuff_sydr @@"
 [aflplusplus]
 args = "-i /corpus_basicstuff"
 target = "/basicstuff_afl @@"
+jobs = 4
 
 [cov]
 target = "/basicstuff_cov @@"
