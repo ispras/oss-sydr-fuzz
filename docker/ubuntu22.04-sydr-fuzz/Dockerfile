@@ -221,7 +221,7 @@ ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsonc
 
 # Install AFLplusplus
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.30c && export CC=clang && export CXX=clang++ && \
+    git checkout v4.33c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 

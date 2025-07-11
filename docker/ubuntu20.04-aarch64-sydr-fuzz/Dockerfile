@@ -54,7 +54,7 @@ RUN ln -s /usr/bin/clang-14 /usr/bin/clang && \
 RUN python3 -m pip install coverage toml concurrencytest psutil
 
 # Install Cmake
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-aarch64.sh && \
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-linux-aarch64.sh && \
     mkdir /cmake && \
     bash cmake-*.sh --prefix=/cmake --exclude-subdir --skip-license && \
     ln -s /cmake/bin/cmake /bin/cmake && \
@@ -66,9 +66,9 @@ RUN git clone https://github.com/ninja-build/ninja.git && cd ninja && \
     mv build-cmake/ninja /usr/bin && cd .. && rm -rf ninja
 
 # Install Go
-RUN wget https://go.dev/dl/go1.22.9.linux-arm64.tar.gz && \
-    tar -C /root -xf go1.22.9.linux-arm64.tar.gz && \
-    mv /root/go /root/.go && rm go1.22.9.linux-arm64.tar.gz
+RUN wget https://go.dev/dl/go1.24.4.linux-arm64.tar.gz && \
+    tar -C /root -xf go1.24.4.linux-arm64.tar.gz && \
+    mv /root/go /root/.go && rm go1.24.4.linux-arm64.tar.gz
 
 ENV GOPATH=/root/go
 ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
@@ -82,7 +82,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN cargo install cargo-fuzz
 
-RUN cargo install afl@0.13.5
+RUN cargo install cargo-afl
 
 RUN rustup component add llvm-tools-preview
 
@@ -108,7 +108,7 @@ ENV AFL_SYNC_TIME=1
 ENV IS_DOCKER="1"
 
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.30c && export CC=clang-14 && export CXX=clang++-14 && \
+    git checkout v4.33c && export CC=clang-14 && export CXX=clang++-14 && \
     export LD_LIBRARY_PATH="$(llvm-config-14 --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
