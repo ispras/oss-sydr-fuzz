@@ -19,7 +19,7 @@ FROM $BASE_IMAGE
 
 # Install build dependencies.
 WORKDIR /jazzer.js
-RUN npm install xml2js
+RUN npm install xml2js@0.6.2
 ENV PATH=$PATH:/jazzer.js/fuzz/sydr
 
 # Clone target from GitHub.
