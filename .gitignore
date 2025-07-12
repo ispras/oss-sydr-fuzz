@@ -9,3 +9,4 @@ oom-*
 slow-*
 *.swp
 *-out/
+**/build-config/target/
