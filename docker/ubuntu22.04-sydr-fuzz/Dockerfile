@@ -22,6 +22,16 @@ RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
     cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
     rm -rf gdb-*
 
+# Install Boost 1.71
+RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb \
+    && apt install -y ./libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb
+RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-filesystem1.71.0_1.71.0-6ubuntu6_amd64.deb \
+    && apt install -y ./libboost-filesystem1.71.0_1.71.0-6ubuntu6_amd64.deb
+RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb \
+    && apt install -y ./libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb
+RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb \
+    && apt install -y ./libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb
+
 # Install LLVM-18
 RUN wget https://apt.llvm.org/llvm.sh
 RUN chmod +x llvm.sh
@@ -53,7 +63,7 @@ RUN update-alternatives \
     --slave   /usr/bin/llvm-tblgen       llvm-tblgen      /usr/bin/llvm-tblgen-${version} \
     --slave   /usr/bin/llvm-objcopy      llvm-objcopy     /usr/bin/llvm-objcopy-${version} \
     --slave   /usr/bin/llvm-strip        llvm-strip       /usr/bin/llvm-strip-${version}
-                                                                                 
+
 RUN update-alternatives \
     --verbose \
     --install /usr/bin/clang                 clang                 /usr/bin/clang-${version} ${priority} \
