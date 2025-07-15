@@ -1,4 +1,5 @@
-# Copyright 2025 ISP RAS
+# Copyright 2019 Google Inc.
+# Modifications copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,32 +15,11 @@
 #
 ################################################################################
 
-
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
-ARG CMAKE_VERSION=3.27.6
 
-RUN apt-get update && apt-get install -y \
-    autoconf \
-    automake \
-    build-essential \
-    cmake \
-    libbrotli-dev \
-    libtool \
-    make \
-    mercurial \
-    pkg-config \
-    yasm \
-    zlib1g-dev
-
-WORKDIR /opt
-RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
-    tar -xzf cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
-    mv cmake-${CMAKE_VERSION}-linux-x86_64 /opt/cmake && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
-    rm cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
-
-WORKDIR /src
+RUN apt-get update && \
+    apt-get install -y libbrotli-dev mercurial yasm
     
 RUN git clone https://github.com/strukturag/libde265.git libde265 && \
     cd libde265 && \
@@ -55,7 +35,6 @@ RUN git clone \
     https://aomedia.googlesource.com/aom \
     aom
 
-
 RUN git clone https://github.com/strukturag/libheif.git libheif && \
     cd libheif && \
     git checkout 83617f6e49e247f274b6d8826548ff6a63f56e5a
@@ -63,5 +42,3 @@ RUN git clone https://github.com/strukturag/libheif.git libheif && \
 COPY build.sh build.sh  
 
 RUN chmod +x build.sh && ./build.sh
-
-RUN rm -rf build.sh
