@@ -77,7 +77,7 @@ make install
 cd /pytorch
 
 # clean artifacts from previous build pytorch
-rm -rf build CMakaCache.txt CMakeFiles/
+rm -rf build CMakeCache.txt CMakeFiles/
 mkdir build && cd build
 
 # Build pytorch
@@ -151,7 +151,7 @@ cmake --install .
 cd /audio
 
 #clean artifacts from previous build audio
-rm -rf build CMakaCache.txt CMakeFiles/
+rm -rf build CMakeCache.txt CMakeFiles/
 
 #build audio
 Torch_DIR=/pytorch/ \
@@ -159,7 +159,7 @@ Torch_DIR=/pytorch/ \
     -DCMAKE_C_COMPILER=$CC \
     -DCMAKE_CXX_COMPILER=$CXX \
     -DCMAKE_C_FLAGS="$CFLAGS" \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -std=c++17" \
     -DCMAKE_CXX_STANDARD=17 \
     -DENGINE=$ENGINE \
     -DSUFFIX=$SUFFIX \
@@ -168,9 +168,8 @@ Torch_DIR=/pytorch/ \
     -Dfoxi_loader_LIBRARY=/pytorch/build/lib/libfoxi_loader.a \
     -DCMAKE_C_COMPILER_ID=GNU \
     -DCMAKE_CXX_COMPILER_ID=GNU \
-    -DCMAKE_BUILD_RPATH="/pytorch/build/lib" \
     -DBUILD_SHARED_LIBS=OFF \
-    -G Ninja
+    -G Ninja \
     -S . -B build/
 
 
