@@ -22,7 +22,7 @@ jobs = 2
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/cxxfilt_libafl_target"
-args = "-j4 -l64 -i /corpus -e /ets_cxxfilt.toml"
+args = "-j4 --sync-jobs 4 --sync-limit 400 -l64 -i /corpus -e /ets_cxxfilt.toml"
 casr_bin = "/cxxfilt_casr"
 
 [cov]

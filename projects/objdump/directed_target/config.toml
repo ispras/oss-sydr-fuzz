@@ -62,7 +62,3 @@ line = 4001
 [[target]]
 file = "/CVE-2017-8392/bfd/section.c"
 line = 1395
-
-[[target]]
-file = "/CVE-2017-8392/bfd/libc-start.c"
-line = 287
