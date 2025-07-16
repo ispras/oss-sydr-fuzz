@@ -61,24 +61,13 @@ RUN cd /libsox && \
     git checkout 42b3557e13e0fe01a83465b672d89faddbe65f49 && \
     git apply /libsox.patch
 
-COPY build/build_libfuzzer.sh /
-COPY build/build_sydr.sh /
-COPY build/build_afl.sh /
-COPY build/build_coverage.sh /
-
 COPY build.sh /
 COPY load_audio.cc /audio
-
 
 RUN CONFIGS="libfuzzer" /build.sh
 RUN CONFIGS="sydr" /build.sh
 RUN CONFIGS="coverage" /build.sh
 RUN CONFIGS="afl" /build.sh
-
-#RUN /build_libfuzzer.sh
-#RUN /build_sydr.sh
-#RUN /build_afl.sh
-#RUN /build_coverage.sh
 
 # Prepare corporas.
 RUN mkdir wav_corpus
