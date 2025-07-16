@@ -19,7 +19,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "io.h"
+#include "src/libtorchaudio/sox/io.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     char audio_path[24] = {0};
