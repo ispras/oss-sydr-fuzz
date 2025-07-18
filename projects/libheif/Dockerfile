@@ -41,4 +41,10 @@ RUN git clone https://github.com/strukturag/libheif.git libheif && \
 
 COPY build.sh build.sh  
 
-RUN chmod +x build.sh && ./build.sh
+RUN TARGET="fuzz" /build.sh
+RUN TARGET="afl" /build.sh
+RUN TARGET="cov" /build.sh
+RUN TARGET="sydr" /build.sh
+
+RUN cp /libheif/fuzzing/data/dictionary.txt /fuzzer.dict
+RUN cp -r /libheif/fuzzing/data/corpus /corpus 
