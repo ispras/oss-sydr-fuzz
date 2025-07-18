@@ -1,4 +1,6 @@
-# Copyright 2025 ISP RAS
+#!/bin/bash -eu
+# Copyright 2019 Google Inc.
+# Modifications copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +16,41 @@
 #
 ################################################################################
 
+if [[ $TARGET == "fuzz" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS=$CFLAGS
+    export LIB_FUZZING_ENGINE=`find /usr/lib -name "libclang_rt.fuzzer-x86_64.a" | head -n1`
+elif [[ $TARGET == "afl" ]]
+then
+    export CC=afl-clang-fast
+    export CXX=afl-clang-fast++
+    export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS=$CFLAGS
+    export LIB_FUZZING_ENGINE="/usr/local/lib/afl/libAFLDriver.a"
+elif [[ $TARGET == "sydr" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g"
+    export CXXFLAGS=$CFLAGS
+    clang -c /opt/StandaloneFuzzTargetMain.c -o /StandaloneFuzzTargetMain.o
+    export LIB_FUZZING_ENGINE=/StandaloneFuzzTargetMain.o
+elif [[ $TARGET == "cov" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+    export CXXFLAGS=$CFLAGS
+    clang -c /opt/StandaloneFuzzTargetMain.c -o /StandaloneFuzzTargetMain.o
+    export LIB_FUZZING_ENGINE=/StandaloneFuzzTargetMain.o
+fi
+
 
 # Build dependencies.
-export CC=clang
-export CXX=clang++
-export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
-
-export LIB_FUZZING_ENGINE=/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer-x86_64.a
-
-export DEPS_PATH="$(pwd)/deps"
+export DEPS_PATH="/deps_${TARGET}"
 mkdir -p "$DEPS_PATH"
 
 cd x265/build/linux
@@ -74,137 +101,18 @@ make install
 rm -f $DEPS_PATH/lib/*.so
 rm -f $DEPS_PATH/lib/*.so.*
 
-
-#build fuzzers
-cd ../../../libheif
-mkdir build
-cd build
+# Build project
+cd /libheif
+mkdir build_${TARGET}
+cd build_${TARGET}
 cmake .. --preset=fuzzing \
       -DFUZZING_LINKER_OPTIONS="$LIB_FUZZING_ENGINE" \
       -DFUZZING_C_COMPILER=$CC -DFUZZING_CXX_COMPILER=$CXX \
       -DWITH_DEFLATE_HEADER_COMPRESSION=OFF \
-      -DFUZZING_COMPILE_OPTIONS="-g -fsanitize=fuzzer-no-link,address,undefined"
-
+      -DFUZZING_COMPILE_OPTIONS="$CFLAGS"
 make -j$(nproc)
-
-cd ../
-
-#build coverage fuzzers
-export CFLAGS="-O1 -fprofile-instr-generate -fcoverage-mapping"
-export CXXFLAGS="-O1 -fprofile-instr-generate -fcoverage-mapping"
-export CC=clang
-export CXX=clang++
-
-mkdir -p coverage_build
-cd coverage_build
-cmake .. --preset=fuzzing \
-    -DCMAKE_C_COMPILER=$CC \
-    -DCMAKE_CXX_COMPILER=$CXX \
-    -DCMAKE_C_FLAGS="$CFLAGS" \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-    -DWITH_DEFLATE_HEADER_COMPRESSION=OFF
-
-make -j$(nproc)
-
-#build for sydr
-
-cd ../../../
-
-clang -c /opt/StandaloneFuzzTargetMain.c -o StandaloneFuzzTargetMain.o
-
-cd src/libheif
-
-export CFLAGS="-g"
-export CXXFLAGS="-g"
-export CC=clang
-export CXX=clang++
-export LIB_FUZZING_ENGINE="/StandaloneFuzzTargetMain.o"  
-
-mkdir -p sydr_build
-cd sydr_build
-cmake .. --preset=fuzzing \
-    -DCMAKE_C_COMPILER=$CC \
-    -DCMAKE_CXX_COMPILER=$CXX \
-    -DCMAKE_C_FLAGS="$CFLAGS" \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-    -DFUZZING_ENGINE="$LIB_FUZZING_ENGINE"
-    
-make -j$(nproc)
-
-cd ../
-
-#build for AFL++
-
-export CC=afl-clang-fast
-export CXX=afl-clang-fast++
-export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-
-mkdir -p afl_build
-cd afl_build
-cmake .. --preset=fuzzing \
-    -DCMAKE_C_COMPILER=$CC \
-    -DCMAKE_CXX_COMPILER=$CXX \
-    -DWITH_DEFLATE_HEADER_COMPRESSION=OFF
-
-make -j$(nproc)
-
-cd ../
-
-#build for Honggfuzz
-
-export CC=hfuzz-clang
-export CXX=hfuzz-clang++
-export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-export CXXFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
-
-mkdir -p hfuzz_build
-cd hfuzz_build
-cmake .. --preset=fuzzing \
-    -DCMAKE_C_COMPILER=$CC \
-    -DCMAKE_CXX_COMPILER=$CXX \
-    -DCMAKE_C_FLAGS="$CFLAGS" \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-    -DWITH_DEFLATE_HEADER_COMPRESSION=OFF
-
-make -j$(nproc)
-
-cd ../../../
-
-#copy builded fuzzers
-
-mkdir fuzzers
-mkdir coverage_fuzzers
-mkdir sydr_fuzzers
-mkdir hfuzz_fuzzers
-mkdir afl_fuzzers
-
-cp src/libheif/build/fuzzing/*_fuzzer ./fuzzers
-
-for fuzzer in src/libheif/coverage_build/fuzzing/*_fuzzer; do
-  base=$(basename "$fuzzer")                
-  cp "$fuzzer" "./coverage_fuzzers/${base}_coverage"
+for fuzzer in fuzzing/*_fuzzer; do
+  name=$(basename "$fuzzer" | cut -d'_' -f1)
+  cp "$fuzzer" "/${name}_${TARGET}"
 done
-
-for fuzzer in src/libheif/sydr_build/fuzzing/*_fuzzer; do
-  base=$(basename "$fuzzer")                
-  cp "$fuzzer" "./sydr_fuzzers/${base}_sydr"
-done
-
-for fuzzer in src/libheif/afl_build/fuzzing/*_fuzzer; do
-  base=$(basename "$fuzzer")                
-  cp "$fuzzer" "./afl_fuzzers/${base}_afl"
-done
-
-for fuzzer in src/libheif/hfuzz_build/fuzzing/*_fuzzer; do
-  base=$(basename "$fuzzer")                
-  cp "$fuzzer" "./hfuzz_fuzzers/${base}_hfuzz"
-done
-
-cp src/libheif/fuzzing/data/dictionary.txt ./box-fuzzer.dict
-cp src/libheif/fuzzing/data/dictionary.txt ./file-fuzzer.dict
-
-find src/libheif/fuzzing/data/corpus -type f -name "*.heic" -exec zip -j corpus.zip {} +
-unzip corpus.zip -d corpus
-
-rm -rf corpus.zip
+cd /
