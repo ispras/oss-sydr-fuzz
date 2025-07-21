@@ -151,7 +151,7 @@ cmake --install .
 cd /audio
 
 #clean artifacts from previous build audio
-rm -rf build CMakeCache.txt CMakeFiles/
+rm -rf build
 
 #build audio
 Torch_DIR=/pytorch/ \
@@ -176,5 +176,35 @@ Torch_DIR=/pytorch/ \
 cd build
 cmake --build . -j$(nproc)
 cmake --install .
+
+cd /
+build_target(){
+    target=$1
+    echo "=========== Build target ${target}_${SUFFIX} ==========="
+
+    # Build target
+	  $CXX $CFLAGS -g -O2 -std=c++17 -c ${target}.cc -o ${target}.o \
+    -I/audio/src/libtorchaudio/sox \
+    -I/usr/local/include/torch/csrc/api/include \
+    -I/usr/local/include
+
+    echo "=========== Build target ${target}_${SUFFIX} ==========="
+
+    $CXX $LDFLAGS -g -O2 -std=c++17 ./$target.o $ENGINE \
+    -Wl,--whole-archive,"/usr/local/lib/libsox.a" -Wl,--no-whole-archive \
+    -L/usr/local/lib \
+    -ltorchaudio_sox \
+    -L/path/to/libtorch/lib \
+    -ltorch -ltorch_cpu -lc10 \
+    -ldl -lrt -lm -lpthread -lltdl \
+    -o /${target}_${SUFFIX}
+
+    echo "=========== Finish target ${target}_${SUFFIX} ==========="
+}
+
+targets=("load_audio")
+for fuzztarget in ${targets[@]}; do
+    build_target $fuzztarget
+done
 
 done

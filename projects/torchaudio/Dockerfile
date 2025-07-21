@@ -62,10 +62,10 @@ RUN cd /libsox && \
     git apply /libsox.patch
 
 COPY build.sh /
-COPY load_audio.cc /audio
+COPY load_audio.cc /
 
-RUN CONFIGS="libfuzzer" /build.sh
 RUN CONFIGS="sydr" /build.sh
+RUN CONFIGS="libfuzzer" /build.sh
 RUN CONFIGS="coverage" /build.sh
 RUN CONFIGS="afl" /build.sh
 
