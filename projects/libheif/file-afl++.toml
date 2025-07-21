@@ -16,13 +16,13 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr_fuzzers/box_fuzzer_sydr @@"
+target = "/sydr_fuzzers/file_fuzzer_sydr @@"
 jobs = 2
 
 [aflplusplus]
 args = "-t 10000 -i /corpus"
-target = "afl_fuzzers/box_fuzzer_afl"
+target = "afl_fuzzers/file_fuzzer_afl @@"
 jobs = 4
 
 [cov]
-target = "/coverage_fuzzers/box_fuzzer_coverage @@"
+target = "/coverage_fuzzers/file_fuzzer_coverage @@"
