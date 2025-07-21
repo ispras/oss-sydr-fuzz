@@ -14,18 +14,40 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 44
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/save_sydr @@"
-jobs = 2
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 76
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/save_libafl @@"
-args = "-j4 -l64 -i /save_corpus -e /ets_save.toml"
-casr_bin = "/save_casr"
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 81
 
-[cov]
-target = "/save_cov @@"
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 92
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 1144
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 802
+
+[[target]]
+file = "/giflib-bugs-74/lib/egif_lib.c"
+line = 764
+
+# Target point 1
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 59
+
+# Target from AFLGo
+[[target]]
+file = "/giflib-bugs-74/util/gifsponge.c"
+line = 62

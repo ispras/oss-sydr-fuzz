@@ -1,0 +1,119 @@
+diff --git a/src/libjasper/base/jas_getopt.c b/src/libjasper/base/jas_getopt.c
+index 2a3dfe5..28b71c4 100644
+--- a/src/libjasper/base/jas_getopt.c
++++ b/src/libjasper/base/jas_getopt.c
+@@ -126,7 +126,7 @@ int jas_getopt(int argc, char **argv, jas_opt_t *opts)
+ 				}
+ 				if (!(opt = jas_optlookup(opts, cp))) {
+ 					if (jas_opterr) {
+-						jas_eprintf("unknown long option %s\n", s);
++						//jas_eprintf("unknown long option %s\n", s);
+ 					}
+ 					return JAS_GETOPT_ERR;
+ 				}
+@@ -137,7 +137,7 @@ int jas_getopt(int argc, char **argv, jas_opt_t *opts)
+ 				if (strlen(cp) != 1 ||
+ 				  !(opt = jas_optlookup(opts, cp))) {
+ 					if (jas_opterr) {
+-						jas_eprintf("unknown short option %s\n", s);
++						//jas_eprintf("unknown short option %s\n", s);
+ 					}
+ 					return JAS_GETOPT_ERR;
+ 				}
+@@ -148,7 +148,7 @@ int jas_getopt(int argc, char **argv, jas_opt_t *opts)
+ 				/* The option has an argument. */
+ 				if (jas_optind >= argc) {
+ 					if (jas_opterr) {
+-						jas_eprintf("missing argument for option %s\n", s);
++						//jas_eprintf("missing argument for option %s\n", s);
+ 					}
+ 					return JAS_GETOPT_ERR;
+ 				}
+diff --git a/src/libjasper/bmp/bmp_dec.c b/src/libjasper/bmp/bmp_dec.c
+index 4cb0df3..3a09a50 100644
+--- a/src/libjasper/bmp/bmp_dec.c
++++ b/src/libjasper/bmp/bmp_dec.c
+@@ -107,31 +107,31 @@ jas_image_t *bmp_decode(jas_stream_t *in, char *optstr)
+ 	long n;
+ 
+ 	if (optstr) {
+-		jas_eprintf("warning: ignoring BMP decoder options\n");
++		//jas_eprintf("warning: ignoring BMP decoder options\n");
+ 	}
+ 
+-	jas_eprintf(
++	/*jas_eprintf(
+ 	  "THE BMP FORMAT IS NOT FULLY SUPPORTED!\n"
+ 	  "THAT IS, THE JASPER SOFTWARE CANNOT DECODE ALL TYPES OF BMP DATA.\n"
+ 	  "IF YOU HAVE ANY PROBLEMS, PLEASE TRY CONVERTING YOUR IMAGE DATA\n"
+ 	  "TO THE PNM FORMAT, AND USING THIS FORMAT INSTEAD.\n"
+-	  );
++	  );*/
+ 
+ 	/* Read the bitmap header. */
+ 	if (bmp_gethdr(in, &hdr)) {
+-		jas_eprintf("cannot get header\n");
++		//jas_eprintf("cannot get header\n");
+ 		return 0;
+ 	}
+ 
+ 	/* Read the bitmap information. */
+ 	if (!(info = bmp_getinfo(in))) {
+-		jas_eprintf("cannot get info\n");
++		//jas_eprintf("cannot get info\n");
+ 		return 0;
+ 	}
+ 
+ 	/* Ensure that we support this type of BMP file. */
+ 	if (!bmp_issupported(&hdr, info)) {
+-		jas_eprintf("error: unsupported BMP encoding\n");
++		//jas_eprintf("error: unsupported BMP encoding\n");
+ 		bmp_info_destroy(info);
+ 		return 0;
+ 	}
+@@ -139,11 +139,11 @@ jas_image_t *bmp_decode(jas_stream_t *in, char *optstr)
+ 	/* Skip over any useless data between the end of the palette
+ 	  and start of the bitmap data. */
+ 	if ((n = hdr.off - (BMP_HDRLEN + BMP_INFOLEN + BMP_PALLEN(info))) < 0) {
+-		jas_eprintf("error: possibly bad bitmap offset?\n");
++		//jas_eprintf("error: possibly bad bitmap offset?\n");
+ 		return 0;
+ 	}
+ 	if (n > 0) {
+-		jas_eprintf("skipping unknown data in BMP file\n");
++		//jas_eprintf("skipping unknown data in BMP file\n");
+ 		if (bmp_gobble(in, n)) {
+ 			bmp_info_destroy(info);
+ 			return 0;
+@@ -277,7 +277,7 @@ static bmp_info_t *bmp_getinfo(jas_stream_t *in)
+ 	}
+ 
+ 	if (info->enctype != BMP_ENC_RGB) {
+-		jas_eprintf("unsupported BMP encoding\n");
++		//jas_eprintf("unsupported BMP encoding\n");
+ 		bmp_info_destroy(info);
+ 		return 0;
+ 	}
+diff --git a/src/libjasper/jpc/jpc_qmfb.c b/src/libjasper/jpc/jpc_qmfb.c
+index 00d406d..accd9c2 100644
+--- a/src/libjasper/jpc/jpc_qmfb.c
++++ b/src/libjasper/jpc/jpc_qmfb.c
+@@ -285,15 +285,15 @@ double jpc_ns_hpenergywts[32] = {
+ };
+ 
+ jpc_qmfb2d_t jpc_ft_qmfb2d = {
+-	jpc_ft_analyze,
++	0,
+ 	jpc_ft_synthesize,
+ 	jpc_ft_lpenergywts,
+ 	jpc_ft_hpenergywts
+ };
+ 
+ jpc_qmfb2d_t jpc_ns_qmfb2d = {
+-	jpc_ns_analyze,
+-	jpc_ns_synthesize,
++	0,
++	0,
+ 	jpc_ns_lpenergywts,
+ 	jpc_ns_hpenergywts
+ };

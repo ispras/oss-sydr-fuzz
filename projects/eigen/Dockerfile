@@ -1,4 +1,5 @@
-# Copyright 2024 ISP RAS
+# Copyright 2019 Google Inc.
+# Modifications copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,20 +18,15 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-# Install build dependencies.
-WORKDIR /jazzer.js
-RUN npm install xml2js@0.6.2
-ENV PATH=$PATH:/jazzer.js/fuzz/sydr
+RUN apt-get update && apt-get install -y mercurial
 
-# Clone target from GitHub.
-RUN git clone https://github.com/Leonidas-from-XIV/node-xml2js && \
-    cd node-xml2js && git checkout cf3e061e22e98152b88068c2345bc02581f4d6c7
+RUN git clone https://gitlab.com/libeigen/eigen.git && cd eigen && \
+    git checkout 6de0515fa6b923a8fc1436e3b8c6f2a4ce565484
 
-# Copy build script and targets.
-COPY fuzz.js node-xml2js/
-RUN chmod +x node-xml2js/fuzz.js
+COPY build.sh *.cc *tar.xz /
 
-# Prepare seed corpus and dict.
-COPY xml.dict /
-RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus
-RUN cp -r /go-fuzz-corpus/xml/corpus /corpus
+# Prepare corpuses
+RUN tar xf corpus_solver.tar.xz && tar xf corpus_basicstuff.tar.xz \
+    && rm corpus_solver.tar.xz corpus_basicstuff.tar.xz
+
+RUN /build.sh

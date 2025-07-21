@@ -1,4 +1,4 @@
-# Copyright 2024 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,23 +14,19 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
-FROM $BASE_IMAGE
+#!/bin/bash -eu
 
-# Install build dependencies.
-WORKDIR /jazzer.js
-RUN npm install xml2js@0.6.2
-ENV PATH=$PATH:/jazzer.js/fuzz/sydr
+# Build LibAFL-DiFuzz libxml target.
+cd /libxml2_ef709ce2
+rm -rf build && mkdir -p build/temp
 
-# Clone target from GitHub.
-RUN git clone https://github.com/Leonidas-from-XIV/node-xml2js && \
-    cd node-xml2js && git checkout cf3e061e22e98152b88068c2345bc02581f4d6c7
+export LLVM_BINDIR="/usr/bin"
+export ADDITIONAL="-g"
 
-# Copy build script and targets.
-COPY fuzz.js node-xml2js/
-RUN chmod +x node-xml2js/fuzz.js
+pyenv global 3.8
 
-# Prepare seed corpus and dict.
-COPY xml.dict /
-RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git /go-fuzz-corpus
-RUN cp -r /go-fuzz-corpus/xml/corpus /corpus
+./autogen.sh; make distclean
+cd build; CFLAGS="$ADDITIONAL $CFLAGS" CXXFLAGS="$ADDITIONAL $CXXFLAGS" ../configure --with-valid --disable-shared --prefix=`pwd`
+make clean; make -j4
+
+pyenv global 3.11
