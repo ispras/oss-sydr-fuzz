@@ -37,7 +37,7 @@ Run hybrid fuzzing:
 
     # sydr-fuzz -c parse.toml run
 
-Run hybrid fuzzing with LibAFL-DiFuzz
+Run hybrid fuzzing with LibAFL-DiFuzz:
 
     # sydr-fuzz -c parse-libafl.toml run
 
