@@ -1,4 +1,4 @@
-# Copyright 2023 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,26 +16,48 @@
 
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
+ARG CMAKE_VERSION=3.27.6
 
-MAINTAINER Kobrin Eli
+RUN apt-get update && apt-get install -y \
+    autoconf \
+    automake \
+    build-essential \
+    cmake \
+    libbrotli-dev \
+    libtool \
+    make \
+    mercurial \
+    pkg-config \
+    yasm \
+    zlib1g-dev \
+    ninja-build
 
-# Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi \
-    typing_extensions
+WORKDIR /opt
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
+    tar -xzf cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
+    mv cmake-${CMAKE_VERSION}-linux-x86_64 /opt/cmake && \
+    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
+    rm cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y \
-    libpng-dev libjpeg-dev ffmpeg libavformat-dev libswscale-dev python-is-python3 nasm
+# Copy build script, patch vision.
+COPY build.sh /
 
+WORKDIR /    
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch
 RUN cd /pytorch && \
-    git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
-    git submodule update --init --recursive --jobs 0
+    git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
+    git submodule sync && \
+    git submodule update --init --recursive --jobs 0 && \
+    pip install -r requirements.txt
 
+COPY torchvision.patch /    
 RUN git clone https://github.com/pytorch/vision.git vision
 RUN cd /vision && \
-    git checkout 9d0a93eee90bf7c401b74ebf9c8be80346254f15
+    git checkout b818d320a14a2e6d9d9f28853e9e7beae703e52e && \
+    git apply /torchvision.patch
+RUN rm torchvision.patch
+
 
 # Install OpenCV
 RUN cd / && mkdir cv && cd cv/ && \
@@ -62,17 +84,20 @@ RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
 RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
 
 RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && \
+    mkdir /jpeg_raw/ && mkdir /png_raw/ && \
     mkdir /jpeg_tensor/ && mkdir /png_tensor/ && \
     mkdir /mp4_corpus/
-RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && \
-    cp -rn /fuzzing-corpus/png/*/* /png_corpus/ && \
+RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
+    cp -rn /fuzzing-corpus/png/*/* /png_raw/ && \
     cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
 
-# Copy build script, targets and patch vision build.
+# Copy targets
 COPY *.cc /vision/
-COPY build.sh CMakeLists.patch /
-RUN cd /vision && git apply /CMakeLists.patch
+
 
 # Build torchvision
-RUN CONFIGS="libfuzzer afl" /build.sh
-RUN CONFIGS="sydr coverage" /build.sh
+
+RUN CONFIGS="sydr" /build.sh
+RUN CONFIGS="libfuzzer" /build.sh
+RUN CONFIGS="coverage" /build.sh
+RUN CONFIGS="afl" /build.sh
