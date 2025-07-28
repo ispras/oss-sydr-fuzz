@@ -22,7 +22,7 @@ jobs = 2
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/libxml_libafl_target --valid --recover @@"
-args = "-j4 -l64 -i /corpus -e /ets_libxml.toml"
+args = "-j4 --sync-jobs 4 --sync-limit 800 -l64 -i /corpus -e /ets_libxml.toml"
 casr_bin = "/libxml_casr"
 
 [cov]

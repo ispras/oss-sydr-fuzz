@@ -1,0 +1,174 @@
+# Variables
+[env]
+PROJECT_DIR = { script = ["pwd"], condition = { env_not_set = ["PROJECT_DIR"] } }
+EXAMPLE_DIR = { value = "/goblin/fuzz" }
+DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
+DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
+RUST_DIR = { value = "${DIFUZZ_DIR_ABS}/rust-difuzz/bin", condition = { env_not_set = ["RUST_DIR"] } }
+RUST_DIR_ABS = { script = ["realpath ${RUST_DIR}"] }
+OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
+OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
+DIFUZZ_ARGS = { value = "--weights reverse -o difuzz -j8 --analyse-icalls strong --no-check-src", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
+  "CARGO_TARGET_DIR",
+] } }
+PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
+FUZZER = '${DIFUZZ_DIR_ABS}/libafl_difuzz'
+ETS_SHARED_MANAGER = '${DIFUZZ_DIR_ABS}/ETSSharedManager'
+TARGET = '${OUT_DIR_ABS}/difuzz_target_goblin'
+
+[tasks.unsupported]
+script_runner = "@shell"
+script = '''
+echo "Cargo-make not integrated yet on this"
+'''
+
+[tasks.debug]
+linux_alias = "debug_unix"
+mac_alias = "debug_unix"
+windows_alias = "unsupported"
+
+[tasks.debug_unix]
+script_runner = "@shell"
+script = '''
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+cargo build
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/
+'''
+
+[tasks.casr]
+linux_alias = "casr_unix"
+mac_alias = "casr_unix"
+windows_alias = "unsupported"
+
+[tasks.casr_unix]
+script_runner = "@shell"
+script = '''
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+RUSTFLAGS="-C overflow-checks=on -C debug-assertions=on -C panic=abort" cargo build
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/casr_parse
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/casr_parse_elf
+'''
+
+[tasks.coverage]
+linux_alias = "coverage_unix"
+mac_alias = "coverage_unix"
+windows_alias = "unsupported"
+
+[tasks.coverage_unix]
+script_runner = "@shell"
+script = '''
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+cargo add libc
+RUSTFLAGS="-C instrument-coverage" cargo build
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/cov_parse
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/cov_parse_elf
+'''
+
+[tasks.difuzz]
+linux_alias = "difuzz_unix"
+mac_alias = "difuzz_unix"
+windows_alias = "unsupported"
+
+[tasks.difuzz_unix]
+script_runner = "@shell"
+script = '''
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
+
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+export RUSTC=${RUST_DIR_ABS}/rustc
+RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_parse
+llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_parse.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
+${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_parse.bc -e ${OUT_DIR_ABS}/ets_parse.toml ${DIFUZZ_ARGS}
+
+cargo clean
+RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_parse_elf
+llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_parse_elf.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
+${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse_elf::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_parse_elf.bc -e ${OUT_DIR_ABS}/ets_parse_elf.toml ${DIFUZZ_ARGS}
+'''
+
+[tasks.target]
+linux_alias = "target_unix"
+mac_alias = "target_unix"
+windows_alias = "unsupported"
+
+[tasks.target_unix]
+script_runner = "@shell"
+script = '''
+cd ${EXAMPLE_DIR}
+export RUSTC=${RUST_DIR_ABS}/rustc
+export LIBAFL_PROJECT_DIR="goblin"
+${ETS_SHARED_MANAGER} -a remove -n parse
+${ETS_SHARED_MANAGER} -a remove -n parse_elf
+${ETS_SHARED_MANAGER} -a create -n parse
+${ETS_SHARED_MANAGER} -a create -n parse_elf
+${ETS_SHARED_MANAGER} -a parse -n parse -i ${OUT_DIR_ABS}/ets_parse.toml
+${ETS_SHARED_MANAGER} -a parse -n parse_elf -i ${OUT_DIR_ABS}/ets_parse_elf.toml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
+
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+export LIBAFL_SHARED_NAME="parse"
+cargo clean
+cargo build --bin sydr_parse
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/parse_libafl_target
+export LIBAFL_SHARED_NAME="parse_elf"
+cargo clean
+cargo build --bin sydr_parse_elf
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/parse_elf_libafl_target
+
+${ETS_SHARED_MANAGER} -a dump -n parse -o ${OUT_DIR_ABS}/ets_parse.toml
+${ETS_SHARED_MANAGER} -a dump -n parse_elf -o ${OUT_DIR_ABS}/ets_parse_elf.toml
+${ETS_SHARED_MANAGER} -a remove -n parse
+${ETS_SHARED_MANAGER} -a remove -n parse_elf
+
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
+'''
+dependencies = ["difuzz"]
+
+# Run the fuzzer
+[tasks.run]
+linux_alias = "run_unix"
+mac_alias = "run_unix"
+windows_alias = "unsupported"
+
+[tasks.run_unix]
+script_runner = "@shell"
+script = '''
+LIBAFL_DEBUG_OUTPUT=1 ${FUZZER} -- ${TARGET} @@
+'''
+dependencies = ["target"]
+
+# Clean all built artifacts
+[tasks.cleanall]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+rm -rf corpus crashes target ${CARGO_TARGET_DIR} difuzz difuzz_target_* debug_* coverage_* Cargo.lock ets.toml fuzzer.log target.log .cur_input* goblin
+pkill difuzz_ || true
+'''
+
+[tasks.all]
+linux_alias = "all_unix"
+mac_alias = "all_unix"
+windows_alias = "unsupported"
+
+[tasks.all_unix]
+dependencies = ["target", "debug", "coverage", "casr"]
