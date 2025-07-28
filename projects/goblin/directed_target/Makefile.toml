@@ -92,7 +92,7 @@ python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l rust -f ${EXAMPLE_D
 cd ${EXAMPLE_DIR}
 export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean
-export RUSTC=${RUST_DIR_ABS}/rustc
+export RUSTC=${RUST_DIR_ABS}/libafl_rustc
 RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_parse
 llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_parse.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
 ${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_parse.bc -e ${OUT_DIR_ABS}/ets_parse.toml ${DIFUZZ_ARGS}
@@ -112,7 +112,7 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${EXAMPLE_DIR}
-export RUSTC=${RUST_DIR_ABS}/rustc
+export RUSTC=${RUST_DIR_ABS}/libafl_rustc
 export LIBAFL_PROJECT_DIR="goblin"
 ${ETS_SHARED_MANAGER} -a remove -n parse
 ${ETS_SHARED_MANAGER} -a remove -n parse_elf
