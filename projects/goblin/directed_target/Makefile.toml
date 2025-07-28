@@ -32,10 +32,11 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean
 cargo build
-mv ${PROJECT_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/
-mv ${PROJECT_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/
 '''
 
 [tasks.casr]
@@ -47,10 +48,11 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean
 RUSTFLAGS="-C overflow-checks=on -C debug-assertions=on -C panic=abort" cargo build
-mv ${PROJECT_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/casr_parse
-mv ${PROJECT_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/casr_parse_elf
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/casr_parse
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/casr_parse_elf
 '''
 
 [tasks.coverage]
@@ -64,13 +66,14 @@ script = '''
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
 cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean
 cargo add libc
 RUSTFLAGS="-C instrument-coverage" cargo build
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
-mv ${PROJECT_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/cov_parse
-mv ${PROJECT_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/cov_parse_elf
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/cov_parse
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/cov_parse_elf
 '''
 
 [tasks.difuzz]
@@ -87,16 +90,17 @@ python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l rust -f ${EXAMPLE_D
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
 
 cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean
 export RUSTC=${RUST_DIR_ABS}/rustc
 RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_parse
-llvm-link-18 -o=${PROJECT_DIR}/target/debug/sydr_parse.bc ${PROJECT_DIR}/target/debug/deps/*.bc
-${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse::main -c ${PROJECT_DIR}/config.toml -b ${PROJECT_DIR}/target/debug/sydr_parse.bc -e ${OUT_DIR_ABS}/ets_parse.toml ${DIFUZZ_ARGS}
+llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_parse.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
+${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_parse.bc -e ${OUT_DIR_ABS}/ets_parse.toml ${DIFUZZ_ARGS}
 
 cargo clean
 RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_parse_elf
-llvm-link-18 -o=${PROJECT_DIR}/target/debug/sydr_parse_elf.bc ${PROJECT_DIR}/target/debug/deps/*.bc
-${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse_elf::main -c ${PROJECT_DIR}/config.toml -b ${PROJECT_DIR}/target/debug/sydr_parse_elf.bc -e ${OUT_DIR_ABS}/ets_parse_elf.toml ${DIFUZZ_ARGS}
+llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_parse_elf.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
+${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_parse_elf::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_parse_elf.bc -e ${OUT_DIR_ABS}/ets_parse_elf.toml ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
@@ -119,14 +123,15 @@ ${ETS_SHARED_MANAGER} -a parse -n parse_elf -i ${OUT_DIR_ABS}/ets_parse_elf.toml
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse.rs
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l rust -f ${EXAMPLE_DIR}/fuzz_targets/sydr_parse_elf.rs
 
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 export LIBAFL_SHARED_NAME="parse"
 cargo clean
 cargo build --bin sydr_parse
-mv ${PROJECT_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/parse_libafl_target
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse ${OUT_DIR_ABS}/parse_libafl_target
 export LIBAFL_SHARED_NAME="parse_elf"
 cargo clean
 cargo build --bin sydr_parse_elf
-mv ${PROJECT_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/parse_elf_libafl_target
+mv ${EXAMPLE_DIR}/target/debug/sydr_parse_elf ${OUT_DIR_ABS}/parse_elf_libafl_target
 
 ${ETS_SHARED_MANAGER} -a dump -n parse -o ${OUT_DIR_ABS}/ets_parse.toml
 ${ETS_SHARED_MANAGER} -a dump -n parse_elf -o ${OUT_DIR_ABS}/ets_parse_elf.toml
