@@ -81,18 +81,18 @@ CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 US
 
 
 ## Build libpng
-cd /libpng-1.6.37
+cd /libpng-1.6.50
 rm -rf build
 cmake -DCMAKE_C_COMPILER=$CC \
       -DCMAKE_C_FLAGS="$CFLAGS" \
-      -DCMAKE_INSTALL_PREFIX=/libpng-1.6.37/install \
+      -DCMAKE_INSTALL_PREFIX=/libpng-1.6.50/install \
       -S . -B build/
 cd build
 cmake --build . -j$(nproc)
 cmake --install .
 
 # Build libjpeg-turbo
-cd /libjpeg-turbo-2.1.3
+cd /libjpeg-turbo-3.1.1
 rm -rf build
 cmake -G"Unix Makefiles" \
       -DCMAKE_C_COMPILER=$CC \
@@ -101,7 +101,7 @@ cmake -G"Unix Makefiles" \
       -DENABLE_SHARED=0 \
       -DWITH_JPEG8=1 \
       -DCMAKE_C_FLAGS="$CFLAGS" \
-      -DCMAKE_INSTALL_PREFIX=/libjpeg-turbo-2.1.3/install \
+      -DCMAKE_INSTALL_PREFIX=/libjpeg-turbo-3.1.1/install \
       -S . -B build/
 cd build/
 make -j$(nproc)
@@ -150,10 +150,10 @@ Torch_DIR=/pytorch/ \
       -DENGINE=$ENGINE \
       -DSUFFIX=$SUFFIX \
       -DBUILD_SAVERS=${BUILD_SAVERS:-} \
-      -DJPEG_LIBRARY=/libjpeg-turbo-2.1.3/install/lib/libjpeg.a \
-      -DJPEG_INCLUDE_DIR=/libjpeg-turbo-2.1.3/install/include \
-      -DPNG_LIBRARY=/libpng-1.6.37/install/lib/libpng.a \
-      -DPNG_PNG_INCLUDE_DIR=/libpng-1.6.37/install/include \
+      -DJPEG_LIBRARY=/libjpeg-turbo-3.1.1/install/lib/libjpeg.a \
+      -DJPEG_INCLUDE_DIR=/libjpeg-turbo-3.1.1/install/include \
+      -DPNG_LIBRARY=/libpng-1.6.50/install/lib/libpng.a \
+      -DPNG_PNG_INCLUDE_DIR=/libpng-1.6.50/install/include \
       -DZLIB_LIBRARY=/zlib/install/lib/libz.a \
       -DZLIB_INCLUDE_DIR=/zlib/install/include \
       -DFFMPEG_DIR=/ffmpeg/install \
