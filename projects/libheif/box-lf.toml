@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/box_fuzz"
-args = "-rss_limit_mb=16384 -detect_leaks=0 /corpus/ -jobs=1000 -workers=1"
+args = "-rss_limit_mb=16384 -detect_leaks=0 -jobs=1000 -workers=4 -dict=/fuzzer.dict /corpus"
 
 [cov]
 target = "/box_cov @@"
