@@ -1,4 +1,4 @@
-# Copyright 2023 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,21 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-MAINTAINER Kobrin Eli
+WORKDIR /
 
 # Clone pytorch, torchaudio and libsox from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch
 RUN cd /pytorch && \
-    git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
-    git submodule update --init --recursive --jobs 0
+    git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
+    git submodule sync && \
+    git submodule update --init --recursive --jobs 0 && \
+    sed -i '/^cmake$/d' requirements.txt && \
+    pip install -r requirements.txt
 
 COPY torchaudio.patch /
 RUN git clone https://github.com/pytorch/audio.git audio
 RUN cd /audio && \
-    git checkout 8497ee91b7526b5734e0cc16f9a0afafd9e72e78 && \
+    git checkout 70caf76066ef2c1054d6128b11769dc816a779e7 && \
     git apply /torchaudio.patch
 
 COPY libsox.patch /
@@ -40,8 +43,10 @@ RUN cd /libsox && \
 COPY build.sh /
 COPY load_audio.cc /audio
 
-RUN CONFIGS="libfuzzer afl" /build.sh
-RUN CONFIGS="sydr coverage" /build.sh
+RUN CONFIGS="libfuzzer" /build.sh
+RUN CONFIGS="sydr" /build.sh
+RUN CONFIGS="coverage" /build.sh
+RUN CONFIGS="afl" /build.sh
 
 # Prepare corporas.
 RUN mkdir wav_corpus

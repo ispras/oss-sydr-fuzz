@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2023 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ then
   export SUFFIX="fuzz"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -fPIC"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
 fi
@@ -34,8 +34,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
+  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
 fi
@@ -45,8 +45,8 @@ then
   export SUFFIX="sydr"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g"
-  export CXXFLAGS="-g"
+  export CFLAGS="-g -fPIC"
+  export CXXFLAGS="-g -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -57,8 +57,8 @@ then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -73,34 +73,42 @@ make clean || true
 make
 make install
 
-# Build pytorch
 
 cd /pytorch
 
-# clean artifacts from previous build
+# clean artifacts from previous build pytorch
 python3 setup.py clean
 
-MAX_JOBS=$(nproc) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
-        USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=1 BUILD_TEST=0 \
-        BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_ITT=0 \
-        CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" \
-        CMAKE_THREAD_LIBS_INIT="$(find /usr/lib -name 'libpthread.so*' | head -1)" \
-        python3 setup.py build
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
+        USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 \
+        python3 setup.py build_clib
 
-# Build torchaudio
 
 cd /audio
+
+#clean artifacts from previous build audio
 rm -rf build
+
+#build audio
 Torch_DIR=/pytorch/ \
     cmake \
-    -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
-    -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS -std=c++17" \
-    -DENGINE=$ENGINE -DSUFFIX=$SUFFIX \
+    -DCMAKE_C_COMPILER=$CC \
+    -DCMAKE_CXX_COMPILER=$CXX \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -std=c++17" \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DENGINE=$ENGINE \
+    -DSUFFIX=$SUFFIX \
     -Donnx_LIBRARY=/pytorch/build/lib/libonnx.a \
     -Donnx_proto_LIBRARY=/pytorch/build/lib/libonnx_proto.a \
     -Dfoxi_loader_LIBRARY=/pytorch/build/lib/libfoxi_loader.a \
-    -DCMAKE_C_COMPILER_ID=GNU -DCMAKE_CXX_COMPILER_ID=GNU \
+    -DCMAKE_C_COMPILER_ID=GNU \
+    -DCMAKE_CXX_COMPILER_ID=GNU \
+    -DBUILD_SHARED_LIBS=OFF \
+    -G Ninja \
     -S . -B build/
+
+
 cd build
 cmake --build . -j$(nproc)
 cmake --install .
