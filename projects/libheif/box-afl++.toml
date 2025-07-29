@@ -20,7 +20,7 @@ target = "/box_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 10000 -i /corpus"
+args = "-t 10000 -i /corpus -x /fuzzer.dict"
 target = "/box_afl @@"
 jobs = 4
 
