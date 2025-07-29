@@ -23,8 +23,8 @@ then
   export SUFFIX="fuzz"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17"
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -fPIC"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
   export BUILD_SAVERS="OFF"
@@ -35,8 +35,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17"
+  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
@@ -47,8 +47,8 @@ then
   export SUFFIX="sydr"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g"
-  export CXXFLAGS="-g -std=c++17"
+  export CFLAGS="-g -fPIC"
+  export CXXFLAGS="-g -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -60,8 +60,8 @@ then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17"
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
