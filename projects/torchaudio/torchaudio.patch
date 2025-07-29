@@ -1,3 +1,29 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ddc6dc15..0e3b8b7d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -188,3 +188,21 @@ endif()
+ if (BUILD_CPP_TEST)
+   add_subdirectory(test/cpp)
+ endif()
++
++include_directories(${CMAKE_SOURCE_DIR})
++include_directories(${CMAKE_SOURCE_DIR}/torchaudio/csrc/sox)
++include_directories(${CMAKE_SOURCE_DIR}/third_party/install/include)
++
++set(FUZZ_TARGETS
++  load_audio
++)
++
++foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
++  add_executable(${FUZZ_TARGET}_${SUFFIX} ${CMAKE_SOURCE_DIR}/${FUZZ_TARGET}.cc)
++  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PRIVATE
++    libtorchaudio_sox /usr/local/lib/libsox.a ltdl ${TORCH_LIBRARIES} /pytorch/build/lib/libgloo.a
++    ${CMAKE_DL_LIBS} pthread rt ${ENGINE})
++  add_dependencies(${FUZZ_TARGET}_${SUFFIX} libtorchaudio_sox)
++  set_target_properties(${FUZZ_TARGET}_${SUFFIX} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
++  install(TARGETS ${FUZZ_TARGET}_${SUFFIX} DESTINATION /)
++endforeach()
 diff --git a/cmake/TorchAudioHelper.cmake b/cmake/TorchAudioHelper.cmake
 index d000483e..3a22ca1c 100644
 --- a/cmake/TorchAudioHelper.cmake

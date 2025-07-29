@@ -16,28 +16,6 @@
 
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
-ARG CMAKE_VERSION=3.27.6
-
-RUN apt-get update && apt-get install -y \
-    autoconf \
-    automake \
-    build-essential \
-    cmake \
-    libbrotli-dev \
-    libtool \
-    make \
-    mercurial \
-    pkg-config \
-    yasm \
-    zlib1g-dev \
-    ninja-build
-
-WORKDIR /opt
-RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
-    tar -xzf cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
-    mv cmake-${CMAKE_VERSION}-linux-x86_64 /opt/cmake && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
-    rm cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
 
 WORKDIR /
 
@@ -47,6 +25,7 @@ RUN cd /pytorch && \
     git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
     git submodule sync && \
     git submodule update --init --recursive --jobs 0 && \
+    sed -i '/^cmake$/d' requirements.txt && \
     pip install -r requirements.txt
 
 COPY torchaudio.patch /
@@ -62,10 +41,10 @@ RUN cd /libsox && \
     git apply /libsox.patch
 
 COPY build.sh /
-COPY load_audio.cc /
+COPY load_audio.cc /audio
 
-RUN CONFIGS="sydr" /build.sh
 RUN CONFIGS="libfuzzer" /build.sh
+RUN CONFIGS="sydr" /build.sh
 RUN CONFIGS="coverage" /build.sh
 RUN CONFIGS="afl" /build.sh
 

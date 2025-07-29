@@ -34,8 +34,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
+  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
 fi
@@ -45,8 +45,8 @@ then
   export SUFFIX="sydr"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g"
-  export CXXFLAGS="-g"
+  export CFLAGS="-g -fPIC"
+  export CXXFLAGS="-g -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -57,8 +57,8 @@ then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -77,75 +77,11 @@ make install
 cd /pytorch
 
 # clean artifacts from previous build pytorch
-rm -rf build CMakeCache.txt CMakeFiles/
-mkdir build && cd build
+python3 setup.py clean
 
-# Build pytorch
-if [[ $CONFIG = "libfuzzer" ]]
-then
-  cmake .. \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=$CC \
-  -DCMAKE_CXX_COMPILER=$CXX \
-  -DCMAKE_C_FLAGS="$CFLAGS" \
-  -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-  -DCMAKE_CXX_STANDARD=17 \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-  -DUSE_CUDNN=0 \
-  -DUSE_CUSPARSELT=0 \
-  -DUSE_CUDSS=0 \
-  -DUSE_FBGEMM=0 \
-  -DUSE_KINETO=0 \
-  -DUSE_NUMPY=0 \
-  -DBUILD_TEST=0 \
-  -DUSE_MKLDNN=0 \
-  -DUSE_NNPACK=0 \
-  -DUSE_DISTRIBUTED=1 \
-  -DUSE_TENSORPIPE=0 \
-  -DUSE_GLOO=0 \
-  -DUSE_MPI=0 \
-  -DUSE_OPENMP=0 \
-  -DUSE_FLASH_ATTENTION=0 \
-  -DUSE_ITT=0 \
-  -DUSE_MEM_EFF_ATTENTION=0 \
-  -G Ninja
-fi
-
-if [[ $CONFIG = "coverage" || $CONFIG = "sydr" || $CONFIG = "afl" ]]
-then
-  cmake .. \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=$CC \
-  -DCMAKE_CXX_COMPILER=$CXX \
-  -DCMAKE_C_FLAGS="$CFLAGS" \
-  -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-  -DCMAKE_CXX_STANDARD=17 \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-  -DUSE_CUDNN=0 \
-  -DUSE_CUSPARSELT=0 \
-  -DUSE_CUDSS=0 \
-  -DUSE_FBGEMM=0 \
-  -DUSE_KINETO=0 \
-  -DUSE_NUMPY=0 \
-  -DBUILD_TEST=0 \
-  -DUSE_MKLDNN=0 \
-  -DUSE_NNPACK=0 \
-  -DUSE_DISTRIBUTED=0 \
-  -DUSE_TENSORPIPE=0 \
-  -DUSE_GLOO=0 \
-  -DUSE_MPI=0 \
-  -DUSE_OPENMP=0 \
-  -DUSE_FLASH_ATTENTION=0 \
-  -DUSE_ITT=0 \
-  -DUSE_MEM_EFF_ATTENTION=0 \
-  -G Ninja
-fi
-
-cmake --build . -j$(nproc)
-cmake --install .
-
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
+        USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 \
+        python3 setup.py build_clib
 
 
 cd /audio
@@ -176,35 +112,5 @@ Torch_DIR=/pytorch/ \
 cd build
 cmake --build . -j$(nproc)
 cmake --install .
-
-cd /
-build_target(){
-    target=$1
-    echo "=========== Build target ${target}_${SUFFIX} ==========="
-
-    # Build target
-	  $CXX $CFLAGS -g -O2 -std=c++17 -c ${target}.cc -o ${target}.o \
-    -I/audio/src/libtorchaudio/sox \
-    -I/usr/local/include/torch/csrc/api/include \
-    -I/usr/local/include
-
-    echo "=========== Build target ${target}_${SUFFIX} ==========="
-
-    $CXX $LDFLAGS -g -O2 -std=c++17 ./$target.o $ENGINE \
-    -Wl,--whole-archive,"/usr/local/lib/libsox.a" -Wl,--no-whole-archive \
-    -L/usr/local/lib \
-    -ltorchaudio_sox \
-    -L/path/to/libtorch/lib \
-    -ltorch -ltorch_cpu -lc10 \
-    -ldl -lrt -lm -lpthread -lltdl \
-    -o /${target}_${SUFFIX}
-
-    echo "=========== Finish target ${target}_${SUFFIX} ==========="
-}
-
-targets=("load_audio")
-for fuzztarget in ${targets[@]}; do
-    build_target $fuzztarget
-done
 
 done
