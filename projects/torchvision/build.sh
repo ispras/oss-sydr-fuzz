@@ -72,74 +72,13 @@ fi
 
 cd /pytorch
 
-# clean artifacts from previous build
-rm -rf build CMakeCache.txt CMakeFiles/
-mkdir build && cd build
+# clean artifacts from previous build pytorch
+python3 setup.py clean
 
-if [[ $CONFIG = "libfuzzer" ]]
-then
-  cmake .. \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=$CC \
-  -DCMAKE_CXX_COMPILER=$CXX \
-  -DCMAKE_C_FLAGS="$CFLAGS" \
-  -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-  -DCMAKE_CXX_STANDARD=17 \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-  -DUSE_CUDNN=0 \
-  -DUSE_CUSPARSELT=0 \
-  -DUSE_CUDSS=0 \
-  -DUSE_FBGEMM=0 \
-  -DUSE_KINETO=0 \
-  -DUSE_NUMPY=0 \
-  -DBUILD_TEST=0 \
-  -DUSE_MKLDNN=0 \
-  -DUSE_NNPACK=0 \
-  -DUSE_DISTRIBUTED=1 \
-  -DUSE_TENSORPIPE=0 \
-  -DUSE_GLOO=0 \
-  -DUSE_MPI=0 \
-  -DUSE_OPENMP=0 \
-  -DUSE_FLASH_ATTENTION=0 \
-  -DUSE_ITT=0 \
-  -DUSE_MEM_EFF_ATTENTION=0 \
-  -G Ninja
-fi
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
+        USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 \
+        python3 setup.py build_clib
 
-if [[ $CONFIG = "coverage" || $CONFIG = "sydr" || $CONFIG = "afl" ]]
-then
-  cmake .. \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=$CC \
-  -DCMAKE_CXX_COMPILER=$CXX \
-  -DCMAKE_C_FLAGS="$CFLAGS" \
-  -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-  -DCMAKE_CXX_STANDARD=17 \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-  -DUSE_CUDNN=0 \
-  -DUSE_CUSPARSELT=0 \
-  -DUSE_CUDSS=0 \
-  -DUSE_FBGEMM=0 \
-  -DUSE_KINETO=0 \
-  -DUSE_NUMPY=0 \
-  -DBUILD_TEST=0 \
-  -DUSE_MKLDNN=0 \
-  -DUSE_NNPACK=0 \
-  -DUSE_DISTRIBUTED=0 \
-  -DUSE_TENSORPIPE=0 \
-  -DUSE_GLOO=0 \
-  -DUSE_MPI=0 \
-  -DUSE_OPENMP=0 \
-  -DUSE_FLASH_ATTENTION=0 \
-  -DUSE_ITT=0 \
-  -DUSE_MEM_EFF_ATTENTION=0 \
-  -G Ninja
-fi
-
-cmake --build . -j$(nproc)
-cmake --install .
 
 ## Build libpng
 cd /libpng-1.6.37
@@ -147,7 +86,6 @@ rm -rf build
 cmake -DCMAKE_C_COMPILER=$CC \
       -DCMAKE_C_FLAGS="$CFLAGS" \
       -DCMAKE_INSTALL_PREFIX=/libpng-1.6.37/install \
-      -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
       -S . -B build/
 cd build
 cmake --build . -j$(nproc)
@@ -164,7 +102,6 @@ cmake -G"Unix Makefiles" \
       -DWITH_JPEG8=1 \
       -DCMAKE_C_FLAGS="$CFLAGS" \
       -DCMAKE_INSTALL_PREFIX=/libjpeg-turbo-2.1.3/install \
-      -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
       -S . -B build/
 cd build/
 make -j$(nproc)

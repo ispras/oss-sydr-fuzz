@@ -16,28 +16,9 @@
 
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
-ARG CMAKE_VERSION=3.27.6
 
 RUN apt-get update && apt-get install -y \
-    autoconf \
-    automake \
-    build-essential \
-    cmake \
-    libbrotli-dev \
-    libtool \
-    make \
-    mercurial \
-    pkg-config \
-    yasm \
-    zlib1g-dev \
-    ninja-build
-
-WORKDIR /opt
-RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
-    tar -xzf cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz && \
-    mv cmake-${CMAKE_VERSION}-linux-x86_64 /opt/cmake && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
-    rm cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
+    yasm 
 
 # Copy build script, patch vision.
 COPY build.sh /
@@ -49,6 +30,7 @@ RUN cd /pytorch && \
     git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
     git submodule sync && \
     git submodule update --init --recursive --jobs 0 && \
+    sed -i '/^cmake$/d' requirements.txt && \
     pip install -r requirements.txt
 
 COPY torchvision.patch /    
@@ -57,7 +39,6 @@ RUN cd /vision && \
     git checkout b818d320a14a2e6d9d9f28853e9e7beae703e52e && \
     git apply /torchvision.patch
 RUN rm torchvision.patch
-
 
 # Install OpenCV
 RUN cd / && mkdir cv && cd cv/ && \
@@ -94,9 +75,7 @@ RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
 # Copy targets
 COPY *.cc /vision/
 
-
 # Build torchvision
-
 RUN CONFIGS="sydr" /build.sh
 RUN CONFIGS="libfuzzer" /build.sh
 RUN CONFIGS="coverage" /build.sh
