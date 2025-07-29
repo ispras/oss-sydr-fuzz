@@ -16,15 +16,12 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr_fuzzers/encoder_fuzzer_sydr @@"
+target = "/encoder_sydr @@"
 jobs = 2
 
-[honggfuzz]
-args = "-t 10 -i /corpus"
-target = "/hfuzz_fuzzers/encoder_fuzzer_hfuzz"
-jobs = 4
-cmin = false
-libfuzzer_merge_target = "/hfuzz_fuzzers/encoder_fuzzer_hfuzz"
+[libfuzzer]
+path = "/encoder_fuzz"
+args = "-rss_limit_mb=16384 -detect_leaks=0 /corpus/ -jobs=1000 -workers=1"
 
 [cov]
-target = "/coverage_fuzzers/encoder_fuzzer_coverage @@"
+target = "/encoder_cov @@"

@@ -111,8 +111,10 @@ cmake .. --preset=fuzzing \
       -DWITH_DEFLATE_HEADER_COMPRESSION=OFF \
       -DFUZZING_COMPILE_OPTIONS="$CFLAGS"
 make -j$(nproc)
+
 for fuzzer in fuzzing/*_fuzzer; do
   name=$(basename "$fuzzer" | cut -d'_' -f1)
   cp "$fuzzer" "/${name}_${TARGET}"
 done
+
 cd /
