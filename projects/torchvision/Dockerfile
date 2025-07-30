@@ -18,7 +18,8 @@ ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 RUN apt-get update && apt-get install -y \
-    yasm 
+    yasm \
+    nasm
 
 # Copy build script, patch vision.
 COPY build.sh /
@@ -62,7 +63,7 @@ RUN wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.1.1.
 RUN git clone https://github.com/madler/zlib.git zlib && cd zlib && \
     git checkout v1.3.1
 RUN git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg && cd ffmpeg && \
-    git checkout cbb1760afab867bf269e4c4f5b7bb63b8c58abc7
+    git checkout 7c5319e6924fd82772eff890df191f973767d38e
     
 # Copy corpus and tensor
 RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
