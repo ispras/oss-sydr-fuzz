@@ -27,7 +27,7 @@ elif [[ $TARGET == "afl" ]]
 then
     export CC=afl-clang-fast
     export CXX=afl-clang-fast++
-    export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CFLAGS="-g -fsanitize=address,bounds,integer,null,float-divide-by-zero"
     export CXXFLAGS=$CFLAGS
     export LIB_FUZZING_ENGINE="/usr/local/lib/afl/libAFLDriver.a"
 elif [[ $TARGET == "sydr" ]]
@@ -53,7 +53,7 @@ fi
 export DEPS_PATH="/deps_${TARGET}"
 mkdir -p "$DEPS_PATH"
 
-cd x265/build/linux
+cd /x265/build/linux
 cmake -G "Unix Makefiles" \
     -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
     -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
@@ -61,10 +61,9 @@ cmake -G "Unix Makefiles" \
     -DENABLE_SHARED:bool=off \
     ../../source
 make clean
-make -j$(nproc) x265-static
-make install
+make -j$(nproc) install x265-static
 
-cd ../../../libde265
+cd /libde265
 ./autogen.sh
 ./configure \
     --prefix="$DEPS_PATH" \
@@ -79,8 +78,8 @@ make clean
 make -j$(nproc)
 make install
 
-mkdir -p ../aom/build/linux
-cd ../aom/build/linux
+mkdir -p /aom/build/linux
+cd /aom/build/linux
 cmake -G "Unix Makefiles" \
   -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
   -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
@@ -118,3 +117,5 @@ for fuzzer in fuzzing/*_fuzzer; do
 done
 
 cd /
+rm -rf /libheif/build_${TARGET}
+rm -rf /deps_${TARGET}
