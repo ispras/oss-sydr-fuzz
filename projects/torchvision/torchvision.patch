@@ -1,39 +1,27 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 405f947c23..73be1a2909 100644
+index f243055990..cec94fed70 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -6,6 +6,8 @@ file(STRINGS version.txt TORCHVISION_VERSION)
- option(WITH_CUDA "Enable CUDA support" OFF)
+@@ -7,6 +7,8 @@ option(WITH_CUDA "Enable CUDA support" OFF)
+ option(WITH_MPS "Enable MPS support" OFF)
  option(WITH_PNG "Enable features requiring LibPNG." ON)
  option(WITH_JPEG "Enable features requiring LibJPEG." ON)
 +option(WITH_ZLIB "Enable features requiring libZLIB." ON)
 +option(WITH_FFMPEG "Enable features requiring FFMPEG libs." ON)
- option(USE_PYTHON "Link to Python when building" OFF)
- 
- if(WITH_CUDA)
-@@ -27,6 +29,11 @@ if (WITH_JPEG)
-     find_package(JPEG REQUIRED)
- endif()
- 
-+if (WITH_ZLIB)
-+    add_definitions(-DZLIB_FOUND)
-+    find_package(ZLIB REQUIRED)
-+endif()
-+
- if (USE_PYTHON)
-   add_definitions(-DUSE_PYTHON)
-   find_package(Python3 REQUIRED COMPONENTS Development)
-@@ -75,7 +82,8 @@ include(CMakePackageConfigHelpers)
+ # Libwebp is disabled by default, which means enabling it from cmake is largely
+ # untested. Since building from cmake is very low pri anyway, this is OK. If
+ # you're a user and you need this, please open an issue (and a PR!).
+@@ -91,7 +93,8 @@ include(CMakePackageConfigHelpers)
  
  set(TVCPP torchvision/csrc)
- list(APPEND ALLOW_LISTED ${TVCPP} ${TVCPP}/io/image ${TVCPP}/io/image/cpu ${TVCPP}/models ${TVCPP}/ops
+ list(APPEND ALLOW_LISTED ${TVCPP} ${TVCPP}/io/image ${TVCPP}/io/image/cpu ${TVCPP}/io/image/cpu/giflib ${TVCPP}/models ${TVCPP}/ops
 -  ${TVCPP}/ops/autograd ${TVCPP}/ops/cpu ${TVCPP}/io/image/cuda)
-+	${TVCPP}/ops/autograd ${TVCPP}/ops/cpu ${TVCPP}/io/image/cuda ${TVCPP}/io/video_reader
++  ${TVCPP}/ops/autograd ${TVCPP}/ops/cpu ${TVCPP}/io/image/cuda ${TVCPP}/io/video_reader
 +	${TVCPP}/io/decoder ${TVCPP}/io/video)
  if(WITH_CUDA)
      list(APPEND ALLOW_LISTED ${TVCPP}/ops/cuda ${TVCPP}/ops/autocast)
  endif()
-@@ -84,15 +92,36 @@ FOREACH(DIR ${ALLOW_LISTED})
+@@ -103,29 +106,51 @@ FOREACH(DIR ${ALLOW_LISTED})
      file(GLOB ALL_SOURCES ${ALL_SOURCES} ${DIR}/*.*)
  ENDFOREACH()
  
@@ -43,39 +31,57 @@ index 405f947c23..73be1a2909 100644
 +
 +add_library(${PROJECT_NAME} STATIC ${ALL_SOURCES})
 +target_link_libraries(${PROJECT_NAME} PUBLIC ${TORCH_LIBRARIES})
++
++
++if (WITH_ZLIB)
++    target_link_libraries(${PROJECT_NAME} PUBLIC /zlib/install/lib/libz.a)
++endif()
++
+ 
+ if(WITH_MPS)
+   find_library(metal NAMES Metal)
+   find_library(foundation NAMES Foundation)
+-  target_link_libraries(${PROJECT_NAME} PRIVATE ${metal} ${foundation})
++  target_link_libraries(${PROJECT_NAME} PUBLIC ${metal} ${foundation})
+ endif()
  
  if (WITH_PNG)
 -    target_link_libraries(${PROJECT_NAME} PRIVATE ${PNG_LIBRARY})
-+  target_link_libraries(${PROJECT_NAME} PUBLIC ${PNG_LIBRARY})
++    target_link_libraries(${PROJECT_NAME} PUBLIC ${PNG_LIBRARY})
  endif()
  
  if (WITH_JPEG)
 -    target_link_libraries(${PROJECT_NAME} PRIVATE ${JPEG_LIBRARIES})
-+  target_link_libraries(${PROJECT_NAME} PUBLIC ${JPEG_LIBRARIES})
++    target_link_libraries(${PROJECT_NAME} PUBLIC ${JPEG_LIBRARIES})
+ endif()
+ 
+ if (WITH_WEBP)
+-    target_link_libraries(${PROJECT_NAME} PRIVATE ${WEBP_LIBRARIES})
++    target_link_libraries(${PROJECT_NAME} PUBLIC ${WEBP_LIBRARIES})
+ endif()
+ 
+ if (WITH_AVIF)
+-    target_link_libraries(${PROJECT_NAME} PRIVATE ${AVIF_LIBRARIES})
++    target_link_libraries(${PROJECT_NAME} PUBLIC ${AVIF_LIBRARIES})
 +endif()
 +
 +if (WITH_FFMPEG)
 +  set(FFMPEG_LIBS
-+    libavformat
-+    libavcodec
-+    libavutil
-+    libswresample
-+    libswscale
++    avformat
++    avcodec
++    avutil
++    swresample
++    swscale
 +  )
 +  foreach(FFMPEG_LIB IN LISTS FFMPEG_LIBS)
-+    target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_DIR}/${FFMPEG_LIB}/${FFMPEG_LIB}.a)
-+    FILE(GLOB FFMPEG_INCLUDE ${FFMPEG_DIR}/${FFMPEG_LIB}/*.h)
-+    include_directories(${FFMPEG_INCLUDE}) 
++    target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_DIR}/lib/lib${FFMPEG_LIB}.a)
 +  endforeach()
-+endif()
-+
-+if (WITH_ZLIB)
-+  target_link_libraries(${PROJECT_NAME} PUBLIC ${ZLIB_LIBRARIES})
++  include_directories(${FFMPEG_DIR}/include)
  endif()
  
- if (USE_PYTHON)
-@@ -113,6 +142,44 @@ if (WITH_JPEG)
-     include_directories(${JPEG_INCLUDE_DIRS})
+ set_target_properties(${PROJECT_NAME} PROPERTIES
+@@ -150,6 +175,49 @@ if (WITH_AVIF)
+     include_directories(${AVIF_INCLUDE_DIRS})
  endif()
  
 +include_directories(torchvision/csrc/io/image)
@@ -96,6 +102,10 @@ index 405f947c23..73be1a2909 100644
 +foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
 +  add_executable(${FUZZ_TARGET}_${SUFFIX} ${CMAKE_SOURCE_DIR}/${FUZZ_TARGET}.cc)
 +  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PUBLIC ${PROJECT_NAME} ${CMAKE_DL_LIBS} pthread rt ${ENGINE})
++  target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PUBLIC  /zlib/install/lib/libz.a)
++  if(FUZZ_TARGET STREQUAL "video_reader")
++    target_link_libraries(${FUZZ_TARGET}_${SUFFIX} PUBLIC lzma)
++  endif()
 +  add_dependencies(${FUZZ_TARGET}_${SUFFIX} ${PROJECT_NAME})
 +  set_target_properties(${FUZZ_TARGET}_${SUFFIX} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
 +  install(TARGETS ${FUZZ_TARGET}_${SUFFIX} DESTINATION /)
@@ -110,6 +120,7 @@ index 405f947c23..73be1a2909 100644
 +  foreach(SAVER IN LISTS SAVERS)
 +    add_executable(${SAVER} ${CMAKE_SOURCE_DIR}/${SAVER}.cc)
 +    target_link_libraries(${SAVER} PRIVATE ${PROJECT_NAME} ${CMAKE_DL_LIBS} pthread rt)
++    target_link_libraries(${SAVER} PUBLIC  /zlib/install/lib/libz.a)
 +    add_dependencies(${SAVER} ${PROJECT_NAME})
 +    set_target_properties(${SAVER} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
 +    install(TARGETS ${SAVER} DESTINATION /)

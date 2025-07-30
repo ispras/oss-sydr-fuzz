@@ -1,4 +1,4 @@
-# Copyright 2023 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,25 +17,34 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-MAINTAINER Kobrin Eli
+RUN apt-get update && apt-get install -y \
+    yasm \
+    nasm
 
-# Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi \
-    typing_extensions
+# Copy build script, patch vision.
+COPY build.sh /
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y \
-    libpng-dev libjpeg-dev ffmpeg libavformat-dev libswscale-dev python-is-python3 nasm
-
+WORKDIR /    
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch.git pytorch
 RUN cd /pytorch && \
-    git checkout 0f1621df1a0a73956c7ce4e2f72f069e610e0137 && \
-    git submodule update --init --recursive --jobs 0
+    git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
+    git submodule sync && \
+    git submodule update --init --recursive --jobs 0 && \
+    sed -i '/^cmake$/d' requirements.txt && \
+    pip install -r requirements.txt
+
+COPY torchvision.patch /    
+COPY ffmpeg-7.2.patch /  
 
 RUN git clone https://github.com/pytorch/vision.git vision
 RUN cd /vision && \
-    git checkout 9d0a93eee90bf7c401b74ebf9c8be80346254f15
+    git checkout b818d320a14a2e6d9d9f28853e9e7beae703e52e && \
+    git apply /torchvision.patch && \
+    git apply /ffmpeg-7.2.patch
+
+RUN rm ffmpeg-7.2.patch
+RUN rm torchvision.patch
 
 # Install OpenCV
 RUN cd / && mkdir cv && cd cv/ && \
@@ -45,16 +54,17 @@ RUN cd / && mkdir cv && cd cv/ && \
     cmake --build . -j$(nproc) && \
     make install && cd /
 
-# Download jpeg, png, zlib and ffmpeg sources.
-RUN wget http://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
-    tar -xvzf libpng-1.6.37.tar.gz && rm libpng-1.6.37.tar.gz
-RUN wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz && \
-    tar -xvzf 2.1.3.tar.gz && rm 2.1.3.tar.gz
-RUN git clone https://github.com/madler/zlib.git zlib && cd zlib && \
-    git checkout v1.2.13
-RUN git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg && cd ffmpeg && \
-    git checkout cbb1760afab867bf269e4c4f5b7bb63b8c58abc7
 
+# Download jpeg, png, zlib and ffmpeg sources.
+RUN wget http://download.sourceforge.net/libpng/libpng-1.6.50.tar.gz && \
+    tar -xvzf libpng-1.6.50.tar.gz && rm libpng-1.6.50.tar.gz
+RUN wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.1.1.tar.gz && \
+    tar -xvzf 3.1.1.tar.gz && rm 3.1.1.tar.gz
+RUN git clone https://github.com/madler/zlib.git zlib && cd zlib && \
+    git checkout v1.3.1
+RUN git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg && cd ffmpeg && \
+    git checkout 7c5319e6924fd82772eff890df191f973767d38e
+    
 # Copy corpus and tensor
 RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
 
@@ -62,17 +72,18 @@ RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
 RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
 
 RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && \
+    mkdir /jpeg_raw/ && mkdir /png_raw/ && \
     mkdir /jpeg_tensor/ && mkdir /png_tensor/ && \
     mkdir /mp4_corpus/
-RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_corpus/ && \
-    cp -rn /fuzzing-corpus/png/*/* /png_corpus/ && \
+RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
+    cp -rn /fuzzing-corpus/png/*/* /png_raw/ && \
     cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
 
-# Copy build script, targets and patch vision build.
+# Copy targets
 COPY *.cc /vision/
-COPY build.sh CMakeLists.patch /
-RUN cd /vision && git apply /CMakeLists.patch
 
 # Build torchvision
-RUN CONFIGS="libfuzzer afl" /build.sh
-RUN CONFIGS="sydr coverage" /build.sh
+RUN CONFIGS="sydr" /build.sh
+RUN CONFIGS="libfuzzer" /build.sh
+RUN CONFIGS="coverage" /build.sh
+RUN CONFIGS="afl" /build.sh

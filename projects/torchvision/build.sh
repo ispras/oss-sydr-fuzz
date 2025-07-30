@@ -16,8 +16,6 @@
 #
 ################################################################################
 
-PATCH_HEADERS=$true
-
 for CONFIG in $CONFIGS; do
 
 if [[ $CONFIG = "libfuzzer" ]]
@@ -25,8 +23,8 @@ then
   export SUFFIX="fuzz"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17"
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -fPIC"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
   export BUILD_SAVERS="OFF"
@@ -37,8 +35,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17"
+  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
@@ -49,12 +47,12 @@ then
   export SUFFIX="sydr"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g"
-  export CXXFLAGS="-g -std=c++17"
+  export CFLAGS="-g -fPIC"
+  export CXXFLAGS="-g -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
-  export BUILD_SAVERS="ON"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
+  export BUILD_SAVERS="ON"
 fi
 
 if [[ $CONFIG = "coverage" ]]
@@ -62,139 +60,144 @@ then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17"
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
-  export BUILD_SAVERS="OFF"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
+  export BUILD_SAVERS="OFF"
 fi
 
 # Build pytorch
 
 cd /pytorch
 
-# clean artifacts from previous build
+# clean artifacts from previous build pytorch
 python3 setup.py clean
 
-MAX_JOBS=$(expr $(nproc) / 2) USE_FBGEMM=0 BUILD_BINARY=1 CC=$CC CXX=$CXX USE_STATIC_MKL=1 \
-        USE_DISTRIBUTED=0 USE_MPI=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=1 BUILD_TEST=0 \
-        BUILD_SHARED_LIBS=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_ITT=0 \
-        CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" \
-        CMAKE_THREAD_LIBS_INIT="$(find /usr/lib -name 'libpthread.so*' | head -1)" \
-        python3 setup.py build
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
+        USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
+        python3 setup.py build_clib
 
-if [[ $PATCH_HEADERS ]]
-then
-  # Patch PyTorch headers to build torchvision with clang
-  sed -i '1 i\#define ORDERED_DICT' /pytorch/torch/include/torch/csrc/api/include/torch/ordered_dict.h
-  sed -i '1 i\#ifndef ORDERED_DICT' /pytorch/torch/include/torch/csrc/api/include/torch/ordered_dict.h
-  echo "#endif" >> /pytorch/torch/include/torch/csrc/api/include/torch/ordered_dict.h
 
-  sed -i '1 i\#define ORDERED_DICT' /pytorch/torch/csrc/api/include/torch/ordered_dict.h
-  sed -i '1 i\#ifndef ORDERED_DICT' /pytorch/torch/csrc/api/include/torch/ordered_dict.h
-  echo "#endif" >> /pytorch/torch/csrc/api/include/torch/ordered_dict.h
-
-  sed -i '1 i\#define TYPES' /pytorch/torch/include/torch/csrc/api/include/torch/types.h
-  sed -i '1 i\#ifndef TYPES' /pytorch/torch/include/torch/csrc/api/include/torch/types.h
-  echo "#endif" >> /pytorch/torch/include/torch/csrc/api/include/torch/types.h
-
-  sed -i '1 i\#define TYPES' /pytorch/torch/csrc/api/include/torch/types.h
-  sed -i '1 i\#ifndef TYPES' /pytorch/torch/csrc/api/include/torch/types.h
-  echo "#endif" >> /pytorch/torch/csrc/api/include/torch/types.h
-
-  PATCH_HEADERS=$false
-fi
-
-# Build libpng
-
-cd /libpng-1.6.37
+## Build libpng
+cd /libpng-1.6.50
 rm -rf build
 cmake -DCMAKE_C_COMPILER=$CC \
       -DCMAKE_C_FLAGS="$CFLAGS" \
+      -DCMAKE_INSTALL_PREFIX=/libpng-1.6.50/install \
       -S . -B build/
 cd build
-cmake --build . -j$(expr $(nproc) / 2)
+cmake --build . -j$(nproc)
+cmake --install .
 
 # Build libjpeg-turbo
-
-cd /libjpeg-turbo-2.1.3
+cd /libjpeg-turbo-3.1.1
 rm -rf build
-cmake -G"Unix Makefiles" -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DENABLE_STATIC=1 \
-      -DENABLE_SHARED=0 -DWITH_JPEG8=1 \
+cmake -G"Unix Makefiles" \
+      -DCMAKE_C_COMPILER=$CC \
+      -DCMAKE_CXX_COMPILER=$CXX \
+      -DENABLE_STATIC=1 \
+      -DENABLE_SHARED=0 \
+      -DWITH_JPEG8=1 \
       -DCMAKE_C_FLAGS="$CFLAGS" \
+      -DCMAKE_INSTALL_PREFIX=/libjpeg-turbo-3.1.1/install \
       -S . -B build/
 cd build/
-make -j$(expr $(nproc) / 2)
+make -j$(nproc)
+cmake --install .
 
 # Build zlib
-
 cd /zlib
 make clean
 CC=$CC CXX=$CXX \
-      CFLAGS="$CFLAGS" \
-      CXXFLAGS="$CXXFLAGS" \
-      ./configure
-make -j$(expr $(nproc) / 2)
+CFLAGS="$CFLAGS" \
+CXXFLAGS="$CXXFLAGS" \
+./configure --prefix=/zlib/install
+make -j$(nproc)
+make install
 
 # Build ffmpeg
-
 cd /ffmpeg
 make clean
-./configure --cc=$CC --cxx=$CXX
-make -j$(expr $(nproc) / 2)
 
+./configure \
+  --prefix=/ffmpeg/install \
+  --cc=$CC \
+  --cxx=$CXX \
+  --disable-programs \
+  --disable-doc \
+  --disable-debug \
+  --disable-shared \
+  --enable-static \
+  --enable-pic \
+  --enable-zlib \
+  --extra-cflags="-I/zlib/install/include" \
+  --extra-ldflags="-L/zlib/install/lib -lz"
+
+make -j$(nproc)
+make install
 # Build torchvision
 
 cd /vision
 rm -rf build
 Torch_DIR=/pytorch/ \
       cmake \
-      -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
-      -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-      -DENGINE=$ENGINE -DSUFFIX=$SUFFIX -DBUILD_SAVERS=${BUILD_SAVERS:-} \
-      -DJPEG_LIBRARY=/libjpeg-turbo-2.1.3/build/libjpeg.a \
-      -DPNG_LIBRARY=/libpng-1.6.37/build/libpng.a \
-      -DZLIB_LIBRARY=/zlib/libz.a \
-      -DFFMPEG_DIR=/ffmpeg \
+      -DCMAKE_C_COMPILER=$CC \
+      -DCMAKE_CXX_COMPILER=$CXX \
+      -DCMAKE_C_FLAGS="$CFLAGS -I/ffmpeg/install/include -I/zlib/install/include" \
+      -DCMAKE_CXX_FLAGS="$CXXFLAGS -I/ffmpeg/install/include -I/zlib/install/include" \
+      -DENGINE=$ENGINE \
+      -DSUFFIX=$SUFFIX \
+      -DBUILD_SAVERS=${BUILD_SAVERS:-} \
+      -DJPEG_LIBRARY=/libjpeg-turbo-3.1.1/install/lib/libjpeg.a \
+      -DJPEG_INCLUDE_DIR=/libjpeg-turbo-3.1.1/install/include \
+      -DPNG_LIBRARY=/libpng-1.6.50/install/lib/libpng.a \
+      -DPNG_PNG_INCLUDE_DIR=/libpng-1.6.50/install/include \
+      -DZLIB_LIBRARY=/zlib/install/lib/libz.a \
+      -DZLIB_INCLUDE_DIR=/zlib/install/include \
+      -DFFMPEG_DIR=/ffmpeg/install \
+      -DFFMPEG_INCLUDE_DIR=/ffmpeg/install/include \
       -Donnx_LIBRARY=/pytorch/build/lib/libonnx.a \
       -Donnx_proto_LIBRARY=/pytorch/build/lib/libonnx_proto.a \
       -Dfoxi_loader_LIBRARY=/pytorch/build/lib/libfoxi_loader.a \
-      -DCMAKE_C_COMPILER_ID=GNU -DCMAKE_CXX_COMPILER_ID=GNU \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DCMAKE_C_COMPILER_ID=GNU \
+      -DCMAKE_CXX_COMPILER_ID=GNU \
       -S . -B build/
+
 cd build/
-cmake --build . -j$(expr $(nproc) / 2)
+cmake --build . -j$(nproc)
 cmake --install .
 
-if [[ $CONFIG = "sydr" ]]
+if [[ $CONFIG = "sydr" ]]; 
 then
   # Generate tensors from corpus
-  
   cd /
-  
-  for filename in /jpeg_corpus/*; do 
+
+  for filename in /jpeg_raw/*; do 
       if ./save_jpeg "$filename"; then
-          mv /jpeg_corpus/*.tensor /jpeg_tensor/
+          mv /jpeg_raw/*.tensor /jpeg_tensor/
       fi
   done
   
-  for filename in /png_corpus/*; do 
+  for filename in /png_raw/*; do 
       if ./save_png "$filename"; then
-          mv /png_corpus/*.tensor /png_tensor/
+          mv /png_raw/*.tensor /png_tensor/
       fi
   done
-  
+
   # Write \x00 to start of each image file
-  for filename in /png_corpus/*.png; do
-      [ -e "$filename" ] || continue
-      printf "\x00" | cat - $filename > ${filename}_input
-      rm $filename
+  for filepath in /png_raw/*.png; do
+      [ -e "$filepath" ] || continue
+      filename=$(basename "$filepath")
+      printf "\x00" | cat - "$filepath" > "/png_corpus/${filename}_input"
   done
-  
-  for filename in /jpeg_corpus/*.jp*g; do
-      [ -e "$filename" ] || continue
-      printf "\x00" | cat - $filename > ${filename}_input
-      rm $filename
+
+  for filepath in /jpeg_raw/*.jp*g; do
+      [ -e "$filepath" ] || continue
+      filename=$(basename "$filepath")
+      printf "\x00" | cat - "$filepath" > "/jpeg_corpus/${filename}_input"
   done
 fi
 
