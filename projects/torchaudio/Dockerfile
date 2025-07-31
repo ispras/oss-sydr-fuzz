@@ -43,12 +43,12 @@ RUN cd /libsox && \
 COPY build.sh /
 COPY load_audio.cc /audio
 
-RUN CONFIGS="libfuzzer" /build.sh
-RUN CONFIGS="sydr" /build.sh
-RUN CONFIGS="coverage" /build.sh
-RUN CONFIGS="afl" /build.sh
+RUN TARGET="libfuzzer" /build.sh
+RUN TARGET="sydr" /build.sh
+RUN TARGET="coverage" /build.sh
+RUN TARGET="afl" /build.sh
 
 # Prepare corporas.
 RUN mkdir wav_corpus
 RUN git clone https://github.com/strongcourage/fuzzing-corpus.git && \
-    find /fuzzing-corpus -name '*.wav' -exec cp {} /wav_corpus/ \;
+    find /fuzzing-corpus -name '*.wav' -exec cp {} /wav_corpus/ \; && rm -rf /fuzzing-corpus

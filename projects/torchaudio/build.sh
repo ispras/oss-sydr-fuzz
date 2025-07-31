@@ -16,9 +16,7 @@
 #
 ################################################################################
 
-for CONFIG in $CONFIGS; do
-
-if [[ $CONFIG = "libfuzzer" ]]
+if [[ $TARGET = "libfuzzer" ]]
 then
   export SUFFIX="fuzz"
   export CC=clang
@@ -29,18 +27,18 @@ then
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
 fi
 
-if [[ $CONFIG = "afl" ]]
+if [[ $TARGET = "afl" ]]
 then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CFLAGS="-g -fsanitize=address,null,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=address,null,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
 fi
 
-if [[ $CONFIG = "sydr" ]]
+if [[ $TARGET = "sydr" ]]
 then
   export SUFFIX="sydr"
   export CC=clang
@@ -52,7 +50,7 @@ then
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
 fi
 
-if [[ $CONFIG = "coverage" ]]
+if [[ $TARGET = "coverage" ]]
 then
   export SUFFIX="cov"
   export CC=clang
@@ -65,31 +63,21 @@ then
 fi
 
 # Build libsox
-
 cd /libsox
 autoreconf -i
 make clean || true
 ./configure
-make
 make install
 
-
+# Build PyTorch
 cd /pytorch
-
-# clean artifacts from previous build pytorch
 python3 setup.py clean
-
 CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
         USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 \
         python3 setup.py build_clib
 
-
+# Build audio
 cd /audio
-
-#clean artifacts from previous build audio
-rm -rf build
-
-#build audio
 Torch_DIR=/pytorch/ \
     cmake \
     -DCMAKE_C_COMPILER=$CC \
@@ -107,10 +95,10 @@ Torch_DIR=/pytorch/ \
     -DBUILD_SHARED_LIBS=OFF \
     -G Ninja \
     -S . -B build/
-
-
 cd build
 cmake --build . -j$(nproc)
 cmake --install .
 
-done
+# Remove artifacts
+cd /pytorch && python3 setup.py clean
+rm -rf /audio/build

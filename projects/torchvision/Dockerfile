@@ -77,7 +77,8 @@ RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && \
     mkdir /mp4_corpus/
 RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
     cp -rn /fuzzing-corpus/png/*/* /png_raw/ && \
-    cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
+    cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/
+RUN rm -rf /fuzzing-corpus 
 
 # Copy targets
 COPY *.cc /vision/

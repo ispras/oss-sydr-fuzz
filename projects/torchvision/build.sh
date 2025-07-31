@@ -16,9 +16,7 @@
 #
 ################################################################################
 
-for CONFIG in $CONFIGS; do
-
-if [[ $CONFIG = "libfuzzer" ]]
+if [[ $TARGET = "libfuzzer" ]]
 then
   export SUFFIX="fuzz"
   export CC=clang
@@ -30,7 +28,7 @@ then
   export BUILD_SAVERS="OFF"
 fi
 
-if [[ $CONFIG = "afl" ]]
+if [[ $TARGET = "afl" ]]
 then
   export SUFFIX="afl"
   export CC=afl-clang-fast
@@ -42,7 +40,7 @@ then
   export BUILD_SAVERS="OFF"
 fi
 
-if [[ $CONFIG = "sydr" ]]
+if [[ $TARGET = "sydr" ]]
 then
   export SUFFIX="sydr"
   export CC=clang
@@ -55,7 +53,7 @@ then
   export BUILD_SAVERS="ON"
 fi
 
-if [[ $CONFIG = "coverage" ]]
+if [[ $TARGET = "coverage" ]]
 then
   export SUFFIX="cov"
   export CC=clang
@@ -71,14 +69,12 @@ fi
 # Build pytorch
 
 cd /pytorch
-
-# clean artifacts from previous build pytorch
 python3 setup.py clean
 
-CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
-        USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
-        python3 setup.py build_clib
-
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
+USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF \ 
+BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
+python3 setup.py build_clib
 
 ## Build libpng
 cd /libpng-1.6.50
@@ -137,8 +133,8 @@ make clean
 
 make -j$(nproc)
 make install
-# Build torchvision
 
+# Build torchvision
 cd /vision
 rm -rf build
 Torch_DIR=/pytorch/ \
@@ -170,7 +166,7 @@ cd build/
 cmake --build . -j$(nproc)
 cmake --install .
 
-if [[ $CONFIG = "sydr" ]]; 
+if [[ $TARGET = "sydr" ]];
 then
   # Generate tensors from corpus
   cd /
@@ -180,12 +176,14 @@ then
           mv /jpeg_raw/*.tensor /jpeg_tensor/
       fi
   done
+  find jpeg_tensor/ -type f -size +1M -delete
   
   for filename in /png_raw/*; do 
       if ./save_png "$filename"; then
           mv /png_raw/*.tensor /png_tensor/
       fi
   done
+  find png_tensor/ -type f -size +1M -delete
 
   # Write \x00 to start of each image file
   for filepath in /png_raw/*.png; do
@@ -199,6 +197,10 @@ then
       filename=$(basename "$filepath")
       printf "\x00" | cat - "$filepath" > "/jpeg_corpus/${filename}_input"
   done
+
+  rm /save_png /save_jpeg
 fi
 
-done
+# Remove build artifacts
+cd /pytorch && python3 setup.py clean
+rm -rf /vision/build /ffmpeg /cv
