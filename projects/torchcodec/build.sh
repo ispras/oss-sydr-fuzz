@@ -123,12 +123,8 @@ make clean
   --prefix=/ffmpeg/install \
   --cc=$CC \
   --cxx=$CXX \
-  --disable-programs \
-  --disable-doc \
-  --disable-debug \
   --disable-shared \
   --enable-static \
-  --enable-pic \
   --enable-zlib \
   --extra-cflags="-I/zlib/install/include" \
   --extra-ldflags="-L/zlib/install/lib -lz"
@@ -143,11 +139,10 @@ Torch_DIR=/pytorch/ \
       cmake \
       -DCMAKE_C_COMPILER=$CC \
       -DCMAKE_CXX_COMPILER=$CXX \
-      -DCMAKE_C_FLAGS="$CFLAGS -I/ffmpeg/install/include -I/zlib/install/include" \
-      -DCMAKE_CXX_FLAGS="$CXXFLAGS -I/ffmpeg/install/include -I/zlib/install/include" \
+      -DCMAKE_C_FLAGS="$CFLAGS" \
+      -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
       -DENGINE=$ENGINE \
       -DSUFFIX=$SUFFIX \
-      -DBUILD_SAVERS=${BUILD_SAVERS:-} \
       -S . -B build/
 
 cd build/

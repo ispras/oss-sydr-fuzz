@@ -70,9 +70,9 @@ RUN cd /codec && \
 RUN cd / && mkdir cv && cd cv/ && \
     wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && \
     unzip opencv.zip && mkdir -p build && cd build && \
-    cmake -DBUILD_TESTS=#OFF ../opencv-4.x && \
-    cmake --build . -j$(#nproc) && \
-    make install && cd /#
+    cmake -DBUILD_TESTS=OFF ../opencv-4.x && \
+    cmake --build . -j$(nproc) && \
+    make install && cd /
 
 
 # Download jpeg, png, zlib and ffmpeg sources.
@@ -100,3 +100,18 @@ RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
     cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
 
 
+COPY *.cc /codec/ 
+
+#RUN CONFIGS="sydr" /build.sh
+#RUN CONFIGS="libfuzzer" /build.sh
+#RUN CONFIGS="coverage" /build.sh
+#RUN CONFIGS="afl" /build.sh
+
+#RUN rm -rf /codec
+#RUN rm -rf /pytorch
+#RUN rm -rf /jpeg_raw
+#RUN rm -rf /png_raw
+#RUN rm -rf /libpng-1.6.50
+#RUN rm -rf /libjpeg-turbo-3.1.1
+#RUN rm -rf /zlib
+#RUN rm -rf /ffmpeg
