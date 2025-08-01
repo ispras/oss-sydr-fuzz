@@ -1,8 +1,8 @@
 diff --git a/src/torchcodec/_core/CMakeLists.txt b/src/torchcodec/_core/CMakeLists.txt
-index 9008aa9..0b363ed 100644
+index 9008aa9..e384aa2 100644
 --- a/src/torchcodec/_core/CMakeLists.txt
 +++ b/src/torchcodec/_core/CMakeLists.txt
-@@ -8,246 +8,70 @@ find_package(pybind11 REQUIRED)
+@@ -8,246 +8,94 @@ find_package(pybind11 REQUIRED)
  find_package(Torch REQUIRED)
  find_package(Python3 ${PYTHON_VERSION} EXACT COMPONENTS Development)
  
@@ -248,7 +248,6 @@ index 9008aa9..0b363ed 100644
 -    set(libtorchcodec_library_name "libtorchcodec_core${ffmpeg_major_version}" PARENT_SCOPE)
 -    set(libtorchcodec_custom_ops_name "libtorchcodec_custom_ops${ffmpeg_major_version}" PARENT_SCOPE)
 -    set(libav_include_dirs ${LIBAV_INCLUDE_DIRS} PARENT_SCOPE)
--endif()
 +set(FFMPEG_INCLUDE_DIR /ffmpeg/install/include)
 +set(FFMPEG_LIB_DIR /ffmpeg/install/lib)
 +set(ZLIB_LIB_DIR /zlib/install/lib)
@@ -289,7 +288,9 @@ index 9008aa9..0b363ed 100644
 +)
 +
 +set(FUZZ_TARGETS
-+  stream_decoder
++  file_scan
++  file_frame_getter
++  audio_encoder
 +)
 +
 +foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
@@ -313,3 +314,25 @@ index 9008aa9..0b363ed 100644
 +  set_target_properties(${FUZZ_TARGET}_${SUFFIX} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
 +  install(TARGETS ${FUZZ_TARGET}_${SUFFIX} DESTINATION /)
 +endforeach()
++
++
++if (BUILD_SAVERS)
++  set(SAVERS
++    save_tensor
++  )
++
++  foreach(SAVER IN LISTS SAVERS)
++    add_executable(${SAVER} ${CMAKE_SOURCE_DIR}/${SAVER}.cc)
++    target_link_libraries(${SAVER}
++    PUBLIC codec_core 
++    PUBLIC ${CMAKE_DL_LIBS} 
++    PUBLIC pthread 
++    PUBLIC rt 
++    PUBLIC ${ZLIB_LIB_DIR}/libz.a
++    PUBLIC lzma
++  )
++    add_dependencies(${SAVER} codec_core)
++    set_target_properties(${SAVER} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
++    install(TARGETS ${SAVER} DESTINATION /)
++  endforeach()
+ endif()

@@ -76,10 +76,6 @@ RUN cd / && mkdir cv && cd cv/ && \
 
 
 # Download jpeg, png, zlib and ffmpeg sources.
-RUN wget http://download.sourceforge.net/libpng/libpng-1.6.50.tar.gz && \
-    tar -xvzf libpng-1.6.50.tar.gz && rm libpng-1.6.50.tar.gz
-RUN wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.1.1.tar.gz && \
-    tar -xvzf 3.1.1.tar.gz && rm 3.1.1.tar.gz
 RUN git clone https://github.com/madler/zlib.git zlib && cd zlib && \
     git checkout v1.3.1
 RUN git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg && cd ffmpeg && \
@@ -91,21 +87,19 @@ RUN git clone https://github.com/strongcourage/fuzzing-corpus.git
 # Remove empty files from corpus.
 RUN find fuzzing-corpus -type f -size 0c | xargs -I {} rm {}
 
-RUN mkdir /jpeg_corpus/ && mkdir /png_corpus/ && \
-    mkdir /jpeg_raw/ && mkdir /png_raw/ && \
-    mkdir /jpeg_tensor/ && mkdir /png_tensor/ && \
-    mkdir /mp4_corpus/
-RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
-    cp -rn /fuzzing-corpus/png/*/* /png_raw/ && \
-    cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
+RUN mkdir /mp4_corpus/ && mkdir /wav_corpus/ && mkdir /mixed_corpus/
+RUN cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/ 
 
+RUN find /fuzzing-corpus -name '*.wav' -exec cp {} /wav_corpus/ \;
+RUN cp -rn /mp4_corpus/* /mixed_corpus/
+RUN cp -rn /wav_corpus/* /mixed_corpus/
 
 COPY *.cc /codec/ 
 
-#RUN CONFIGS="sydr" /build.sh
-#RUN CONFIGS="libfuzzer" /build.sh
-#RUN CONFIGS="coverage" /build.sh
-#RUN CONFIGS="afl" /build.sh
+RUN TARGET="sydr" /build.sh
+RUN TARGET="libfuzzer" /build.sh
+RUN TARGET="coverage" /build.sh
+RUN TARGET="afl" /build.sh
 
 #RUN rm -rf /codec
 #RUN rm -rf /pytorch

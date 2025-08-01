@@ -19,23 +19,43 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "torch/types.h"
 
-#include "src/torchcodec/_core/SingleStreamDecoder.h"
+#include "src/torchcodec/_core/Encoder.h"
+#include "src/torchcodec/_core/StreamOptions.h"
+
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-    char video_path[24] = {0};
-    strcpy(video_path, "/tmp/video-XXXXXX");
-    int fd = mkstemp(video_path);
-    if (fd == -1) {
+    if (size < 2) { return 0; }
+    size_t size_i = size - 1;
+
+    auto input_data =
+        torch::from_blob((char *)(data + 1), /*size=*/size_i, torch::kU8);
+    if (input_data.dim() != 1 || input_data.numel() <= 0) {
         return 0;
     }
 
-    write(fd, data, size);
-    facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(video_path);
+    int mode = (int)data[0] % 5;
+    facebook::torchcodec::AudioStreamOptions aso;
+    aso.bitRate = mode;
+    aso.numChannels = mode;
+    aso.sampleRate = mode;
+    std::string fileName = "tmp";
 
-    auto value = decoder.getKeyFrameIndices();
 
-    unlink(video_path);
-    close(fd);
+    facebook::torchcodec::AudioEncoder encoder = facebook::torchcodec::AudioEncoder(
+        input_data, mode, fileName, aso);
+
+    auto result = encoder.encodeToTensor(); 
+
+    try {
+
+    } catch (const std::runtime_error &e) {
+        return 0;
+    }
+    catch (const c10::Error &e) {
+        return 0;
+    }
+
     return 0;
 }

@@ -16,7 +16,7 @@
 #
 ################################################################################
 
-if [[ $CONFIG = "libfuzzer" ]]
+if [[ $TARGET = "libfuzzer" ]]
 then
   export SUFFIX="fuzz"
   export CC=clang
@@ -28,7 +28,7 @@ then
   export BUILD_SAVERS="OFF"
 fi
 
-if [[ $CONFIG = "afl" ]]
+if [[ $TARGET = "afl" ]]
 then
   export SUFFIX="afl"
   export CC=afl-clang-fast
@@ -40,7 +40,7 @@ then
   export BUILD_SAVERS="OFF"
 fi
 
-if [[ $CONFIG = "sydr" ]]
+if [[ $TARGET = "sydr" ]]
 then
   export SUFFIX="sydr"
   export CC=clang
@@ -53,7 +53,7 @@ then
   export BUILD_SAVERS="ON"
 fi
 
-if [[ $CONFIG = "coverage" ]]
+if [[ $TARGET = "coverage" ]]
 then
   export SUFFIX="cov"
   export CC=clang
@@ -77,33 +77,6 @@ CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 US
         USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
         python3 setup.py build_clib
 
-
-## Build libpng
-cd /libpng-1.6.50
-rm -rf build
-cmake -DCMAKE_C_COMPILER=$CC \
-      -DCMAKE_C_FLAGS="$CFLAGS" \
-      -DCMAKE_INSTALL_PREFIX=/libpng-1.6.50/install \
-      -S . -B build/
-cd build
-cmake --build . -j$(nproc)
-cmake --install .
-
-# Build libjpeg-turbo
-cd /libjpeg-turbo-3.1.1
-rm -rf build
-cmake -G"Unix Makefiles" \
-      -DCMAKE_C_COMPILER=$CC \
-      -DCMAKE_CXX_COMPILER=$CXX \
-      -DENABLE_STATIC=1 \
-      -DENABLE_SHARED=0 \
-      -DWITH_JPEG8=1 \
-      -DCMAKE_C_FLAGS="$CFLAGS" \
-      -DCMAKE_INSTALL_PREFIX=/libjpeg-turbo-3.1.1/install \
-      -S . -B build/
-cd build/
-make -j$(nproc)
-cmake --install .
 
 # Build zlib
 cd /zlib
@@ -131,8 +104,9 @@ make clean
 
 make -j$(nproc)
 make install
-# Build torchvision
 
+
+# Build torccodec
 cd /codec
 rm -rf build
 Torch_DIR=/pytorch/ \
@@ -141,6 +115,7 @@ Torch_DIR=/pytorch/ \
       -DCMAKE_CXX_COMPILER=$CXX \
       -DCMAKE_C_FLAGS="$CFLAGS" \
       -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+      -DBUILD_SAVERS=${BUILD_SAVERS:-} \
       -DENGINE=$ENGINE \
       -DSUFFIX=$SUFFIX \
       -S . -B build/
@@ -149,34 +124,15 @@ cd build/
 cmake --build . -j$(nproc)
 cmake --install .
 
-if [[ $CONFIG = "sydr" ]]; 
+if [[ $TARGET = "sydr" ]]; 
 then
   # Generate tensors from corpus
   cd /
 
-  for filename in /jpeg_raw/*; do 
-      if ./save_jpeg "$filename"; then
-          mv /jpeg_raw/*.tensor /jpeg_tensor/
+  for filename in /wav_corpus/*; do 
+      if ./save_tensor "$filename"; then
+          mv /wav_corpus/*.tensor /wav_tensor/
       fi
-  done
-  
-  for filename in /png_raw/*; do 
-      if ./save_png "$filename"; then
-          mv /png_raw/*.tensor /png_tensor/
-      fi
-  done
-
-  # Write \x00 to start of each image file
-  for filepath in /png_raw/*.png; do
-      [ -e "$filepath" ] || continue
-      filename=$(basename "$filepath")
-      printf "\x00" | cat - "$filepath" > "/png_corpus/${filename}_input"
-  done
-
-  for filepath in /jpeg_raw/*.jp*g; do
-      [ -e "$filepath" ] || continue
-      filename=$(basename "$filepath")
-      printf "\x00" | cat - "$filepath" > "/jpeg_corpus/${filename}_input"
   done
 fi
 
