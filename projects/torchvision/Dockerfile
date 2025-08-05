@@ -21,30 +21,7 @@ RUN apt-get update && apt-get install -y \
     yasm \
     nasm
 
-# Copy build script, patch vision.
-COPY build.sh /
-
-WORKDIR /    
-# Clone target from GitHub.
-RUN git clone https://github.com/pytorch/pytorch.git pytorch
-RUN cd /pytorch && \
-    git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
-    git submodule sync && \
-    git submodule update --init --recursive --jobs 0 && \
-    sed -i '/^cmake$/d' requirements.txt && \
-    pip install -r requirements.txt
-
-COPY torchvision.patch /    
-COPY ffmpeg-7.2.patch /  
-
-RUN git clone https://github.com/pytorch/vision.git vision
-RUN cd /vision && \
-    git checkout b818d320a14a2e6d9d9f28853e9e7beae703e52e && \
-    git apply /torchvision.patch && \
-    git apply /ffmpeg-7.2.patch
-
-RUN rm ffmpeg-7.2.patch
-RUN rm torchvision.patch
+WORKDIR /
 
 # Install OpenCV
 RUN cd / && mkdir cv && cd cv/ && \
@@ -53,7 +30,6 @@ RUN cd / && mkdir cv && cd cv/ && \
     cmake -DBUILD_TESTS=OFF ../opencv-4.x && \
     cmake --build . -j$(nproc) && \
     make install && cd /
-
 
 # Download jpeg, png, zlib and ffmpeg sources.
 RUN wget http://download.sourceforge.net/libpng/libpng-1.6.50.tar.gz && \
@@ -80,11 +56,35 @@ RUN cp -rn /fuzzing-corpus/jpg/*/* /jpeg_raw/ && \
     cp -rn /fuzzing-corpus/mp4/*/* /mp4_corpus/
 RUN rm -rf /fuzzing-corpus 
 
+# Clone PyTorch.
+RUN git clone https://github.com/pytorch/pytorch.git pytorch
+RUN cd /pytorch && \
+    git checkout 19ae5afdaa3a59135e6adbaea197b7a2456f1865 && \
+    git submodule sync && \
+    git submodule update --init --recursive --jobs 0 && \
+    sed -i '/^cmake$/d' requirements.txt && \
+    pip install -r requirements.txt
+
+# Clone and patch torchvision
+COPY torchvision.patch /
+COPY ffmpeg-7.2.patch /
+RUN git clone https://github.com/pytorch/vision.git vision
+RUN cd /vision && \
+    git checkout b818d320a14a2e6d9d9f28853e9e7beae703e52e && \
+    git apply /torchvision.patch && \
+    git apply /ffmpeg-7.2.patch
+
+RUN rm ffmpeg-7.2.patch
+RUN rm torchvision.patch
+
 # Copy targets
 COPY *.cc /vision/
 
+# Copy build script
+COPY build.sh /
+
 # Build torchvision
-RUN CONFIGS="sydr" /build.sh
-RUN CONFIGS="libfuzzer" /build.sh
-RUN CONFIGS="coverage" /build.sh
-RUN CONFIGS="afl" /build.sh
+RUN TARGET="sydr" /build.sh
+RUN TARGET="libfuzzer" /build.sh
+RUN TARGET="coverage" /build.sh
+RUN TARGET="afl" /build.sh

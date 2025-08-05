@@ -26,7 +26,7 @@ export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 cd eigen
 
 mkdir build_dir && cd build_dir
-cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS=$CXXFLAGS -DCMAKE_C_FLAGS=$CFLAGS ..
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS="$CXXFLAGS" -DCMAKE_C_FLAGS="$CFLAGS" ..
 make install
 cd ..
 
@@ -45,7 +45,7 @@ export CFLAGS="-g -fsanitize=address,undefined"
 
 cd build_dir
 make clean
-cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS=$CXXFLAGS -DCMAKE_C_FLAGS=$CFLAGS ..
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS="$CXXFLAGS" -DCMAKE_C_FLAGS="$CFLAGS" ..
 make install
 cd ..
 
@@ -64,7 +64,7 @@ export CFLAGS="-g"
 
 cd build_dir
 make clean
-cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS=$CXXFLAGS -DCMAKE_C_FLAGS=$CFLAGS ..
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS="$CXXFLAGS" -DCMAKE_C_FLAGS="$CFLAGS" ..
 make install
 cd ..
 
@@ -80,7 +80,7 @@ export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
 
 cd build_dir
 make clean
-cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS=$CXXFLAGS -DCMAKE_C_FLAGS=$CFLAGS ..
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS="$CXXFLAGS" -DCMAKE_C_FLAGS="$CFLAGS" ..
 make install
 cd ..
 

@@ -33,8 +33,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
+  export CFLAGS="-g -fsanitize=null,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=null,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
@@ -67,16 +67,13 @@ then
 fi
 
 # Build pytorch
-
 cd /pytorch
 python3 setup.py clean
-
-CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
-USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF \ 
-BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
+USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 \
 python3 setup.py build_clib
 
-## Build libpng
+# Build libpng
 cd /libpng-1.6.50
 rm -rf build
 cmake -DCMAKE_C_COMPILER=$CC \
@@ -203,4 +200,4 @@ fi
 
 # Remove build artifacts
 cd /pytorch && python3 setup.py clean
-rm -rf /vision/build /ffmpeg /cv
+rm -rf /vision/build
