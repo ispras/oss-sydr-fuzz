@@ -6,7 +6,7 @@ DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
-DIFUZZ_ARGS = { value = "-r webp.main --weights reverse -o difuzz -j8", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+DIFUZZ_ARGS = { value = "--weights reverse -o difuzz -j8", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
@@ -89,15 +89,17 @@ windows_alias = "unsupported"
 [tasks.difuzz_unix]
 script_runner = "@shell"
 script = '''
-${DIFUZZ_DIR_ABS}/difuzz-go -c ${PROJECT_DIR}/config.toml -p ${EXAMPLE_DIR}/cmd/webp -e ${OUT_DIR_ABS}/ets_webp.toml ${DIFUZZ_ARGS}
+cd ${OUT_DIR_ABS}
 
-${DIFUZZ_DIR_ABS}/difuzz-go -c ${PROJECT_DIR}/config.toml -p ${EXAMPLE_DIR}/cmd/tiff -e ${OUT_DIR_ABS}/ets_tiff.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r webp.main -c ${PROJECT_DIR}/config_webp.toml -p ${EXAMPLE_DIR}/cmd/webp -e ${OUT_DIR_ABS}/ets_webp.toml ${DIFUZZ_ARGS}
 
-${DIFUZZ_DIR_ABS}/difuzz-go -c ${PROJECT_DIR}/config.toml -p ${EXAMPLE_DIR}/cmd/png -e ${OUT_DIR_ABS}/ets_png.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r tiff.main -c ${PROJECT_DIR}/config_tiff.toml -p ${EXAMPLE_DIR}/cmd/tiff -e ${OUT_DIR_ABS}/ets_tiff.toml ${DIFUZZ_ARGS}
 
-${DIFUZZ_DIR_ABS}/difuzz-go -c ${PROJECT_DIR}/config.toml -p ${EXAMPLE_DIR}/cmd/jpeg -e ${OUT_DIR_ABS}/ets_jpeg.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r png.main -c ${PROJECT_DIR}/config_png.toml -p ${EXAMPLE_DIR}/cmd/png -e ${OUT_DIR_ABS}/ets_png.toml ${DIFUZZ_ARGS}
 
-${DIFUZZ_DIR_ABS}/difuzz-go -c ${PROJECT_DIR}/config.toml -p ${EXAMPLE_DIR}/cmd/gif -e ${OUT_DIR_ABS}/ets_gif.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r jpeg.main -c ${PROJECT_DIR}/config_jpeg.toml -p ${EXAMPLE_DIR}/cmd/jpeg -e ${OUT_DIR_ABS}/ets_jpeg.toml ${DIFUZZ_ARGS}
+
+${DIFUZZ_DIR_ABS}/difuzz-go -r gif.main -c ${PROJECT_DIR}/config_gif.toml -p ${EXAMPLE_DIR}/cmd/gif -e ${OUT_DIR_ABS}/ets_gif.toml ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
