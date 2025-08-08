@@ -55,4 +55,3 @@ RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
 RUN OUT_DIR=/ cargo make all
 
 WORKDIR /
-
