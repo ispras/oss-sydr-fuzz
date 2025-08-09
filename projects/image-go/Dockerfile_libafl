@@ -30,7 +30,7 @@ RUN git checkout 1b7441254c9a43adda43ffcf12d7add0f1df0191
 
 RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 
-COPY fuzz.go build.sh ./
+COPY fuzz.go ./
 
 RUN mkdir cmd/webp && \
     mkdir cmd/tiff && \
