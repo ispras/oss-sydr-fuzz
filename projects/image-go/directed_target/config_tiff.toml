@@ -1,8 +1,15 @@
-# TODO: write tiff targets
 [[target]]
-file = "/image/webp/decode.go"
-line = 170
+file = "/image/tiff/reader.go"
+line = 71
 
 [[target]]
-file = "/image/webp/decode.go"
-line = 72
+file = "/image/tiff/reader.go"
+line = 391
+
+[[target]]
+file = "/image/tiff/reader.go"
+line = 482
+
+[[target]]
+file = "/image/tiff/reader.go"
+line = 686

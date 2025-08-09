@@ -1,8 +1,15 @@
-# TODO: write png targets
 [[target]]
-file = "/image/webp/decode.go"
-line = 170
+file = "/root/.go/src/image/png/reader.go"
+line = 174
 
 [[target]]
-file = "/image/webp/decode.go"
-line = 72
+file = "/root/.go/src/image/png/reader.go"
+line = 610
+
+[[target]]
+file = "/root/.go/src/image/png/reader.go"
+line = 875
+
+[[target]]
+file = "/root/.go/src/image/png/reader.go"
+line = 936

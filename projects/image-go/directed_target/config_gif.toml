@@ -1,8 +1,11 @@
-# TODO: write gif targets
 [[target]]
-file = "/image/webp/decode.go"
-line = 170
+file = "/root/.go/src/image/gif/reader.go"
+line = 238
 
 [[target]]
-file = "/image/webp/decode.go"
-line = 72
+file = "/root/.go/src/image/gif/reader.go"
+line = 349
+
+[[target]]
+file = "/root/.go/src/image/gif/reader.go"
+line = 402
