@@ -1,6 +1,6 @@
 [[target]]
 file = "/image/tiff/reader.go"
-line = 71
+line = 72
 
 [[target]]
 file = "/image/tiff/reader.go"
@@ -8,7 +8,7 @@ line = 392
 
 [[target]]
 file = "/image/tiff/reader.go"
-line = 482
+line = 484
 
 [[target]]
 file = "/image/tiff/reader.go"

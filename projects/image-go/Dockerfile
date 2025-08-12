@@ -24,11 +24,18 @@ RUN git clone --depth=1 https://github.com/dvyukov/go-fuzz-corpus.git
 
 WORKDIR image
 
-RUN git checkout 1b7441254c9a43adda43ffcf12d7add0f1df0191
+RUN git checkout c574db581976698ac047466629eeeb7b17bb49dd
 
 RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 
 COPY fuzz.go build.sh ./
+
+# Move target and additional libs to main project.
+RUN cp -r /root/.go/src/image/png . && \
+    cp -r /root/.go/src/image/jpeg . && \
+    cp -r /root/.go/src/image/gif . && \
+    cp -r /root/.go/src/internal/byteorder . && \
+    cp -r /root/.go/src/image/internal/imageutil .
 
 RUN mkdir cmd/sydr_webp && \
     mkdir cmd/sydr_tiff && \

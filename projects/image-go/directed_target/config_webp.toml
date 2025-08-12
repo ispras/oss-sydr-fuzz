@@ -1,11 +1,11 @@
 [[target]]
 file = "/image/webp/decode.go"
-line = 72
+line = 73
 
 [[target]]
 file = "/image/webp/decode.go"
-line = 170
+line = 175
 
 [[target]]
 file = "/image/webp/decode.go"
-line = 207
+line = 210

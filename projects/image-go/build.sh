@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Fix additional package paths
+sed -i 's|"internal/byteorder"|"golang.org/x/image/byteorder"|' gif/writer.go
+sed -i 's|"image/internal/imageutil"|"golang.org/x/image/imageutil"|' jpeg/reader.go
+
 # webp
 go-fuzz-build -libfuzzer -func=FuzzWebp -o webp.a
 clang -fsanitize=fuzzer webp.a -o fuzz_webp
