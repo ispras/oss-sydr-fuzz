@@ -1,15 +1,15 @@
 [[target]]
-file = "/root/.go/src/image/jpeg/reader.go"
+file = "/image/jpeg/reader.go"
 line = 228
 
 [[target]]
-file = "/root/.go/src/image/jpeg/reader.go"
+file = "/image/jpeg/reader.go"
 line = 329
 
 [[target]]
-file = "/root/.go/src/image/jpeg/reader.go"
+file = "/image/jpeg/reader.go"
 line = 649
 
 [[target]]
-file = "/root/.go/src/image/jpeg/reader.go"
+file = "/image/jpeg/reader.go"
 line = 761

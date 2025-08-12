@@ -89,6 +89,13 @@ windows_alias = "unsupported"
 [tasks.difuzz_unix]
 script_runner = "@shell"
 script = '''
+# Fix additional package paths and make a fake commit to restore instrumentation
+cd ${EXAMPLE_DIR}
+sed -i 's|"internal/byteorder"|"golang.org/x/image/byteorder"|' gif/writer.go
+sed -i 's|"image/internal/imageutil"|"golang.org/x/image/imageutil"|' jpeg/reader.go
+git add .
+git -c user.name="temp" -c user.email="temp@example.com" commit -m "intrumentation"
+
 cd ${OUT_DIR_ABS}
 
 ${DIFUZZ_DIR_ABS}/difuzz-go -r webp.main -c ${PROJECT_DIR}/config_webp.toml -p ${EXAMPLE_DIR}/cmd/webp -e ${OUT_DIR_ABS}/ets_webp.toml ${DIFUZZ_ARGS}
@@ -114,40 +121,30 @@ ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_webp.toml -l
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR}/cmd/webp
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_webp
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_webp.toml -keep-ets -l info
-${GOINSTR_SANCOV} -a remove -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR} && git restore .
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_tiff.toml -l info
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR}/cmd/tiff
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_tiff
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_tiff.toml -keep-ets -l info
-${GOINSTR_SANCOV} -a remove -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR} && git restore .
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_png.toml -l info
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR}/cmd/png
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_png
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_png.toml -keep-ets -l info
-${GOINSTR_SANCOV} -a remove -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR} && git restore .
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_jpeg.toml -l info
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR}/cmd/jpeg
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_jpeg
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_jpeg.toml -keep-ets -l info
-${GOINSTR_SANCOV} -a remove -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR} && git restore .
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_gif.toml -l info
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR}/cmd/gif
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_gif
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -e ${OUT_DIR_ABS}/ets_gif.toml -keep-ets -l info
-${GOINSTR_SANCOV} -a remove -i ${EXAMPLE_DIR} -l info
 cd ${EXAMPLE_DIR} && git restore .
 '''
 dependencies = ["difuzz"]

@@ -5,9 +5,9 @@ import (
         "fmt"
         "golang.org/x/image/webp"
         "golang.org/x/image/tiff"
-        "image/png"
-        "image/jpeg"
-        "image/gif"
+        "golang.org/x/image/png"
+        "golang.org/x/image/jpeg"
+        "golang.org/x/image/gif"
         "reflect"
 )
 
