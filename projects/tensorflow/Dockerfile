@@ -44,13 +44,16 @@ ENV TF_CPP_MIN_LOG_LEVEL=3
 # Build custom afl-cc to increase MAX_PARAMS_NUM.
 RUN /build_afl_cc.sh
 
-# Clone and build.
+# Prepare sources
 WORKDIR /
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
-    cd tensorflow_afl && git checkout v2.16.1 && \
-    cd / && cp -r tensorflow_afl tensorflow_fuzz && \
-    cp -r tensorflow_afl tensorflow_sydr && cp -r tensorflow_afl tensorflow_cov
-
+    cd /tensorflow_afl && \
+    git checkout v2.20.0-rc0
+# Revert 4642e0b57f172c88172578b74ed9019c4d346a07 that brokes fuzzing
+RUN cd /tensorflow_afl && git apply tensorflow.patch
+RUN cp -r /tensorflow_afl /tensorflow_fuzz && \
+    cp -r tensorflow_afl tensorflow_sydr && \
+    cp -r tensorflow_afl tensorflow_cov
 COPY fuzz_session.h /tensorflow_sydr/tensorflow/core/kernels/fuzzing/fuzz_session.h
 COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session.h
 
@@ -64,7 +67,6 @@ RUN cd /tensorflow_cov && CONFIG=coverage /build.sh
 RUN /fix_cov.sh
 
 # Prepare corporas and dictionaries.
-
 RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/corpus /
 RUN cp -r /tensorflow_afl/tensorflow/core/kernels/fuzzing/dictionaries /
 

@@ -1,8 +1,8 @@
 diff --git a/tensorflow/security/fuzzing/cc/BUILD b/tensorflow/security/fuzzing/cc/BUILD
-index 4e4e032574f..151c399050e 100644
+index bf419d8332c..fc453ae53a7 100644
 --- a/tensorflow/security/fuzzing/cc/BUILD
 +++ b/tensorflow/security/fuzzing/cc/BUILD
-@@ -55,23 +55,23 @@ tf_cc_fuzz_test(
+@@ -58,24 +58,24 @@ tf_cc_fuzz_test(
      ],
  )
  
@@ -20,7 +20,8 @@ index 4e4e032574f..151c399050e 100644
 -        "//tensorflow/core:lib",
 -        "//tensorflow/core/framework:types_proto_cc",
 -        "//tensorflow/core/platform:resource_loader",
--        "//tensorflow/core/platform:status",
+-        "//tensorflow/core/util:saved_tensor_slice_proto_cc",
+-        "@local_xla//xla/tsl/platform:status",
 -    ],
 -)
 +#tf_cc_fuzz_test(
@@ -37,13 +38,14 @@ index 4e4e032574f..151c399050e 100644
 +#        "//tensorflow/core:lib",
 +#        "//tensorflow/core/framework:types_proto_cc",
 +#        "//tensorflow/core/platform:resource_loader",
-+#        "//tensorflow/core/platform:status",
++#        "//tensorflow/core/util:saved_tensor_slice_proto_cc",
++#        "@local_xla//xla/tsl/platform:status",
 +#    ],
 +#)
  
  tf_proto_library(
      name = "checkpoint_reader_fuzz_input_proto",
-@@ -212,21 +212,21 @@ cc_library(
+@@ -218,27 +218,27 @@ cc_library(
      ],
  )
  
@@ -55,11 +57,17 @@ index 4e4e032574f..151c399050e 100644
 -        "//tensorflow/cc/saved_model:loader",
 -        "//tensorflow/cc/saved_model:tag_constants",
 -        "//tensorflow/core:core_cpu",
+-        "//tensorflow/core:lib",
 -        "//tensorflow/core:protos_all_cc",
 -        "//tensorflow/core:tensorflow",
+-        "//tensorflow/core/framework:tensor",
+-        "//tensorflow/core/platform:status",
 -        "//tensorflow/security/fuzzing/cc/core/framework:datatype_domains",
 -        "//tensorflow/security/fuzzing/cc/core/framework:tensor_domains",
 -        "//tensorflow/security/fuzzing/cc/core/framework:tensor_shape_domains",
+-        "@com_google_absl//absl/status",
+-        "@local_xla//xla/tsl/platform:env",
+-        "@local_xla//xla/tsl/platform:status",
 -    ],
 -)
 +#tf_cc_fuzz_test(
@@ -70,22 +78,28 @@ index 4e4e032574f..151c399050e 100644
 +#        "//tensorflow/cc/saved_model:loader",
 +#        "//tensorflow/cc/saved_model:tag_constants",
 +#        "//tensorflow/core:core_cpu",
++#        "//tensorflow/core:lib",
 +#        "//tensorflow/core:protos_all_cc",
 +#        "//tensorflow/core:tensorflow",
++#        "//tensorflow/core/framework:tensor",
++#        "//tensorflow/core/platform:status",
 +#        "//tensorflow/security/fuzzing/cc/core/framework:datatype_domains",
 +#        "//tensorflow/security/fuzzing/cc/core/framework:tensor_domains",
 +#        "//tensorflow/security/fuzzing/cc/core/framework:tensor_shape_domains",
++#        "@com_google_absl//absl/status",
++#        "@local_xla//xla/tsl/platform:env",
++#        "@local_xla//xla/tsl/platform:status",
 +#    ],
 +#)
  
  tf_cc_fuzz_test(
      name = "text_literal_reader_fuzz",
 diff --git a/tensorflow/security/fuzzing/tf_fuzzing.bzl b/tensorflow/security/fuzzing/tf_fuzzing.bzl
-index 1f8527c45f6..558c3ede009 100644
+index d8a6bafbf10..7e7582d9caa 100644
 --- a/tensorflow/security/fuzzing/tf_fuzzing.bzl
 +++ b/tensorflow/security/fuzzing/tf_fuzzing.bzl
-@@ -1,6 +1,26 @@
- """Definitions for rules to fuzz TensorFlow."""
+@@ -4,6 +4,26 @@ load("@rules_cc//cc:cc_test.bzl", "cc_test")
+ load("@rules_python//python:py_test.bzl", "py_test")
  
  # TensorFlow fuzzing can be done in open source too, as it is in oss-fuzz.com
 +load(
