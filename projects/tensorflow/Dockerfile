@@ -50,7 +50,7 @@ RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
     cd /tensorflow_afl && \
     git checkout v2.20.0-rc0
 # Revert 4642e0b57f172c88172578b74ed9019c4d346a07 that brokes fuzzing
-RUN cd /tensorflow_afl && git apply tensorflow.patch
+RUN cd /tensorflow_afl && git apply /tensorflow.patch
 RUN cp -r /tensorflow_afl /tensorflow_fuzz && \
     cp -r /tensorflow_afl /tensorflow_sydr && \
     cp -r /tensorflow_afl /tensorflow_cov
@@ -84,8 +84,5 @@ RUN find /tensorflow_afl -name '*.wav' -exec bash -c "cp {} /corpus/decode_wav" 
 
 # Increase timeout for forkserver spin up.
 ENV AFL_FORKSRV_INIT_TMOUT=1200000
-
-# Set large bitmap size for afl-showmap operation.
-ENV AFL_MAP_SIZE=100000000
 
 WORKDIR /
