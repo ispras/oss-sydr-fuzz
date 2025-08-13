@@ -1,5 +1,4 @@
-#!/bin/bash
-# Copyright 2023 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +14,18 @@
 #
 ################################################################################
 
-mkdir /custom_afl_cc
-cd custom_afl_cc
-git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus
-git checkout v4.30c && export CC=clang && export CXX=clang++ && \
-	export CFLAGS="-DMAX_PARAMS_NUM=16384 -ldl" && export CXXFLAGS="-DMAX_PARAMS_NUM=16384 -ldl" && \
-	export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
-	make distrib -j $(nproc)
+exit-on-time = 3600
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/sydr/string_ops_fuzz --fuzz=FuzzStringOpsStringSplit.Fuzz @@"
+
+[aflplusplus]
+args = "-t 60000 -i /corpus/string_split"
+target = "/afl/string_ops_fuzz --fuzz=FuzzStringOpsStringSplit.Fuzz @@"
+
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=8192"
+
+[cov]
+target = "/cov/string_ops_fuzz --fuzz=FuzzStringOpsStringSplit.Fuzz @@"
