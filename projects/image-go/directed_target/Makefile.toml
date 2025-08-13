@@ -132,31 +132,31 @@ windows_alias = "unsupported"
 [tasks.target_unix]
 script_runner = "@shell"
 script = '''
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -l info
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info
 cd ${EXAMPLE_DIR_INSTR}/cmd/webp
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_webp
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -l info
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info
 cd ${EXAMPLE_DIR_INSTR}/cmd/tiff
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_tiff
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -l info
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info
 cd ${EXAMPLE_DIR_INSTR}/cmd/png
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_png
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -l info
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info
 cd ${EXAMPLE_DIR_INSTR}/cmd/jpeg
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_jpeg
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_gif.toml -l info
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_gif.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info
 cd ${EXAMPLE_DIR_INSTR}/cmd/gif
 CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_gif
