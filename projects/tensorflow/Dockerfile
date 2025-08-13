@@ -52,8 +52,8 @@ RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl && \
 # Revert 4642e0b57f172c88172578b74ed9019c4d346a07 that brokes fuzzing
 RUN cd /tensorflow_afl && git apply tensorflow.patch
 RUN cp -r /tensorflow_afl /tensorflow_fuzz && \
-    cp -r tensorflow_afl tensorflow_sydr && \
-    cp -r tensorflow_afl tensorflow_cov
+    cp -r /tensorflow_afl /tensorflow_sydr && \
+    cp -r /tensorflow_afl /tensorflow_cov
 COPY fuzz_session.h /tensorflow_sydr/tensorflow/core/kernels/fuzzing/fuzz_session.h
 COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session.h
 
@@ -74,6 +74,13 @@ COPY corpus/*.zip /
 
 WORKDIR /corpus
 RUN find / -maxdepth 1 -name '*.zip' -exec bash -c "unzip {} && rm {}" \;
+RUN find /tensorflow_afl -name '*.wav' -exec bash -c "cp {} /corpus/decode_wav" \; && \
+    find /tensorflow_afl -name '*.bmp' -exec bash -c "cp {} /corpus/decode_bmp" \; && \
+    find /tensorflow_afl -name '*.csv' -exec bash -c "cp {} /corpus/decode_csv" \; && \
+    find /tensorflow_afl -name '*.png' -exec bash -c "cp {} /corpus/decode_png" \; && \
+    find /tensorflow_afl -name '*.gif' -exec bash -c "cp {} /corpus/gif" \; && \
+    find /tensorflow_afl -name '*.jpeg' -exec bash -c "cp {} /corpus/jpeg" \; && \
+    find /tensorflow_afl -name '*.jpg' -exec bash -c "cp {} /corpus/jpeg" \;
 
 # Increase timeout for forkserver spin up.
 ENV AFL_FORKSRV_INIT_TMOUT=1200000
