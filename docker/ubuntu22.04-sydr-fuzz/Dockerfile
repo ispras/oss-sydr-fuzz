@@ -245,3 +245,6 @@ RUN pyenv exec python3 -m pip install wllvm watchdog scipy numpy concurrencytest
 ENV PATH=$PATH:/fuzz/sydr/difuzz
 
 RUN apt-get install -y libboost-all-dev
+
+# Install LLVM-20 to support new profraw formats (Rust has LLVM-20 now)
+RUN ./llvm.sh 20 all
