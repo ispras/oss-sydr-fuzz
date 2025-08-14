@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,21 +14,23 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-MAINTAINER Andrey Fedotov
+ARG SYDR_ARCHIVE="./sydr.zip"
+
+WORKDIR /
 
 RUN git clone https://github.com/golang/image.git
 RUN git clone --depth=1 https://github.com/dvyukov/go-fuzz-corpus.git
 
-WORKDIR image
+WORKDIR /image
 
 RUN git checkout c574db581976698ac047466629eeeb7b17bb49dd
 
 RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 
-COPY fuzz.go build.sh ./
+COPY fuzz.go ./
 
 # Move target and additional libs to main project.
 RUN cp -r /root/.go/src/image/png . && \
@@ -37,20 +39,26 @@ RUN cp -r /root/.go/src/image/png . && \
     cp -r /root/.go/src/internal/byteorder . && \
     cp -r /root/.go/src/image/internal/imageutil .
 
-RUN mkdir cmd/sydr_webp && \
-    mkdir cmd/sydr_tiff && \
-    mkdir cmd/sydr_png && \
-    mkdir cmd/sydr_jpeg && \
-    mkdir cmd/sydr_gif
+RUN mkdir cmd/webp && \
+    mkdir cmd/tiff && \
+    mkdir cmd/png && \
+    mkdir cmd/jpeg && \
+    mkdir cmd/gif
 
-COPY sydr_webp.go cmd/sydr_webp/main.go
-COPY sydr_tiff.go cmd/sydr_tiff/main.go
-COPY sydr_png.go cmd/sydr_png/main.go
-COPY sydr_jpeg.go cmd/sydr_jpeg/main.go
-COPY sydr_gif.go cmd/sydr_gif/main.go
+COPY sydr_webp.go cmd/webp/main.go
+COPY sydr_tiff.go cmd/tiff/main.go
+COPY sydr_png.go cmd/png/main.go
+COPY sydr_jpeg.go cmd/jpeg/main.go
+COPY sydr_gif.go cmd/gif/main.go
 
-RUN ./build.sh
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
+
+WORKDIR /directed_target
+
+# Build image for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
 
 WORKDIR /
-
-COPY *.dict /
