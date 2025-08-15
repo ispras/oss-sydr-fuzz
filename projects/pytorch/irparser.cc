@@ -1,4 +1,4 @@
-// Copyright 2022 ISP RAS
+// Copyright 2025 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,8 +35,6 @@
 #include <torch/csrc/jit/tensorexpr/kernel.h>
 #include <torch/csrc/jit/testing/file_check.h>
 #include <torch/script.h>
-
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   try {

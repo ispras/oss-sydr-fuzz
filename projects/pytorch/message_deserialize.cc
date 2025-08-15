@@ -1,4 +1,4 @@
-// Copyright 2022 ISP RAS
+// Copyright 2025 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@
 
 #include <ATen/core/jit_type.h>
 #include <c10/core/ScalarType.h>
-#include <c10d/TCPStore.hpp>
-#include <tensorpipe/core/message.h>
+#include <torch/csrc/distributed/c10d/TCPStore.hpp>
+#include <torch/csrc/distributed/rpc/message.h>
 #include <torch/csrc/distributed/autograd/context/container.h>
 #include <torch/csrc/distributed/rpc/profiler/remote_profiler_manager.h>
 #include <torch/csrc/distributed/rpc/profiler/server_process_global_profiler.h>
@@ -56,10 +56,11 @@
 
 using namespace torch::distributed::rpc;
 
-MessageType GetMessageType(MessageType msgType) {
-  switch (msgType) {
-  case SCRIPT_CALL:
-    return SCRIPT_CALL;
+torch::distributed::rpc::MessageType GetMessageType(torch::distributed::rpc::MessageType msgType) {
+  return msgType;
+  /*switch (msgType) {
+  case torch::distributed::rpc::SCRIPT_CALL:
+    return torch::distributed::rpc::SCRIPT_CALL;
   case SCRIPT_RET:
     return SCRIPT_RET;
   case PYTHON_CALL:
@@ -114,7 +115,7 @@ MessageType GetMessageType(MessageType msgType) {
     return UNKNOWN;
   default:
     return UNKNOWN;
-  }
+  }*/
 }
 
 std::shared_ptr<TensorPipeAgent> g_rpcAgent;
@@ -131,13 +132,13 @@ int Init() {
   c10::intrusive_ptr<c10d::Store> store =
       c10::make_intrusive<c10d::TCPStore>("127.0.0.1", storeOpts);
 
-  TensorPipeRpcBackendOptions tensorpipeOpts(
+  torch::distributed::rpc::TensorPipeRpcBackendOptions tensorpipeOpts(
       /*numWorkerThreads=*/1U,
       /*transports=*/c10::nullopt,
       /*channels=*/c10::nullopt,
       /*rpc_timeout=*/30,
       /*init_method=*/"unused");
-  auto g_rpcAgent = std::make_shared<TensorPipeAgent>(
+  auto g_rpcAgent = std::make_shared<torch::distributed::rpc::TensorPipeAgent>(
       store, "worker", 0, /*numWorkers*/ 1, tensorpipeOpts,
       std::unordered_map<std::string, DeviceMap>{}, std::vector<c10::Device>{},
       std::make_unique<RequestCallbackNoPython>());
@@ -160,7 +161,6 @@ int Init() {
   return 1;
 }
 
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   if (!RpcAgent::isCurrentRpcAgentSet()) {

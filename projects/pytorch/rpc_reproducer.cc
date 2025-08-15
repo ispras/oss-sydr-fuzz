@@ -1,4 +1,4 @@
-// Copyright 2022 ISP RAS
+// Copyright 2025 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@
 
 #include <ATen/core/jit_type.h>
 #include <c10/core/ScalarType.h>
-#include <c10d/ProcessGroupGloo.hpp>
-#include <c10d/TCPStore.hpp>
+#include <torch/csrc/distributed/c10d/ProcessGroupGloo.hpp>
+#include <torch/csrc/distributed/c10d/TCPStore.hpp>
 #include <tensorpipe/core/message.h>
 #include <torch/csrc/distributed/autograd/context/container.h>
 #include <torch/csrc/distributed/autograd/context/context.h>

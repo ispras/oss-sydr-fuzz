@@ -23,13 +23,17 @@ RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch /pytorch
 RUN cd /pytorch && \
-    git checkout v2.3.0 && \
+    git checkout v2.8.0 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
 COPY *.sh \
-     *.cc \
      /
+
+RUN mkdir src
+
+COPY *.cc /src
+COPY CMakeLists.txt /src
 
 # Patch exceptions throwing to avoid unwanted crashes.
 RUN ./patch_exceptions.sh
@@ -40,12 +44,12 @@ RUN rm /usr/bin/x86_64-linux-gnu-gcc && \
 
 # Build fuzz targets.
 RUN TARGET="afl" /build.sh
-RUN TARGET="fuzz" /build.sh
 RUN TARGET="sydr" /build.sh
+RUN TARGET="fuzz" /build.sh
 RUN TARGET="cov" /build.sh
 
 # Set large bitmap size for afl-showmap operation.
-ENV AFL_MAP_SIZE=10000000
+#ENV AFL_MAP_SIZE=10000000
 
 # Prepare fuzzing corpus.
 COPY ./ir_corpus.zip /

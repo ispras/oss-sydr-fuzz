@@ -1,4 +1,4 @@
-// Copyright 2022 ISP RAS
+// Copyright 2025 ISP RAS
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #include <torch/csrc/jit/mobile/module.h>
 #include <torch/csrc/jit/runtime/instruction.h>
 #include <torch/csrc/jit/serialization/import.h>
+#include <torch/csrc/jit/frontend/error_report.h>
 
 namespace torch {
 namespace jit {
@@ -50,8 +51,6 @@ void dump_opnames(const Module &m, std::unordered_set<std::string> &opnames) {
 }
 } // namespace jit
 } // namespace torch
-
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) { return 0; }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   torch::jit::Module m;
