@@ -18,8 +18,6 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-MAINTAINER Darya Parygina (pa_darochek)
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
         rsync \
@@ -44,17 +42,21 @@ RUN curl -Lo /usr/bin/bazel \
     chmod +x /usr/bin/bazel
 
 RUN git clone https://github.com/tensorflow/tensorflow tensorflow && \
-    cd tensorflow && git checkout v2.16.1
+    cd tensorflow && git checkout v2.20.0
 
 WORKDIR /tensorflow
 
-COPY build.sh /
+COPY build.sh \
+     *.patch \
+     /
+
+# Fix grpc build
+RUN git apply /grpc.patch
+RUN cp /fix_grpc_build.patch third_party/xla/third_party/grpc/.
 
 RUN /build.sh
 
-# Create hard link to the asan_with_fuzzer.so to run targets, because tensorflow is
-# built with shared libasan.
-RUN mkdir /ld_path && ln $(find /usr/local/lib/ -name 'asan_with_fuzzer.so') /ld_path/libclang_rt.asan-x86_64.so
+RUN mkdir /ld_path && ln $(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1) /ld_path/libclang_rt.asan-x86_64.so
 
 ENV LD_LIBRARY_PATH /ld_path
 

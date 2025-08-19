@@ -1,0 +1,12 @@
+diff --git a/src/core/lib/compression/message_compress.cc b/src/core/lib/compression/message_compress.cc
+index 7a731495e4..4a64127890 100644
+--- a/src/core/lib/compression/message_compress.cc
++++ b/src/core/lib/compression/message_compress.cc
+@@ -22,7 +22,6 @@
+ #include <grpc/support/alloc.h>
+ #include <grpc/support/port_platform.h>
+ #include <string.h>
+-#include <zconf.h>
+ #include <zlib.h>
+ 
+ #include "absl/log/check.h"

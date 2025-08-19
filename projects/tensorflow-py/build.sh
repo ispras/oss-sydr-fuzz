@@ -39,18 +39,23 @@ sed -i -e 's/$(location @nasm\/\/:nasm) -f elf64/ASAN_OPTIONS=detect_leaks=0 $(l
 python3 -m pip install numpy wheel packaging requests opt_einsum toml
 python3 -m pip install keras_preprocessing --no-deps
 
+sed -i 's/build:linux --copt=\"-Wno-unknown-warning\"/# overwritten/g' ./.bazelrc
+sed -i 's/build:linux --copt=\"-Wno-array-parameter\"/# overwritten/g' ./.bazelrc
+sed -i 's/build:linux --copt=\"-Wno-stringop-overflow\"/# overwritten/g' ./.bazelrc
+
 bazel clean --expunge
 bazel build \
+  --define=xnn_enable_avxvnniint8=false \
   --verbose_failures \
-  --jobs=$(nproc) \
+  --jobs=150 \
   --spawn_strategy=sandboxed \
+  --strategy=CopyFile=sandboxed,standalone \
   --strip=never \
   --copt="-DADDRESS_SANITIZER" \
   --action_env="ASAN_OPTIONS=detect_leaks=0,detect_odr_violation=0" \
   --action_env="LD_PRELOAD=$(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1)" \
   ${EXTRA_FLAGS} \
-  -- //tensorflow/tools/pip_package:build_pip_package
+  --remote_timeout=3600 --action_env=CppCompileTimeout=3600 \
+  -- //tensorflow/tools/pip_package:wheel
 
-./bazel-bin/tensorflow/tools/pip_package/build_pip_package --nightly_flag /tmp/tensorflow_pkg
-WHL_PACKAGE=$(find /tmp/tensorflow_pkg/ -name 'tf_nightly*')
-python3 -m pip install ${WHL_PACKAGE}
+python3 -m pip install bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.20.0*.whl
