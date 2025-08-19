@@ -58,7 +58,7 @@ RUN /build.sh
 
 RUN mkdir /ld_path && ln $(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1) /ld_path/libclang_rt.asan-x86_64.so
 
-ENV LD_LIBRARY_PATH /ld_path
+ENV LD_LIBRARY_PATH=/ld_path
 
 RUN for file in `ls /tensorflow/tensorflow/security/fuzzing/*_fuzz.py`; do (echo "#!/usr/bin/env python3"; cat "$file") | sponge "$file"; done
 

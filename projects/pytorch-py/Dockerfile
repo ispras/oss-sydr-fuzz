@@ -18,22 +18,12 @@ ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 # Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions
+RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cffi typing_extensions
 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch/ /pytorch
 RUN cd /pytorch && \
-    git checkout v2.3.0 && \
-    git submodule update --init --recursive --jobs 0
-
-RUN git clone https://github.com/pytorch/vision/ /vision
-RUN cd /vision && \
-    git checkout v0.18.0 && \
-    git submodule update --init --recursive --jobs 0
-
-RUN git clone https://github.com/pytorch/text /text
-RUN cd /text && \
-    git checkout v0.18.0 && \
+    git checkout v2.8.0 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
@@ -48,10 +38,6 @@ RUN rm /usr/bin/x86_64-linux-gnu-gcc && \
 
 # Build PyTorch, torchvision and torchtext.
 RUN /build_torch.sh
-
-RUN /build_vision.sh
-
-RUN /build_text.sh
 
 # Prepare initial corporas.
 RUN unzip load_fuzz.zip

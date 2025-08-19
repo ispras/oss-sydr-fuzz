@@ -47,7 +47,7 @@ bazel clean --expunge
 bazel build \
   --define=xnn_enable_avxvnniint8=false \
   --verbose_failures \
-  --jobs=150 \
+  --jobs=$(( $(nproc) / 2 )) \
   --spawn_strategy=sandboxed \
   --strategy=CopyFile=sandboxed,standalone \
   --strip=never \
