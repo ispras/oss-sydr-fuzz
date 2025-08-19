@@ -1,0 +1,24 @@
+diff --git a/tensorflow/workspace2.bzl b/tensorflow/workspace2.bzl
+index 9e49ab40b25..996729446cc 100644
+--- a/tensorflow/workspace2.bzl
++++ b/tensorflow/workspace2.bzl
+@@ -459,6 +459,7 @@ def _tf_repositories():
+         system_build_file = "//third_party/systemlibs:grpc.BUILD",
+         patch_file = [
+             "@local_xla//third_party/grpc:grpc.patch",
++            "@local_xla//third_party/grpc:fix_grpc_build.patch",
+         ],
+         urls = tf_mirror_urls("https://github.com/grpc/grpc/archive/refs/tags/v1.68.2.tar.gz"),
+     )
+diff --git a/third_party/xla/workspace2.bzl b/third_party/xla/workspace2.bzl
+index 9e4166034d0..f6c0d462ef9 100644
+--- a/third_party/xla/workspace2.bzl
++++ b/third_party/xla/workspace2.bzl
+@@ -370,6 +370,7 @@ def _tf_repositories():
+         strip_prefix = "grpc-1.68.2",
+         patch_file = [
+             "//third_party/grpc:grpc.patch",
++            "//third_patry/grpc:fix_grpc_build.patch",
+         ],
+         urls = tf_mirror_urls("https://github.com/grpc/grpc/archive/refs/tags/v1.68.2.tar.gz"),
+     )
