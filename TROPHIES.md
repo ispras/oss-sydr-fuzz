@@ -2,7 +2,7 @@
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
 175 new bugs in
-31 open source projects.
+32 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -56,7 +56,11 @@
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778> (PR: <https://github.com/image-rs/image/pull/1781>)
     * <https://github.com/image-rs/image-tiff/pull/200>
-    * <https://github.com/image-rs/image/issues/1854>
+* libheif:
+    * <https://github.com/strukturag/libheif/pull/1575>
+    * <https://github.com/strukturag/libheif/issues/1579>
+    * <https://github.com/strukturag/libheif/issues/1578>
+    * <https://github.com/strukturag/libheif/issues/1577>
 * libpcap:
     * <https://github.com/the-tcpdump-group/libpcap/issues/1134>
     * <https://github.com/the-tcpdump-group/libpcap/pull/1205>
