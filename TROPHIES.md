@@ -56,6 +56,7 @@
 * image-rs:
     * <https://github.com/image-rs/image/issues/1778> (PR: <https://github.com/image-rs/image/pull/1781>)
     * <https://github.com/image-rs/image-tiff/pull/200>
+    * <https://github.com/image-rs/image/issues/1854>
 * libheif:
     * <https://github.com/strukturag/libheif/pull/1575>
     * <https://github.com/strukturag/libheif/issues/1579>
