@@ -1,4 +1,6 @@
-# Copyright (C) 2023 ISP RAS
+#!/bin/bash -eu
+# Copyright 2020 Google Inc.
+# Modifications copyright (C) 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +16,12 @@
 #
 ################################################################################
 
-exit-on-time = 3600
+pip install testresources
+pip install -U pip setuptools wheel
 
-[atheris]
-path = "/hypothesis_structured_fuzzer.py"
-args = "/out/corpus -dict=/cjson/fuzzing/json.dict -jobs=1000 -workers=4"
+export CC="afl-clang-fast"
+export CFLAGS="-g -fsanitize=address -Wl,-rpath=/usr/lib/clang/14.0.6/lib/linux/"
+export LDFLAGS="/usr/local/lib/afl/afl-compiler-rt.o /usr/lib/clang/14.0.6/lib/linux/libclang_rt.asan-x86_64.so"
+export LDSHARED="clang -shared"
+
+pip3 install --ignore-installed .

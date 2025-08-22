@@ -42,12 +42,19 @@ WORKDIR ultrajson
 
 # Checkout specified commit. It could be updated later.
 RUN git checkout 18607247be7c8a2d884396888fda3e514c7db612
-     
-COPY json_differential_fuzzer.py \
-     ujson_fuzzer.py \
-     hypothesis_structured_fuzzer.py \
-     /out/
- 
-COPY build.sh /
 
-RUN /build.sh
+RUN rustup toolchain uninstall nightly && rustup toolchain install nightly && rustup update
+
+RUN apt install python3.9-venv
+
+COPY \
+    hypothesis_structured_fuzzer.py \
+    json_differential_fuzzer.py \
+    ujson_fuzzer_atheris.py \
+    ujson_fuzzer_pyafl.py \
+    /
+
+COPY build_*.sh /
+
+ARG BUILD_SCRIPT
+RUN /$BUILD_SCRIPT
