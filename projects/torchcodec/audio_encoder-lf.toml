@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/audio_encoder_fuzz"
-args = "-rss_limit_mb=16384 -detect_leaks=0 -jobs=1000 -workers=4 /wav_tensor"
+args = "-rss_limit_mb=16384 -detect_leaks=0 -jobs=1000 -workers=4 /tensor_corpus"
 
 [cov]
 target = "/audio_encoder_cov @@"

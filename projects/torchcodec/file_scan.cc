@@ -20,7 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "torch/types.h"
-
+#include <torch/csrc/jit/frontend/error_report.h>
 #include "src/torchcodec/_core/SingleStreamDecoder.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
@@ -39,6 +39,10 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         decoder.scanFileAndUpdateMetadataAndIndex();
         
     } catch (const c10::Error &e) {
+        return 0;
+    } catch (const torch::jit::ErrorReport &e) {
+        return 0;
+    } catch (const std::runtime_error &e) {
         return 0;
     }
 

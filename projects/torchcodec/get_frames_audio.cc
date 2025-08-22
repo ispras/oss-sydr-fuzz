@@ -22,6 +22,8 @@
 #include "torch/types.h"
 #include <torch/csrc/jit/frontend/error_report.h>
 #include "src/torchcodec/_core/SingleStreamDecoder.h"
+#include "src/torchcodec/_core/CpuDeviceInterface.h"
+
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     char video_path[24] = {0};
@@ -34,14 +36,23 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         return 0;
     }
     write(fd, data, size);
-    uint32_t tmp = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-    double seconds = static_cast<double>(tmp % 300);
+    
     try{
-        facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(video_path);
+        facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(video_path, facebook::torchcodec::SingleStreamDecoder::SeekMode::approximate);
 
-        auto result = decoder.getFramePlayedAt(seconds);
+        facebook::torchcodec::AudioStreamOptions options;
         
-        std::cout << "done\n";
+        options.bitRate = 128;
+        options.numChannels = 1;
+        options.sampleRate = 1;
+
+        static bool g_cpu = facebook::torchcodec::registerDeviceInterface(
+        torch::kCPU,
+        [](const torch::Device& device) { return new facebook::torchcodec::CpuDeviceInterface(device); });
+
+        decoder.addAudioStream(0, options);
+            
+        auto out = decoder.getFramesPlayedInRangeAudio(0);
 
     } catch (const c10::Error &e) {
         return 0;
@@ -50,7 +61,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     } catch (const std::runtime_error &e) {
         return 0;
     }
-
 
     unlink(video_path);
     close(fd);

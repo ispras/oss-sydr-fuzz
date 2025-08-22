@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2023 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -129,10 +129,18 @@ then
   # Generate tensors from corpus
   cd /
 
-  for filename in /wav_corpus/*; do 
+  for filename in /wav_corpus/*.wav; do 
       if ./save_tensor "$filename"; then
-          mv /wav_corpus/*.tensor /wav_tensor/
+          mv /wav_corpus/*.tensor /tensor_corpus/
       fi
   done
 fi
 
+if [[ $TARGET = "sydr" ]]; 
+then
+  # Clean artifacts
+  cd /pytorch
+
+  python3 setup.py clean
+
+fi

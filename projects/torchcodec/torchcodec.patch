@@ -1,8 +1,8 @@
 diff --git a/src/torchcodec/_core/CMakeLists.txt b/src/torchcodec/_core/CMakeLists.txt
-index 9008aa9..e384aa2 100644
+index 9008aa9..a891c1e 100644
 --- a/src/torchcodec/_core/CMakeLists.txt
 +++ b/src/torchcodec/_core/CMakeLists.txt
-@@ -8,246 +8,94 @@ find_package(pybind11 REQUIRED)
+@@ -8,246 +8,97 @@ find_package(pybind11 REQUIRED)
  find_package(Torch REQUIRED)
  find_package(Python3 ${PYTHON_VERSION} EXACT COMPONENTS Development)
  
@@ -291,6 +291,7 @@ index 9008aa9..e384aa2 100644
 +  file_scan
 +  file_frame_getter
 +  audio_encoder
++  get_frames_audio
 +)
 +
 +foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
@@ -308,6 +309,7 @@ index 9008aa9..e384aa2 100644
 +    PUBLIC ${ENGINE}
 +    PUBLIC ${ZLIB_LIB_DIR}/libz.a
 +    PUBLIC lzma
++    PUBLIC /ffmpeg/install/lib/libavfilter.a
 +  )
 +
 +  add_dependencies(${FUZZ_TARGET}_${SUFFIX} codec_core)
@@ -330,9 +332,28 @@ index 9008aa9..e384aa2 100644
 +    PUBLIC rt 
 +    PUBLIC ${ZLIB_LIB_DIR}/libz.a
 +    PUBLIC lzma
++    PUBLIC /ffmpeg/install/lib/libavfilter.a
 +  )
 +    add_dependencies(${SAVER} codec_core)
 +    set_target_properties(${SAVER} PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
 +    install(TARGETS ${SAVER} DESTINATION /)
 +  endforeach()
  endif()
+diff --git a/src/torchcodec/_core/DeviceInterface.cpp b/src/torchcodec/_core/DeviceInterface.cpp
+index 70b00fb..637aa97 100644
+--- a/src/torchcodec/_core/DeviceInterface.cpp
++++ b/src/torchcodec/_core/DeviceInterface.cpp
+@@ -35,10 +35,9 @@ bool registerDeviceInterface(
+   std::scoped_lock lock(g_interface_mutex);
+   DeviceInterfaceMap& deviceMap = getDeviceMap();
+ 
+-  TORCH_CHECK(
+-      deviceMap.find(deviceType) == deviceMap.end(),
+-      "Device interface already registered for ",
+-      deviceType);
++  if (deviceMap.find(deviceType) != deviceMap.end()){
++    return true;
++  }
+   deviceMap.insert({deviceType, createInterface});
+ 
+   return true;

@@ -10,7 +10,7 @@ This project uses some performance related settings and you can tune this for yo
 
 ## Build Docker
 
-    # sudo docker build -t oss-sydr-fuzz-pytorch .
+    # sudo docker build -t oss-sydr-fuzz-torchcodec .
 
 ## Run Hybrid Fuzzing
 
@@ -20,7 +20,7 @@ Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
 
 Run Docker:
 
-    # sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-pytorch /bin/bash
+    # sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-torchcodec /bin/bash
 
 Change directory to `/fuzz`:
 
@@ -28,47 +28,34 @@ Change directory to `/fuzz`:
 
 Run libFuzzer-based hybrid fuzzing:
 
-    # sydr-fuzz -c file_frame_getter-lf.toml run
+    # sydr-fuzz -c get_frames_audio-lf.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c file_frame_getter-lf.toml cmin
+    # sydr-fuzz -c get_frames_audio-lf.toml cmin
 
-Collect coverage:
+Collect and report coverage:
 
-    # sydr-fuzz -c file_frame_getter-lf.toml cov-export -- -format=lcov > file_frame_getter-lf.lcov
-    # genhtml -o file_frame_getter-lf_coverage file_frame_getter-lf.lcov
+    # sydr-fuzz -c get_frames_audio-lf.toml cov-html
 
 Check security predicates:
 
-    # sydr-fuzz -c file_frame_getter-lf.toml security
+    # sydr-fuzz -c get_frames_audio-lf.toml security
 
 Crash analysis:
 
-    # sydr-fuzz -c file_frame_getter-lf.toml casr
-
-To perform AFL-based hybrid fuzzing use *_afl.toml configuration files:
-
-    # sydr-fuzz -c file_frame_getter-lf.toml run
-
-### rpc_reproducer
-
-These targets are used to double check the bugs found by rpc fuzzers (e.g. message_deserialize_fuzz).
-
-There are 2 build:
-
-1. Clean RPC reproducer without asan: `rpc_reproducer_nosan`
-2. RPC reproducer with asan: `rpc_reproducer_asan`
+    # sydr-fuzz -c get_frames_audio-lf.toml casr
 
 ## Supported Targets
 
-    * class_parser
-    * irparser
-    * jit_differential
-    * message_deserialize
+    * audio_encoder-lf
+    * audio_encoder-afl++
     * file_frame_getter-lf
-    * mobile
-    * dump
+    * file_frame_getter-afl++
+    * file_scan-lf
+    * file_scan-afl++
+    * get_frames_audio-lf
+    * get_frames_audio-afl++
 
 ## Applied patches
 

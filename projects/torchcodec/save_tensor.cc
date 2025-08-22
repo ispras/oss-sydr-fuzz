@@ -15,8 +15,10 @@
 //###############################################################################
 
 #include "src/torchcodec/_core/SingleStreamDecoder.h"
+#include "src/torchcodec/_core/CpuDeviceInterface.h"
 #include <sys/stat.h>
 #include <torch/torch.h>
+#include <torch/csrc/jit/frontend/error_report.h>
 
 int main(int argc, char **argv) {
 
@@ -35,14 +37,36 @@ int main(int argc, char **argv) {
 
   
   try {
-    facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(filename);
 
-    auto out_tensor = decoder.getKeyFrameIndices();
+    facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(filename, 
+      facebook::torchcodec::SingleStreamDecoder::SeekMode::approximate);
+
+    facebook::torchcodec::AudioStreamOptions options;
+    options.bitRate = 128;
+    options.numChannels = 1;
+    options.sampleRate = 1;
+
+    static bool g_cpu = facebook::torchcodec::registerDeviceInterface(
+    torch::kCPU,
+    [](const torch::Device& device) { return new facebook::torchcodec::CpuDeviceInterface(device); });
+
+    decoder.addAudioStream(0, options);
+        
+    auto out = decoder.getFramesPlayedInRangeAudio(0);
+    auto out_tensor = out.data;
+
+    std::cout << out_tensor.dtype() << ' ' << out_tensor.dim() << ' ' << out_tensor.numel() << std::endl;
+    std::cout << out_tensor << std::endl;
+
 
     std::string postfix = ".tensor";
     std::string prefix = filename + postfix;
     torch::save(out_tensor, prefix);
   } catch (const c10::Error &e) {
+    std::string err = e.what();
+    std::cout << "Catch exception: " << err << std::endl;
+    abort();
+  } catch (const torch::jit::ErrorReport &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
     abort();

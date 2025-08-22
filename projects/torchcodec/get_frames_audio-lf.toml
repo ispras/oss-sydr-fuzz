@@ -16,13 +16,12 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/audio_encoder_sydr @@"
+target = "/get_frames_audio_sydr @@"
 jobs = 2
 
-[aflplusplus]
-args = "-t 10000 -i /tensor_corpus"
-target = "/audio_encoder_afl @@"
-jobs = 4
+[libfuzzer]
+path = "/get_frames_audio_fuzz"
+args = "-rss_limit_mb=16384 -detect_leaks=0 -jobs=1000 -workers=4 /wav_corpus"
 
 [cov]
-target = "/audio_encoder_cov @@"
+target = "/get_frames_audio_cov @@"
