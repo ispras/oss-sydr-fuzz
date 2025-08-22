@@ -17,5 +17,5 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/yaml_fuzzer.py"
+path = "/yaml_fuzzer_atheris.py"
 args = "/corpus -dict=yaml.dict -jobs=1000 -workers=4"
