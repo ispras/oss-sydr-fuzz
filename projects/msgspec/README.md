@@ -31,15 +31,29 @@ Change directory to `/fuzz`:
 
 ### yaml
 
-Run fuzzing:
+#### Run fuzzing:
+##### Atheris
 
-    # sydr-fuzz -c json_fuzzer.toml run
+    # sydr-fuzz -c yaml_fuzzer_atheris.toml run
 
-Minimize corpus:
+##### PythonAfl
 
-    # sydr-fuzz -c json_fuzzer.toml cmin
+    # sydr-fuzz -c yaml_fuzzer_pyafl.toml run
 
-Get HTML coverage report:
+#### Minimize corpus:
+##### Atheris
 
-    # sydr-fuzz -c json_fuzzer.toml pycov html
+    # sydr-fuzz -c yaml_fuzzer_atheris.toml cmin
 
+##### PythonAfl
+
+    # sydr-fuzz -c yaml_fuzzer_pyafl.toml cmin
+
+#### Get HTML coverage report:
+##### Atheris
+
+    # sydr-fuzz -c yaml_fuzzer_atheris.toml pycov html -- --source=msgspec,yaml,fuzz_yaml_atheris
+
+##### PythonAfl
+
+    # sydr-fuzz -c yaml_fuzzer_pyafl.toml pycov html -- --source=msgspec,yaml,fuzz_yaml_pyafl

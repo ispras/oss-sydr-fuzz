@@ -14,25 +14,60 @@
 #
 ################################################################################
 
+
+python3 -m venv --system-site-packages /atherisVenv
+python3 -m venv --system-site-packages /pyAflVenv
+
+# prepare PythonAfl venv
+
+source /pyAflVenv/bin/activate
+
+pip install python-afl --ignore-installed
+pip install coverage --ignore-installed
 pip install testresources
 pip install -U pip setuptools wheel
 
 cd /tomli
-
-pip3 install . 
+pip3 install .
+rm -rf build
 
 cd /yaml-0.2.5
-
-CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" ./configure
-
+CC=afl-clang-fast ./configure
 make install -j`nproc`
 
 cd /PyYAML-5.3.1
-
-CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" python3 setup.py --with-libyaml install
-
+CC=afl-clang-fast python3 setup.py --with-libyaml install
 pip3 install --ignore-installed .
+rm -rf build
 
 cd /msgspec
 
-MSGSPEC_DEBUG=1 CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" LDSHARED="clang -shared" pip3 install .
+MSGSPEC_DEBUG=1 CC=afl-clang-fast CFLAGS="-fsanitize=address -Wl,-rpath=/usr/lib/clang/14.0.6/lib/linux/" LDFLAGS="/usr/local/lib/afl/afl-compiler-rt.o /usr/lib/clang/14.0.6/lib/linux/libclang_rt.asan-x86_64.so" LDSHARED="clang -shared" pip3 install --ignore-installed .
+rm -rf build
+
+deactivate
+
+
+# Prepare Atheris venv
+source /atherisVenv/bin/activate
+
+pip install atheris --ignore-installed
+pip install coverage --ignore-installed
+pip install testresources
+pip install -U pip setuptools wheel
+
+cd /tomli
+pip3 install --ignore-installed .
+
+cd /yaml-0.2.5
+CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" ./configure
+make install -j`nproc`
+
+cd /PyYAML-5.3.1
+CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" python3 setup.py --with-libyaml install
+pip3 install --ignore-installed .
+
+cd /msgspec
+MSGSPEC_DEBUG=1 CC=clang CFLAGS="-g -fsanitize=fuzzer-no-link,address" LDSHARED="clang -shared" pip3 install --ignore-installed .
+
+deactivate
