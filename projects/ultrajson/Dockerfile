@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 MAINTAINER Ilya Yegorov (hkctkuy)
@@ -44,8 +44,6 @@ WORKDIR ultrajson
 RUN git checkout 18607247be7c8a2d884396888fda3e514c7db612
 
 RUN rustup toolchain uninstall nightly && rustup toolchain install nightly && rustup update
-
-RUN apt install python3.9-venv
 
 COPY \
     hypothesis_structured_fuzzer.py \

@@ -18,10 +18,13 @@
 
 pip install testresources
 pip install -U pip setuptools wheel
+pip install python-afl
 
 export CC="afl-clang-fast"
-export CFLAGS="-g -fsanitize=address -Wl,-rpath=/usr/lib/clang/14.0.6/lib/linux/"
-export LDFLAGS="/usr/local/lib/afl/afl-compiler-rt.o /usr/lib/clang/14.0.6/lib/linux/libclang_rt.asan-x86_64.so"
+export CFLAGS="-fsanitize=address -Wl,-rpath=/usr/lib/clang/18.1.8/lib/linux/"
+export CXX="clang++"
+export CXXFLAGS="-fsanitize=address -Wl,-rpath=/usr/lib/clang/18.1.8/lib/linux/"
+export LDFLAGS="/usr/local/lib/afl/afl-compiler-rt.o /usr/lib/clang/18.1.8/lib/linux/libclang_rt.asan-x86_64.so"
 export LDSHARED="clang -shared"
 
 pip3 install --ignore-installed .

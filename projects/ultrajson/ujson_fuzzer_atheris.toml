@@ -17,5 +17,5 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/ujson_fuzzer.py"
+path = "/ujson_fuzzer_atheris.py"
 args = "/out/corpus -dict=/cjson/fuzzing/json.dict -jobs=1000 -workers=4"
