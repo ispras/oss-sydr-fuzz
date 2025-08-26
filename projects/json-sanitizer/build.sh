@@ -26,7 +26,8 @@ export PATH="$PATH:/opt/apache-maven-3.9.11/bin"
 
 # Build the json-sanitizer jar.
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-CURRENT_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+CURRENT_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate \
+-Dexpression=project.version -q -DforceStdout)
 mvn package
 cp "target/json-sanitizer-$CURRENT_VERSION.jar" $OUT/json-sanitizer.jar
 
