@@ -18,11 +18,11 @@ SRC=/
 OUT=/out
 
 # Get maven
-wget https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz
+wget https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz
 tar -xvf apache-maven-*-bin.tar.gz
 rm apache-maven-*-bin.tar.gz
 mv apache-maven-* /opt/
-export PATH="$PATH:/opt/apache-maven-3.9.10/bin"
+export PATH="$PATH:/opt/apache-maven-3.9.11/bin"
 
 # Build the json-sanitizer jar.
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
