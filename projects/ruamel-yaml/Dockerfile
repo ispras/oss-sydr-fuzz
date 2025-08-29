@@ -29,10 +29,6 @@ WORKDIR /ruamel-yaml
 # Checkout specified commit. It could be updated later.
 RUN hg checkout 54d2c5
 
-RUN rustup toolchain uninstall nightly && rustup toolchain install nightly && rustup update
-
-RUN pip install python-afl==0.7.3
-
 COPY build.sh \
      yaml_fuzzer_*.py \
      yaml.dict \
