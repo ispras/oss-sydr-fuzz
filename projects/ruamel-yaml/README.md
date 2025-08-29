@@ -41,5 +41,5 @@ Get HTML coverage report:
 
 Crash triage with Casr:
 
-    # sydr-fuzz -c yaml_fuzzer-atheris.toml casr -p
+    # sydr-fuzz -c yaml_fuzzer-atheris.toml casr
 
