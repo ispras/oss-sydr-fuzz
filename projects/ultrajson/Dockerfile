@@ -40,8 +40,6 @@ WORKDIR ultrajson
 # Checkout specified commit. It could be updated later.
 RUN git checkout 18607247be7c8a2d884396888fda3e514c7db612
 
-RUN rustup toolchain uninstall nightly && rustup toolchain install nightly && rustup update
-
 COPY \
     hypothesis_structured_fuzzer.py \
     json_differential_fuzzer.py \

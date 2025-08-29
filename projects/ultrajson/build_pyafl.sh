@@ -18,7 +18,6 @@
 
 pip install testresources
 pip install -U pip setuptools wheel
-pip install python-afl
 
 export CC="afl-clang-fast"
 export CFLAGS="-fsanitize=address -Wl,-rpath=/usr/lib/clang/18.1.8/lib/linux/"
