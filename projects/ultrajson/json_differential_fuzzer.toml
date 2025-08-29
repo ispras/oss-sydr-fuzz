@@ -17,5 +17,5 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/out/json_differential_fuzzer.py"
+path = "/json_differential_fuzzer.py"
 args = "/out/corpus -dict=/cjson/fuzzing/json.dict -jobs=1000 -workers=4"
