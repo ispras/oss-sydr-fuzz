@@ -45,8 +45,6 @@ RUN git checkout 403902c208e06081aa832dbdd978f3e2ad50342d
 
 RUN apt install python3.9-venv
 
-RUN rustup toolchain uninstall nightly && rustup toolchain install nightly && rustup update
-
 COPY *.dict fuzz_*.py build.sh /
 
 RUN /build.sh

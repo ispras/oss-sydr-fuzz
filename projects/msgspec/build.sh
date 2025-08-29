@@ -22,7 +22,11 @@ python3 -m venv --system-site-packages /pyAflVenv
 
 source /pyAflVenv/bin/activate
 
-pip install python-afl --ignore-installed
+# Install python-afl
+git clone https://github.com/jwilk/python-afl && cd python-afl && \
+git checkout 6a3fc2d15a02f60e4ea24273f8ed93404c9ffa43 && \
+pip3 install --ignore-installed . && cd .. && rm -rf python-afl
+
 pip install coverage --ignore-installed
 pip install testresources
 pip install -U pip setuptools wheel
@@ -51,7 +55,11 @@ deactivate
 # Prepare Atheris venv
 source /atherisVenv/bin/activate
 
-pip install atheris --ignore-installed
+# Install Atheris
+git clone https://github.com/google/atheris && cd atheris && \
+git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
+pip3 install --ignore-installed . && cd .. && rm -rf atheris
+
 pip install coverage --ignore-installed
 pip install testresources
 pip install -U pip setuptools wheel
