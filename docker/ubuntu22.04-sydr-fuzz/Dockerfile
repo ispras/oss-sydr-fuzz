@@ -132,6 +132,11 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
     git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
     pip3 install . && cd .. && rm -rf atheris
 
+# Install python-afl
+RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
+    git checkout 6a3fc2d15a02f60e4ea24273f8ed93404c9ffa43 && \
+    pip3 install . && cd .. && rm -rf python-afl
+
 # Install Go
 RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x ./installer_linux && \

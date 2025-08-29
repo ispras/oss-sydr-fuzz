@@ -99,6 +99,10 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
     MAKEFLAGS="-j$(nproc)" pip3 install . && \
     cd .. && rm -rf atheris
 
+RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
+    git checkout 6a3fc2d15a02f60e4ea24273f8ed93404c9ffa43 && \
+    pip3 install . && cd .. && rm -rf python-afl
+
 RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov && cd /afl-cov && \
     make install -j $(nproc) && cd .. && rm -rf afl-cov
 
