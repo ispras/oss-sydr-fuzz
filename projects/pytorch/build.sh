@@ -16,7 +16,7 @@
 #
 ################################################################################
 
-if [[ $TARGET = "fuzz" ]]
+if [[ $TARGET == "fuzz" ]]
 then
   export SUFFIX="fuzz"
   export CC=clang
@@ -28,7 +28,7 @@ then
   export BUILD_RPC_REPRODUCER="OFF"
 fi
 
-if [[ $TARGET = "afl" ]]
+if [[ $TARGET == "afl" ]]
 then
   export SUFFIX="afl"
   export CC=afl-clang-fast
@@ -40,7 +40,7 @@ then
   export BUILD_RPC_REPRODUCER="OFF"
 fi
 
-if [[ $TARGET = "sydr" ]]
+if [[ $TARGET == "sydr" ]]
 then
   export SUFFIX="sydr"
   export CC=clang
@@ -53,7 +53,7 @@ then
   export BUILD_RPC_REPRODUCER="ON"
 fi
 
-if [[ $TARGET = "cov" ]]
+if [[ $TARGET == "cov" ]]
 then
   export SUFFIX="cov"
   export CC=clang
