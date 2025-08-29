@@ -13,20 +13,15 @@ UltraJSON is an ultra fast JSON encoder and decoder written in pure C with bindi
 
 ## Run Fuzzing
 
-#### Unzip Sydr (`sydr.zip`) in `projects/ultrajson` directory:
+Unzip Sydr (`sydr.zip`) in `projects/ultrajson` directory:
 
     $ unzip sydr.zip
 
-#### Run docker:
-#### Atheris
+Run docker:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-ultrajson-atheris /bin/bash
 
-#### PythonAfl
-
-    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-ultrajson-pyafl /bin/bash
-
-#### Change directory to `/fuzz`:
+Change directory to `/fuzz`:
 
     # cd /fuzz
 
@@ -34,64 +29,24 @@ UltraJSON is an ultra fast JSON encoder and decoder written in pure C with bindi
 
   * hypothesis_structured_fuzzer
   * json_differential_fuzzer
-  * ujson_fuzzer
+  * ujson_fuzzer-atheris
+  * ujson_fuzzer-pyafl
 
 ## Fuzzing
 
-### hypothesis_structured_fuzzer
+Run fuzzing:
 
-#### Run fuzzing:
+    # sydr-fuzz -c ujson_fuzzer-atheris.toml run
 
-    # sydr-fuzz -c hypothesis_structured_fuzzer.toml run
+Minimize corpus:
 
-#### Minimize corpus:
+    # sydr-fuzz -c ujson_fuzzer-atheris.toml cmin
 
-    # sydr-fuzz -c hypothesis_structured_fuzzer.toml cmin
+Get HTML coverage report:
 
-#### Get HTML coverage report:
+    # sydr-fuzz -c ujson_fuzzer-atheris.toml pycov html -- --source=ujson_fuzzer_atheris
 
-    # sydr-fuzz -c hypothesis_structured_fuzzer.toml pycov html
+Crash triage with Casr:
 
-### json_differential_fuzzer
-
-#### Run fuzzing:
-
-    # sydr-fuzz -c json_differential_fuzzer.toml run
-
-#### Minimize corpus:
-
-    # sydr-fuzz -c json_differential_fuzzer.toml cmin
-
-#### Get HTML coverage report:
-
-    # sydr-fuzz -c json_differential_fuzzer.toml pycov html
-
-### ujson_fuzzer
-
-#### Run fuzzing:
-##### Atheris
-
-    # sydr-fuzz -c ujson_fuzzer_atheris.toml run
-
-##### PythonAfl
-
-    # sydr-fuzz -c ujson_fuzzer_pyafl.toml run
-
-#### Minimize corpus:
-##### Atheris
-
-    # sydr-fuzz -c ujson_fuzzer_atheris.toml cmin
-
-##### PythonAfl
-
-    # sydr-fuzz -c ujson_fuzzer_pyafl.toml cmin
-
-#### Get HTML coverage report:
-##### Atheris
-
-    # sydr-fuzz -c ujson_fuzzer_atheris.toml pycov html -- --source=ujson_fuzzer_atheris
-
-##### PythonAfl
-
-    # sydr-fuzz -c ujson_fuzzer_pyafl.toml pycov html -- --source=ujson_fuzzer_pyafl
+    # sydr-fuzz -c ujson_fuzzer-atheris.toml casr
 

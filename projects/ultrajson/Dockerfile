@@ -1,5 +1,5 @@
 # Copyright 2019 Google Inc.
-# Modifications copyright (C) 2023 ISP RAS
+# Modifications copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
-FROM $BASE_IMAGE
-
-MAINTAINER Ilya Yegorov (hkctkuy)
+FROM sydr/ubuntu22.04-sydr-fuzz
 
 # Install build dependencies.
 RUN pip3 install hypothesis
@@ -54,5 +51,5 @@ COPY \
 
 COPY build_*.sh /
 
-ARG BUILD_SCRIPT
+ARG BUILD_SCRIPT="build_atheris.sh"
 RUN /$BUILD_SCRIPT
