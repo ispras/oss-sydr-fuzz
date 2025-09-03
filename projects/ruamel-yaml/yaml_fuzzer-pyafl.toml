@@ -19,5 +19,5 @@ exit-on-time = 3600
 [pyafl]
 args = "-i /corpus -t 2000 -x /yaml.dict"
 target = "/yaml_fuzzer_pyafl.py"
-preload_asan = false
+ld_preload = false
 jobs = 4
