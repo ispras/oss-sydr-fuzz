@@ -58,18 +58,20 @@ int main(int argc, char **argv) {
     std::cout << out_tensor.dtype() << ' ' << out_tensor.dim() << ' ' << out_tensor.numel() << std::endl;
     std::cout << out_tensor << std::endl;
 
-
     std::string postfix = ".tensor";
     std::string prefix = filename + postfix;
     torch::save(out_tensor, prefix);
+
   } catch (const c10::Error &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
     abort();
+
   } catch (const torch::jit::ErrorReport &e) {
     std::string err = e.what();
     std::cout << "Catch exception: " << err << std::endl;
     abort();
+    
   }
   
   return 0;
