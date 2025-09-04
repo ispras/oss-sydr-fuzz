@@ -34,25 +34,22 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         return 0;
     }
     write(fd, data, size);
+    close(fd);
     uint32_t tmp = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
     double seconds = static_cast<double>(tmp % 300);
     try{
         facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(video_path);
 
         auto result = decoder.getFramePlayedAt(seconds);
-        
-        std::cout << "done\n";
 
     } catch (const c10::Error &e) {
-        return 0;
+
     } catch (const torch::jit::ErrorReport &e) {
-        return 0;
+
     } catch (const std::runtime_error &e) {
-        return 0;
+        
     }
 
-
     unlink(video_path);
-    close(fd);
     return 0;
 }

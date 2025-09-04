@@ -1,6 +1,6 @@
-# PyTorch
+# Torchcodec
 
-PyTorch is an open source machine learning framework based on the Torch library, used for applications such as computer vision and natural language processing.
+Torchcodec is an open source machine learning framework based on the Torch library, used for applications such as computer vision and natural language processing.
 
 ## Perfomance note
 
@@ -14,7 +14,7 @@ This project uses some performance related settings and you can tune this for yo
 
 ## Run Hybrid Fuzzing
 
-Unzip Sydr (`sydr.zip`) in `projects/pytorch` directory:
+Unzip Sydr (`sydr.zip`) in `projects/torchcodec` directory:
 
     # unzip sydr.zip
 

@@ -39,21 +39,9 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         return 0;
     }
 
-    
-    
-    //if (input_data.dim() != 1 || input_data.numel() <= 0) {
-    //    return 0;
-    //}
-
     try {
-
         torch::Tensor input_data;
         torch::load(input_data, dir);
-        std::cout << input_data.dtype() << ' ' 
-              << input_data.dim() << ' ' 
-              << input_data.numel() << std::endl;
-        std::cout << input_data << std::endl;
-
 
         int mode = (int)data[0] % 5;
         facebook::torchcodec::AudioStreamOptions aso;
@@ -62,19 +50,19 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         aso.sampleRate = 1;
         std::string fileName = "tmp";
 
-
         facebook::torchcodec::AudioEncoder encoder = facebook::torchcodec::AudioEncoder(
         input_data, mode, fileName, aso);
 
         auto result = encoder.encodeToTensor(); 
 
     } catch (const c10::Error &e) {
-        return 0;
+
     } catch (const torch::jit::ErrorReport &e) {
-        return 0;
+
     } catch (const std::runtime_error &e) {
-        return 0;
+
     }
 
+    unlink(dir);
     return 0;
 }
