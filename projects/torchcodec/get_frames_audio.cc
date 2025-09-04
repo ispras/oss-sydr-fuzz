@@ -30,13 +30,15 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     strcpy(video_path, "/tmp/video-XXXXXX");
     int fd = mkstemp(video_path);
     if (fd == -1) {
+        unlink(video_path);
         return 0;
     }
     if (size < 4){
+        unlink(video_path);
         return 0;
     }
     write(fd, data, size);
-    
+    close(fd);
     try{
         facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(video_path, facebook::torchcodec::SingleStreamDecoder::SeekMode::approximate);
 
@@ -55,14 +57,13 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         auto out = decoder.getFramesPlayedInRangeAudio(0);
 
     } catch (const c10::Error &e) {
-        return 0;
+
     } catch (const torch::jit::ErrorReport &e) {
-        return 0;
+
     } catch (const std::runtime_error &e) {
-        return 0;
+
     }
 
     unlink(video_path);
-    close(fd);
     return 0;
 }
