@@ -21,9 +21,9 @@ RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
     cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
     rm -rf gdb-*
 
-RUN python3 -m pip install coverage toml concurrencytest psutil
+RUN python3 -m pip install coverage toml concurrencytest psutil tqdm
 
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.sh && \
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-linux-x86_64.sh && \
     mkdir /cmake && \
     bash cmake-*.sh --prefix=/cmake --exclude-subdir --skip-license && \
     ln -s /cmake/bin/cmake /bin/cmake && \
@@ -36,7 +36,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN cargo install cargo-fuzz
 
-RUN cargo install afl@0.13.5
+RUN cargo install cargo-afl
 
 RUN rustup component add llvm-tools-preview
 
@@ -87,10 +87,15 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
     git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
     pip3 install . && cd .. && rm -rf atheris
 
+# Install python-afl
+RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
+    git checkout 6a3fc2d15a02f60e4ea24273f8ed93404c9ffa43 && \
+    pip3 install . && cd .. && rm -rf python-afl
+
 # Install Go
 RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.22.9 && \
+    SHELL="bash" ./installer_linux -version=1.24.4 && \
     rm -rf ./installer_linux
 
 ENV GOPATH=/root/go
@@ -99,10 +104,13 @@ ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
 # Install Jazzer
-RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.9.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
-    git checkout d2cbfdcfc5363593f36cd972b849cc3ab070c90a && \
+    git checkout efbc6354e412ce221ad3b18a6fdd32bf12241825 && \
+    echo "bazel_dep(name = \"rules_python\", version = \"0.23.0\", dev_dependency = True)" >> MODULE.bazel && \
+    echo "python = use_extension(\"@rules_python//python/extensions:python.bzl\", \"python\")" >> MODULE.bazel && \
+    echo "python.toolchain(is_default = True, python_version = \"3.10\", ignore_root_user_error = True)" >> MODULE.bazel && \
     bazel build --java_runtime_version=local_jdk_17 -c opt \
     --cxxopt="-stdlib=libc++" --linkopt=-lc++ //:jazzer_release && \
     cp -L ./bazel-out/k8-opt/bin/src/main/java/com/code_intelligence/jazzer/jazzer_standalone_deploy.jar \
@@ -170,7 +178,7 @@ ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsonc
 
 # Install AFLplusplus
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.30c && export CC=clang && export CXX=clang++ && \
+    git checkout v4.33c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
