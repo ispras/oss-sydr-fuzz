@@ -1,0 +1,36 @@
+diff --git a/torchvision/csrc/io/decoder/defs.h b/torchvision/csrc/io/decoder/defs.h
+index 6be50f8abc..a029f76603 100644
+--- a/torchvision/csrc/io/decoder/defs.h
++++ b/torchvision/csrc/io/decoder/defs.h
+@@ -228,7 +228,6 @@ struct DecoderHeader {
+   // from epoch time, see DecoderParameters::convertPtsToWallTime
+   long pts{0};
+   // decoded key frame
+-  size_t keyFrame{0};
+   // frames per second, valid only for video streams
+   double fps{0};
+   // format specifies what kind frame is in a payload
+diff --git a/torchvision/csrc/io/decoder/stream.cpp b/torchvision/csrc/io/decoder/stream.cpp
+index 8c91405058..9fa957b399 100644
+--- a/torchvision/csrc/io/decoder/stream.cpp
++++ b/torchvision/csrc/io/decoder/stream.cpp
+@@ -255,7 +255,6 @@ void Stream::setHeader(DecoderHeader* header, bool flush) {
+   }
+ 
+   header->format = format_;
+-  header->keyFrame = 0;
+   header->fps = std::numeric_limits<double>::quiet_NaN();
+ }
+ 
+diff --git a/torchvision/csrc/io/decoder/video_stream.cpp b/torchvision/csrc/io/decoder/video_stream.cpp
+index fa08c65cac..3704eec1a5 100644
+--- a/torchvision/csrc/io/decoder/video_stream.cpp
++++ b/torchvision/csrc/io/decoder/video_stream.cpp
+@@ -122,7 +122,6 @@ int VideoStream::copyFrameBytes(ByteStorage* out, bool flush) {
+ void VideoStream::setHeader(DecoderHeader* header, bool flush) {
+   Stream::setHeader(header, flush);
+   if (!flush) { // no frames for video flush
+-    header->keyFrame = frame_->key_frame;
+     header->fps = av_q2d(av_guess_frame_rate(
+         inputCtx_, inputCtx_->streams[format_.stream], nullptr));
+   }
