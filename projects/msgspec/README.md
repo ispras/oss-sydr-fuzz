@@ -32,17 +32,17 @@ Change directory to `/fuzz`:
 
 Run fuzzing:
 
-    # sydr-fuzz -c yaml_fuzzer-atheris.toml run
+    # sydr-fuzz -c msgpack_fuzzer.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c yaml_fuzzer-atheris.toml cmin
+    # sydr-fuzz -c msgpack_fuzzer.toml cmin
 
 Get HTML coverage report:
 
-    # sydr-fuzz -c yaml_fuzzer-atheris.toml pycov html -- --source=msgspec,yaml,fuzz_yaml_atheris
+    # sydr-fuzz -c msgpack_fuzzer.toml pycov report -- --source=msgspec,fuzz_msgpack
 
 Crash triage with Casr:
 
-    # sydr-fuzz -c yaml_fuzzer-atheris.toml casr
+    # sydr-fuzz -c msgpack_fuzzer.toml casr
 
