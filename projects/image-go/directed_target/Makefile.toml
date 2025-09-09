@@ -21,6 +21,8 @@ EXAMPLE_DIR = { value = "/image" }
 EXAMPLE_DIR_INSTR = { value = "/image-instr" }
 DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
+LIBFORKSERVER_DIR = { value = "${DIFUZZ_DIR_ABS}", condition = { env_not_set = ["LIBFORKSERVER_DIR"] } }
+LIBFORKSERVER_DIR_ABS = { script = ["realpath ${LIBFORKSERVER_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
 DIFUZZ_ARGS = { value = "--weights reverse -o difuzz -j8", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
@@ -135,31 +137,31 @@ script = '''
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/cmd/webp
-CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_webp
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_webp
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -keep-ets -l info
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/cmd/tiff
-CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_tiff
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_tiff
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -keep-ets -l info
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/cmd/png
-CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_png
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_png
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -keep-ets -l info
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/cmd/jpeg
-CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_jpeg
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_jpeg
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -keep-ets -l info
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_gif.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/cmd/gif
-CGO_LDFLAGS="-L${DIFUZZ_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_gif
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_gif
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_gif.toml -keep-ets -l info
 '''
 dependencies = ["difuzz"]
