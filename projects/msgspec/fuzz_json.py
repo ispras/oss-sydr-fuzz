@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/atherisVenv/bin/python3
 # Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
