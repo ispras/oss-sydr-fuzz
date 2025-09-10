@@ -40,11 +40,11 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         decoder.scanFileAndUpdateMetadataAndIndex();
         
     } catch (const c10::Error &e) {
-        return 0;
+    
     } catch (const torch::jit::ErrorReport &e) {
-        return 0;
+    
     } catch (const std::runtime_error &e) {
-        return 0;
+    
     }
 
     unlink(video_path);
