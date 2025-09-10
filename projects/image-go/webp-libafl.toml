@@ -27,3 +27,4 @@ casr_bin = "/sydr_image_webp"
 
 [cov]
 target = "/coverage_image_webp @@"
+source = "/image"

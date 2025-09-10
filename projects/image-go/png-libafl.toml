@@ -27,3 +27,4 @@ casr_bin = "/sydr_image_png"
 
 [cov]
 target = "/coverage_image_png @@"
+source = "/image"
