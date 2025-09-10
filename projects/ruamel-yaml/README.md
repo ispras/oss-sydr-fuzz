@@ -32,7 +32,7 @@ Run fuzzing:
     # sydr-fuzz -c yaml_fuzzer-atheris.toml run
 
 Minimize corpus:
-    
+
     # sydr-fuzz -c yaml_fuzzer-atheris.toml cmin
 
 Get HTML coverage report:
