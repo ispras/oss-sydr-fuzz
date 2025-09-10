@@ -17,5 +17,6 @@
 exit-on-time = 3600
 
 [atheris]
-path = "/fuzz_yaml.py"
+path = "/fuzz_yaml_atheris.py"
 args = "/corpus_yaml -dict=/yaml.dict -jobs=1000 -workers=4 -detect_leaks=0"
+venv = "/atherisVenv/"

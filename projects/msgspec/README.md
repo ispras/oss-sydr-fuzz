@@ -24,22 +24,25 @@ Change directory to `/fuzz`:
 
   * fuzz_json
   * fuzz_toml
-  * fuzz_yaml
   * fuzz_msgpack
+  * fuzz_yaml-atheris
+  * fuzz_yaml-pyafl
 
 ## Fuzzing
 
-### yaml
-
 Run fuzzing:
 
-    # sydr-fuzz -c json_fuzzer.toml run
+    # sydr-fuzz -c msgpack_fuzzer.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c json_fuzzer.toml cmin
+    # sydr-fuzz -c msgpack_fuzzer.toml cmin
 
 Get HTML coverage report:
 
-    # sydr-fuzz -c json_fuzzer.toml pycov html
+    # sydr-fuzz -c msgpack_fuzzer.toml pycov html -- --source=msgspec,fuzz_msgpack
+
+Crash triage with Casr:
+
+    # sydr-fuzz -c msgpack_fuzzer.toml casr
 
