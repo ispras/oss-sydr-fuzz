@@ -40,7 +40,7 @@ Minimize corpus:
 
 Get HTML coverage report:
 
-    # sydr-fuzz -c msgpack_fuzzer.toml pycov report -- --source=msgspec,fuzz_msgpack
+    # sydr-fuzz -c msgpack_fuzzer.toml pycov html -- --source=msgspec,fuzz_msgpack
 
 Crash triage with Casr:
 
