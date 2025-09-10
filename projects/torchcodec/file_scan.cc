@@ -32,7 +32,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     }
 
     write(fd, data, size);
-    
+    close(fd);
+
     try{
         facebook::torchcodec::SingleStreamDecoder decoder = facebook::torchcodec::SingleStreamDecoder(video_path);
 
@@ -46,8 +47,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         return 0;
     }
 
-
     unlink(video_path);
-    close(fd);
     return 0;
 }
