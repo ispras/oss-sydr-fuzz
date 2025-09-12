@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/convert_tokenizer_fuzz"
-args = "-rss_limit_mb=8192 /corpus/convert/corpus_tokenizer"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/convert/corpus_tokenizer"
 
 [cov]
 target = "/convert_tokenizer_sydr @@"

@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/model_encode_fuzz"
-args = "-rss_limit_mb=8192 /corpus/model/corpus_encode"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/model/corpus_encode"
 
 [cov]
 target = "/model_encode_sydr @@"
