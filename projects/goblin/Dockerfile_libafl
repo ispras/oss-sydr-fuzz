@@ -48,6 +48,9 @@ RUN OUT_DIR=/ cargo make all
 
 WORKDIR /
 
-# Create corpus
+# Create corpus.
 RUN git clone https://github.com/JonathanSalwan/binary-samples /corpus && \
 rm -rf /corpus/anti-disassembler && rm /corpus/MIT_LICENSE && rm /corpus/README.md
+
+# Set SYDR_LLVM_COV env.
+ENV SYDR_LLVM_COV=/usr/bin/llvm-cov-20
