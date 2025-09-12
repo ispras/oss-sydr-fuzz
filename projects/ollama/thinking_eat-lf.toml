@@ -17,6 +17,7 @@
 [sydr]
 target = "/thinking_eat_sydr @@"
 args = "-s 90 --wait-jobs -j2"
+jobs = 2
 
 [libfuzzer]
 path = "/thinking_eat_fuzz"

@@ -15,14 +15,16 @@
 ################################################################################
 
 [sydr]
-target = "/parser_parsefile_sydr @@"
+target = "/convert_vocabulary_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[libfuzzer]
-path = "/parser_parsefile_fuzz"
-args = "-rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_convert_vocabulary @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/convert/corpus_vocabulary -e /ets_convert_vocabulary.toml"
+casr_bin = "/convert_vocabulary_sydr"
 
 [cov]
-target = "/parser_parsefile_sydr @@"
+target = "/convert_vocabulary_coverage @@"
 source = "/ollama"

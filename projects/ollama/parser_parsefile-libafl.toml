@@ -19,10 +19,12 @@ target = "/parser_parsefile_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[libfuzzer]
-path = "/parser_parsefile_fuzz"
-args = "-rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_parser_parsefile @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/parser/corpus_parsefile -e /ets_parser_parsefile.toml"
+casr_bin = "/parser_parsefile_sydr"
 
 [cov]
-target = "/parser_parsefile_sydr @@"
+target = "/parser_parsefile_coverage @@"
 source = "/ollama"

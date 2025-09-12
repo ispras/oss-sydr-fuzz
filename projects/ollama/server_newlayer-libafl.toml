@@ -15,14 +15,16 @@
 ################################################################################
 
 [sydr]
-target = "/parser_parsefile_sydr @@"
+target = "/server_newlayer_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[libfuzzer]
-path = "/parser_parsefile_fuzz"
-args = "-rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_server_newlayer @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/server/corpus_newlayer -e /ets_server_newlayer.toml"
+casr_bin = "/server_newlayer_sydr"
 
 [cov]
-target = "/parser_parsefile_sydr @@"
+target = "/server_newlayer_coverage @@"
 source = "/ollama"
