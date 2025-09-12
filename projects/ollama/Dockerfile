@@ -46,3 +46,5 @@ RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest && \
 
 # Build targets.
 RUN ./build.sh
+
+WORKDIR /
