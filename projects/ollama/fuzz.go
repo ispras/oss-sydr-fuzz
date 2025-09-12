@@ -1,7 +1,4 @@
-//go:build gofuzz
-// +build gofuzz
-
-package main
+package fuzz
 
 import (
 	"bytes"
@@ -12,11 +9,11 @@ import (
 	"unicode/utf8"
 
 	"github.com/ollama/ollama/convert"
-	"github.com/ollama/ollama/model"
+	model "github.com/ollama/ollama/model"
 	"github.com/ollama/ollama/parser"
 	"github.com/ollama/ollama/server"
 	"github.com/ollama/ollama/thinking"
-	"github.com/ollama/ollama/types/model"
+	typesmodel "github.com/ollama/ollama/types/model"
 )
 
 func FuzzParseVocabularyFromTokenizer(data []byte) int {
@@ -194,7 +191,7 @@ func FuzzParseNamedManifest(data []byte) int {
 		return 0
 	}
 
-	name := model.Name{
+	name := typesmodel.Name{
 		Host:      "registry.ollama.ai",
 		Namespace: "library",
 		Model:     "fuzz-test",
