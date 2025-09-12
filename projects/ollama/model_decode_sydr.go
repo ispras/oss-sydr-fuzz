@@ -1,8 +1,12 @@
 package main
 
-import "os"
+import (
+	"os"
+
+	"github.com/ollama/ollama/fuzz"
+)
 
 func main() {
 	data, _ := os.ReadFile(os.Args[1])
-	FuzzDecode(data)
+	fuzz.FuzzDecode(data)
 }
