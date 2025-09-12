@@ -81,52 +81,52 @@ script_runner = "@shell"
 script = '''
 cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
 ${GOINSTR_COVERAGE} -i convert_tokenizer_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_tokenizer_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_tokenizer_coverage
 ${GOINSTR_COVERAGE} -i convert_tokenizer_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
 ${GOINSTR_COVERAGE} -i convert_vocabulary_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_coverage
 ${GOINSTR_COVERAGE} -i convert_vocabulary_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/model/encode
 ${GOINSTR_COVERAGE} -i model_encode_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_coverage
 ${GOINSTR_COVERAGE} -i model_encode_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/model/decode
 ${GOINSTR_COVERAGE} -i model_decode_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_coverage
 ${GOINSTR_COVERAGE} -i model_decode_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/parser/parsefile
 ${GOINSTR_COVERAGE} -i parser_parsefile_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_coverage
 ${GOINSTR_COVERAGE} -i parser_parsefile_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/server/manifest
 ${GOINSTR_COVERAGE} -i server_manifest_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_coverage
 ${GOINSTR_COVERAGE} -i server_manifest_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/server/newlayer
 ${GOINSTR_COVERAGE} -i server_newlayer_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_coverage
 ${GOINSTR_COVERAGE} -i server_newlayer_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/thinking/content
 ${GOINSTR_COVERAGE} -i thinking_content_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_coverage
 ${GOINSTR_COVERAGE} -i thinking_content_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/thinking/state
 ${GOINSTR_COVERAGE} -i thinking_state_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_coverage
 ${GOINSTR_COVERAGE} -i thinking_state_sydr.go -a remove -l info
 
 cd ${EXAMPLE_DIR}/sydr/thinking/eat
 ${GOINSTR_COVERAGE} -i thinking_eat_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_sydr
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_coverage
 ${GOINSTR_COVERAGE} -i thinking_eat_sydr.go -a remove -l info
 '''
 
