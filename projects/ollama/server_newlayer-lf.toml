@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/server_newlayer_fuzz"
-args = "-rss_limit_mb=8192 /corpus/server/corpus_newlayer"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/server/corpus_newlayer"
 
 [cov]
 target = "/server_newlayer_sydr @@"

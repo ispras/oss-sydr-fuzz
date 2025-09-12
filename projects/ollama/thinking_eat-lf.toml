@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/thinking_eat_fuzz"
-args = "-rss_limit_mb=8192 /corpus/thinking/corpus_eat"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/thinking/corpus_eat"
 
 [cov]
 target = "/thinking_eat_sydr @@"
