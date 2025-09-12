@@ -17,6 +17,7 @@
 [sydr]
 target = "/model_encode_sydr @@"
 args = "-s 90 --wait-jobs -j2"
+jobs = 2
 
 [libfuzzer]
 path = "/model_encode_fuzz"

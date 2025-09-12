@@ -1,5 +1,25 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
 ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
+
+ARG SYDR_ARCHIVE="./sydr.zip"
+
+WORKDIR /
 
 # Clone Ollama.
 RUN git clone https://github.com/ollama/ollama.git /ollama
@@ -39,10 +59,14 @@ RUN mkdir -p build && cd build && \
     CC=clang-18 CXX=clang++-18 cmake --preset 'CPU' -DGGML_AVX_VNNI=OFF .. && \
     make -j
 
-# Install go-fuzz.
-RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest && \
-    go install github.com/dvyukov/go-fuzz/go-fuzz-build@latest && \
-    go get github.com/dvyukov/go-fuzz/go-fuzz-dep
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
 
-# Build targets.
-RUN ./build.sh
+WORKDIR /directed_target
+
+# Build image for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
+
+WORKDIR /

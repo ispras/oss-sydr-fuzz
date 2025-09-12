@@ -15,14 +15,16 @@
 ################################################################################
 
 [sydr]
-target = "/parser_parsefile_sydr @@"
+target = "/model_decode_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[libfuzzer]
-path = "/parser_parsefile_fuzz"
-args = "-rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_model_decode @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/model/corpus_decode -e /ets_model_decode.toml"
+casr_bin = "/model_decode_sydr"
 
 [cov]
-target = "/parser_parsefile_sydr @@"
+target = "/model_decode_coverage @@"
 source = "/ollama"

@@ -17,6 +17,7 @@
 [sydr]
 target = "/server_newlayer_sydr @@"
 args = "-s 90 --wait-jobs -j2"
+jobs = 2
 
 [libfuzzer]
 path = "/server_newlayer_fuzz"

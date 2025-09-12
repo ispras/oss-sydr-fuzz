@@ -15,14 +15,15 @@
 ################################################################################
 
 [sydr]
-target = "/parser_parsefile_sydr @@"
+target = "/thinking_state_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[libfuzzer]
-path = "/parser_parsefile_fuzz"
-args = "-rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
-
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_thinking_state @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/thinking/corpus_state -e /ets_thinking_state.toml"
+casr_bin = "/thinking_state_sydr"
 [cov]
-target = "/parser_parsefile_sydr @@"
+target = "/thinking_state_coverage @@"
 source = "/ollama"
