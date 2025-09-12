@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/thinking/thinking_eat.go"
+file = "/ollama/sydr/thinking/eat/thinking_eat_sydr.go"
 line = 10

@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/parser/parser_parsefile.go"
+file = "/ollama/sydr/parser/parsefile/parser_parsefile_sydr.go"
 line = 10

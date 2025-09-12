@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/convert/convert_vocabulary_sydr.go"
+file = "/ollama/sydr/convert/vocabulary/convert_vocabulary_sydr.go"
 line = 10
