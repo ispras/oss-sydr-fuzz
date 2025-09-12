@@ -49,21 +49,26 @@ windows_alias = "unsupported"
 [tasks.debug_unix]
 script_runner = "@shell"
 script = '''
-cd ${EXAMPLE_DIR}/sydr/convert
-go build -o ${OUT_DIR_ABS}/convert_tokenizer_sydr convert_tokenizer_sydr.go
-go build -o ${OUT_DIR_ABS}/convert_vocabulary_sydr convert_vocabulary_sydr.go
-cd ${EXAMPLE_DIR}/sydr/model
-go build -o ${OUT_DIR_ABS}/model_encode_sydr model_encode_sydr.go
-go build -o ${OUT_DIR_ABS}/model_decode_sydr model_decode_sydr.go
-cd ${EXAMPLE_DIR}/sydr/parser
-go build -o ${OUT_DIR_ABS}/parser_parsefile_sydr parser_parsefile_sydr.go
-cd ${EXAMPLE_DIR}/sydr/server
-go build -o ${OUT_DIR_ABS}/server_manifest_sydr server_manifest_sydr.go
-go build -o ${OUT_DIR_ABS}/server_newlayer_sydr server_newlayer_sydr.go
-cd ${EXAMPLE_DIR}/sydr/thinking
-go build -o ${OUT_DIR_ABS}/thinking_content_sydr thinking_content_sydr.go
-go build -o ${OUT_DIR_ABS}/thinking_state_sydr thinking_state_sydr.go
-go build -o ${OUT_DIR_ABS}/thinking_eat_sydr thinking_eat_sydr.go
+cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
+go build -o ${OUT_DIR_ABS}/convert_tokenizer_sydr
+cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
+go build -o ${OUT_DIR_ABS}/convert_vocabulary_sydr
+cd ${EXAMPLE_DIR}/sydr/model/encode
+go build -o ${OUT_DIR_ABS}/model_encode_sydr
+cd ${EXAMPLE_DIR}/sydr/model/decode
+go build -o ${OUT_DIR_ABS}/model_decode_sydr
+cd ${EXAMPLE_DIR}/sydr/parser/parsefile
+go build -o ${OUT_DIR_ABS}/parser_parsefile_sydr
+cd ${EXAMPLE_DIR}/sydr/server/manifest
+go build -o ${OUT_DIR_ABS}/server_manifest_sydr
+cd ${EXAMPLE_DIR}/sydr/server/newlayer
+go build -o ${OUT_DIR_ABS}/server_newlayer_sydr
+cd ${EXAMPLE_DIR}/sydr/thinking/content
+go build -o ${OUT_DIR_ABS}/thinking_content_sydr
+cd ${EXAMPLE_DIR}/sydr/thinking/state
+go build -o ${OUT_DIR_ABS}/thinking_state_sydr
+cd ${EXAMPLE_DIR}/sydr/thinking/eat
+go build -o ${OUT_DIR_ABS}/thinking_eat_sydr
 '''
 
 [tasks.coverage]
@@ -74,49 +79,54 @@ windows_alias = "unsupported"
 [tasks.coverage_unix]
 script_runner = "@shell"
 script = '''
-cd ${EXAMPLE_DIR}/sydr/convert
+cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
 ${GOINSTR_COVERAGE} -i convert_tokenizer_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_tokenizer_sydr convert_tokenizer_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_tokenizer_sydr
 ${GOINSTR_COVERAGE} -i convert_tokenizer_sydr.go -a remove -l info
 
+cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
 ${GOINSTR_COVERAGE} -i convert_vocabulary_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_sydr convert_vocabulary_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_sydr
 ${GOINSTR_COVERAGE} -i convert_vocabulary_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/model
+cd ${EXAMPLE_DIR}/sydr/model/encode
 ${GOINSTR_COVERAGE} -i model_encode_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_sydr model_encode_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_sydr
 ${GOINSTR_COVERAGE} -i model_encode_sydr.go -a remove -l info
 
+cd ${EXAMPLE_DIR}/sydr/model/decode
 ${GOINSTR_COVERAGE} -i model_decode_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_sydr model_decode_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_sydr
 ${GOINSTR_COVERAGE} -i model_decode_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/parser
+cd ${EXAMPLE_DIR}/sydr/parser/parsefile
 ${GOINSTR_COVERAGE} -i parser_parsefile_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_sydr parser_parsefile_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_sydr
 ${GOINSTR_COVERAGE} -i parser_parsefile_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/server
+cd ${EXAMPLE_DIR}/sydr/server/manifest
 ${GOINSTR_COVERAGE} -i server_manifest_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_sydr server_manifest_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_sydr
 ${GOINSTR_COVERAGE} -i server_manifest_sydr.go -a remove -l info
 
+cd ${EXAMPLE_DIR}/sydr/server/newlayer
 ${GOINSTR_COVERAGE} -i server_newlayer_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_sydr server_newlayer_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_sydr
 ${GOINSTR_COVERAGE} -i server_newlayer_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking
+cd ${EXAMPLE_DIR}/sydr/thinking/content
 ${GOINSTR_COVERAGE} -i thinking_content_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_sydr thinking_content_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_sydr
 ${GOINSTR_COVERAGE} -i thinking_content_sydr.go -a remove -l info
 
+cd ${EXAMPLE_DIR}/sydr/thinking/state
 ${GOINSTR_COVERAGE} -i thinking_state_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_sydr thinking_state_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_sydr
 ${GOINSTR_COVERAGE} -i thinking_state_sydr.go -a remove -l info
 
+cd ${EXAMPLE_DIR}/sydr/thinking/eat
 ${GOINSTR_COVERAGE} -i thinking_eat_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_sydr thinking_eat_sydr.go
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_sydr
 ${GOINSTR_COVERAGE} -i thinking_eat_sydr.go -a remove -l info
 '''
 
@@ -128,11 +138,16 @@ windows_alias = "unsupported"
 [tasks.difuzz_unix]
 script_runner = "@shell"
 script = '''
-${DIFUZZ_DIR_ABS}/difuzz-go -r webp.main -c ${PROJECT_DIR}/config_webp.toml -p ${EXAMPLE_DIR}/cmd/webp -e ${OUT_DIR_ABS}/ets_webp.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r tiff.main -c ${PROJECT_DIR}/config_tiff.toml -p ${EXAMPLE_DIR}/cmd/tiff -e ${OUT_DIR_ABS}/ets_tiff.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r png.main -c ${PROJECT_DIR}/config_png.toml -p ${EXAMPLE_DIR}/cmd/png -e ${OUT_DIR_ABS}/ets_png.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r jpeg.main -c ${PROJECT_DIR}/config_jpeg.toml -p ${EXAMPLE_DIR}/cmd/jpeg -e ${OUT_DIR_ABS}/ets_jpeg.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r gif.main -c ${PROJECT_DIR}/config_gif.toml -p ${EXAMPLE_DIR}/cmd/gif -e ${OUT_DIR_ABS}/ets_gif.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r convert.main -c ${PROJECT_DIR}/config_convert_tokenizer.toml -p ${EXAMPLE_DIR}/sydr/convert/tokenizer -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r convert.main -c ${PROJECT_DIR}/config_convert_vocabulary.toml -p ${EXAMPLE_DIR}/sydr/convert/vocabulary -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r model.main -c ${PROJECT_DIR}/config_model_decode.toml -p ${EXAMPLE_DIR}/sydr/model/decode -e ${OUT_DIR_ABS}/ets_model_decode.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r model.main -c ${PROJECT_DIR}/config_model_encode.toml -p ${EXAMPLE_DIR}/sydr/model/encode -e ${OUT_DIR_ABS}/ets_model_encode.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r parser.main -c ${PROJECT_DIR}/config_parser_parsefile.toml -p ${EXAMPLE_DIR}/sydr/parser/parsefile -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r server.main -c ${PROJECT_DIR}/config_server_manifest.toml -p ${EXAMPLE_DIR}/sydr/server/manifest -e ${OUT_DIR_ABS}/ets_server_manifest.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r server.main -c ${PROJECT_DIR}/config_server_newlayer.toml -p ${EXAMPLE_DIR}/sydr/server/newlayer -e ${OUT_DIR_ABS}/ets_server_newlayer.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r thinking.main -c ${PROJECT_DIR}/config_thinking_content.toml -p ${EXAMPLE_DIR}/sydr/thinking/content -e ${OUT_DIR_ABS}/ets_thinking_content.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r thinking.main -c ${PROJECT_DIR}/config_thinking_state.toml -p ${EXAMPLE_DIR}/sydr/thinking/state -e ${OUT_DIR_ABS}/ets_thinking_state.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r thinking.main -c ${PROJECT_DIR}/config_thinking_eat.toml -p ${EXAMPLE_DIR}/sydr/thinking/eat -e ${OUT_DIR_ABS}/ets_thinking_eat.toml ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
@@ -143,31 +158,65 @@ windows_alias = "unsupported"
 [tasks.target_unix]
 script_runner = "@shell"
 script = '''
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -l info -j 8
+cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/webp
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_webp
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_webp.toml -keep-ets -l info
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_convert_tokenizer
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/tiff
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_tiff
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_tiff.toml -keep-ets -l info
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_convert_vocabulary
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/model/decode
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_decode.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/png
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_png
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_png.toml -keep-ets -l info
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_model_decode
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_decode.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/model/encode
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_encode.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/jpeg
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_jpeg
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_jpeg.toml -keep-ets -l info
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_gif.toml -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_model_encode
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_encode.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/parser/parsefile
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/gif
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_gif
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_gif.toml -keep-ets -l info
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_parser_parsefile
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/server/manifest
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_manifest.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_server_manifest
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_manifest.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/server/newlayer
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_newlayer.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_server_newlayer
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_newlayer.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/thinking/content
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_content.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_content
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_content.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/thinking/state
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_state.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_state
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_state.toml -keep-ets -l info
+
+cd ${EXAMPLE_DIR}/sydr/thinking/eat
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_eat
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -keep-ets -l info
 '''
 dependencies = ["difuzz"]
 
