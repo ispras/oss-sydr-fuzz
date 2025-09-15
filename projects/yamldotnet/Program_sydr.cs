@@ -27,23 +27,38 @@ public class Program
     public static void Main(string[] args)
     {
         try {
+            Console.WriteLine(0);
+
             string yml = File.ReadAllText(args[0]);
+            
             var input = new StringReader(yml);
 
             var yaml = new YamlStream();
+            
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
+
             var serializer = new SerializerBuilder()
                 .JsonCompatible()
                 .Build();
 
             var doc = deserializer.Deserialize(input);
+
             var json = serializer.Serialize(doc);
-            var parser = new Parser(input);
+
+            var input2 = new StringReader(yml);
+            
+            var parser = new Parser(input2);  
+
             parser.Consume<StreamStart>();
-            yaml.Load(input);
+
+            var input3 = new StringReader(yml); 
+            yaml.Load(input3);       
+                      
         }
-        catch (YamlException) { }
+        catch (YamlException ex) { 
+            Console.WriteLine(ex.Message);
+        }
     }
 }
