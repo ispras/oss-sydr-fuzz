@@ -158,63 +158,63 @@ windows_alias = "unsupported"
 [tasks.target_unix]
 script_runner = "@shell"
 script = '''
-cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/convert/tokenizer
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_convert_tokenizer
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/convert/vocabulary
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_convert_vocabulary
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/model/decode
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_decode.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/model/decode
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_model_decode
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_decode.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/model/encode
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_encode.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/model/encode
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_model_encode
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_encode.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/parser/parsefile
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/parser/parsefile
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_parser_parsefile
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/server/manifest
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_manifest.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/server/manifest
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_server_manifest
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_manifest.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/server/newlayer
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_newlayer.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/server/newlayer
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_server_newlayer
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_newlayer.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking/content
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_content.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/content
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_content
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_content.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking/state
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_state.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/state
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_state
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_state.toml -keep-ets -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking/eat
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/eat
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_eat
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -keep-ets -l info
 '''
