@@ -79,55 +79,46 @@ windows_alias = "unsupported"
 [tasks.coverage_unix]
 script_runner = "@shell"
 script = '''
-cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
-${GOINSTR_COVERAGE} -i convert_tokenizer_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_tokenizer_coverage
-${GOINSTR_COVERAGE} -i convert_tokenizer_sydr.go -a remove -l info
+cd ${EXAMPLE_DIR}
+${GOINSTR_COVERAGE} -i sydr/convert/tokenizer/convert_tokenizer_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_tokenizer_coverage sydr/convert/tokenizer/convert_tokenizer_sydr.go
+${GOINSTR_COVERAGE} -i sydr/convert/tokenizer/convert_tokenizer_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
-${GOINSTR_COVERAGE} -i convert_vocabulary_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_coverage
-${GOINSTR_COVERAGE} -i convert_vocabulary_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/convert/vocabulary/convert_vocabulary_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_coverage sydr/convert/vocabulary/convert_vocabulary_sydr.go
+${GOINSTR_COVERAGE} -i sydr/convert/vocabulary/convert_vocabulary_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/model/encode
-${GOINSTR_COVERAGE} -i model_encode_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_coverage
-${GOINSTR_COVERAGE} -i model_encode_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/model/encode/model_encode_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_coverage sydr/model/encode/model_encode_sydr.go
+${GOINSTR_COVERAGE} -i sydr/model/encode/model_encode_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/model/decode
-${GOINSTR_COVERAGE} -i model_decode_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_coverage
-${GOINSTR_COVERAGE} -i model_decode_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/model/decode/model_decode_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_coverage sydr/model/decode/model_decode_sydr.go
+${GOINSTR_COVERAGE} -i sydr/model/decode/model_decode_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/parser/parsefile
-${GOINSTR_COVERAGE} -i parser_parsefile_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_coverage
-${GOINSTR_COVERAGE} -i parser_parsefile_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/parser/parsefile/parser_parsefile_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_coverage sydr/parser/parsefile/parser_parsefile_sydr.go
+${GOINSTR_COVERAGE} -i sydr/parser/parsefile/parser_parsefile_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/server/manifest
-${GOINSTR_COVERAGE} -i server_manifest_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_coverage
-${GOINSTR_COVERAGE} -i server_manifest_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/server/manifest/server_manifest_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_coverage sydr/server/manifest/server_manifest_sydr.go
+${GOINSTR_COVERAGE} -i sydr/server/manifest/server_manifest_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/server/newlayer
-${GOINSTR_COVERAGE} -i server_newlayer_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_coverage
-${GOINSTR_COVERAGE} -i server_newlayer_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/server/newlayer/server_newlayer_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_coverage sydr/server/newlayer/server_newlayer_sydr.go
+${GOINSTR_COVERAGE} -i sydr/server/newlayer/server_newlayer_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking/content
-${GOINSTR_COVERAGE} -i thinking_content_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_coverage
-${GOINSTR_COVERAGE} -i thinking_content_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/thinking/content/thinking_content_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_coverage sydr/thinking/content/thinking_content_sydr.go
+${GOINSTR_COVERAGE} -i sydr/thinking/content/thinking_content_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking/state
-${GOINSTR_COVERAGE} -i thinking_state_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_coverage
-${GOINSTR_COVERAGE} -i thinking_state_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/thinking/state/thinking_state_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_coverage sydr/thinking/state/thinking_state_sydr.go
+${GOINSTR_COVERAGE} -i sydr/thinking/state/thinking_state_sydr.go -a remove -l info
 
-cd ${EXAMPLE_DIR}/sydr/thinking/eat
-${GOINSTR_COVERAGE} -i thinking_eat_sydr.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_coverage
-${GOINSTR_COVERAGE} -i thinking_eat_sydr.go -a remove -l info
+${GOINSTR_COVERAGE} -i sydr/thinking/eat/thinking_eat_sydr.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_coverage sydr/thinking/eat/thinking_eat_sydr.go
+${GOINSTR_COVERAGE} -i sydr/thinking/eat/thinking_eat_sydr.go -a remove -l info
 '''
 
 [tasks.difuzz]
