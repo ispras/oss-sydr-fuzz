@@ -1,0 +1,26 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/out_sydr/fuzz_tokenizer_falcon_sydr @@"
+
+[libfuzzer]
+path = "/out_fuzz/fuzz_tokenizer_falcon_fuzz"
+args = "-jobs=1000 -detect_leaks=0 -rss_limit_mb=30720 -timeout=300 -report_slow_units=350 /corpus"
+
+[cov]
+target = "/out_cov/fuzz_tokenizer_falcon_cov @@"
