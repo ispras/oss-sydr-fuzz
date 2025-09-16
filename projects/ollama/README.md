@@ -26,19 +26,26 @@ Run docker for LibAFL-DiFuzz:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libafl-ollama /bin/bash
 
-### Run Fuzzing
-
 Change directory to `/fuzz`:
 
     # cd /fuzz
 
-Run hybrid fuzzing:
+Run hybrid fuzzing with libfuzzer:
 
     # sydr-fuzz -c convert_tokenizer-lf.toml run
 
 Run hybrid fuzzing with LibAFL-DiFuzz:
 
     # sydr-fuzz -c convert_tokenizer-libafl.toml run
+
+Minimize corpus (only for libfuzzer):
+
+    # sydr-fuzz -c convert_tokenizer-lf.toml cmin
+
+Collect coverage:
+
+    # sydr-fuzz -c convert_tokenizer-lf.toml cov-html
+    # sydr-fuzz -c convert_tokenizer-libafl.toml cov-html
 
 ## Alternative Fuzz Targets
 
