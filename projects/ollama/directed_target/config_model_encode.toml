@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/model/encode/model_encode_sydr.go"
+file = "/ollama/sydr/model/encode/main.go"
 line = 10

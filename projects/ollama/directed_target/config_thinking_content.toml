@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/thinking/content/thinking_content_sydr.go"
+file = "/ollama/sydr/thinking/content/main.go"
 line = 10
