@@ -129,16 +129,16 @@ windows_alias = "unsupported"
 [tasks.difuzz_unix]
 script_runner = "@shell"
 script = '''
-${DIFUZZ_DIR_ABS}/difuzz-go -r tokenizer.main  -c ${PROJECT_DIR}/config_convert_tokenizer.toml  -p ${EXAMPLE_DIR}/sydr/convert/tokenizer  -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml  ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r vocabulary.main -c ${PROJECT_DIR}/config_convert_vocabulary.toml -p ${EXAMPLE_DIR}/sydr/convert/vocabulary -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r decode.main     -c ${PROJECT_DIR}/config_model_decode.toml       -p ${EXAMPLE_DIR}/sydr/model/decode       -e ${OUT_DIR_ABS}/ets_model_decode.toml       ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r encode.main     -c ${PROJECT_DIR}/config_model_encode.toml       -p ${EXAMPLE_DIR}/sydr/model/encode       -e ${OUT_DIR_ABS}/ets_model_encode.toml       ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r parsefile.main  -c ${PROJECT_DIR}/config_parser_parsefile.toml   -p ${EXAMPLE_DIR}/sydr/parser/parsefile   -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml   ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r manifest.main   -c ${PROJECT_DIR}/config_server_manifest.toml    -p ${EXAMPLE_DIR}/sydr/server/manifest    -e ${OUT_DIR_ABS}/ets_server_manifest.toml    ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r newlayer.main   -c ${PROJECT_DIR}/config_server_newlayer.toml    -p ${EXAMPLE_DIR}/sydr/server/newlayer    -e ${OUT_DIR_ABS}/ets_server_newlayer.toml    ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r content.main    -c ${PROJECT_DIR}/config_thinking_content.toml   -p ${EXAMPLE_DIR}/sydr/thinking/content   -e ${OUT_DIR_ABS}/ets_thinking_content.toml   ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r state.main      -c ${PROJECT_DIR}/config_thinking_state.toml     -p ${EXAMPLE_DIR}/sydr/thinking/state     -e ${OUT_DIR_ABS}/ets_thinking_state.toml     ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r eat.main        -c ${PROJECT_DIR}/config_thinking_eat.toml       -p ${EXAMPLE_DIR}/sydr/thinking/eat       -e ${OUT_DIR_ABS}/ets_thinking_eat.toml       ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r tokenizer.main  -c ${PROJECT_DIR}/config_convert_tokenizer.toml  -p ${EXAMPLE_DIR}/sydr/convert/tokenizer/convert_tokenizer_sydr.go   -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml  ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r vocabulary.main -c ${PROJECT_DIR}/config_convert_vocabulary.toml -p ${EXAMPLE_DIR}/sydr/convert/vocabulary/convert_vocabulary_sydr.go -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r decode.main     -c ${PROJECT_DIR}/config_model_decode.toml       -p ${EXAMPLE_DIR}/sydr/model/decode/model_decode_sydr.go             -e ${OUT_DIR_ABS}/ets_model_decode.toml       ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r encode.main     -c ${PROJECT_DIR}/config_model_encode.toml       -p ${EXAMPLE_DIR}/sydr/model/encode/model_encode_sydr.go             -e ${OUT_DIR_ABS}/ets_model_encode.toml       ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r parsefile.main  -c ${PROJECT_DIR}/config_parser_parsefile.toml   -p ${EXAMPLE_DIR}/sydr/parser/parsefile/parser_parsefile_sydr.go     -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml   ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r manifest.main   -c ${PROJECT_DIR}/config_server_manifest.toml    -p ${EXAMPLE_DIR}/sydr/server/manifest/server_manifest_sydr.go       -e ${OUT_DIR_ABS}/ets_server_manifest.toml    ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r newlayer.main   -c ${PROJECT_DIR}/config_server_newlayer.toml    -p ${EXAMPLE_DIR}/sydr/server/newlayer/server_newlayer_sydr.go       -e ${OUT_DIR_ABS}/ets_server_newlayer.toml    ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r content.main    -c ${PROJECT_DIR}/config_thinking_content.toml   -p ${EXAMPLE_DIR}/sydr/thinking/content/thinking_content_sydr.go     -e ${OUT_DIR_ABS}/ets_thinking_content.toml   ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r state.main      -c ${PROJECT_DIR}/config_thinking_state.toml     -p ${EXAMPLE_DIR}/sydr/thinking/state/thinking_state_sydr.go         -e ${OUT_DIR_ABS}/ets_thinking_state.toml     ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r eat.main        -c ${PROJECT_DIR}/config_thinking_eat.toml       -p ${EXAMPLE_DIR}/sydr/thinking/eat/thinking_eat_sydr.go             -e ${OUT_DIR_ABS}/ets_thinking_eat.toml       ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
