@@ -1,0 +1,20 @@
+diff --git a/convert/tokenizer.go b/convert/tokenizer.go
+index bedcd4f8..ab9c67a3 100644
+--- a/convert/tokenizer.go
++++ b/convert/tokenizer.go
+@@ -329,3 +329,15 @@ func (sv SpecialVocabulary) Key() string {
+ 
+ 	panic("unknown special vocabulary type")
+ }
++
++// ParseVocabularyFromTokenizer is the exported wrapper for parseVocabularyFromTokenizer
++// for use in fuzz testing.
++func ParseVocabularyFromTokenizer(fsys fs.FS) (*Vocabulary, error) {
++  return parseVocabularyFromTokenizer(fsys)
++}
++
++// ParseVocabulary is the exported wrapper for parseVocabulary
++// for use in fuzz testing.
++func ParseVocabulary(fsys fs.FS) (*Vocabulary, error) {
++  return parseVocabulary(fsys)
++}
