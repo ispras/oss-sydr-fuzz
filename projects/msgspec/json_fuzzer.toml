@@ -19,3 +19,4 @@ exit-on-time = 3600
 [atheris]
 path = "/fuzz_json.py"
 args = "/corpus_json -dict=/json.dict -jobs=1000 -workers=4"
+venv = "/atherisVenv/"
