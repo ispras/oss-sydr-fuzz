@@ -1,4 +1,4 @@
-# Copyright (C) 2023 ISP RAS
+# Copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 exit-on-time = 3600
 
-[atheris]
-path = "/hypothesis_structured_fuzzer.py"
-args = "/out/corpus -dict=/cjson/fuzzing/json.dict -jobs=1000 -workers=4"
+[pyafl]
+args = "-i /out/corpus -t 6000 -x /cjson/fuzzing/json.dict"
+target = "/ujson_fuzzer_pyafl.py"
+jobs = 4
