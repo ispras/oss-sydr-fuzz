@@ -132,6 +132,11 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
     git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
     pip3 install . && cd .. && rm -rf atheris
 
+# Install python-afl
+RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
+    git checkout 6a3fc2d15a02f60e4ea24273f8ed93404c9ffa43 && \
+    pip3 install . && cd .. && rm -rf python-afl
+
 # Install Go
 RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x ./installer_linux && \
@@ -221,7 +226,7 @@ ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsonc
 
 # Install AFLplusplus
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.30c && export CC=clang && export CXX=clang++ && \
+    git checkout v4.33c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
@@ -240,3 +245,6 @@ RUN pyenv exec python3 -m pip install wllvm watchdog scipy numpy concurrencytest
 ENV PATH=$PATH:/fuzz/sydr/difuzz
 
 RUN apt-get install -y libboost-all-dev
+
+# Install LLVM-20 to support new profraw formats (Rust has LLVM-20 now)
+RUN ./llvm.sh 20 all

@@ -18,7 +18,7 @@ ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 # Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing_extensions
+RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cffi typing_extensions
 
 # Clone target from GitHub.
 RUN git clone https://github.com/pytorch/pytorch /pytorch
@@ -47,9 +47,6 @@ RUN TARGET="afl" /build.sh
 RUN TARGET="sydr" /build.sh
 RUN TARGET="fuzz" /build.sh
 RUN TARGET="cov" /build.sh
-
-# Set large bitmap size for afl-showmap operation.
-#ENV AFL_MAP_SIZE=10000000
 
 # Prepare fuzzing corpus.
 COPY ./ir_corpus.zip /

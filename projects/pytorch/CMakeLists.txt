@@ -7,7 +7,7 @@ set(PYBIND11_FINDPYTHON ON)
 find_package(Torch REQUIRED)
 find_package(Python3 ${PYTHON_VERSION} EXACT COMPONENTS Development)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic ${TORCHCODEC_WERROR_OPTION} ${TORCH_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCHCODEC_WERROR_OPTION} ${TORCH_CXX_FLAGS}")
 
 set(FUZZ_TARGETS
   message_deserialize
@@ -34,7 +34,7 @@ foreach(FUZZ_TARGET IN LISTS FUZZ_TARGETS)
     PUBLIC /pytorch/build/lib/libonnx.a
     PUBLIC /pytorch/build/lib/libonnx_proto.a 
     PUBLIC /pytorch/build/lib/libtensorpipe.a
-    PUBLIC /pytorch/build/lib/libtensorpipe_uv.a 
+    PUBLIC /usr/lib/x86_64-linux-gnu/libuv.so.1.0.0
     PUBLIC ${CMAKE_DL_LIBS} 
     PUBLIC pthread 
     PUBLIC rt 
@@ -60,7 +60,7 @@ if (BUILD_RPC_REPRODUCER)
     PUBLIC /pytorch/build/lib/libonnx.a
     PUBLIC /pytorch/build/lib/libonnx_proto.a 
     PUBLIC /pytorch/build/lib/libtensorpipe.a
-    PUBLIC /pytorch/build/lib/libtensorpipe_uv.a 
+    PUBLIC /usr/lib/x86_64-linux-gnu/libuv.so.1.0.0
     PUBLIC ${CMAKE_DL_LIBS} 
     PUBLIC pthread 
     PUBLIC rt 
