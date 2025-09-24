@@ -35,6 +35,9 @@ RUN cd /pytorch && \
     sed -i '/^cmake$/d' requirements.txt && \
     pip install -r requirements.txt
 
+COPY patch_exceptions.sh /
+RUN ./patch_exceptions.sh
+
 COPY torchcodec.patch /
 RUN git clone https://github.com/pytorch/torchcodec.git codec
 RUN cd /codec && \
