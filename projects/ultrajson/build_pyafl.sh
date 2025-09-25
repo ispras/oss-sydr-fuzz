@@ -1,4 +1,6 @@
-# Copyright (C) 2023 ISP RAS
+#!/bin/bash -eu
+# Copyright 2020 Google Inc.
+# Modifications copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +16,14 @@
 #
 ################################################################################
 
-exit-on-time = 3600
+pip install testresources
+pip install -U pip setuptools wheel
 
-[atheris]
-path = "/out/ujson_fuzzer.py"
-args = "/out/corpus -dict=/cjson/fuzzing/json.dict -jobs=1000 -workers=4"
+export CC="afl-clang-fast"
+export CFLAGS="-fsanitize=address -Wl,-rpath=/usr/lib/clang/18.1.8/lib/linux/"
+export CXX="clang++"
+export CXXFLAGS="-fsanitize=address -Wl,-rpath=/usr/lib/clang/18.1.8/lib/linux/"
+export LDFLAGS="/usr/local/lib/afl/afl-compiler-rt.o /usr/lib/clang/18.1.8/lib/linux/libclang_rt.asan-x86_64.so"
+export LDSHARED="clang -shared"
+
+pip3 install --ignore-installed .
