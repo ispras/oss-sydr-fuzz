@@ -27,5 +27,37 @@ file = "/goblin/src/archive/mod.rs"
 line = 342
 
 [[target]]
+file = "/goblin/src/elf/mod.rs"
+line = 163
+
+[[target]]
+file = "/goblin/src/elf/mod.rs"
+line = 269
+
+[[target]]
+file = "/goblin/src/elf/mod.rs"
+line = 365
+
+[[target]]
+file = "/goblin/src/mach/mod.rs"
+line = 157
+
+[[target]]
+file = "/goblin/src/mach/mod.rs"
+line = 186
+
+[[target]]
+file = "/goblin/src/mach/mod.rs"
+line = 245
+
+[[target]]
+file = "/goblin/src/pe/mod.rs"
+line = 100
+
+[[target]]
+file = "/goblin/src/pe/mod.rs"
+line = 171
+
+[[target]]
 file = "/goblin/src/pe/debug.rs"
 line = 172
