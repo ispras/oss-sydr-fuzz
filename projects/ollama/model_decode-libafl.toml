@@ -14,18 +14,17 @@
 #
 ################################################################################
 
-exit-on-time = 7200
-
 [sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/sydr_parse @@"
+target = "/model_decode_sydr @@"
+args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/parse_libafl_target @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 --panic-analysis rust -l64 -i /corpus -e /ets_parse.toml"
-casr_bin = "/casr_parse"
+target = "/difuzz_target_model_decode @@"
+args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/model/corpus_decode -e /ets_model_decode.toml"
+casr_bin = "/model_decode_sydr"
 
 [cov]
-target = "/cov_parse @@"
+target = "/model_decode_coverage @@"
+source = "/ollama"
