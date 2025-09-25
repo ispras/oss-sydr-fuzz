@@ -14,24 +14,8 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
-FROM $BASE_IMAGE
+exit-on-time = 3600
 
-RUN apt install -y mercurial
-
-# Clone repo for the corpus
-RUN git clone https://github.com/yaml/libyaml
-
-RUN hg clone http://hg.code.sf.net/p/ruamel-yaml/code ruamel-yaml
-
-WORKDIR /ruamel-yaml
-
-# Checkout specified commit. It could be updated later.
-RUN hg checkout 54d2c5
-
-COPY build.sh \
-     yaml_fuzzer_*.py \
-     yaml.dict \
-     /
-
-RUN /build.sh
+[atheris]
+path = "/yaml_fuzzer_atheris.py"
+args = "/corpus -dict=/yaml.dict -jobs=1000 -workers=4"

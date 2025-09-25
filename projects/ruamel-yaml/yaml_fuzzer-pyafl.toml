@@ -1,4 +1,4 @@
-# Copyright (C) 2022 ISP RAS
+# Copyright (C) 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 exit-on-time = 3600
 
-[atheris]
-path = "/yaml_fuzzer.py"
-args = "/corpus -dict=yaml.dict -jobs=1000 -workers=4"
+[pyafl]
+args = "-i /corpus -t 2000 -x /yaml.dict"
+target = "/yaml_fuzzer_pyafl.py"
+ld_preload = false
+jobs = 4

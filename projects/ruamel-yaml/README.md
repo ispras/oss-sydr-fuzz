@@ -22,21 +22,24 @@ Change directory to `/fuzz`:
 
 ## Fuzz tagrets:
 
-  * yaml_fuzzer
+  * yaml_fuzzer-atheris
+  * yaml_fuzzer-pyafl
 
 ## Fuzzing
 
-### yaml
-
 Run fuzzing:
 
-    # sydr-fuzz -c yaml_fuzzer.toml run
+    # sydr-fuzz -c yaml_fuzzer-atheris.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c yaml_fuzzer.toml cmin
+    # sydr-fuzz -c yaml_fuzzer-atheris.toml cmin
 
 Get HTML coverage report:
 
-    # sydr-fuzz -c yaml_fuzzer.toml pycov html
+    # sydr-fuzz -c yaml_fuzzer-atheris.toml pycov html -- --source=ruamel,yaml_fuzzer_atheris
+
+Crash triage with Casr:
+
+    # sydr-fuzz -c yaml_fuzzer-atheris.toml casr
 
