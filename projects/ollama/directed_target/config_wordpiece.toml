@@ -14,17 +14,6 @@
 #
 ################################################################################
 
-[sydr]
-target = "/model_encode_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
-
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/difuzz_target_model_encode @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/model/corpus_encode -e /ets_model_encode.toml"
-casr_bin = "/model_encode_sydr"
-
-[cov]
-target = "/model_encode_coverage @@"
-source = "/ollama"
+[[target]]
+file = "/ollama/sydr/wordpiece/encode/main.go"
+line = 10

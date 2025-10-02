@@ -26,7 +26,7 @@ RUN git clone https://github.com/ollama/ollama.git /ollama
 
 WORKDIR /ollama
 
-RUN git checkout 26214125e86ac1d4512dff68c983137589cfddbf
+RUN git checkout 05a43e078a89247dcc71c703c1bee2af97c1655d
 
 # Apply patch.
 COPY ollama.patch build.sh ./
@@ -38,8 +38,8 @@ RUN unzip /corpus.zip -d /
 
 # Create directories for fuzz targets.
 RUN mkdir sydr && cd sydr && mkdir -p convert/tokenizer convert/vocabulary \
-    model/encode model/decode parser/parsefile server/newlayer server/manifest \
-    thinking/state thinking/eat thinking/content
+    parser/parsefile server/newlayer server/manifest thinking/state thinking/eat \
+    thinking/content harmony/parser wordpiece/encode
 
 # Move fuzz targets.
 RUN mkdir fuzz
@@ -51,10 +51,10 @@ COPY thinking_content_sydr.go sydr/thinking/content/main.go
 COPY server_newlayer_sydr.go sydr/server/newlayer/main.go
 COPY server_manifest_sydr.go sydr/server/manifest/main.go
 COPY parser_parsefile_sydr.go sydr/parser/parsefile/main.go
-COPY model_encode_sydr.go sydr/model/encode/main.go
-COPY model_decode_sydr.go sydr/model/decode/main.go
 COPY convert_tokenizer_sydr.go sydr/convert/tokenizer/main.go
 COPY convert_vocabulary_sydr.go sydr/convert/vocabulary/main.go
+COPY harmony_parser_sydr.go sydr/harmony/parser/main.go
+COPY wordpiece_sydr.go sydr/wordpiece/encode/main.go
 
 # Build GGML.
 RUN mkdir -p build && cd build && \

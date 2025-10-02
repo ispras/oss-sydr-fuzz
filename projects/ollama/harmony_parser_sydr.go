@@ -8,5 +8,5 @@ import (
 
 func main() {
 	data, _ := os.ReadFile(os.Args[1])
-	fuzz.FuzzEncode(data)
+	fuzz.FuzzHarmonyParser(data)
 }

@@ -18,10 +18,10 @@ LIBFUZZER_TARGETS=(
     "thinking_eat_fuzz:/ollama/fuzz:FuzzEat"
     "convert_tokenizer_fuzz:/ollama/fuzz:FuzzParseVocabularyFromTokenizer"
     "convert_vocabulary_fuzz:/ollama/fuzz:FuzzParseVocabulary"
-    "model_encode_fuzz:/ollama/fuzz:FuzzEncode"
-    "model_decode_fuzz:/ollama/fuzz:FuzzDecode"
     "server_manifest_fuzz:/ollama/fuzz:FuzzParseNamedManifest"
     "server_newlayer_fuzz:/ollama/fuzz:FuzzNewLayer"
+    "harmony_parser_fuzz:/ollama/fuzz:FuzzHarmonyParser"
+    "wordpiece_fuzz:/ollama/fuzz:FuzzWordPiece"
 )
 
 # Sydr targets
@@ -32,10 +32,10 @@ SYDR_TARGETS=(
     "thinking_eat_sydr:/ollama/sydr/thinking"
     "convert_tokenizer_sydr:/ollama/sydr/convert"
     "convert_vocabulary_sydr:/ollama/sydr/convert"
-    "model_encode_sydr:/ollama/sydr/model"
-    "model_decode_sydr:/ollama/sydr/model"
     "server_manifest_sydr:/ollama/sydr/server"
     "server_newlayer_sydr:/ollama/sydr/server"
+    "harmony_parser_sydr:/ollama/sydr/harmony"
+    "wordpiece_sydr:/ollama/sydr/wordpiece"
 )
 
 build_libfuzzer() {

@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/model/decode/main.go"
+file = "/ollama/sydr/harmony/parser/main.go"
 line = 10

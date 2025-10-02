@@ -15,16 +15,14 @@
 ################################################################################
 
 [sydr]
-target = "/model_decode_sydr @@"
+target = "/wordpiece_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/difuzz_target_model_decode @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/model/corpus_decode -e /ets_model_decode.toml"
-casr_bin = "/model_decode_sydr"
+[libfuzzer]
+path = "/wordpiece_fuzz"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/wordpiece"
 
 [cov]
-target = "/model_decode_coverage @@"
+target = "/wordpiece_sydr @@"
 source = "/ollama"

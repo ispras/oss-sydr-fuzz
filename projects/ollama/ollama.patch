@@ -1,8 +1,8 @@
 diff --git a/convert/tokenizer.go b/convert/tokenizer.go
-index bedcd4f8..ab9c67a3 100644
+index 41d0310a..72d495c8 100644
 --- a/convert/tokenizer.go
 +++ b/convert/tokenizer.go
-@@ -329,3 +329,15 @@ func (sv SpecialVocabulary) Key() string {
+@@ -325,3 +325,15 @@ func (sv SpecialVocabulary) Key() string {
  
  	panic("unknown special vocabulary type")
  }
@@ -18,3 +18,18 @@ index bedcd4f8..ab9c67a3 100644
 +func ParseVocabulary(fsys fs.FS) (*Vocabulary, error) {
 +  return parseVocabulary(fsys)
 +}
+diff --git a/harmony/harmonyparser.go b/harmony/harmonyparser.go
+index 3ec2c21f..868c8c8e 100644
+--- a/harmony/harmonyparser.go
++++ b/harmony/harmonyparser.go
+@@ -263,6 +263,10 @@ func (s *HarmonyParser) parseHeader(raw string) HarmonyHeader {
+ 	return harmonyHeader
+ }
+ 
++func (s *HarmonyParser) ParseHeader(raw string) HarmonyHeader {
++	return s.parseHeader(raw)
++}
++
+ // longest overlap between suffix of s and prefix of delim
+ func overlap(s, delim string) int {
+ 	max := min(len(delim), len(s))

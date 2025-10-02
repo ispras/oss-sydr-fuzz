@@ -53,10 +53,6 @@ cd ${EXAMPLE_DIR}/sydr/convert/tokenizer
 go build -o ${OUT_DIR_ABS}/convert_tokenizer_sydr
 cd ${EXAMPLE_DIR}/sydr/convert/vocabulary
 go build -o ${OUT_DIR_ABS}/convert_vocabulary_sydr
-cd ${EXAMPLE_DIR}/sydr/model/encode
-go build -o ${OUT_DIR_ABS}/model_encode_sydr
-cd ${EXAMPLE_DIR}/sydr/model/decode
-go build -o ${OUT_DIR_ABS}/model_decode_sydr
 cd ${EXAMPLE_DIR}/sydr/parser/parsefile
 go build -o ${OUT_DIR_ABS}/parser_parsefile_sydr
 cd ${EXAMPLE_DIR}/sydr/server/manifest
@@ -69,6 +65,10 @@ cd ${EXAMPLE_DIR}/sydr/thinking/state
 go build -o ${OUT_DIR_ABS}/thinking_state_sydr
 cd ${EXAMPLE_DIR}/sydr/thinking/eat
 go build -o ${OUT_DIR_ABS}/thinking_eat_sydr
+cd ${EXAMPLE_DIR}/sydr/harmony/parser
+go build -o ${OUT_DIR_ABS}/harmony_parser_sydr
+cd ${EXAMPLE_DIR}/sydr/wordpiece/encode
+go build -o ${OUT_DIR_ABS}/wordpiece_sydr
 '''
 
 [tasks.coverage]
@@ -87,14 +87,6 @@ ${GOINSTR_COVERAGE} -i sydr/convert/tokenizer/main.go -a remove -l info
 ${GOINSTR_COVERAGE} -i sydr/convert/vocabulary/main.go -a insert -l info
 go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/convert_vocabulary_coverage sydr/convert/vocabulary/main.go
 ${GOINSTR_COVERAGE} -i sydr/convert/vocabulary/main.go -a remove -l info
-
-${GOINSTR_COVERAGE} -i sydr/model/encode/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_encode_coverage sydr/model/encode/main.go
-${GOINSTR_COVERAGE} -i sydr/model/encode/main.go -a remove -l info
-
-${GOINSTR_COVERAGE} -i sydr/model/decode/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/model_decode_coverage sydr/model/decode/main.go
-${GOINSTR_COVERAGE} -i sydr/model/decode/main.go -a remove -l info
 
 ${GOINSTR_COVERAGE} -i sydr/parser/parsefile/main.go -a insert -l info
 go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/parser_parsefile_coverage sydr/parser/parsefile/main.go
@@ -119,6 +111,14 @@ ${GOINSTR_COVERAGE} -i sydr/thinking/state/main.go -a remove -l info
 ${GOINSTR_COVERAGE} -i sydr/thinking/eat/main.go -a insert -l info
 go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_coverage sydr/thinking/eat/main.go
 ${GOINSTR_COVERAGE} -i sydr/thinking/eat/main.go -a remove -l info
+
+${GOINSTR_COVERAGE} -i sydr/harmony/parser/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/harmony_parser_coverage sydr/harmony/parser/main.go
+${GOINSTR_COVERAGE} -i sydr/harmony/parser/main.go -a remove -l info
+
+${GOINSTR_COVERAGE} -i sydr/wordpiece/encode/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/wordpiece_coverage sydr/wordpiece/encode/main.go
+${GOINSTR_COVERAGE} -i sydr/wordpiece/encode/main.go -a remove -l info
 '''
 
 [tasks.difuzz]
@@ -131,14 +131,14 @@ script_runner = "@shell"
 script = '''
 ${DIFUZZ_DIR_ABS}/difuzz-go -r tokenizer.main  -c ${PROJECT_DIR}/config_convert_tokenizer.toml  -p ${EXAMPLE_DIR}/sydr/convert/tokenizer/main.go  -e ${OUT_DIR_ABS}/ets_convert_tokenizer.toml  ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r vocabulary.main -c ${PROJECT_DIR}/config_convert_vocabulary.toml -p ${EXAMPLE_DIR}/sydr/convert/vocabulary/main.go -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r decode.main     -c ${PROJECT_DIR}/config_model_decode.toml       -p ${EXAMPLE_DIR}/sydr/model/decode/main.go       -e ${OUT_DIR_ABS}/ets_model_decode.toml       ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r encode.main     -c ${PROJECT_DIR}/config_model_encode.toml       -p ${EXAMPLE_DIR}/sydr/model/encode/main.go       -e ${OUT_DIR_ABS}/ets_model_encode.toml       ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r parsefile.main  -c ${PROJECT_DIR}/config_parser_parsefile.toml   -p ${EXAMPLE_DIR}/sydr/parser/parsefile/main.go   -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml   ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r manifest.main   -c ${PROJECT_DIR}/config_server_manifest.toml    -p ${EXAMPLE_DIR}/sydr/server/manifest/main.go    -e ${OUT_DIR_ABS}/ets_server_manifest.toml    ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r newlayer.main   -c ${PROJECT_DIR}/config_server_newlayer.toml    -p ${EXAMPLE_DIR}/sydr/server/newlayer/main.go    -e ${OUT_DIR_ABS}/ets_server_newlayer.toml    ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r content.main    -c ${PROJECT_DIR}/config_thinking_content.toml   -p ${EXAMPLE_DIR}/sydr/thinking/content/main.go   -e ${OUT_DIR_ABS}/ets_thinking_content.toml   ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r state.main      -c ${PROJECT_DIR}/config_thinking_state.toml     -p ${EXAMPLE_DIR}/sydr/thinking/state/main.go     -e ${OUT_DIR_ABS}/ets_thinking_state.toml     ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r eat.main        -c ${PROJECT_DIR}/config_thinking_eat.toml       -p ${EXAMPLE_DIR}/sydr/thinking/eat/main.go       -e ${OUT_DIR_ABS}/ets_thinking_eat.toml       ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r parser.main     -c ${PROJECT_DIR}/config_harmony_parser.toml     -p ${EXAMPLE_DIR}/sydr/harmony/parser/main.go     -e ${OUT_DIR_ABS}/ets_harmony_parser.toml     ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r encode.main     -c ${PROJECT_DIR}/config_wordpiece.toml          -p ${EXAMPLE_DIR}/sydr/wordpiece/encode/main.go   -e ${OUT_DIR_ABS}/ets_wordpiece.toml          ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
@@ -160,18 +160,6 @@ ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/sydr/convert/vocabulary
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_convert_vocabulary
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml -keep-ets -l info
-
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_decode.toml -l info -j 8
-${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/sydr/model/decode
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_model_decode
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_decode.toml -keep-ets -l info
-
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_encode.toml -l info -j 8
-${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/sydr/model/encode
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_model_encode
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_model_encode.toml -keep-ets -l info
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
@@ -208,6 +196,18 @@ ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/eat
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_eat
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -keep-ets -l info
+
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_harmony_parser.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/harmony/parser
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_harmony_parser
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_harmony_parser.toml -keep-ets -l info
+
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_wordpiece.toml -l info -j 8
+${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
+cd ${EXAMPLE_DIR_INSTR}/sydr/wordpiece/encode
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_wordpiece
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_wordpiece.toml -keep-ets -l info
 '''
 dependencies = ["difuzz"]
 

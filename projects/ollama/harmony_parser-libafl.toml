@@ -15,14 +15,16 @@
 ################################################################################
 
 [sydr]
-target = "/model_encode_sydr @@"
+target = "/harmony_parser_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
-[libfuzzer]
-path = "/model_encode_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/model/corpus_encode"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_harmony_parser @@"
+args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/harmony -e /ets_harmony_parser.toml"
+casr_bin = "/harmony_parser_sydr"
 
 [cov]
-target = "/model_encode_sydr @@"
+target = "/harmony_parser_coverage @@"
 source = "/ollama"

@@ -61,26 +61,6 @@ Ollama project has 10 fuzz targets.
     # cd /fuzz
     # sydr-fuzz -c convert_vocabulary-libafl.toml run
 
-### model_encode (libfuzzer)
-
-    # cd /fuzz
-    # sydr-fuzz -c model_encode-lf.toml run
-
-### model_encode (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c model_encode-libafl.toml run
-
-### model_decode (libfuzzer)
-
-    # cd /fuzz
-    # sydr-fuzz -c model_decode-lf.toml run
-
-### model_decode (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c model_encode-libafl.toml run
-
 ### server_manifest (libfuzzer)
 
     # cd /fuzz
@@ -140,3 +120,23 @@ Ollama project has 10 fuzz targets.
 
     # cd /fuzz
     # sydr-fuzz -c parser_parsefile-libafl.toml run
+
+### harmony_parser (libfuzzer)
+
+    # cd /fuzz
+    # sydr-fuzz -c harmony_parser-lf.toml run
+
+### harmony_parser (LibAFL-DiFuzz)
+
+    # cd /fuzz
+    # sydr-fuzz -c harmony_parser-libafl.toml run
+
+### wordpiece (libfuzzer)
+
+    # cd /fuzz
+    # sydr-fuzz -c wordpiece-lf.toml run
+
+### wordpiece (LibAFL-DiFuzz)
+
+    # cd /fuzz
+    # sydr-fuzz -c wordpiece-libafl.toml run

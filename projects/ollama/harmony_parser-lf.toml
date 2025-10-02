@@ -15,14 +15,14 @@
 ################################################################################
 
 [sydr]
-target = "/model_decode_sydr @@"
+target = "/harmony_parser_sydr @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
 [libfuzzer]
-path = "/model_decode_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/model/corpus_decode"
+path = "/harmony_parser_fuzz"
+args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/harmony"
 
 [cov]
-target = "/model_decode_sydr @@"
+target = "/harmony_parser_sydr @@"
 source = "/ollama"

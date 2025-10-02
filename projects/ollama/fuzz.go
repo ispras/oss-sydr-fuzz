@@ -6,13 +6,13 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/ollama/ollama/convert"
 	model "github.com/ollama/ollama/model"
 	"github.com/ollama/ollama/parser"
 	"github.com/ollama/ollama/server"
 	"github.com/ollama/ollama/thinking"
+	"github.com/ollama/ollama/harmony"
 	typesmodel "github.com/ollama/ollama/types/model"
 )
 
@@ -57,72 +57,6 @@ func FuzzParseVocabulary(data []byte) int {
 	_, err = convert.ParseVocabulary(fsys)
 	if err != nil {
 		return 0
-	}
-
-	return 1
-}
-
-func FuzzEncode(data []byte) int {
-	var (
-		testVocab *model.Vocabulary
-		testSpm   *model.SentencePieceModel
-	)
-	if testVocab == nil || testSpm == nil {
-		return -1
-	}
-
-	if !utf8.Valid(data) {
-		return -1
-	}
-
-	// Test both with and without special tokens
-	for _, addSpecial := range []bool{true, false} {
-		ids, err := testSpm.Encode(string(data), addSpecial)
-		if err != nil {
-			return 0
-		}
-
-		// Verify we can round-trip the data
-		decoded, err := testSpm.Decode(ids)
-		if err != nil {
-			return 0
-		}
-
-		if !utf8.ValidString(decoded) {
-			panic("decoded string is not valid UTF-8")
-		}
-	}
-
-	return 1
-}
-
-func FuzzDecode(data []byte) int {
-	var (
-		testVocab *model.Vocabulary
-		testSpm   *model.SentencePieceModel
-	)
-	if testVocab == nil || testSpm == nil {
-		return -1
-	}
-
-	// Convert bytes to int32 IDs (simple approach)
-	var ids []int32
-	for i := 0; i < len(data); i += 4 {
-		if i+4 > len(data) {
-			break
-		}
-		id := int32(data[i])<<24 | int32(data[i+1])<<16 |
-			int32(data[i+2])<<8 | int32(data[i+3])
-		ids = append(ids, id)
-	}
-
-	decoded, err := testSpm.Decode(ids)
-	if err != nil {
-		return 0
-	}
-
-	if !utf8.ValidString(decoded) {
-		panic("decoded string is not valid UTF-8")
 	}
 
 	return 1
@@ -296,4 +230,41 @@ func FuzzEat(data []byte) int {
 	}
 
 	return 1
+}
+
+func FuzzHarmonyParser(data []byte) int {
+	if len(data) == 0 {
+		return -1
+	}
+
+	parser := harmony.HarmonyParser{
+			MessageStartTag: "<|start|>",
+			MessageEndTag:   "<|end|>",
+			HeaderEndTag:    "<|message|>",
+		}
+	parser.ParseHeader(string(data))
+
+	gotEvents := parser.AddContent(string(data))
+	if len(gotEvents) == 0 {
+		return 1
+	}
+
+	return 0
+}
+
+func FuzzWordPiece(data []byte) int {
+	wpm := model.NewWordPiece(
+		&model.Vocabulary{
+			Values: []string{"[UNK]", "[CLS]", "[SEP]", "▁hello", "▁world", "s", "▁!", "▁@", "▁#", "▁abc", "▁a", "▁b", "▁c", "▁s", "a", "b", "c", "d", "z"},
+			AddBOS: true,
+			AddEOS: true,
+			BOS:    []int32{1},
+			EOS:    []int32{2},
+		})
+
+	_, err := wpm.Encode(string(data), true)
+	if err != nil {
+		return 1
+	}
+	return 0
 }
