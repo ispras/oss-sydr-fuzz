@@ -17,16 +17,12 @@ COPY corpus.zip /
 RUN unzip /corpus.zip -d /
 
 # Create directories for fuzz targets.
-RUN mkdir sydr && cd sydr && mkdir -p convert parser server thinking harmony wordpiece
+RUN mkdir sydr && cd sydr && mkdir -p convert parser server harmony wordpiece
 
 # Move fuzz targets.
 RUN mkdir fuzz
 COPY fuzz.go fuzz
 
-COPY thinking_state_sydr.go sydr/thinking
-COPY thinking_eat_sydr.go sydr/thinking
-COPY thinking_content_sydr.go sydr/thinking
-COPY server_newlayer_sydr.go sydr/server
 COPY server_manifest_sydr.go sydr/server
 COPY parser_parsefile_sydr.go sydr/parser
 COPY convert_tokenizer_sydr.go sydr/convert

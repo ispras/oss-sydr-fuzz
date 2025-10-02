@@ -13,13 +13,9 @@ export CGO_LDFLAGS="-ldl"
 # LibFuzzer targets
 LIBFUZZER_TARGETS=(
     "parser_parsefile_fuzz:/ollama/fuzz:FuzzParseFile"
-    "thinking_content_fuzz:/ollama/fuzz:FuzzAddContent"
-    "thinking_state_fuzz:/ollama/fuzz:FuzzParserState"
-    "thinking_eat_fuzz:/ollama/fuzz:FuzzEat"
     "convert_tokenizer_fuzz:/ollama/fuzz:FuzzParseVocabularyFromTokenizer"
     "convert_vocabulary_fuzz:/ollama/fuzz:FuzzParseVocabulary"
     "server_manifest_fuzz:/ollama/fuzz:FuzzParseNamedManifest"
-    "server_newlayer_fuzz:/ollama/fuzz:FuzzNewLayer"
     "harmony_parser_fuzz:/ollama/fuzz:FuzzHarmonyParser"
     "wordpiece_fuzz:/ollama/fuzz:FuzzWordPiece"
 )
@@ -27,13 +23,9 @@ LIBFUZZER_TARGETS=(
 # Sydr targets
 SYDR_TARGETS=(
     "parser_parsefile_sydr:/ollama/sydr/parser"
-    "thinking_content_sydr:/ollama/sydr/thinking"
-    "thinking_state_sydr:/ollama/sydr/thinking"
-    "thinking_eat_sydr:/ollama/sydr/thinking"
     "convert_tokenizer_sydr:/ollama/sydr/convert"
     "convert_vocabulary_sydr:/ollama/sydr/convert"
     "server_manifest_sydr:/ollama/sydr/server"
-    "server_newlayer_sydr:/ollama/sydr/server"
     "harmony_parser_sydr:/ollama/sydr/harmony"
     "wordpiece_sydr:/ollama/sydr/wordpiece"
 )

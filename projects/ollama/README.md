@@ -71,46 +71,6 @@ Ollama project has 10 fuzz targets.
     # cd /fuzz
     # sydr-fuzz -c server_manifest-libafl.toml run
 
-### server_newlayer (libfuzzer)
-
-    # cd /fuzz
-    # sydr-fuzz -c server_newlayer-lf.toml run
-
-### server_newlayer (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c server_newlayer-libafl.toml run
-
-### thinking_content (libfuzzer)
-
-    # cd /fuzz
-    # sydr-fuzz -c thinking_content-lf.toml run
-
-### thinking_content (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c thinking_content-libafl.toml run
-
-### thinking_state (libfuzzer)
-
-    # cd /fuzz
-    # sydr-fuzz -c thinking_state-lf.toml run
-
-### thinking_state (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c thinking_state-libafl.toml run
-
-### thinking_eat (libfuzzer)
-
-    # cd /fuzz
-    # sydr-fuzz -c thinking_eat-lf.toml run
-
-### thinking_eat (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c thinking_eat-libafl.toml run
-
 ### parser_parsefile (libfuzzer)
 
     # cd /fuzz

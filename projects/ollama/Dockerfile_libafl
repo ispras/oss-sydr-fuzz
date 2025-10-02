@@ -38,17 +38,12 @@ RUN unzip /corpus.zip -d /
 
 # Create directories for fuzz targets.
 RUN mkdir sydr && cd sydr && mkdir -p convert/tokenizer convert/vocabulary \
-    parser/parsefile server/newlayer server/manifest thinking/state thinking/eat \
-    thinking/content harmony/parser wordpiece/encode
+    parser/parsefile server/manifest harmony/parser wordpiece/encode
 
 # Move fuzz targets.
 RUN mkdir fuzz
 COPY fuzz.go fuzz
 
-COPY thinking_state_sydr.go sydr/thinking/state/main.go
-COPY thinking_eat_sydr.go sydr/thinking/eat/main.go
-COPY thinking_content_sydr.go sydr/thinking/content/main.go
-COPY server_newlayer_sydr.go sydr/server/newlayer/main.go
 COPY server_manifest_sydr.go sydr/server/manifest/main.go
 COPY parser_parsefile_sydr.go sydr/parser/parsefile/main.go
 COPY convert_tokenizer_sydr.go sydr/convert/tokenizer/main.go

@@ -57,14 +57,6 @@ cd ${EXAMPLE_DIR}/sydr/parser/parsefile
 go build -o ${OUT_DIR_ABS}/parser_parsefile_sydr
 cd ${EXAMPLE_DIR}/sydr/server/manifest
 go build -o ${OUT_DIR_ABS}/server_manifest_sydr
-cd ${EXAMPLE_DIR}/sydr/server/newlayer
-go build -o ${OUT_DIR_ABS}/server_newlayer_sydr
-cd ${EXAMPLE_DIR}/sydr/thinking/content
-go build -o ${OUT_DIR_ABS}/thinking_content_sydr
-cd ${EXAMPLE_DIR}/sydr/thinking/state
-go build -o ${OUT_DIR_ABS}/thinking_state_sydr
-cd ${EXAMPLE_DIR}/sydr/thinking/eat
-go build -o ${OUT_DIR_ABS}/thinking_eat_sydr
 cd ${EXAMPLE_DIR}/sydr/harmony/parser
 go build -o ${OUT_DIR_ABS}/harmony_parser_sydr
 cd ${EXAMPLE_DIR}/sydr/wordpiece/encode
@@ -96,22 +88,6 @@ ${GOINSTR_COVERAGE} -i sydr/server/manifest/main.go -a insert -l info
 go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_manifest_coverage sydr/server/manifest/main.go
 ${GOINSTR_COVERAGE} -i sydr/server/manifest/main.go -a remove -l info
 
-${GOINSTR_COVERAGE} -i sydr/server/newlayer/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/server_newlayer_coverage sydr/server/newlayer/main.go
-${GOINSTR_COVERAGE} -i sydr/server/newlayer/main.go -a remove -l info
-
-${GOINSTR_COVERAGE} -i sydr/thinking/content/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_content_coverage sydr/thinking/content/main.go
-${GOINSTR_COVERAGE} -i sydr/thinking/content/main.go -a remove -l info
-
-${GOINSTR_COVERAGE} -i sydr/thinking/state/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_state_coverage sydr/thinking/state/main.go
-${GOINSTR_COVERAGE} -i sydr/thinking/state/main.go -a remove -l info
-
-${GOINSTR_COVERAGE} -i sydr/thinking/eat/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/thinking_eat_coverage sydr/thinking/eat/main.go
-${GOINSTR_COVERAGE} -i sydr/thinking/eat/main.go -a remove -l info
-
 ${GOINSTR_COVERAGE} -i sydr/harmony/parser/main.go -a insert -l info
 go build -cover -covermode=atomic -coverpkg=./... -o ${OUT_DIR_ABS}/harmony_parser_coverage sydr/harmony/parser/main.go
 ${GOINSTR_COVERAGE} -i sydr/harmony/parser/main.go -a remove -l info
@@ -133,10 +109,6 @@ ${DIFUZZ_DIR_ABS}/difuzz-go -r tokenizer.main  -c ${PROJECT_DIR}/config_convert_
 ${DIFUZZ_DIR_ABS}/difuzz-go -r vocabulary.main -c ${PROJECT_DIR}/config_convert_vocabulary.toml -p ${EXAMPLE_DIR}/sydr/convert/vocabulary/main.go -e ${OUT_DIR_ABS}/ets_convert_vocabulary.toml ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r parsefile.main  -c ${PROJECT_DIR}/config_parser_parsefile.toml   -p ${EXAMPLE_DIR}/sydr/parser/parsefile/main.go   -e ${OUT_DIR_ABS}/ets_parser_parsefile.toml   ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r manifest.main   -c ${PROJECT_DIR}/config_server_manifest.toml    -p ${EXAMPLE_DIR}/sydr/server/manifest/main.go    -e ${OUT_DIR_ABS}/ets_server_manifest.toml    ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r newlayer.main   -c ${PROJECT_DIR}/config_server_newlayer.toml    -p ${EXAMPLE_DIR}/sydr/server/newlayer/main.go    -e ${OUT_DIR_ABS}/ets_server_newlayer.toml    ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r content.main    -c ${PROJECT_DIR}/config_thinking_content.toml   -p ${EXAMPLE_DIR}/sydr/thinking/content/main.go   -e ${OUT_DIR_ABS}/ets_thinking_content.toml   ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r state.main      -c ${PROJECT_DIR}/config_thinking_state.toml     -p ${EXAMPLE_DIR}/sydr/thinking/state/main.go     -e ${OUT_DIR_ABS}/ets_thinking_state.toml     ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r eat.main        -c ${PROJECT_DIR}/config_thinking_eat.toml       -p ${EXAMPLE_DIR}/sydr/thinking/eat/main.go       -e ${OUT_DIR_ABS}/ets_thinking_eat.toml       ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r parser.main     -c ${PROJECT_DIR}/config_harmony_parser.toml     -p ${EXAMPLE_DIR}/sydr/harmony/parser/main.go     -e ${OUT_DIR_ABS}/ets_harmony_parser.toml     ${DIFUZZ_ARGS}
 ${DIFUZZ_DIR_ABS}/difuzz-go -r encode.main     -c ${PROJECT_DIR}/config_wordpiece.toml          -p ${EXAMPLE_DIR}/sydr/wordpiece/encode/main.go   -e ${OUT_DIR_ABS}/ets_wordpiece.toml          ${DIFUZZ_ARGS}
 '''
@@ -172,30 +144,6 @@ ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
 cd ${EXAMPLE_DIR_INSTR}/sydr/server/manifest
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_server_manifest
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_manifest.toml -keep-ets -l info
-
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_newlayer.toml -l info -j 8
-${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/sydr/server/newlayer
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_server_newlayer
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_server_newlayer.toml -keep-ets -l info
-
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_content.toml -l info -j 8
-${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/content
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_content
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_content.toml -keep-ets -l info
-
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_state.toml -l info -j 8
-${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/state
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_state
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_state.toml -keep-ets -l info
-
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -l info -j 8
-${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/sydr/thinking/eat
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_thinking_eat
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_thinking_eat.toml -keep-ets -l info
 
 ${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_harmony_parser.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
