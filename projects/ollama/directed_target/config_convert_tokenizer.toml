@@ -15,5 +15,17 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/convert/tokenizer/main.go"
-line = 10
+file = "/ollama/convert/tokenizer.go"
+line = 257
+
+[[target]]
+file = "/ollama/convert/tokenizer.go"
+line = 270
+
+[[target]]
+file = "/ollama/convert/tokenizer.go"
+line = 272
+
+[[target]]
+file = "/ollama/convert/tokenizer.go"
+line = 274

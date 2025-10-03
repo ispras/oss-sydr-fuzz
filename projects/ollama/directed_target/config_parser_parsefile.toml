@@ -15,5 +15,21 @@
 ################################################################################
 
 [[target]]
-file = "/ollama/sydr/parser/parsefile/main.go"
-line = 10
+file = "/ollama/parser/parser.go"
+line = 396
+
+[[target]]
+file = "/ollama/parser/parser.go"
+line = 406
+
+[[target]]
+file = "/ollama/parser/parser.go"
+line = 430
+
+[[target]]
+file = "/ollama/parser/parser.go"
+line = 441
+
+[[target]]
+file = "/ollama/parser/parser.go"
+line = 475
