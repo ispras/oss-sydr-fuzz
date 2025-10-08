@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@
 ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
+ARG SYDR_ARCHIVE="./sydr.zip"
+
+WORKDIR /
+
 RUN rustup override set nightly-2025-05-01
 RUN cargo afl config --build
 
@@ -28,10 +32,17 @@ RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
 
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
+RUN mkdir /libhtp-rs/libafl_difuzz
+COPY sydr_and_cover/* /libhtp-rs/libafl_difuzz
+
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
+
+WORKDIR /directed_target
+
+# Build goblin for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
+
 WORKDIR /
-
-COPY build.sh http.dict ./
-COPY afl/ /libhtp-rs/afl/
-COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
-
-RUN ./build.sh
