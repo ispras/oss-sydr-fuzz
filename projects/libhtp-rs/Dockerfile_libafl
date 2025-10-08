@@ -32,8 +32,9 @@ RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
 
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
-RUN mkdir /libhtp-rs/libafl_difuzz
-COPY sydr_and_cover/* /libhtp-rs/libafl_difuzz
+RUN mkdir -p /libhtp-rs/libafl_difuzz/targets
+COPY sydr_and_cover/targets/sydr_htp.rs /libhtp-rs/libafl_difuzz/targets
+COPY sydr_and_cover/Cargo.toml /libhtp-rs/libafl_difuzz
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
