@@ -62,6 +62,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
     } catch (const std::runtime_error &e) {
 
+    } catch (const std::invalid_argument &e){
+    
     }
 
     unlink(video_path);
