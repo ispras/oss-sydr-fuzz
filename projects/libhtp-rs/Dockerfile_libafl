@@ -49,3 +49,6 @@ RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
 RUN OUT_DIR=/ cargo make all
 
 WORKDIR /
+
+# Set SYDR_LLVM_COV env.
+ENV SYDR_LLVM_COV=/usr/bin/llvm-cov-20

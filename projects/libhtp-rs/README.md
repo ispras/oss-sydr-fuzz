@@ -34,7 +34,7 @@ Run hybrid fuzzing with libfuzzer:
 
     $ sydr-fuzz -c htp.toml run
 
-Run hybrid fuzzing with afl++:
+Run hybrid fuzzing with AFL++:
 
     $ sydr-fuzz -c htp-afl++.toml run
 

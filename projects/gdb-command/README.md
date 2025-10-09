@@ -11,6 +11,12 @@ supports:
 
     $ sudo docker build -t oss-sydr-fuzz-gdb-command .
 
+## Build LibAFL-DiFuzz Docker
+
+Pass `sydr.zip` as an argument:
+
+    $ sudo docker build --build-arg SYDR_ARCHIVE="sydr.zip" -t oss-sydr-fuzz-libafl-gdb-command -f ./Dockerfile_libafl .
+
 ## Run Hybrid Fuzzing
 
 Unzip Sydr (`sydr.zip`) in `projects/gdb-command` directory:
@@ -21,17 +27,28 @@ Run docker:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-gdb-command /bin/bash
 
+Run docker for LibAFL-DiFuzz:
+
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libafl-gdb-command /bin/bash
+
 ### Run Fuzzing
 
 Change directory to `/fuzz`:
 
     # cd /fuzz
 
-Run hybrid fuzzing:
+Run hybrid fuzzing with libfuzzer:
 
-    # sydr-fuzz -c from_gdb.toml run
+    # sydr-fuzz -c from_gdb-lf.toml run
 
-Collect coverage:
+Run hybrid fuzzing with AFL++:
 
-    # sydr-fuzz -c from_gdb.toml cov-export -- -format=lcov > from_gdb.lcov
-    # genhtml --ignore-errors source -o from_gdb_html from_gdb.lcov
+    # sydr-fuzz -c from_gdb-afl++.toml run
+
+Run hybrid directed fuzzing with LibAFL-DiFuzz:
+
+    $ sydr-fuzz -c from_gdb-libafl.toml run
+
+Get coverage report:
+
+    $ sydr-fuzz -c from_gdb-lf.toml cov-html

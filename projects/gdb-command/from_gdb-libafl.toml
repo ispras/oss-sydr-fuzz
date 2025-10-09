@@ -1,5 +1,4 @@
-#!/bin/bash -eu
-# Copyright 2021 Google LLC
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +14,15 @@
 #
 ################################################################################
 
-RUSTFLAGS="-C panic=abort" cargo fuzz build -O
-cargo fuzz list | while read i; do
-    cp fuzz/target/x86_64-unknown-linux-gnu/release/$i /
-done
+[sydr]
+target = "/sydr_from_gdb @@"
+args = "-s 90 --wait-jobs -j2"
 
-cd fuzz-afl
-RUSTFLAGS="-C debuginfo=2 -C panic=abort" cargo afl build
-cp target/debug/from_gdb_afl /afl_from_gdb
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/from_gdb_libafl_target @@"
+args = "-j4 --sync-limit 400 --sync-jobs 2 --panic-analysis rust -l64 -i /corpus -e /ets_from_gdb.toml"
+casr_bin = "/casr_from_gdb"
+
+[cov]
+target = "/cov_from_gdb @@"
