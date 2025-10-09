@@ -78,6 +78,7 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+sed -i '1iextern crate libc;' ${EXAMPLE_DIR}/targets/sydr_htp.rs
 cd ${EXAMPLE_DIR}
 export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean

@@ -22,7 +22,7 @@ target = "/sydr_htp_rs @@"
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/htp_libafl_target @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /corpus -e /ets_htp.toml"
+args = "-j4 --sync-limit 400 --sync-jobs 2 --panic-analysis rust -l64 -i /corpus -e /ets_htp.toml"
 casr_bin = "/casr_htp_rs"
 
 [cov]

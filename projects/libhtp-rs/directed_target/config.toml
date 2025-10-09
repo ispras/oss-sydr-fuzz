@@ -15,5 +15,25 @@
 ################################################################################
 
 [[target]]
-file = "/libhtp-rs/libafl_difuzz/targets/sydr_htp.rs"
-line = 18
+file = "/libhtp-rs/src/connection_parser.rs"
+line = 609
+
+[[target]]
+file = "/libhtp-rs/src/connection_parser.rs"
+line = 623
+
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 217
+
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 226
+
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 232
+
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 258
