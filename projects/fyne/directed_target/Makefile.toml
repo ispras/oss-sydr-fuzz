@@ -52,20 +52,20 @@ script = '''
 cd ${EXAMPLE_DIR}/cmd/sydr_image_file
 go build -o ${OUT_DIR_ABS}/sydr_image_file
 
-cd ${EXAMPLE_DIR}/cmd/sydr_image_raster
-go build -o ${OUT_DIR_ABS}/sydr_image_raster
+cd ${EXAMPLE_DIR}/cmd/sydr_entry_text
+go build -o ${OUT_DIR_ABS}/sydr_entry_text
 
-cd ${EXAMPLE_DIR}/cmd/sydr_image_reader
-go build -o ${OUT_DIR_ABS}/sydr_image_reader
+cd ${EXAMPLE_DIR}/cmd/sydr_exercise_image
+go build -o ${OUT_DIR_ABS}/sydr_exercise_image
 
-cd ${EXAMPLE_DIR}/cmd/sydr_image_uri
-go build -o ${OUT_DIR_ABS}/sydr_image_uri
+cd ${EXAMPLE_DIR}/cmd/sydr_markdown
+go build -o ${OUT_DIR_ABS}/sydr_markdown
 
-cd ${EXAMPLE_DIR}/cmd/sydr_text_layout
-go build -o ${OUT_DIR_ABS}/sydr_text_layout
+cd ${EXAMPLE_DIR}/cmd/sydr_svg_bytes
+go build -o ${OUT_DIR_ABS}/sydr_svg_bytes
 
-cd ${EXAMPLE_DIR}/cmd/sydr_resource_uri
-go build -o ${OUT_DIR_ABS}/sydr_resource_uri
+cd ${EXAMPLE_DIR}/cmd/sydr_uri
+go build -o ${OUT_DIR_ABS}/sydr_uri
 '''
 
 [tasks.coverage]
@@ -82,30 +82,30 @@ go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_image_file/main.go
 ${GOINSTR_COVERAGE} -i cmd/sydr_image_file/main.go -a remove -l info
 mv main ${OUT_DIR_ABS}/coverage_image_file
 
-${GOINSTR_COVERAGE} -i cmd/sydr_image_raster/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_image_raster/main.go
-${GOINSTR_COVERAGE} -i cmd/sydr_image_raster/main.go -a remove -l info
-mv main ${OUT_DIR_ABS}/coverage_image_raster
+${GOINSTR_COVERAGE} -i cmd/sydr_entry_text/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_entry_text/main.go
+${GOINSTR_COVERAGE} -i cmd/sydr_entry_text/main.go -a remove -l info
+mv main ${OUT_DIR_ABS}/coverage_entry_text
 
-${GOINSTR_COVERAGE} -i cmd/sydr_image_reader/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_image_reader/main.go
-${GOINSTR_COVERAGE} -i cmd/sydr_image_reader/main.go -a remove -l info
-mv main ${OUT_DIR_ABS}/coverage_image_reader
+${GOINSTR_COVERAGE} -i cmd/sydr_exercise_image/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_exercise_image/main.go
+${GOINSTR_COVERAGE} -i cmd/sydr_exercise_image/main.go -a remove -l info
+mv main ${OUT_DIR_ABS}/coverage_exercise_image
 
-${GOINSTR_COVERAGE} -i cmd/sydr_image_uri/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_image_uri/main.go
-${GOINSTR_COVERAGE} -i cmd/sydr_image_uri/main.go -a remove -l info
-mv main ${OUT_DIR_ABS}/coverage_image_uri
+${GOINSTR_COVERAGE} -i cmd/sydr_markdown/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_markdown/main.go
+${GOINSTR_COVERAGE} -i cmd/sydr_markdown/main.go -a remove -l info
+mv main ${OUT_DIR_ABS}/coverage_markdown
 
-${GOINSTR_COVERAGE} -i cmd/sydr_text_layout/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_text_layout/main.go
-${GOINSTR_COVERAGE} -i cmd/sydr_text_layout/main.go -a remove -l info
-mv main ${OUT_DIR_ABS}/coverage_text_layout
+${GOINSTR_COVERAGE} -i cmd/sydr_svg_bytes/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_svg_bytes/main.go
+${GOINSTR_COVERAGE} -i cmd/sydr_svg_bytes/main.go -a remove -l info
+mv main ${OUT_DIR_ABS}/coverage_svg_bytes
 
-${GOINSTR_COVERAGE} -i cmd/sydr_resource_uri/main.go -a insert -l info
-go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_resource_uri/main.go
-${GOINSTR_COVERAGE} -i cmd/sydr_resource_uri/main.go -a remove -l info
-mv main ${OUT_DIR_ABS}/coverage_resource_uri
+${GOINSTR_COVERAGE} -i cmd/sydr_uri/main.go -a insert -l info
+go build -cover -covermode=atomic -coverpkg=./... cmd/sydr_uri/main.go
+${GOINSTR_COVERAGE} -i cmd/sydr_uri/main.go -a remove -l info
+mv main ${OUT_DIR_ABS}/coverage_uri
 '''
 
 [tasks.difuzz]
@@ -116,12 +116,14 @@ windows_alias = "unsupported"
 [tasks.difuzz_unix]
 script_runner = "@shell"
 script = '''
-${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_image_file.main   -c ${PROJECT_DIR}/config_image_file.toml   -p ${EXAMPLE_DIR}/cmd/sydr_image_file/main.go   -e ${OUT_DIR_ABS}/ets_image_file.toml   ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_image_raster.main -c ${PROJECT_DIR}/config_image_raster.toml -p ${EXAMPLE_DIR}/cmd/sydr_image_raster/main.go -e ${OUT_DIR_ABS}/ets_image_raster.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_image_reader.main -c ${PROJECT_DIR}/config_image_reader.toml -p ${EXAMPLE_DIR}/cmd/sydr_image_reader/main.go -e ${OUT_DIR_ABS}/ets_image_reader.toml ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_image_uri.main    -c ${PROJECT_DIR}/config_image_uri.toml    -p ${EXAMPLE_DIR}/cmd/sydr_image_uri/main.go    -e ${OUT_DIR_ABS}/ets_image_uri.toml    ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_text_layout.main  -c ${PROJECT_DIR}/config_text_layout.toml  -p ${EXAMPLE_DIR}/cmd/sydr_text_layout/main.go  -e ${OUT_DIR_ABS}/ets_text_layout.toml  ${DIFUZZ_ARGS}
-${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_resource_uri.main -c ${PROJECT_DIR}/config_resource_uri.toml -p ${EXAMPLE_DIR}/cmd/sydr_resource_uri/main.go -e ${OUT_DIR_ABS}/ets_resource_uri.toml ${DIFUZZ_ARGS}
+sed -i 's|/\*todo - read MacOS system setting for scroll by page\*/||g' ${EXAMPLE_DIR}/internal/widget/scroller.go
+
+${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_image_file.main     -c ${PROJECT_DIR}/config_image_file.toml     -p ${EXAMPLE_DIR}/cmd/sydr_image_file/main.go     -e ${OUT_DIR_ABS}/ets_image_file.toml     ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_entry_text.main     -c ${PROJECT_DIR}/config_entry_text.toml     -p ${EXAMPLE_DIR}/cmd/sydr_entry_text/main.go     -e ${OUT_DIR_ABS}/ets_entry_text.toml     ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_exercise_image.main -c ${PROJECT_DIR}/config_exercise_image.toml -p ${EXAMPLE_DIR}/cmd/sydr_exercise_image/main.go -e ${OUT_DIR_ABS}/ets_exercise_image.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_markdown.main       -c ${PROJECT_DIR}/config_markdown.toml       -p ${EXAMPLE_DIR}/cmd/sydr_markdown/main.go       -e ${OUT_DIR_ABS}/ets_markdown.toml       ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_svg_bytes.main      -c ${PROJECT_DIR}/config_svg_bytes.toml      -p ${EXAMPLE_DIR}/cmd/sydr_svg_bytes/main.go      -e ${OUT_DIR_ABS}/ets_svg_bytes.toml      ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz-go -r sydr_uri.main            -c ${PROJECT_DIR}/config_uri.toml            -p ${EXAMPLE_DIR}/cmd/sydr_uri/main.go            -e ${OUT_DIR_ABS}/ets_uri.toml            ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
@@ -138,35 +140,35 @@ cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_image_file
 CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_file
 ${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_file.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_raster.toml -l info -j 8
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_entry_text.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_image_raster
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_raster
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_raster.toml -keep-ets -l info
+cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_entry_text
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_entry_text
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_entry_text.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_reader.toml -l info -j 8
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_exercise_image.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_image_reader
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_reader
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_reader.toml -keep-ets -l info
+cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_exercise_image
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_exercise_image
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_exercise_image.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_uri.toml -l info -j 8
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_markdown.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_image_uri
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_image_uri
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_image_uri.toml -keep-ets -l info
+cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_markdown
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_markdown
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_markdown.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_text_layout.toml -l info -j 8
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_svg_bytes.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_text_layout
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_text_layout
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_text_layout.toml -keep-ets -l info
+cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_svg_bytes
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_svg_bytes
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_svg_bytes.toml -keep-ets -l info
 
-${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_resource_uri.toml -l info -j 8
+${GOINSTR_DIFUZZ} -a insert -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_uri.toml -l info -j 8
 ${GOINSTR_SANCOV} -a insert -i ${EXAMPLE_DIR} -o / -l info -j 8
-cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_resource_uri
-CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_resource_uri
-${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_resource_uri.toml -keep-ets -l info
+cd ${EXAMPLE_DIR_INSTR}/cmd/sydr_uri
+CGO_LDFLAGS="-L${LIBFORKSERVER_DIR_ABS}" go build -o ${OUT_DIR_ABS}/difuzz_target_uri
+${GOINSTR_DIFUZZ} -a remove -i ${EXAMPLE_DIR} -o / -e ${OUT_DIR_ABS}/ets_uri.toml -keep-ets -l info
 '''
 dependencies = ["difuzz"]
 

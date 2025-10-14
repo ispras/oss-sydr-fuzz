@@ -15,16 +15,13 @@
 ################################################################################
 
 [sydr]
-target = "/sydr_text_layout @@"
+target = "/sydr_markdown @@"
 args = "-s 90 --wait-jobs -j2"
-jobs = 2
 
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/difuzz_target_text_layout @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-text -e /ets_text_layout.toml"
-casr_bin = "/sydr_text_layout"
+[libfuzzer]
+path = "/fuzz_markdown"
+args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-markdown"
 
 [cov]
-target = "/coverage_text_layout @@"
+target = "/cov_markdown @@"
 source = "/fyne"

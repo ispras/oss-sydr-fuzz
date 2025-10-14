@@ -36,18 +36,18 @@ COPY build.sh ./
 COPY fuzz.go ./fuzz/
 
 RUN mkdir cmd/sydr_image_file && \
-    mkdir cmd/sydr_image_raster && \
-    mkdir cmd/sydr_image_reader && \
-    mkdir cmd/sydr_image_uri && \
-    mkdir cmd/sydr_resource_uri && \
-    mkdir cmd/sydr_text_layout
+    mkdir cmd/sydr_entry_text && \
+    mkdir cmd/sydr_exercise_image && \
+    mkdir cmd/sydr_uri && \
+    mkdir cmd/sydr_svg_bytes && \
+    mkdir cmd/sydr_markdown
 
 COPY sydr_image_file.go cmd/sydr_image_file/main.go
-COPY sydr_image_raster.go cmd/sydr_image_raster/main.go
-COPY sydr_image_reader.go cmd/sydr_image_reader/main.go
-COPY sydr_image_uri.go cmd/sydr_image_uri/main.go
-COPY sydr_resource_uri.go cmd/sydr_resource_uri/main.go
-COPY sydr_text_layout.go cmd/sydr_text_layout/main.go
+COPY sydr_entry_text.go cmd/sydr_entry_text/main.go
+COPY sydr_exercise_image.go cmd/sydr_exercise_image/main.go
+COPY sydr_uri.go cmd/sydr_uri/main.go
+COPY sydr_svg_bytes.go cmd/sydr_svg_bytes/main.go
+COPY sydr_markdown.go cmd/sydr_markdown/main.go
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
@@ -63,9 +63,13 @@ WORKDIR /
 
 # Prepare corpus.
 RUN git clone --depth=1 https://github.com/dvyukov/go-fuzz-corpus.git
-RUN mkdir /corpus-image /corpus-text
+RUN git clone --depth=1 https://github.com/strongcourage/fuzzing-corpus.git
+RUN git clone --depth=1 https://github.com/commonmark/commonmark.js.git
+RUN mkdir /corpus-image /corpus-text /corpus-svg /corpus-markdown
 RUN cp go-fuzz-corpus/png/corpus/* /corpus-image
 RUN cp go-fuzz-corpus/jpeg/corpus/* /corpus-image
 RUN cp go-fuzz-corpus/gif/corpus/* /corpus-image
 RUN cp go-fuzz-corpus/asm/corpus/* /corpus-text
 RUN cp go-fuzz-corpus/json/corpus/* /corpus-text
+RUN cp fuzzing-corpus/svg/* /corpus-svg
+RUN cp commonmark.js/bench/samples/*.md /corpus-markdown

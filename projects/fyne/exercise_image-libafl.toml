@@ -15,13 +15,16 @@
 ################################################################################
 
 [sydr]
-target = "/sydr_resource_uri @@"
+target = "/sydr_exercise_image @@"
 args = "-s 90 --wait-jobs -j2"
+jobs = 2
 
-[libfuzzer]
-path = "/fuzz_resource_uri"
-args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-text"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_exercise_image @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-image -e /ets_exercise_image.toml"
+casr_bin = "/sydr_exercise_image"
 
 [cov]
-target = "/cov_resource_uri @@"
+target = "/coverage_exercise_image @@"
 source = "/fyne"

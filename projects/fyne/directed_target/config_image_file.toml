@@ -16,4 +16,4 @@
 
 [[target]]
 file = "/fyne/fuzz/fuzz.go"
-line = 39
+line = 58

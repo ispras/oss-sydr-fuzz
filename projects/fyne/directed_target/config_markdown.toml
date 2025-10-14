@@ -14,17 +14,6 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_resource_uri @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
-
-[difuzz]
-path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/difuzz_target_resource_uri @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-text -e /ets_resource_uri.toml"
-casr_bin = "/sydr_resource_uri"
-
-[cov]
-target = "/coverage_resource_uri @@"
-source = "/fyne"
+[[target]]
+file = "/fyne/fuzz/fuzz.go"
+line = 99

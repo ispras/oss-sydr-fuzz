@@ -15,13 +15,13 @@
 ################################################################################
 
 [sydr]
-target = "/sydr_image_raster @@"
+target = "/sydr_svg_bytes @@"
 args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
-path = "/fuzz_image_raster"
-args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-image"
+path = "/fuzz_svg_bytes"
+args = "-jobs=1000 -timeout=1000 -workers=4 -rss_limit_mb=8192 /corpus-svg"
 
 [cov]
-target = "/cov_image_raster @@"
+target = "/cov_svg_bytes @@"
 source = "/fyne"

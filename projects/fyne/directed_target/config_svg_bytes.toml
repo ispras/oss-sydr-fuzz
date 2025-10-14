@@ -14,14 +14,6 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_text_layout @@"
-args = "-s 90 --wait-jobs -j2"
-
-[libfuzzer]
-path = "/fuzz_text_layout"
-args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-text"
-
-[cov]
-target = "/cov_text_layout @@"
-source = "/fyne"
+[[target]]
+file = "/fyne/fuzz/fuzz.go"
+line = 83

@@ -44,52 +44,52 @@ Run hybrid fuzzing with LibAFL-DiFuzz:
 
 fyne project has 6 fuzz targets.
 
-### image_raster (libfuzzer)
+### entry_text (libfuzzer)
 
     # cd /fuzz
-    # sydr-fuzz -c image_raster-lf.toml run
+    # sydr-fuzz -c entry_text-lf.toml run
 
-### image_raster (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c image_raster-libafl.toml run
-
-### image_reader (libfuzzer)
+### entry_text (LibAFL-DiFuzz)
 
     # cd /fuzz
-    # sydr-fuzz -c image_reader-lf.toml run
+    # sydr-fuzz -c entry_text-libafl.toml run
 
-### image_reader (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c image_reader-libafl.toml run
-
-### image_uri (libfuzzer)
+### exercise_image (libfuzzer)
 
     # cd /fuzz
-    # sydr-fuzz -c image_uri-lf.toml run
+    # sydr-fuzz -c exercise_image-lf.toml run
 
-### image_uri (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c image_uri-libafl.toml run
-
-### resource_uri (libfuzzer)
+### exercise_image (LibAFL-DiFuzz)
 
     # cd /fuzz
-    # sydr-fuzz -c resource_uri-lf.toml run
+    # sydr-fuzz -c exercise_image-libafl.toml run
 
-### resource_uri (LibAFL-DiFuzz)
-
-    # cd /fuzz
-    # sydr-fuzz -c resource_uri-libafl.toml run
-
-### text_layout (libfuzzer)
+### uri (libfuzzer)
 
     # cd /fuzz
-    # sydr-fuzz -c text_layout-lf.toml run
+    # sydr-fuzz -c uri-lf.toml run
 
-### text_layout (LibAFL-DiFuzz)
+### uri (LibAFL-DiFuzz)
 
     # cd /fuzz
-    # sydr-fuzz -c text_layout-libafl.toml run
+    # sydr-fuzz -c uri-libafl.toml run
+
+### svg_bytes (libfuzzer)
+
+    # cd /fuzz
+    # sydr-fuzz -c svg_bytes-lf.toml run
+
+### svg_bytes (LibAFL-DiFuzz)
+
+    # cd /fuzz
+    # sydr-fuzz -c svg_bytes-libafl.toml run
+
+### markdown (libfuzzer)
+
+    # cd /fuzz
+    # sydr-fuzz -c markdown-lf.toml run
+
+### markdown (LibAFL-DiFuzz)
+
+    # cd /fuzz
+    # sydr-fuzz -c markdown-libafl.toml run

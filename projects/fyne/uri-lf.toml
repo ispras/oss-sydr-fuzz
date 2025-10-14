@@ -14,6 +14,14 @@
 #
 ################################################################################
 
-[[target]]
-file = "/fyne/fuzz/fuzz.go"
-line = 79
+[sydr]
+target = "/sydr_uri @@"
+args = "-s 90 --wait-jobs -j2"
+
+[libfuzzer]
+path = "/fuzz_uri"
+args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-text"
+
+[cov]
+target = "/fuzz_uri @@"
+source = "/fyne"

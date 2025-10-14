@@ -15,13 +15,13 @@
 ################################################################################
 
 [sydr]
-target = "/sydr_image_uri @@"
+target = "/sydr_entry_text @@"
 args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
-path = "/fuzz_image_uri"
-args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-image"
+path = "/fuzz_entry_text"
+args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-text"
 
 [cov]
-target = "/fuzz_image_uri @@"
+target = "/cov_entry_text @@"
 source = "/fyne"

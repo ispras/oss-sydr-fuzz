@@ -15,16 +15,16 @@
 ################################################################################
 
 [sydr]
-target = "/sydr_image_raster @@"
+target = "/sydr_entry_text @@"
 args = "-s 90 --wait-jobs -j2"
 jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/difuzz_target_image_raster @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-image -e /ets_image_raster.toml"
-casr_bin = "/sydr_image_raster"
+target = "/difuzz_target_entry_text @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-text -e /ets_entry_text.toml"
+casr_bin = "/sydr_entry_text"
 
 [cov]
-target = "/coverage_image_raster @@"
+target = "/coverage_entry_text @@"
 source = "/fyne"

@@ -14,6 +14,17 @@
 #
 ################################################################################
 
-[[target]]
-file = "/fyne/fuzz/fuzz.go"
-line = 64
+[sydr]
+target = "/sydr_svg_bytes @@"
+args = "-s 90 --wait-jobs -j2"
+jobs = 2
+
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/difuzz_target_svg_bytes @@"
+args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-svg -e /ets_svg_bytes.toml"
+casr_bin = "/sydr_svg_bytes"
+
+[cov]
+target = "/coverage_svg_bytes @@"
+source = "/fyne"

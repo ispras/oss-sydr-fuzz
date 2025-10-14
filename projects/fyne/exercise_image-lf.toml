@@ -14,6 +14,14 @@
 #
 ################################################################################
 
-[[target]]
-file = "/fyne/fuzz/fuzz.go"
-line = 53
+[sydr]
+target = "/sydr_exercise_image @@"
+args = "-s 90 --wait-jobs -j2"
+
+[libfuzzer]
+path = "/fuzz_exercise_image"
+args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-image"
+
+[cov]
+target = "/cov_exercise_image @@"
+source = "/fyne"
