@@ -46,10 +46,11 @@ int main(int argc, char **argv) {
     options.numChannels = 1;
     options.sampleRate = 1;
 
-    static bool g_cpu = facebook::torchcodec::registerDeviceInterface(
-    torch::kCPU,
-    [](const torch::Device& device) { return new facebook::torchcodec::CpuDeviceInterface(device); });
-
+   static const auto cpu_key = facebook::torchcodec::DeviceInterfaceKey{torch::kCPU, ""};
+   static bool g_cpu = facebook::torchcodec::registerDeviceInterface(
+     cpu_key,
+     [](const torch::Device& device) { return new facebook::torchcodec::CpuDeviceInterface(device); });
+    
     decoder.addAudioStream(0, options);
         
     auto out = decoder.getFramesPlayedInRangeAudio(0);

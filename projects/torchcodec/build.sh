@@ -33,8 +33,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
+  export CFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_SAVERS="OFF"
