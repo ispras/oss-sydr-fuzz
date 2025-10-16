@@ -23,5 +23,5 @@ path = "/fuzz_uri"
 args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-text"
 
 [cov]
-target = "/fuzz_uri @@"
+target = "/cov_uri @@"
 source = "/fyne"

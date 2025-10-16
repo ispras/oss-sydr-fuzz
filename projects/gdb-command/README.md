@@ -47,8 +47,8 @@ Run hybrid fuzzing with AFL++:
 
 Run hybrid directed fuzzing with LibAFL-DiFuzz:
 
-    $ sydr-fuzz -c from_gdb-libafl.toml run
+    # sydr-fuzz -c from_gdb-libafl.toml run
 
 Get coverage report:
 
-    $ sydr-fuzz -c from_gdb-lf.toml cov-html
+    # sydr-fuzz -c from_gdb-lf.toml cov-html

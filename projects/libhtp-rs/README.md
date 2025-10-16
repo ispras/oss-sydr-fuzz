@@ -32,7 +32,7 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing with libfuzzer:
 
-    $ sydr-fuzz -c htp.toml run
+    $ sydr-fuzz -c htp-lf.toml run
 
 Run hybrid fuzzing with AFL++:
 
@@ -44,15 +44,15 @@ Run hybrid directed fuzzing with LibAFL-DiFuzz:
 
 Minimize corpus:
 
-    $ sydr-fuzz -c htp-fuzz-afl++.toml cmin
+    $ sydr-fuzz -c htp-afl++.toml cmin
 
 Check security predicates:
 
-    $ sydr-fuzz -c htp-fuzz-afl++.toml security
+    $ sydr-fuzz -c htp-afl++.toml security
 
 Get coverage report:
 
-    $ sydr-fuzz -c htp-fuzz-afl++.toml cov-html
+    $ sydr-fuzz -c htp-afl++.toml cov-html
 
 ## Supported Targets
 

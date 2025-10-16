@@ -128,7 +128,7 @@ export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 export LIBAFL_SHARED_NAME="htp"
 cargo clean
 cargo build --bin sydr_htp_rs
-mv ${EXAMPLE_DIR}/target/debug/sydr_htp_rs ${OUT_DIR_ABS}/htp_libafl_target
+mv ${EXAMPLE_DIR}/target/debug/sydr_htp_rs ${TARGET}
 
 ${ETS_SHARED_MANAGER} -a dump -n htp -o ${OUT_DIR_ABS}/ets_htp.toml
 ${ETS_SHARED_MANAGER} -a remove -n htp
