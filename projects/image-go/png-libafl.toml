@@ -22,7 +22,7 @@ jobs = 2
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_image_png @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 -i /go-fuzz-corpus/png/corpus -e /ets_png.toml"
+args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /go-fuzz-corpus/png/corpus -e /ets_png.toml"
 casr_bin = "/sydr_image_png"
 
 [cov]
