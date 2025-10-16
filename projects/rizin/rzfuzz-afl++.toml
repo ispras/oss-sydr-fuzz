@@ -19,7 +19,7 @@ args = "--wait-jobs -s 90 -j2"
 target = "/rizin-fuzzing/sydr-plain/bin/rz-fuzz @@"
 
 [aflplusplus]
-args = "-t 4000+ -i /rizin-fuzzing/corpus"
+args = "-t 4000 -i /rizin-fuzzing/corpus"
 target = "/rizin-fuzzing/afl-asan/bin/rz-fuzz"
 jobs = 7
 [aflplusplus.env]
