@@ -17,6 +17,11 @@
 ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
+ARG SYDR_ARCHIVE="./sydr.zip"
+
+WORKDIR /
+
+# Only for libhtp-rs.
 RUN rustup override set nightly-2025-05-01
 RUN cargo afl config --build
 
@@ -24,14 +29,26 @@ RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 
 WORKDIR /libhtp-rs
 
+# Checkout specified commit. It could be updated later.
 RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
 
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
+RUN mkdir -p /libhtp-rs/libafl_difuzz/targets
+COPY sydr_and_cover/targets/sydr_htp.rs /libhtp-rs/libafl_difuzz/targets
+COPY sydr_and_cover/Cargo.toml /libhtp-rs/libafl_difuzz
+
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
+
+WORKDIR /directed_target
+
+# Build libhtp-rs for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
+
 WORKDIR /
 
-COPY build.sh http.dict ./
-COPY afl/ /libhtp-rs/afl/
-COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
-
-RUN ./build.sh
+# Set SYDR_LLVM_COV env.
+ENV SYDR_LLVM_COV=/usr/bin/llvm-cov-20

@@ -17,8 +17,9 @@
 ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-# Copy build script.
-COPY build_cov.sh build_fuzz.sh build_sydr.sh /
+ARG SYDR_ARCHIVE="./sydr.zip"
+
+WORKDIR /
 
 # Clone target from GitHub.
 RUN git clone https://github.com/anfedotoff/gdb-command.git
@@ -28,22 +29,23 @@ WORKDIR /gdb-command
 # Checkout specified commit. It could be updated later.
 RUN git checkout 95db52c2358e4b43db8529e83e5b2d20c140b258
 
-# Build fuzz targets.
-RUN ../build_fuzz.sh
-
 COPY build-config/Cargo.toml fuzz/
-
 COPY sydr_*.rs fuzz/fuzz_targets/
 
-WORKDIR fuzz
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
 
-# Build sydr targets.
-RUN cargo clean && /build_sydr.sh
+WORKDIR /directed_target
 
-# Build cov targets.
-RUN cargo clean && /build_cov.sh
+# Build gdb-command for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/ cargo make all
 
 # Create corpus.
 RUN mkdir /corpus && echo "aaaaaaaaaaaaaaaaaaaa" > /corpus/in
 
 WORKDIR /
+
+# Set SYDR_LLVM_COV env.
+ENV SYDR_LLVM_COV=/usr/bin/llvm-cov-20

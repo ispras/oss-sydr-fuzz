@@ -14,24 +14,14 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[sydr]
+target = "/sydr_uri @@"
+args = "-s 90 --wait-jobs -j2"
 
-RUN rustup override set nightly-2025-05-01
-RUN cargo afl config --build
+[libfuzzer]
+path = "/fuzz_uri"
+args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-text"
 
-RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
-
-WORKDIR /libhtp-rs
-
-RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
-
-RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
-
-WORKDIR /
-
-COPY build.sh http.dict ./
-COPY afl/ /libhtp-rs/afl/
-COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
-
-RUN ./build.sh
+[cov]
+target = "/cov_uri @@"
+source = "/fyne"

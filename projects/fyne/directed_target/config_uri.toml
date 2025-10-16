@@ -14,24 +14,18 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[[target]]
+file = "/fyne/storage/repository/parse.go"
+line = 56
 
-RUN rustup override set nightly-2025-05-01
-RUN cargo afl config --build
+[[target]]
+file = "/fyne/storage/repository/parse.go"
+line = 61
 
-RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
+[[target]]
+file = "/fyne/storage/repository/parse.go"
+line = 73
 
-WORKDIR /libhtp-rs
-
-RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
-
-RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
-
-WORKDIR /
-
-COPY build.sh http.dict ./
-COPY afl/ /libhtp-rs/afl/
-COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
-
-RUN ./build.sh
+[[target]]
+file = "/fyne/storage/repository/parse.go"
+line = 93

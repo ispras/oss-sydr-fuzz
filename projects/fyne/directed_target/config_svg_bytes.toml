@@ -14,24 +14,30 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[[target]]
+file = "/fyne/canvas/image.go"
+line = 191
 
-RUN rustup override set nightly-2025-05-01
-RUN cargo afl config --build
+[[target]]
+file = "/fyne/canvas/image.go"
+line = 197
 
-RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
+[[target]]
+file = "/fyne/canvas/image.go"
+line = 150
 
-WORKDIR /libhtp-rs
+[[target]]
+file = "/fyne/canvas/image.go"
+line = 153
 
-RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
+[[target]]
+file = "/fyne/canvas/image.go"
+line = 186
 
-RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
+[[target]]
+file = "/fyne/test/app.go"
+line = 173
 
-WORKDIR /
-
-COPY build.sh http.dict ./
-COPY afl/ /libhtp-rs/afl/
-COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
-
-RUN ./build.sh
+[[target]]
+file = "/fyne/test/window.go"
+line = 35

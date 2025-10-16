@@ -14,24 +14,34 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[[target]]
+file = "/libhtp-rs/src/connection_parser.rs"
+line = 609
 
-RUN rustup override set nightly-2025-05-01
-RUN cargo afl config --build
+[[target]]
+file = "/libhtp-rs/src/connection_parser.rs"
+line = 675
 
-RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
+[[target]]
+file = "/libhtp-rs/src/connection.rs"
+line = 84
 
-WORKDIR /libhtp-rs
+[[target]]
+file = "/libhtp-rs/src/connection.rs"
+line = 115
 
-RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 208
 
-RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 217
 
-WORKDIR /
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 223
 
-COPY build.sh http.dict ./
-COPY afl/ /libhtp-rs/afl/
-COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
-
-RUN ./build.sh
+[[target]]
+file = "/libhtp-rs/src/test.rs"
+line = 251
