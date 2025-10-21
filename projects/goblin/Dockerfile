@@ -34,8 +34,8 @@ WORKDIR /goblin
 # Checkout specified commit. It could be updated later.
 RUN git checkout 83ce901e27dd801d44a78108041bdd7a8efd378c
 
-RUN sed -i '130ipanic!("reached TP");' /goblin/src/archive/mod.rs
-RUN sed -i '165ipanic!("reached TP");' /goblin/src/archive/mod.rs
+RUN sed -i '129ipanic!("reached TP");' /goblin/src/archive/mod.rs
+RUN sed -i '168ipanic!("reached TP");' /goblin/src/archive/mod.rs
 RUN sed -i '344ipanic!("reached TP");' /goblin/src/archive/mod.rs
 
 RUN sed -i '163ipanic!("reached TP");' /goblin/src/elf/mod.rs
@@ -43,11 +43,11 @@ RUN sed -i '270ipanic!("reached TP");' /goblin/src/elf/mod.rs
 RUN sed -i '367ipanic!("reached TP");' /goblin/src/elf/mod.rs
 
 RUN sed -i '157ipanic!("reached TP");' /goblin/src/mach/mod.rs
-RUN sed -i '187ipanic!("reached TP");' /goblin/src/mach/mod.rs
+RUN sed -i '188ipanic!("reached TP");' /goblin/src/mach/mod.rs
 RUN sed -i '247ipanic!("reached TP");' /goblin/src/mach/mod.rs
 
 RUN sed -i '100ipanic!("reached TP");' /goblin/src/pe/mod.rs
-RUN sed -i '172ipanic!("reached TP");' /goblin/src/pe/mod.rs
+RUN sed -i '168ipanic!("reached TP");' /goblin/src/pe/mod.rs
 
 RUN sed -i '172ipanic!("reached TP");' /goblin/src/pe/debug.rs
 
