@@ -38,10 +38,8 @@ RUN sed -i '676ipanic!("reached TP");' /libhtp-rs/src/connection_parser.rs
 RUN sed -i '84ipanic!("reached TP");' /libhtp-rs/src/connection.rs
 RUN sed -i '116ipanic!("reached TP");' /libhtp-rs/src/connection.rs
 
-RUN sed -i '208ipanic!("reached TP");' /libhtp-rs/src/test.rs
-RUN sed -i '218ipanic!("reached TP");' /libhtp-rs/src/test.rs
-RUN sed -i '225ipanic!("reached TP");' /libhtp-rs/src/test.rs
-RUN sed -i '254ipanic!("reached TP");' /libhtp-rs/src/test.rs
+RUN sed -i '217ipanic!("reached TP");' /libhtp-rs/src/test.rs
+RUN sed -i '252ipanic!("reached TP");' /libhtp-rs/src/test.rs
 
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
