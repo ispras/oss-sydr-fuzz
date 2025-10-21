@@ -40,11 +40,7 @@ line = 25
 
 [[target]]
 file = "/gdb-command/src/memory.rs"
-line = 33
-
-[[target]]
-file = "/gdb-command/src/memory.rs"
-line = 51
+line = 50
 
 [[target]]
 file = "/gdb-command/src/siginfo.rs"
@@ -52,8 +48,4 @@ line = 27
 
 [[target]]
 file = "/gdb-command/src/mappings.rs"
-line = 101
-
-[[target]]
-file = "/gdb-command/src/mappings.rs"
-line = 115
+line = 114

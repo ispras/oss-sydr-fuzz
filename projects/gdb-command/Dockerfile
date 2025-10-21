@@ -33,12 +33,14 @@ RUN sed -i '107ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
 RUN sed -i '125ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
 RUN sed -i '141ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
 RUN sed -i '157ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
+
 RUN sed -i '25ipanic!("reached TP");' /gdb-command/src/registers.rs
-RUN sed -i '33ipanic!("reached TP");' /gdb-command/src/memory.rs
-RUN sed -i '51ipanic!("reached TP");' /gdb-command/src/memory.rs
+
+RUN sed -i '50ipanic!("reached TP");' /gdb-command/src/memory.rs
+
 RUN sed -i '27ipanic!("reached TP");' /gdb-command/src/siginfo.rs
-RUN sed -i '101ipanic!("reached TP");' /gdb-command/src/mappings.rs
-RUN sed -i '115ipanic!("reached TP");' /gdb-command/src/mappings.rs
+
+RUN sed -i '114ipanic!("reached TP");' /gdb-command/src/mappings.rs
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
