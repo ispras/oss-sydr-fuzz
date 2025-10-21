@@ -28,13 +28,10 @@ WORKDIR /ollama
 
 RUN git checkout 05a43e078a89247dcc71c703c1bee2af97c1655d
 
-RUN sed -i '257ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '271ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '274ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '277ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '294ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '302ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '269ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '270ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '273ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '276ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '300ipanic("reached TP")' /ollama/convert/tokenizer.go
 
 RUN sed -i '47ipanic("reached TP")' /ollama/convert/tokenizer_spm.go
 RUN sed -i '50ipanic("reached TP")' /ollama/convert/tokenizer_spm.go
