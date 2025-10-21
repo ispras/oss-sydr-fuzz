@@ -20,11 +20,7 @@ line = 129
 
 [[target]]
 file = "/goblin/src/archive/mod.rs"
-line = 168
-
-[[target]]
-file = "/goblin/src/archive/mod.rs"
-line = 344
+line = 343
 
 [[target]]
 file = "/goblin/src/elf/mod.rs"
@@ -32,32 +28,20 @@ line = 163
 
 [[target]]
 file = "/goblin/src/elf/mod.rs"
-line = 270
+line = 273
 
 [[target]]
 file = "/goblin/src/elf/mod.rs"
-line = 367
+line = 377
 
 [[target]]
 file = "/goblin/src/mach/mod.rs"
-line = 157
+line = 187
 
 [[target]]
 file = "/goblin/src/mach/mod.rs"
-line = 188
-
-[[target]]
-file = "/goblin/src/mach/mod.rs"
-line = 247
+line = 246
 
 [[target]]
 file = "/goblin/src/pe/mod.rs"
-line = 100
-
-[[target]]
-file = "/goblin/src/pe/mod.rs"
-line = 168
-
-[[target]]
-file = "/goblin/src/pe/debug.rs"
-line = 172
+line = 167
