@@ -24,6 +24,40 @@ WORKDIR /ollama
 
 RUN git checkout 05a43e078a89247dcc71c703c1bee2af97c1655d
 
+RUN sed -i '257ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '271ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '274ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '277ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '294ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '302ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '269ipanic("reached TP")' /ollama/convert/tokenizer.go
+
+RUN sed -i '47ipanic("reached TP")' /ollama/convert/tokenizer_spm.go
+RUN sed -i '50ipanic("reached TP")' /ollama/convert/tokenizer_spm.go
+RUN sed -i '96ipanic("reached TP")' /ollama/convert/tokenizer_spm.go
+
+RUN sed -i '106ipanic("reached TP")' /ollama/harmony/harmonyparser.go
+RUN sed -i '199ipanic("reached TP")' /ollama/harmony/harmonyparser.go
+RUN sed -i '214ipanic("reached TP")' /ollama/harmony/harmonyparser.go
+RUN sed -i '224ipanic("reached TP")' /ollama/harmony/harmonyparser.go
+RUN sed -i '232ipanic("reached TP")' /ollama/harmony/harmonyparser.go
+
+RUN sed -i '396ipanic("reached TP")' /ollama/parser/parser.go
+RUN sed -i '407ipanic("reached TP")' /ollama/parser/parser.go
+RUN sed -i '432ipanic("reached TP")' /ollama/parser/parser.go
+RUN sed -i '444ipanic("reached TP")' /ollama/parser/parser.go
+RUN sed -i '479ipanic("reached TP")' /ollama/parser/parser.go
+
+RUN sed -i '75ipanic("reached TP")' /ollama/server/manifest.go
+RUN sed -i '90ipanic("reached TP")' /ollama/server/manifest.go
+RUN sed -i '96ipanic("reached TP")' /ollama/server/manifest.go
+
+RUN sed -i '118ipanic("reached TP")' /ollama/model/wordpiece.go
+RUN sed -i '145ipanic("reached TP")' /ollama/model/wordpiece.go
+
+RUN sed -i '72ipanic("reached TP")' /ollama/model/vocabulary.go
+RUN sed -i '81ipanic("reached TP")' /ollama/model/vocabulary.go
+
 # Apply patch.
 COPY ollama.patch build.sh ./
 RUN git apply ollama.patch

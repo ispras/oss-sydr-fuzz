@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_image_tiff @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/sydr_image_tiff @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_image_tiff @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /go-fuzz-corpus/tiff/corpus -e /ets_tiff.toml"
+args = "-j1 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /go-fuzz-corpus/tiff/corpus -e /ets_tiff.toml"
 casr_bin = "/sydr_image_tiff"
 
 [cov]

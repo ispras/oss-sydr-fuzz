@@ -20,12 +20,12 @@ line = 257
 
 [[target]]
 file = "/ollama/convert/tokenizer.go"
-line = 270
-
-[[target]]
-file = "/ollama/convert/tokenizer.go"
-line = 272
+line = 271
 
 [[target]]
 file = "/ollama/convert/tokenizer.go"
 line = 274
+
+[[target]]
+file = "/ollama/convert/tokenizer.go"
+line = 277

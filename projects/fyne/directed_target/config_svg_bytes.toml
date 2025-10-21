@@ -16,11 +16,11 @@
 
 [[target]]
 file = "/fyne/canvas/image.go"
-line = 191
+line = 194
 
 [[target]]
 file = "/fyne/canvas/image.go"
-line = 197
+line = 201
 
 [[target]]
 file = "/fyne/canvas/image.go"
@@ -28,11 +28,11 @@ line = 150
 
 [[target]]
 file = "/fyne/canvas/image.go"
-line = 153
+line = 154
 
 [[target]]
 file = "/fyne/canvas/image.go"
-line = 186
+line = 188
 
 [[target]]
 file = "/fyne/test/app.go"

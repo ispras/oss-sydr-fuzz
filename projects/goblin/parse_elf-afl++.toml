@@ -14,13 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_parse_elf @@"
-args = "-s 90 --wait-jobs -j2"
+#[sydr]
+#target = "/sydr_parse_elf @@"
+#args = "-s 90 --wait-jobs -j2"
 
 [aflplusplus]
 target = "/goblin/fuzz-afl/target/release/afl_parse_elf"
 args = "-t 2000 -i /corpus"
+jobs = 1
 
 [cov]
 target = "/cov_parse_elf @@"

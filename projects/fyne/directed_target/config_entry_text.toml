@@ -20,7 +20,7 @@ line = 110
 
 [[target]]
 file = "/fyne/widget/label.go"
-line = 151
+line = 152
 
 [[target]]
 file = "/fyne/widget/selectable.go"

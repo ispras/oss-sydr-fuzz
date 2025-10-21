@@ -20,12 +20,12 @@ line = 56
 
 [[target]]
 file = "/fyne/storage/repository/parse.go"
-line = 61
+line = 62
 
 [[target]]
 file = "/fyne/storage/repository/parse.go"
-line = 73
+line = 75
 
 [[target]]
 file = "/fyne/storage/repository/parse.go"
-line = 93
+line = 96

@@ -26,6 +26,17 @@ WORKDIR /libhtp-rs
 
 RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
 
+RUN sed -i '609ipanic!("reached TP");' /libhtp-rs/src/connection_parser.rs
+RUN sed -i '676ipanic!("reached TP");' /libhtp-rs/src/connection_parser.rs
+
+RUN sed -i '84ipanic!("reached TP");' /libhtp-rs/src/connection.rs
+RUN sed -i '116ipanic!("reached TP");' /libhtp-rs/src/connection.rs
+
+RUN sed -i '208ipanic!("reached TP");' /libhtp-rs/src/test.rs
+RUN sed -i '218ipanic!("reached TP");' /libhtp-rs/src/test.rs
+RUN sed -i '225ipanic!("reached TP");' /libhtp-rs/src/test.rs
+RUN sed -i '254ipanic!("reached TP");' /libhtp-rs/src/test.rs
+
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
 WORKDIR /

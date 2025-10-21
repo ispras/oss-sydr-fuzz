@@ -20,7 +20,7 @@ line = 118
 
 [[target]]
 file = "/ollama/model/wordpiece.go"
-line = 144
+line = 145
 
 [[target]]
 file = "/ollama/model/vocabulary.go"
@@ -28,4 +28,4 @@ line = 72
 
 [[target]]
 file = "/ollama/model/vocabulary.go"
-line = 80
+line = 81

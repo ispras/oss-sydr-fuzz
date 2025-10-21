@@ -20,8 +20,8 @@ line = 73
 
 [[target]]
 file = "/image/webp/decode.go"
-line = 175
+line = 176
 
 [[target]]
 file = "/image/webp/decode.go"
-line = 210
+line = 212

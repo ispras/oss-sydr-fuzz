@@ -15,13 +15,14 @@
 ################################################################################
 exit_on_time = 7200
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/sydr_fuzz_htp_rs @@"
+#[sydr]
+#args = "--wait-jobs -s 90 -j2"
+#target = "/sydr_fuzz_htp_rs @@"
 
 [aflplusplus]
 args = "-i /corpus -t 100000 -x /http.dict"
 target = " /afl_fuzz_htp_rs @@"
+jobs = 1
 
 [cov]
 target = "/cover_fuzz_htp_rs @@"
