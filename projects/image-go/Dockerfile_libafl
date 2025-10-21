@@ -70,9 +70,9 @@ RUN sed -i '393ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
 
-RUN sed -i '73ipanic("reached TP")' /image/webp/reader.go
-RUN sed -i '176ipanic("reached TP")' /image/webp/reader.go
-RUN sed -i '212ipanic("reached TP")' /image/webp/reader.go
+RUN sed -i '73ipanic("reached TP")' /image/webp/decode.go
+RUN sed -i '176ipanic("reached TP")' /image/webp/decode.go
+RUN sed -i '212ipanic("reached TP")' /image/webp/decode.go
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
