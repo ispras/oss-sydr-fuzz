@@ -55,8 +55,7 @@ RUN sed -i '404ipanic("reached TP")' /image/gif/reader.go
 
 RUN sed -i '228ipanic("reached TP")' /image/jpeg/reader.go
 RUN sed -i '330ipanic("reached TP")' /image/jpeg/reader.go
-RUN sed -i '651ipanic("reached TP")' /image/jpeg/reader.go
-RUN sed -i '764ipanic("reached TP")' /image/jpeg/reader.go
+RUN sed -i '763ipanic("reached TP")' /image/jpeg/reader.go
 
 RUN sed -i '174ipanic("reached TP")' /image/png/reader.go
 RUN sed -i '611ipanic("reached TP")' /image/png/reader.go
@@ -68,9 +67,8 @@ RUN sed -i '393ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
 
-RUN sed -i '73ipanic("reached TP")' /image/webp/decode.go
-RUN sed -i '176ipanic("reached TP")' /image/webp/decode.go
-RUN sed -i '212ipanic("reached TP")' /image/webp/decode.go
+RUN sed -i '175ipanic("reached TP")' /image/webp/decode.go
+RUN sed -i '211ipanic("reached TP")' /image/webp/decode.go
 
 RUN ./build.sh
 

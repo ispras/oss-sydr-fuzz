@@ -24,8 +24,4 @@ line = 330
 
 [[target]]
 file = "/image/jpeg/reader.go"
-line = 651
-
-[[target]]
-file = "/image/jpeg/reader.go"
-line = 764
+line = 763
