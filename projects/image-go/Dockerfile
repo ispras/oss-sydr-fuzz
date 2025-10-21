@@ -26,29 +26,6 @@ WORKDIR image
 
 RUN git checkout c574db581976698ac047466629eeeb7b17bb49dd
 
-RUN sed -i '238ipanic("reached TP")' /image/gif/reader.go
-RUN sed -i '350ipanic("reached TP")' /image/gif/reader.go
-RUN sed -i '404ipanic("reached TP")' /image/gif/reader.go
-
-RUN sed -i '228ipanic("reached TP")' /image/jpeg/reader.go
-RUN sed -i '330ipanic("reached TP")' /image/jpeg/reader.go
-RUN sed -i '651ipanic("reached TP")' /image/jpeg/reader.go
-RUN sed -i '764ipanic("reached TP")' /image/jpeg/reader.go
-
-RUN sed -i '174ipanic("reached TP")' /image/png/reader.go
-RUN sed -i '611ipanic("reached TP")' /image/png/reader.go
-RUN sed -i '877ipanic("reached TP")' /image/png/reader.go
-RUN sed -i '939ipanic("reached TP")' /image/png/reader.go
-
-RUN sed -i '72ipanic("reached TP")' /image/tiff/reader.go
-RUN sed -i '393ipanic("reached TP")' /image/tiff/reader.go
-RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
-RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
-
-RUN sed -i '73ipanic("reached TP")' /image/webp/reader.go
-RUN sed -i '176ipanic("reached TP")' /image/webp/reader.go
-RUN sed -i '212ipanic("reached TP")' /image/webp/reader.go
-
 RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 
 COPY fuzz.go build.sh ./
