@@ -30,7 +30,19 @@ RUN git clone https://github.com/m4b/goblin.git
 WORKDIR /goblin
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 59ec2f3c57c53aa828b6a4cb4730d1efe3e43a05
+RUN git checkout 83ce901e27dd801d44a78108041bdd7a8efd378c
+
+RUN sed -i '129ipanic!("reached TP");' /goblin/src/archive/mod.rs
+RUN sed -i '343ipanic!("reached TP");' /goblin/src/archive/mod.rs
+
+RUN sed -i '163ipanic!("reached TP");' /goblin/src/elf/mod.rs
+RUN sed -i '273ipanic!("reached TP");' /goblin/src/elf/mod.rs
+RUN sed -i '377ipanic!("reached TP");' /goblin/src/elf/mod.rs
+
+RUN sed -i '187ipanic!("reached TP");' /goblin/src/mach/mod.rs
+RUN sed -i '246ipanic!("reached TP");' /goblin/src/mach/mod.rs
+
+RUN sed -i '167ipanic!("reached TP");' /goblin/src/pe/mod.rs
 
 COPY build-config/Cargo.toml fuzz/
 
