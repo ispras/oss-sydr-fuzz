@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/convert_tokenizer_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/convert_tokenizer_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_convert_tokenizer @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/convert/corpus_tokenizer -e /ets_convert_tokenizer.toml"
+args = "-j1 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/convert/corpus_tokenizer -e /ets_convert_tokenizer.toml"
 casr_bin = "/convert_tokenizer_sydr"
 
 [cov]

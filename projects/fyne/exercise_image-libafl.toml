@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_exercise_image @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/sydr_exercise_image @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_exercise_image @@"
-args = "-j4 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-image -e /ets_exercise_image.toml"
+args = "-j1 --sync-limit 200 --sync-jobs 2 -l64 --panic-analysis go -i /corpus-image -e /ets_exercise_image.toml"
 casr_bin = "/sydr_exercise_image"
 
 [cov]

@@ -14,14 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/harmony_parser_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/harmony_parser_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [libfuzzer]
 path = "/harmony_parser_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/harmony"
+args = "-jobs=1000 -workers=1 -rss_limit_mb=8192 /corpus/harmony"
 
 [cov]
 target = "/harmony_parser_sydr @@"

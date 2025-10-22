@@ -14,14 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_from_gdb @@"
-args = "-s 90 --wait-jobs -j2"
+#[sydr]
+#target = "/sydr_from_gdb @@"
+#args = "-s 90 --wait-jobs -j2"
 
 [aflplusplus]
 args = "-i /corpus -t 10000"
 target = "/afl_from_gdb @@"
-jobs = 4
+jobs = 1
 
 [cov]
 target = "/cov_from_gdb @@"
