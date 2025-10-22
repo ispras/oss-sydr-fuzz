@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/parser_parsefile_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/parser_parsefile_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_parser_parsefile @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/parser/corpus_parsefile -e /ets_parser_parsefile.toml"
+args = "-j1 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/parser/corpus_parsefile -e /ets_parser_parsefile.toml"
 casr_bin = "/parser_parsefile_sydr"
 
 [cov]

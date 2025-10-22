@@ -14,13 +14,13 @@
 #
 ################################################################################
 
-[sydr]
-target = "/image/cmd/sydr_jpeg/sydr_jpeg @@"
-args = "-s 90 --wait-jobs -j2"
+#[sydr]
+#target = "/image/cmd/sydr_jpeg/sydr_jpeg @@"
+#args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/image/fuzz_jpeg"
-args = "-dict=/jpeg.dict -rss_limit_mb=8192 /go-fuzz-corpus/jpeg/corpus"
+args = "-dict=/jpeg.dict -rss_limit_mb=8192 -jobs=1000 -timeout=1000 -workers=1 /go-fuzz-corpus/jpeg/corpus"
 
 [cov]
 target = "/image/fuzz_jpeg.zip"

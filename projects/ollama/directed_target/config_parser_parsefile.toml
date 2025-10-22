@@ -20,16 +20,16 @@ line = 396
 
 [[target]]
 file = "/ollama/parser/parser.go"
-line = 406
+line = 407
 
 [[target]]
 file = "/ollama/parser/parser.go"
-line = 430
+line = 432
 
 [[target]]
 file = "/ollama/parser/parser.go"
-line = 441
+line = 444
 
 [[target]]
 file = "/ollama/parser/parser.go"
-line = 475
+line = 479

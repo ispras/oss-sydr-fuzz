@@ -14,13 +14,13 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_markdown @@"
-args = "-s 90 --wait-jobs -j2"
+#[sydr]
+#target = "/sydr_markdown @@"
+#args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/fuzz_markdown"
-args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-markdown"
+args = "-jobs=1000 -timeout=2 -workers=1 -rss_limit_mb=8192 /corpus-markdown"
 
 [cov]
 target = "/cov_markdown @@"

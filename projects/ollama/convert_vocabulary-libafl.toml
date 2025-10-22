@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/convert_vocabulary_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/convert_vocabulary_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_convert_vocabulary @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/convert/corpus_vocabulary -e /ets_convert_vocabulary.toml"
+args = "-j1 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/convert/corpus_vocabulary -e /ets_convert_vocabulary.toml"
 casr_bin = "/convert_vocabulary_sydr"
 
 [cov]

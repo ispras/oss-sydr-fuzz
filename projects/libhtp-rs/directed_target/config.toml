@@ -20,7 +20,7 @@ line = 609
 
 [[target]]
 file = "/libhtp-rs/src/connection_parser.rs"
-line = 675
+line = 676
 
 [[target]]
 file = "/libhtp-rs/src/connection.rs"
@@ -28,11 +28,7 @@ line = 84
 
 [[target]]
 file = "/libhtp-rs/src/connection.rs"
-line = 115
-
-[[target]]
-file = "/libhtp-rs/src/test.rs"
-line = 208
+line = 116
 
 [[target]]
 file = "/libhtp-rs/src/test.rs"
@@ -40,8 +36,4 @@ line = 217
 
 [[target]]
 file = "/libhtp-rs/src/test.rs"
-line = 223
-
-[[target]]
-file = "/libhtp-rs/src/test.rs"
-line = 251
+line = 252

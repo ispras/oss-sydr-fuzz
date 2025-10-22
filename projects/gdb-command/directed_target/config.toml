@@ -20,27 +20,23 @@ line = 87
 
 [[target]]
 file = "/gdb-command/src/stacktrace.rs"
-line = 106
+line = 107
 
 [[target]]
 file = "/gdb-command/src/stacktrace.rs"
-line = 123
+line = 125
 
 [[target]]
 file = "/gdb-command/src/stacktrace.rs"
-line = 138
+line = 141
 
 [[target]]
 file = "/gdb-command/src/stacktrace.rs"
-line = 153
+line = 157
 
 [[target]]
 file = "/gdb-command/src/registers.rs"
 line = 25
-
-[[target]]
-file = "/gdb-command/src/memory.rs"
-line = 33
 
 [[target]]
 file = "/gdb-command/src/memory.rs"
@@ -49,10 +45,6 @@ line = 50
 [[target]]
 file = "/gdb-command/src/siginfo.rs"
 line = 27
-
-[[target]]
-file = "/gdb-command/src/mappings.rs"
-line = 101
 
 [[target]]
 file = "/gdb-command/src/mappings.rs"
