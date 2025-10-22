@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/server_manifest_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/server_manifest_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_server_manifest @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/server/corpus_manifest -e /ets_server_manifest.toml"
+args = "-j1 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/server/corpus_manifest -e /ets_server_manifest.toml"
 casr_bin = "/server_manifest_sydr"
 
 [cov]

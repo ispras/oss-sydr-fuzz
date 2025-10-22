@@ -14,14 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/wordpiece_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/wordpiece_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [libfuzzer]
 path = "/wordpiece_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/wordpiece"
+args = "-jobs=1000 -workers=1 -rss_limit_mb=8192 /corpus/wordpiece"
 
 [cov]
 target = "/wordpiece_sydr @@"

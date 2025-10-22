@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/harmony_parser_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/harmony_parser_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/difuzz_target_harmony_parser @@"
-args = "-j4 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/harmony -e /ets_harmony_parser.toml"
+args = "-j1 --panic-analysis go --sync-limit 200 --sync-jobs 2 -l64 -i /corpus/harmony -e /ets_harmony_parser.toml"
 casr_bin = "/harmony_parser_sydr"
 
 [cov]

@@ -15,13 +15,13 @@
 ################################################################################
 exit_on_time = 7200
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/sydr_fuzz_htp_rs @@"
+#[sydr]
+#args = "--wait-jobs -s 90 -j2"
+#target = "/sydr_fuzz_htp_rs @@"
 
 [libfuzzer]
 path = "/cargo_fuzz_htp_rs"
-args = "-rss_limit_mb=8192 -max_len=4096 -dict=/http.dict /corpus"
+args = "-rss_limit_mb=8192 -max_len=4096 -jobs=1000 -timeout=1000 -workers=1 -dict=/http.dict /corpus"
 
 [cov]
 target = "/cover_fuzz_htp_rs @@"
