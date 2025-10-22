@@ -29,6 +29,20 @@ WORKDIR /gdb-command
 # Checkout specified commit. It could be updated later.
 RUN git checkout 95db52c2358e4b43db8529e83e5b2d20c140b258
 
+RUN sed -i '87ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
+RUN sed -i '107ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
+RUN sed -i '125ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
+RUN sed -i '141ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
+RUN sed -i '157ipanic!("reached TP");' /gdb-command/src/stacktrace.rs
+
+RUN sed -i '25ipanic!("reached TP");' /gdb-command/src/registers.rs
+
+RUN sed -i '50ipanic!("reached TP");' /gdb-command/src/memory.rs
+
+RUN sed -i '27ipanic!("reached TP");' /gdb-command/src/siginfo.rs
+
+RUN sed -i '114ipanic!("reached TP");' /gdb-command/src/mappings.rs
+
 COPY build-config/Cargo.toml fuzz/
 COPY sydr_*.rs fuzz/fuzz_targets/
 
