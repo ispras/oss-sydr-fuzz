@@ -34,19 +34,14 @@ RUN sed -i '151ipanic("reached TP")' /fyne/widget/label.go
 
 RUN sed -i '176ipanic("reached TP")' /fyne/widget/selectable.go
 
-RUN sed -i '172ipanic("reached TP")' /fyne/canvas/image.go
-RUN sed -i '191ipanic("reached TP")' /fyne/canvas/image.go
-RUN sed -i '198ipanic("reached TP")' /fyne/canvas/image.go
+RUN sed -i '161ipanic("reached TP")' /fyne/canvas/image.go
+RUN sed -i '176ipanic("reached TP")' /fyne/canvas/image.go
 
 RUN sed -i '185ipanic("reached TP")' /fyne/widget/markdown.go
 
 RUN sed -i '61ipanic("reached TP")' /fyne/storage/repository/parse.go
 RUN sed -i '74ipanic("reached TP")' /fyne/storage/repository/parse.go
 RUN sed -i '95ipanic("reached TP")' /fyne/storage/repository/parse.go
-
-RUN sed -i '173ipanic("reached TP")' /fyne/test/app.go
-
-RUN sed -i '35ipanic("reached TP")' /fyne/test/window.go
 
 RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 
