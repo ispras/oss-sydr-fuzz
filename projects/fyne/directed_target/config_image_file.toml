@@ -16,20 +16,4 @@
 
 [[target]]
 file = "/fyne/canvas/image.go"
-line = 191
-
-[[target]]
-file = "/fyne/canvas/image.go"
-line = 198
-
-[[target]]
-file = "/fyne/canvas/image.go"
-line = 172
-
-[[target]]
-file = "/fyne/test/app.go"
-line = 173
-
-[[target]]
-file = "/fyne/test/window.go"
-line = 35
+line = 176
