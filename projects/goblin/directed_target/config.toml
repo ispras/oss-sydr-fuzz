@@ -20,7 +20,7 @@ line = 140
 
 [[target]]
 file = "/goblin/src/archive/mod.rs"
-line = 347
+line = 346
 
 [[target]]
 file = "/goblin/src/elf/mod.rs"

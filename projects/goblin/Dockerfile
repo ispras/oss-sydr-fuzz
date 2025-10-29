@@ -35,7 +35,7 @@ WORKDIR /goblin
 RUN git checkout 83ce901e27dd801d44a78108041bdd7a8efd378c
 
 RUN sed -i '140ipanic!("reached TP");' /goblin/src/archive/mod.rs
-RUN sed -i '347ipanic!("reached TP");' /goblin/src/archive/mod.rs
+RUN sed -i '346ipanic!("reached TP");' /goblin/src/archive/mod.rs
 
 RUN sed -i '272ipanic!("reached TP");' /goblin/src/elf/mod.rs
 RUN sed -i '376ipanic!("reached TP");' /goblin/src/elf/mod.rs
