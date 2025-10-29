@@ -17,11 +17,3 @@
 [[target]]
 file = "/fyne/widget/markdown.go"
 line = 185
-
-[[target]]
-file = "/fyne/test/app.go"
-line = 173
-
-[[target]]
-file = "/fyne/test/window.go"
-line = 35
