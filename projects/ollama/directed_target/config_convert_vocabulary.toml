@@ -16,16 +16,4 @@
 
 [[target]]
 file = "/ollama/convert/tokenizer.go"
-line = 300
-
-[[target]]
-file = "/ollama/convert/tokenizer_spm.go"
-line = 47
-
-[[target]]
-file = "/ollama/convert/tokenizer_spm.go"
-line = 50
-
-[[target]]
-file = "/ollama/convert/tokenizer_spm.go"
-line = 96
+line = 299
