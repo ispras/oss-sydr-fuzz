@@ -49,7 +49,7 @@ COPY sydr_png.go cmd/sydr_png/main.go
 COPY sydr_jpeg.go cmd/sydr_jpeg/main.go
 COPY sydr_gif.go cmd/sydr_gif/main.go
 
-RUN sed -i '238ipanic("reached TP")' /image/gif/reader.go
+# RUN sed -i '238ipanic("reached TP")' /image/gif/reader.go
 RUN sed -i '350ipanic("reached TP")' /image/gif/reader.go
 RUN sed -i '404ipanic("reached TP")' /image/gif/reader.go
 
