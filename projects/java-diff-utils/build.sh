@@ -17,12 +17,9 @@
 SRC=/src
 OUT=/out
 
-# Get maven
-wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
-tar -xvf apache-maven-*-bin.tar.gz
-rm apache-maven-*-bin.tar.gz
-mv apache-maven-* /opt/
-export PATH="$PATH:/opt/apache-maven-3.9.4/bin"
+cd /javafuzz
+mvn install
+cd /java-diff-utils
 
 # Build java-diff-utils
 mvn clean package -Dmaven.javadoc.skip=true -DskipTests=true -Dpmd.skip=true \
@@ -42,15 +39,19 @@ BUILD_CLASSPATH=$(echo $ALL_JARS | xargs printf -- "$OUT/%s:"):/usr/local/lib/ja
 # All .jar and .class files lie in the same directory as the fuzzer at runtime.
 RUNTIME_CLASSPATH=$(echo $ALL_JARS | xargs printf -- "\$this_dir/%s:"):\$this_dir
 
-for fuzzer in $(find $SRC -name '*Fuzzer.java')
+for fuzzer in $(find $SRC -name '*FuzzerJZ.java')
 do
   fuzzer_basename=$(basename -s .java $fuzzer)
   javac -cp $BUILD_CLASSPATH $fuzzer
   cp $SRC/$fuzzer_basename.class $OUT/
 done
 
+
+
+cd /
+
 # Build corpus
-mkdir /corpus
+mkdir -p /corpus
 echo '1234512345' > /corpus/seed1
 echo '12345123456' > /corpus/seed2
 echo '12345a2345' > /corpus/seed3

@@ -21,7 +21,7 @@ import com.github.difflib.DiffUtils;
 // jvm-autofuzz-heuristics-1
 // Heuristic name: jvm-autofuzz-heuristics-1
 // Target method: [com.github.difflib.DiffUtils] public static com.github.difflib.patch.Patch diffInline(java.lang.String,java.lang.String)
-public class DiffUtilsFuzzer {
+public class DiffUtilsFuzzerJZ {
   public static void fuzzerTestOneInput(FuzzedDataProvider data) {
     try {
       DiffUtils.diffInline(data.consumeString(data.remainingBytes() / 2), data.consumeRemainingAsString());
