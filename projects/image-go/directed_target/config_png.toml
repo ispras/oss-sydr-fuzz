@@ -22,9 +22,9 @@ line = 174
 file = "/image/png/reader.go"
 line = 611
 
-[[target]]
-file = "/image/png/reader.go"
-line = 877
+# [[target]]
+# file = "/image/png/reader.go"
+# line = 877
 
 [[target]]
 file = "/image/png/reader.go"

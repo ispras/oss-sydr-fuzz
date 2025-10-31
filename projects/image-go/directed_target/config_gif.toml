@@ -14,13 +14,13 @@
 #
 ################################################################################
 
-[[target]]
-file = "/image/gif/reader.go"
-line = 238
+# [[target]]
+# file = "/image/gif/reader.go"
+# line = 238
 
-[[target]]
-file = "/image/gif/reader.go"
-line = 350
+# [[target]]
+# file = "/image/gif/reader.go"
+# line = 350
 
 [[target]]
 file = "/image/gif/reader.go"
