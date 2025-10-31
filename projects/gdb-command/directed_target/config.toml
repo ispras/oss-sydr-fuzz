@@ -34,9 +34,9 @@ line = 141
 file = "/gdb-command/src/stacktrace.rs"
 line = 157
 
-[[target]]
-file = "/gdb-command/src/registers.rs"
-line = 25
+# [[target]]
+# file = "/gdb-command/src/registers.rs"
+# line = 25
 
 [[target]]
 file = "/gdb-command/src/memory.rs"
