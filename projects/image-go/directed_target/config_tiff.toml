@@ -22,9 +22,9 @@ line = 72
 file = "/image/tiff/reader.go"
 line = 393
 
-[[target]]
-file = "/image/tiff/reader.go"
-line = 486
+# [[target]]
+# file = "/image/tiff/reader.go"
+# line = 486
 
 [[target]]
 file = "/image/tiff/reader.go"

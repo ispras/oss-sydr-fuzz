@@ -50,7 +50,7 @@ COPY sydr_jpeg.go cmd/sydr_jpeg/main.go
 COPY sydr_gif.go cmd/sydr_gif/main.go
 
 # RUN sed -i '238ipanic("reached TP")' /image/gif/reader.go
-RUN sed -i '350ipanic("reached TP")' /image/gif/reader.go
+# RUN sed -i '350ipanic("reached TP")' /image/gif/reader.go
 RUN sed -i '404ipanic("reached TP")' /image/gif/reader.go
 
 RUN sed -i '228ipanic("reached TP")' /image/jpeg/reader.go
@@ -59,12 +59,12 @@ RUN sed -i '763ipanic("reached TP")' /image/jpeg/reader.go
 
 RUN sed -i '174ipanic("reached TP")' /image/png/reader.go
 RUN sed -i '611ipanic("reached TP")' /image/png/reader.go
-RUN sed -i '877ipanic("reached TP")' /image/png/reader.go
+# RUN sed -i '877ipanic("reached TP")' /image/png/reader.go
 RUN sed -i '939ipanic("reached TP")' /image/png/reader.go
 
 RUN sed -i '72ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '393ipanic("reached TP")' /image/tiff/reader.go
-RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
+# RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
 
 RUN sed -i '175ipanic("reached TP")' /image/webp/decode.go
