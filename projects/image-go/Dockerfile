@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 MAINTAINER Andrey Fedotov
