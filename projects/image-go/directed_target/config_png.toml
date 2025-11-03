@@ -26,6 +26,6 @@ line = 611
 # file = "/image/png/reader.go"
 # line = 877
 
-[[target]]
-file = "/image/png/reader.go"
-line = 939
+# [[target]]
+# file = "/image/png/reader.go"
+# line = 939
