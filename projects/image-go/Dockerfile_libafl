@@ -62,12 +62,12 @@ RUN sed -i '763ipanic("reached TP")' /image/jpeg/reader.go
 RUN sed -i '174ipanic("reached TP")' /image/png/reader.go
 RUN sed -i '611ipanic("reached TP")' /image/png/reader.go
 # RUN sed -i '877ipanic("reached TP")' /image/png/reader.go
-RUN sed -i '939ipanic("reached TP")' /image/png/reader.go
+# RUN sed -i '939ipanic("reached TP")' /image/png/reader.go
 
-RUN sed -i '72ipanic("reached TP")' /image/tiff/reader.go
+# RUN sed -i '72ipanic("reached TP")' /image/tiff/reader.go
 RUN sed -i '393ipanic("reached TP")' /image/tiff/reader.go
 # RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
-RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
+# RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
 
 RUN sed -i '175ipanic("reached TP")' /image/webp/decode.go
 RUN sed -i '211ipanic("reached TP")' /image/webp/decode.go
