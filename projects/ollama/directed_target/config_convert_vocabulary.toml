@@ -16,4 +16,4 @@
 
 [[target]]
 file = "/ollama/convert/tokenizer.go"
-line = 299
+line = 298
