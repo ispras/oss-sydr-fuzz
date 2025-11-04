@@ -29,13 +29,11 @@ WORKDIR /ollama
 RUN git checkout 05a43e078a89247dcc71c703c1bee2af97c1655d
 
 RUN sed -i '270ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '273ipanic("reached TP")' /ollama/convert/tokenizer.go
-RUN sed -i '299ipanic("reached TP")' /ollama/convert/tokenizer.go
+RUN sed -i '298ipanic("reached TP")' /ollama/convert/tokenizer.go
 
-RUN sed -i '221ipanic("reached TP")' /ollama/harmony/harmonyparser.go
-RUN sed -i '229ipanic("reached TP")' /ollama/harmony/harmonyparser.go
+RUN sed -i '228ipanic("reached TP")' /ollama/harmony/harmonyparser.go
 
-RUN sed -i '406ipanic("reached TP")' /ollama/parser/parser.go
+RUN sed -i '416ipanic("reached TP")' /ollama/parser/parser.go
 RUN sed -i '431ipanic("reached TP")' /ollama/parser/parser.go
 RUN sed -i '443ipanic("reached TP")' /ollama/parser/parser.go
 

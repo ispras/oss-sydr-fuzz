@@ -18,6 +18,3 @@
 file = "/ollama/convert/tokenizer.go"
 line = 270
 
-[[target]]
-file = "/ollama/convert/tokenizer.go"
-line = 273
