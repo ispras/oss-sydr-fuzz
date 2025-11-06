@@ -28,10 +28,9 @@ WORKDIR /fyne
 
 RUN git checkout 19dcdbdb5f5a9b293a21a29b5235c163345b36d0
 
-RUN sed -i '151ipanic("reached TP")' /fyne/widget/label.go
+RUN sed -i '162ipanic("reached TP")' /fyne/widget/label.go
 
-RUN sed -i '161ipanic("reached TP")' /fyne/canvas/image.go
-RUN sed -i '176ipanic("reached TP")' /fyne/canvas/image.go
+RUN sed -i '372ipanic("reached TP")' /fyne/canvas/image.go
 
 RUN sed -i '185ipanic("reached TP")' /fyne/widget/markdown.go
 
