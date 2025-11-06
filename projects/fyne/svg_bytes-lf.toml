@@ -20,7 +20,7 @@
 
 [libfuzzer]
 path = "/fuzz_svg_bytes"
-args = "-jobs=1000 -timeout=1000 -workers=1 -rss_limit_mb=8192 /corpus-svg"
+args = "-jobs=1000 -timeout=1000 -workers=1 -rss_limit_mb=40000 /corpus-svg"
 
 [cov]
 target = "/cov_svg_bytes @@"
