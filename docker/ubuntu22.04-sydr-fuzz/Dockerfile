@@ -138,13 +138,8 @@ RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
     pip3 install . && cd .. && rm -rf python-afl
 
 # Install Go
-RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
-    chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.24.4 && \
-    rm -rf ./installer_linux
-
-ENV GOPATH=/root/go
-ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
+RUN wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
+ENV PATH="$PATH:/usr/local/go/bin"
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
@@ -244,7 +239,7 @@ RUN pyenv exec python3 -m pip install wllvm watchdog scipy numpy concurrencytest
 
 ENV PATH=$PATH:/fuzz/sydr/difuzz
 
-RUN apt-get install -y libboost-all-dev
+RUN apt-get install -y libtbb2-dev
 
 # Install LLVM-20 to support new profraw formats (Rust has LLVM-20 now)
 RUN ./llvm.sh 20 all
