@@ -180,3 +180,7 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 WORKDIR /
+
+# Install Sentinel driver
+RUN wget --user="xrtSXt8rMydRiFf" --password="" --content-disposition https://nextcloud.ispras.ru/public.php/webdav/Linux/aksusbd_10.11-1_amd64.deb && \
+    dpkg -i aksusbd_10.11-1_amd64.deb

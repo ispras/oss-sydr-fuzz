@@ -246,3 +246,7 @@ RUN apt-get install -y libtbb2-dev
 
 # Install LLVM-20 to support new profraw formats (Rust has LLVM-20 now)
 RUN ./llvm.sh 20 all
+
+# Install Sentinel driver
+RUN wget --user="xrtSXt8rMydRiFf" --password="" --content-disposition https://nextcloud.ispras.ru/public.php/webdav/Linux/aksusbd_10.11-1_amd64.deb && \
+    dpkg -i aksusbd_10.11-1_amd64.deb
