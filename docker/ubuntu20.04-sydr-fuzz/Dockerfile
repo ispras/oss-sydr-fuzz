@@ -95,7 +95,7 @@ RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
 # Install Go
 RUN wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
 ENV GOPATH=/root/go
-ENV PATH="$PATH:$GOPATH/bin:/root/go"
+ENV PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
 RUN rm go1.25.3.linux-amd64.tar.gz
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
