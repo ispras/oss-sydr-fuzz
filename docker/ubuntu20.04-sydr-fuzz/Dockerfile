@@ -93,13 +93,10 @@ RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
     pip3 install . && cd .. && rm -rf python-afl
 
 # Install Go
-RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
-    chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.24.4 && \
-    rm -rf ./installer_linux
-
-ENV GOPATH=/root/go
-ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
+RUN wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
+ENV GOPATH=/usr/local/go
+ENV PATH="$PATH:$GOPATH/bin:/root/go"
+RUN rm go1.25.3.linux-amd64.tar.gz
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 

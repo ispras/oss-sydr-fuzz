@@ -31,6 +31,7 @@ RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-thread
     && apt install -y ./libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb
 RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb \
     && apt install -y ./libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb
+RUN rm ./libboost-*.deb
 
 # Install LLVM-18
 RUN wget https://apt.llvm.org/llvm.sh
@@ -139,7 +140,9 @@ RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
 
 # Install Go
 RUN wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
-ENV PATH="$PATH:/usr/local/go/bin"
+ENV GOPATH=/usr/local/go
+ENV PATH="$PATH:$GOPATH/bin:/root/go"
+RUN rm go1.25.3.linux-amd64.tar.gz
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
