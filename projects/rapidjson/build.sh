@@ -18,24 +18,20 @@
 
 CXX="clang++"
 CXXFLAGS="-g -DASAN -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address "
-$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp -o /rapidjson-fuzzer/rapidjson-fuzzer
+$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp -o /parser_fuzz
 
 CXX="afl-clang-lto++"
-CXXFLAGS="-g -DASAN -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address"
-$CXX $CXXFLAGS -o /afl.o -c /afl.cc
-$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp /afl.o -o /rapidjson-afl/rapidjson-afl
+CXXFLAGS="-g -DASAN -fsanitize=fuzzer,address,integer,bounds,null,undefined,float-divide-by-zero -fsanitize-recover=address"
+$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp -o /parser_afl
+
+clang -c /opt/StandaloneFuzzTargetMain.c -o /StandaloneFuzzTargetMain.o
 
 CXX="clang++"
 CFLAGS="-g"
 CXXFLAGS="-g"
-$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include rapidjson-sydr.cpp -o /rapidjson-sydr/rapidjson-sydr
+$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp /StandaloneFuzzTargetMain.o -o /parser_sydr
 
 CXX="clang++"
 CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
 CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include rapidjson-sydr.cpp -o /rapidjson-cov/rapidjson-cov
-# Disabled because compiliation fails for reasons unknown.
-# Using the exact same compile commands locally does not fail.
-# Try enabling again in the future.
-#cd $SRC/fuzzing-headers/tests
-#$CXX $CXXFLAGS -std=c++2a -D_GLIBCXX_DEBUG -I $SRC/rapidjson/include -I ../include rapidjson.cpp $LIB_FUZZING_ENGINE -o $OUT/fuzzer-extended
+$CXX $CXXFLAGS -D_GLIBCXX_DEBUG -I /rapidjson/include fuzzer.cpp /StandaloneFuzzTargetMain.o -o /parser_cov

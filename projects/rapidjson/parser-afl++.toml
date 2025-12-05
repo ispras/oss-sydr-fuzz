@@ -15,12 +15,14 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/rapidjson-sydr/rapidjson-sydr @@"
+args = "--wait-jobs -s 90"
+target = "/parser_sydr @@"
+jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus"
-target = "/rapidjson-afl/rapidjson-afl"
+target = "/parser_afl"
+jobs = 4
 
 [cov]
-target = "/rapidjson-cov/rapidjson-cov @@"
+target = "/parser_cov @@"
