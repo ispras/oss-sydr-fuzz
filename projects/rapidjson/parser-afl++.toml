@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 args = "-t 60000 -i /corpus"
-target = "/parser_afl"
+target = "/parser_afl @@"
 jobs = 4
 
 [cov]
