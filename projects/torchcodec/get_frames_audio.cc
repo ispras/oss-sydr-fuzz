@@ -48,11 +48,12 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         options.numChannels = 1;
         options.sampleRate = 1;
 
+        static const auto cpu_key = facebook::torchcodec::DeviceInterfaceKey{torch::kCPU, ""};
         static bool g_cpu = facebook::torchcodec::registerDeviceInterface(
-        torch::kCPU,
-        [](const torch::Device& device) { return new facebook::torchcodec::CpuDeviceInterface(device); });
-
-        decoder.addAudioStream(0, options);
+          cpu_key,
+         [](const torch::Device& device) { return new facebook::torchcodec::CpuDeviceInterface(device); });
+       
+       	decoder.addAudioStream(0, options);
             
         auto out = decoder.getFramesPlayedInRangeAudio(0);
 
@@ -62,6 +63,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
     } catch (const std::runtime_error &e) {
 
+    } catch (const std::invalid_argument &e){
+    
     }
 
     unlink(video_path);

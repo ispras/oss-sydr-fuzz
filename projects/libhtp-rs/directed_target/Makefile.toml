@@ -1,0 +1,168 @@
+# Copyright 2025 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+# Variables
+[env]
+PROJECT_DIR = { script = ["pwd"], condition = { env_not_set = ["PROJECT_DIR"] } }
+EXAMPLE_DIR = { value = "/libhtp-rs/libafl_difuzz" }
+DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
+DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
+RUST_DIR = { value = "${DIFUZZ_DIR_ABS}/rust-difuzz/bin", condition = { env_not_set = ["RUST_DIR"] } }
+RUST_DIR_ABS = { script = ["realpath ${RUST_DIR}"] }
+OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
+OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
+DIFUZZ_ARGS = { value = "--weights reverse -o difuzz -j8 --analyse-icalls strong --no-check-src", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
+  "CARGO_TARGET_DIR",
+] } }
+PROFILE = { value = "release", condition = { env_not_set = ["PROFILE"] } }
+FUZZER = '${DIFUZZ_DIR_ABS}/libafl_difuzz'
+ETS_SHARED_MANAGER = '${DIFUZZ_DIR_ABS}/ETSSharedManager'
+TARGET = '${OUT_DIR_ABS}/difuzz_target_libhtp'
+
+[tasks.unsupported]
+script_runner = "@shell"
+script = '''
+echo "Cargo-make not integrated yet on this"
+'''
+
+[tasks.debug]
+linux_alias = "debug_unix"
+mac_alias = "debug_unix"
+windows_alias = "unsupported"
+
+[tasks.debug_unix]
+script_runner = "@shell"
+script = '''
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+cargo build
+mv ${EXAMPLE_DIR}/target/debug/sydr_htp_rs ${OUT_DIR_ABS}/
+'''
+
+[tasks.casr]
+linux_alias = "casr_unix"
+mac_alias = "casr_unix"
+windows_alias = "unsupported"
+
+[tasks.casr_unix]
+script_runner = "@shell"
+script = '''
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+RUSTFLAGS="-C overflow-checks=on -C debug-assertions=on -C panic=abort" cargo build
+mv ${EXAMPLE_DIR}/target/debug/sydr_htp_rs ${OUT_DIR_ABS}/casr_htp_rs
+'''
+
+[tasks.coverage]
+linux_alias = "coverage_unix"
+mac_alias = "coverage_unix"
+windows_alias = "unsupported"
+
+[tasks.coverage_unix]
+script_runner = "@shell"
+script = '''
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+sed -i '1iextern crate libc;' ${EXAMPLE_DIR}/targets/sydr_htp.rs
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+cargo add libc
+RUSTFLAGS="-C instrument-coverage" cargo build
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+mv ${EXAMPLE_DIR}/target/debug/sydr_htp_rs ${OUT_DIR_ABS}/cov_htp_rs
+'''
+
+[tasks.difuzz]
+linux_alias = "difuzz_unix"
+mac_alias = "difuzz_unix"
+windows_alias = "unsupported"
+
+[tasks.difuzz_unix]
+script_runner = "@shell"
+script = '''
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+
+cd ${EXAMPLE_DIR}
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+cargo clean
+export RUSTC=${RUST_DIR_ABS}/libafl_rustc
+RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_htp_rs
+llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_htp_rs.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
+${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_htp::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_htp_rs.bc -e ${OUT_DIR_ABS}/ets_htp.toml ${DIFUZZ_ARGS}
+'''
+
+[tasks.target]
+linux_alias = "target_unix"
+mac_alias = "target_unix"
+windows_alias = "unsupported"
+
+[tasks.target_unix]
+script_runner = "@shell"
+script = '''
+cd ${EXAMPLE_DIR}
+export RUSTC=${RUST_DIR_ABS}/libafl_rustc
+export LIBAFL_PROJECT_DIR="libhtp-rs"
+${ETS_SHARED_MANAGER} -a remove -n htp
+${ETS_SHARED_MANAGER} -a create -n htp
+${ETS_SHARED_MANAGER} -a parse -n htp -i ${OUT_DIR_ABS}/ets_htp.toml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+
+export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
+export LIBAFL_SHARED_NAME="htp"
+cargo clean
+cargo build --bin sydr_htp_rs
+mv ${EXAMPLE_DIR}/target/debug/sydr_htp_rs ${TARGET}
+
+${ETS_SHARED_MANAGER} -a dump -n htp -o ${OUT_DIR_ABS}/ets_htp.toml
+${ETS_SHARED_MANAGER} -a remove -n htp
+
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l rust -f ${EXAMPLE_DIR}/targets/sydr_htp.rs
+'''
+dependencies = ["difuzz"]
+
+# Run the fuzzer
+[tasks.run]
+linux_alias = "run_unix"
+mac_alias = "run_unix"
+windows_alias = "unsupported"
+
+[tasks.run_unix]
+script_runner = "@shell"
+script = '''
+LIBAFL_DEBUG_OUTPUT=1 ${FUZZER} -- ${TARGET} @@
+'''
+dependencies = ["target"]
+
+# Clean all built artifacts
+[tasks.cleanall]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+rm -rf corpus crashes target ${CARGO_TARGET_DIR} difuzz difuzz_target_* debug_* coverage_* Cargo.lock ets.toml fuzzer.log target.log .cur_input* libhtp-rs
+pkill difuzz_ || true
+'''
+
+[tasks.all]
+linux_alias = "all_unix"
+mac_alias = "all_unix"
+windows_alias = "unsupported"
+
+[tasks.all_unix]
+dependencies = ["target", "debug", "coverage", "casr"]

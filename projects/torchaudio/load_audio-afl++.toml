@@ -21,7 +21,7 @@ timeout = 2700
 
 [aflplusplus]
 target = "/load_audio_afl @@"
-args = "-i /wav_corpus/ -t 5000+"
+args = "-i /wav_corpus/ -t 5000"
 [aflplusplus.env]
 ASAN_OPTIONS = "detect_leaks=0"
 

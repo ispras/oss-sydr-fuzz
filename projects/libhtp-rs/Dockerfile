@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,11 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
+
+RUN rustup override set nightly-2025-05-01
+RUN cargo afl config --build
 
 RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 
@@ -25,14 +28,10 @@ RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
 
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
-RUN mkdir -p /libhtp-rs/afl
-
 WORKDIR /
 
 COPY build.sh http.dict ./
 COPY afl/ /libhtp-rs/afl/
 COPY sydr_and_cover/ /libhtp-rs/sydr_and_cover/
 
-RUN bash build.sh
-
-ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH
+RUN ./build.sh

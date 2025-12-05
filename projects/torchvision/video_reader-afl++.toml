@@ -21,7 +21,7 @@ timeout = 2700
 
 [aflplusplus]
 target = "/video_reader_afl @@"
-args = "-i /mp4_corpus/ -t 5000+"
+args = "-i /mp4_corpus/ -t 5000"
 jobs = 3
 [aflplusplus.env]
 AFL_MAP_SIZE = "100000000"

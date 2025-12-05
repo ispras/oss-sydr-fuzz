@@ -31,11 +31,11 @@ RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
 COPY fuzz.go build.sh ./
 
 # Move target and additional libs to main project.
-RUN cp -r /root/.go/src/image/png . && \
-    cp -r /root/.go/src/image/jpeg . && \
-    cp -r /root/.go/src/image/gif . && \
-    cp -r /root/.go/src/internal/byteorder . && \
-    cp -r /root/.go/src/image/internal/imageutil .
+RUN cp -r /usr/local/go/src/image/png . && \
+    cp -r /usr/local/go/src/image/jpeg . && \
+    cp -r /usr/local/go/src/image/gif . && \
+    cp -r /usr/local/go/src/internal/byteorder . && \
+    cp -r /usr/local/go/src/image/internal/imageutil .
 
 RUN mkdir cmd/sydr_webp && \
     mkdir cmd/sydr_tiff && \

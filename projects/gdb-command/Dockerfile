@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,8 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
-
-MAINTAINER Andrey Fedotov
-
-RUN apt-get update && \
-    apt-get -y install curl
 
 # Copy build script.
 COPY build_cov.sh build_fuzz.sh build_sydr.sh /
@@ -31,12 +26,10 @@ RUN git clone https://github.com/anfedotoff/gdb-command.git
 WORKDIR /gdb-command
 
 # Checkout specified commit. It could be updated later.
-RUN git checkout 53bde8239de16726fe19e819979828773a5fbbbe
+RUN git checkout 95db52c2358e4b43db8529e83e5b2d20c140b258
 
 # Build fuzz targets.
 RUN ../build_fuzz.sh
-
-RUN rm -rf fuzz/target
 
 COPY build-config/Cargo.toml fuzz/
 
@@ -45,10 +38,12 @@ COPY sydr_*.rs fuzz/fuzz_targets/
 WORKDIR fuzz
 
 # Build sydr targets.
-RUN /build_sydr.sh
+RUN cargo clean && /build_sydr.sh
 
 # Build cov targets.
 RUN cargo clean && /build_cov.sh
-WORKDIR /
 
-ENV PATH=/root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/:$PATH
+# Create corpus.
+RUN mkdir /corpus && echo "aaaaaaaaaaaaaaaaaaaa" > /corpus/in
+
+WORKDIR /

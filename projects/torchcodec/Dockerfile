@@ -35,11 +35,14 @@ RUN cd /pytorch && \
     sed -i '/^cmake$/d' requirements.txt && \
     pip install -r requirements.txt
 
+COPY patch_exceptions.sh /
+RUN ./patch_exceptions.sh
+
 COPY torchcodec.patch /
-RUN git clone https://github.com/pytorch/torchcodec.git codec
+RUN git clone https://github.com/meta-pytorch/torchcodec.git codec
 RUN cd /codec && \
-    git checkout 5becf10ebd48818a65d1b7a88b957f3b3b8cabef && \
-    git apply /torchcodec.patch 
+    git checkout 4b5422cadffa658fd92510d7ae65cc009f49ebba && \ 
+    git apply /torchcodec.patch
 
 # Install OpenCV
 RUN cd / && mkdir cv && cd cv/ && \

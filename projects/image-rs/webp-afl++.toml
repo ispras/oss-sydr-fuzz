@@ -19,7 +19,7 @@ target = "/sydr_script_webp @@"
 
 [aflplusplus]
 target = "/fuzz_webp"
-args = "-t 2000+ -i /corpus_webp"
+args = "-t 2000 -i /corpus_webp"
 
 [cov]
 target = "/cov_script_webp @@"

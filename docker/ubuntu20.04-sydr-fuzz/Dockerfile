@@ -201,3 +201,7 @@ RUN wget -O /usr/local/lib/jacocoagent.jar \
     https://github.com/fuzzitdev/javafuzz/raw/master/javafuzz-maven-plugin/src/main/resources/jacocoagent-exp.jar
 
 WORKDIR /
+
+# Install Sentinel driver
+RUN wget --user="xrtSXt8rMydRiFf" --password="" --content-disposition https://nextcloud.ispras.ru/public.php/webdav/Linux/aksusbd_10.11-1_amd64.deb && \
+    dpkg -i aksusbd_10.11-1_amd64.deb
