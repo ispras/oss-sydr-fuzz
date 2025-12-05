@@ -1,4 +1,4 @@
-# Copyright 2022 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90"
-target = "/parser_sydr @@"
-jobs = 2
+target = "/load_sydr @@"
+jobs = 1
 
 [aflplusplus]
-args = "-t 60000 -i /corpus"
-target = "/parser_afl @@"
-jobs = 4
+args = "-i /corpus -t 300000"
+target = "/load_afl @@"
+jobs = 1
 
 [cov]
-target = "/parser_cov @@"
+target = "/load_cov @@"
