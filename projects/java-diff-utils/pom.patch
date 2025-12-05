@@ -1,0 +1,32 @@
+diff --git a/pom.xml b/pom.xml
+index 52b653d..5ec6d25 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -46,7 +46,14 @@
+             <email>t.warneke@gmx.net</email>
+         </developer>
+     </developers>
+-	
++	<dependencies>
++        <dependency>
++            <groupId>dev.fuzzit.javafuzz</groupId>
++            <artifactId>core</artifactId>
++            <version>1.23-SNAPSHOT</version>
++            <scope>test</scope>
++        </dependency>
++    </dependencies>
+     <licenses>
+         <license>
+             <name>The Apache Software License, Version 2.0</name>
+@@ -78,6 +85,11 @@
+     </dependencyManagement>
+     <build>
+         <plugins>
++            <plugin>
++                <groupId>dev.fuzzit.javafuzz</groupId>
++                <artifactId>javafuzz-maven-plugin</artifactId>
++                <version>1.22</version>
++            </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-release-plugin</artifactId>
