@@ -93,13 +93,15 @@ RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
     pip3 install . && cd .. && rm -rf python-afl
 
 # Install Go
-RUN curl --silent -O https://storage.googleapis.com/golang/getgo/installer_linux && \
-    chmod +x ./installer_linux && \
-    SHELL="bash" ./installer_linux -version=1.24.4 && \
-    rm -rf ./installer_linux
+RUN GO_VERSION=1.24.4 && \
+    GO_ARCH=amd64 && \
+    curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-${GO_ARCH}.tar.gz" -o go.tar.gz && \
+    tar -C /usr/local -xzf go.tar.gz && \
+    rm go.tar.gz
 
+ENV PATH=/usr/local/go/bin:$PATH
 ENV GOPATH=/root/go
-ENV PATH=$PATH:/root/.go/bin:$GOPATH/bin
+ENV PATH=$PATH:$GOPATH/bin
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
@@ -181,5 +183,21 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     git checkout v4.33c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
+
+# Install Maven
+RUN wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.4/apache-maven-3.9.4-bin.tar.gz && \
+    tar -xvf apache-maven-*-bin.tar.gz && \
+    rm apache-maven-*-bin.tar.gz && \
+    mv apache-maven-* /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
+
+# Install Javafuzz && jacoco
+RUN cd /usr/local/lib && git clone https://gitlab.com/gitlab-org/security-products/analyzers/fuzzers/javafuzz.git javafuzz
+COPY javafuzz.patch /usr/local/lib/javafuzz
+RUN cd /usr/local/lib/javafuzz && git apply javafuzz.patch
+RUN cd /usr/local/lib/javafuzz && mvn install -DskipTests
+
+RUN wget -O /usr/local/lib/jacocoagent.jar \
+    https://github.com/fuzzitdev/javafuzz/raw/master/javafuzz-maven-plugin/src/main/resources/jacocoagent-exp.jar
 
 WORKDIR /

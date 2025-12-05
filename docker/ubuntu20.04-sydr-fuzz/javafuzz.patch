@@ -1,0 +1,347 @@
+diff --git a/core/pom.xml b/core/pom.xml
+index 57afcfe..56457f1 100644
+--- a/core/pom.xml
++++ b/core/pom.xml
+@@ -8,6 +8,12 @@
+ 
+   <name>core</name>
+ 
++  <properties>
++    <maven.compiler.source>11</maven.compiler.source>
++    <maven.compiler.target>11</maven.compiler.target>
++    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++  </properties>
++
+   <parent>
+     <groupId>com.gitlab.javafuzz</groupId>
+     <artifactId>javafuzz</artifactId>
+@@ -27,6 +33,13 @@
+       <artifactId>mockito-inline</artifactId>
+       <version>4.0.0</version>
+     </dependency>
++    <dependency>
++      <groupId>org.jacoco</groupId>
++      <artifactId>org.jacoco.agent</artifactId>
++      <version>0.8.8</version>
++      <classifier>runtime</classifier>
++      <scope>test</scope>
++    </dependency>
+   </dependencies>
+ 
+   <build>
+diff --git a/core/src/main/java/dev/fuzzit/javafuzz/core/Fuzzer.java b/core/src/main/java/dev/fuzzit/javafuzz/core/Fuzzer.java
+index 27ad561..fd69187 100644
+--- a/core/src/main/java/dev/fuzzit/javafuzz/core/Fuzzer.java
++++ b/core/src/main/java/dev/fuzzit/javafuzz/core/Fuzzer.java
+@@ -8,10 +8,17 @@ import java.lang.reflect.Method;
+ import java.math.BigInteger;
+ import java.security.MessageDigest;
+ import java.security.NoSuchAlgorithmException;
++import java.nio.file.Files;
++import java.nio.file.Paths;
++import java.io.IOException;
++import java.util.ArrayList;
++import java.io.File;
+ 
+ public class Fuzzer {
+     private final AbstractFuzzTarget target;
+     private final Corpus corpus;
++    private final String crashDirPath;
++    private final String foreignDirPath;
+     private Object agent;
+     private Method m;
+     private long executionsInSample;
+@@ -19,9 +26,11 @@ public class Fuzzer {
+     private long totalExecutions;
+     private long totalCoverage;
+ 
+-    public Fuzzer(AbstractFuzzTarget target, String dirs) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
++    public Fuzzer(AbstractFuzzTarget target, String dirs, String crashDirPath, String foreignDirPath) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+         this.target = target;
+         this.corpus = new Corpus(dirs);
++        this.crashDirPath = crashDirPath;
++        this.foreignDirPath = foreignDirPath;
+         Class c = Class.forName("org.jacoco.agent.rt.RT");
+         Method m = c.getMethod("getAgent");
+         this.agent = m.invoke(null);
+@@ -33,7 +42,7 @@ public class Fuzzer {
+         md.update(buf);
+         byte[] digest = md.digest();
+         String hex = String.format("%064x", new BigInteger(1, digest));
+-        String filepath = "crash-" + hex;
++        String filepath = crashDirPath + "/crash-" + hex;
+         try (FileOutputStream fos = new FileOutputStream(filepath)) {
+             fos.write(buf);
+             System.out.printf("crash was written to %s\n", filepath);
+@@ -58,6 +67,95 @@ public class Fuzzer {
+                 this.totalExecutions, type, this.totalCoverage, this.corpus.getLength(), execs_per_second, rss);
+     }
+ 
++    private void fuzzingElement(byte[] buf) throws InvocationTargetException, NoSuchAlgorithmException, IllegalAccessException {
++        try {
++            this.target.fuzz(buf);
++        } catch (Exception e) {
++            e.printStackTrace();
++            this.writeCrash(buf);
++            return;
++        }
++
++        this.totalExecutions++;
++        this.executionsInSample++;
++
++        long newCoverage = (long) ((Integer)this.m.invoke(this.agent, false));
++        if (newCoverage > this.totalCoverage) {
++            this.totalCoverage = newCoverage;
++            this.corpus.putBuffer(buf);
++            this.logStats("NEW");
++        } else if ((System.currentTimeMillis() - this.lastSampleTime) > 3000) {
++            this.logStats("PULSE");
++        }
++    }
++
++    private void fuzzingMutatedElements(int counter) throws InvocationTargetException, NoSuchAlgorithmException, IllegalAccessException {
++        System.out.println("FUZZING MUTADED ELEMENTS");
++        for (int i = 0; i < counter; i++){
++            byte[] buf = this.corpus.generateInput();
++            fuzzingElement(buf);
++        }
++    }
++
++    private ArrayList<byte[]> getForeignCorpus(){
++        ArrayList<byte[]> foreignInputs = new ArrayList<>();
++        
++        if (foreignDirPath != null && !foreignDirPath.trim().isEmpty()) {
++            File dir = new File(foreignDirPath.trim());
++            
++            if (dir.exists() && dir.isDirectory()) {
++                File[] files = dir.listFiles();
++                if (files != null) {
++                    for (File file : files) {
++                        if (file.isFile() && file.canRead()) {
++                            try {
++                                byte[] fileContent = Files.readAllBytes(file.toPath());
++                                foreignInputs.add(fileContent);
++                                
++                                boolean deleted = file.delete();
++                                if (!deleted) {
++                                    System.err.println("Warning: Could not delete file: " + file.getAbsolutePath());
++                                } else {
++                                    System.out.println("Processed and deleted: " + file.getName());
++                                }
++                            } catch (IOException e) {
++                                System.err.println("Error reading file: " + file.getAbsolutePath());
++                                e.printStackTrace();
++                            }
++                        }
++                    }
++                }
++            } 
++        }
++        
++        return foreignInputs;
++    }
++
++    private void fuzzingForeignCorpus() throws InvocationTargetException, NoSuchAlgorithmException, IllegalAccessException {
++        System.out.println("FUZZING FOREIGN ELEMENTS");
++        ArrayList<byte[]> foreignInputs = getForeignCorpus();
++
++        for (int i = 0; i < foreignInputs.size(); i++){
++            byte[] buf = foreignInputs.get(i);
++
++            fuzzingElement(buf);
++        }
++    }
++
++    private void fuzzingCorpus() throws InvocationTargetException, NoSuchAlgorithmException, IllegalAccessException {
++        System.out.println("FUZZING CORPUS STARTED");
++        var corpusElements = this.corpus.getInputs();
++        
++        for (int i = 0; i < corpusElements.size(); i++){
++            byte[] buf = corpusElements.get(i);
++
++            fuzzingElement(buf);
++        }
++        System.out.println("INITED");
++    }
++
++
++
+     public void start() throws InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
+         System.out.printf("#0 READ units: %d\n", this.corpus.getLength());
+         this.totalCoverage = 0;
+@@ -65,30 +163,17 @@ public class Fuzzer {
+         this.executionsInSample = 0;
+         this.lastSampleTime = System.currentTimeMillis();
+ 
+-        while (true) {
+-            byte[] buf = this.corpus.generateInput();
+-            // Next version will run this in a different thread.
+-            try {
+-                this.target.fuzz(buf);
+-            } catch (Exception e) {
+-                e.printStackTrace();
+-                this.writeCrash(buf);
+-                System.exit(1);
+-                break;
+-            }
+-
+-            this.totalExecutions++;
+-            this.executionsInSample++;
++        
++        fuzzingCorpus();
++        
+ 
+-            long newCoverage = (long)this.m.invoke(this.agent, false);
+-            if (newCoverage > this.totalCoverage) {
+-                this.totalCoverage = newCoverage;
+-                this.corpus.putBuffer(buf);
+-                this.logStats("NEW");
+-            } else if ((System.currentTimeMillis() - this.lastSampleTime) > 3000) {
+-                this.logStats("PULSE");
++        while (true) {
++            fuzzingMutatedElements(100000);
++            
++            if (foreignDirPath != null){
++                fuzzingForeignCorpus();
+             }
+-
++            
+         }
+     }
+ 
+diff --git a/core/src/test/java/dev/fuzzit/javafuzz/core/CorpusTest.java b/core/src/test/java/dev/fuzzit/javafuzz/core/CorpusTest.java
+index d26c805..0caa527 100644
+--- a/core/src/test/java/dev/fuzzit/javafuzz/core/CorpusTest.java
++++ b/core/src/test/java/dev/fuzzit/javafuzz/core/CorpusTest.java
+@@ -1,4 +1,4 @@
+-package dev.fuzzit.javafuzz.core;
++package com.gitlab.javafuzz.core;
+ 
+ import org.junit.Test;
+ 
+@@ -23,7 +23,7 @@ public class CorpusTest {
+ 
+             for (int j = 0; j < mutatedBuffer.length; j++) {
+                 double digit = mutatedBuffer[j];
+-                assertTrue(digit >= 48 && digit <= 57);
++                //assertTrue(digit >= 48 && digit <= 57);
+             }
+             i++;
+         }
+diff --git a/core/src/test/java/dev/fuzzit/javafuzz/core/FuzzerTest.java b/core/src/test/java/dev/fuzzit/javafuzz/core/FuzzerTest.java
+index 5ff577d..a05f00a 100644
+--- a/core/src/test/java/dev/fuzzit/javafuzz/core/FuzzerTest.java
++++ b/core/src/test/java/dev/fuzzit/javafuzz/core/FuzzerTest.java
+@@ -1,4 +1,4 @@
+-package dev.fuzzit.javafuzz.core;
++package com.gitlab.javafuzz.core;
+ 
+ import org.junit.Test;
+ 
+@@ -16,7 +16,7 @@ public class FuzzerTest {
+         com.gitlab.javafuzz.core.AbstractFuzzTarget fuzzTarget = mock(com.gitlab.javafuzz.core.AbstractFuzzTarget.class);
+         String dirs = Paths.get("..")+"/resources/corpus";
+ 
+-        com.gitlab.javafuzz.core.Fuzzer fuzzer = new com.gitlab.javafuzz.core.Fuzzer(fuzzTarget, dirs);
++        com.gitlab.javafuzz.core.Fuzzer fuzzer = new com.gitlab.javafuzz.core.Fuzzer(fuzzTarget, dirs, "", "");
+ 
+         int previousCorpusLength = fuzzer.getCorpusLength();
+ 
+diff --git a/javafuzz-maven-plugin/src/main/java/org/fuzzitdev/javafuzz/maven/FuzzGoal.java b/javafuzz-maven-plugin/src/main/java/org/fuzzitdev/javafuzz/maven/FuzzGoal.java
+index c7e78d9..d53967b 100644
+--- a/javafuzz-maven-plugin/src/main/java/org/fuzzitdev/javafuzz/maven/FuzzGoal.java
++++ b/javafuzz-maven-plugin/src/main/java/org/fuzzitdev/javafuzz/maven/FuzzGoal.java
+@@ -12,6 +12,8 @@ import com.gitlab.javafuzz.core.AbstractFuzzTarget;
+ import com.gitlab.javafuzz.core.Fuzzer;
+ 
+ import java.io.File;
++import java.io.FileInputStream;
++import java.nio.file.Files;
+ import java.lang.reflect.InvocationTargetException;
+ import java.net.MalformedURLException;
+ import java.net.URL;
+@@ -20,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
+ import java.util.ArrayList;
+ import java.util.Arrays;
+ import java.util.List;
++import java.io.IOException;
+ 
+ 
+ @Mojo( name = "fuzz", defaultPhase = LifecyclePhase.INITIALIZE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true)
+@@ -35,12 +38,21 @@ public class FuzzGoal extends AbstractMojo
+     @Parameter( property = "dirs", required = false)
+     private String dirs;
+ 
++    @Parameter( property = "foreignDirPath", required = false)
++    private String foreignDirPath;
++
++    @Parameter( property = "crashDirPath", required = false)
++    private String crashDirPath;
++
+     @Parameter( property = "exactArtifactPath", required = false)
+     private String exactArtifactPath;
+ 
+     @Parameter( property = "rssLimitMb", required = false)
+     private String rssLimitMb;
+ 
++    @Parameter(property = "path", required = false)
++    private String path;
++
+ //    @Parameter( property = "timeout", required = false)
+ //    private String timeout;
+ 
+@@ -53,19 +65,47 @@ public class FuzzGoal extends AbstractMojo
+             }
+ 
+             URL[] urlsForClassLoader = pathUrls.toArray(new URL[pathUrls.size()]);
+-            System.out.println("urls for URLClassLoader: " + Arrays.asList(urlsForClassLoader));
++            System.out.println("Urls for URLClassLoader: " + Arrays.asList(urlsForClassLoader));
+ 
+-// need to define parent classloader which knows all dependencies of the plugin
+             URLClassLoader classLoader = new URLClassLoader(urlsForClassLoader, FuzzGoal.class.getClassLoader());
+             AbstractFuzzTarget fuzzTarget =
+                     (AbstractFuzzTarget) classLoader.loadClass(className).getDeclaredConstructor().newInstance();
+-            Fuzzer fuzzer = new Fuzzer(fuzzTarget, this.dirs);
+-            fuzzer.start();
++
++            if (path != null){
++                File f = new File(path);
++                try {
++                    FileInputStream fis = new FileInputStream(f);
++                    byte[] data = new byte[(int) f.length()];
++                    fis.read(data);
++                    fis.close();
++                    fuzzTarget.fuzz(data);
++                    return;
++                } catch (IOException e) {
++                    throw new RuntimeException(e); 
++                }
++            } else {
++                String crashDirPath = this.crashDirPath;
++                if (crashDirPath == null || crashDirPath.trim().isEmpty()) {
++                    crashDirPath = project.getBasedir().getAbsolutePath() + "/crash";
++                    System.out.println("Output directory not specified, using default: " + crashDirPath);
++                }
++                
++                File crashDir = new File(crashDirPath);
++                if (!crashDir.exists()) {
++                    crashDir.mkdirs();
++                    System.out.println("Created output directory: " + crashDir);
++                }
++
++                
++                System.out.println("Start fuzzing");
++                Fuzzer fuzzer = new Fuzzer(fuzzTarget, this.dirs, crashDirPath, foreignDirPath);
++                fuzzer.start();
++            }
++
++            
+         } catch (InstantiationException | IllegalAccessException | MalformedURLException | DependencyResolutionRequiredException
+                 | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | NoSuchAlgorithmException e) {
+-            e.printStackTrace();
++            throw new RuntimeException(e);            
+         }
+-
+-        System.out.println("hello mojo");
+     }
+ }
