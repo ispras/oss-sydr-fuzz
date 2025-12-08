@@ -1,32 +1,92 @@
 diff --git a/pom.xml b/pom.xml
-index 52b653d..5ec6d25 100644
+index 52b653d..5f8790c 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -46,7 +46,14 @@
+@@ -46,7 +46,6 @@
              <email>t.warneke@gmx.net</email>
          </developer>
      </developers>
 -	
-+	<dependencies>
-+        <dependency>
-+            <groupId>dev.fuzzit.javafuzz</groupId>
-+            <artifactId>core</artifactId>
-+            <version>1.23-SNAPSHOT</version>
-+            <scope>test</scope>
-+        </dependency>
-+    </dependencies>
      <licenses>
          <license>
              <name>The Apache Software License, Version 2.0</name>
-@@ -78,6 +85,11 @@
+@@ -77,7 +76,53 @@
+         </dependencies>
      </dependencyManagement>
      <build>
++        <pluginManagement>
++            <plugins>
++                <plugin>
++                    <groupId>com.gitlab.javafuzz</groupId>
++                    <artifactId>javafuzz-maven-plugin</artifactId>
++                    <version>1.26</version>
++                </plugin>
++            </plugins>
++        </pluginManagement>
          <plugins>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-shade-plugin</artifactId>
++                <version>3.6.0</version>
++                <executions>
++                    <execution>
++                        <id>DiffUtilsFuzzer-fuzzer</id>
++                        <phase>package</phase>
++                        <goals>
++                        <goal>shade</goal>
++                        </goals>
++                        <configuration>
++                        <finalName>DiffUtilsFuzzer</finalName> 
++                        <transformers>
++                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
++                            <mainClass>com.github.difflib.DiffUtilsFuzzerJF</mainClass>
++                            </transformer>
++                        </transformers>
++                        <filters>
++                            <filter>
++                            <artifact>*:*</artifact>
++                            <excludes>
++                                <exclude>META-INF/*.SF</exclude>
++                                <exclude>META-INF/*.DSA</exclude>
++                                <exclude>META-INF/*.RSA</exclude>
++                            </excludes>
++                            </filter>
++                        </filters>
++                        </configuration>
++                    </execution>
++                </executions>          
++            </plugin> 
 +            <plugin>
 +                <groupId>dev.fuzzit.javafuzz</groupId>
 +                <artifactId>javafuzz-maven-plugin</artifactId>
-+                <version>1.22</version>
++                <version>1.26</version>
 +            </plugin>
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-release-plugin</artifactId>
+@@ -242,4 +287,25 @@
+             </build>
+         </profile>
+     </profiles>
++
++    <dependencies>
++    <dependency>
++      <groupId>com.gitlab.javafuzz</groupId>
++      <artifactId>javafuzz-maven-plugin</artifactId>
++      <version>1.26</version>
++    </dependency>
++    
++    <dependency>
++      <groupId>com.google.code.gson</groupId>
++      <artifactId>gson</artifactId>
++      <version>2.10.1</version>
++    </dependency>
++
++    <dependency>
++      <groupId>org.jacoco</groupId>
++      <artifactId>org.jacoco.agent</artifactId>
++      <version>0.8.8</version>
++      <scope>runtime</scope>
++    </dependency>   
++  </dependencies>
+ </project>

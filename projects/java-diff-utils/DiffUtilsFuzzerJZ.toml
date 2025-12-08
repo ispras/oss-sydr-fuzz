@@ -15,5 +15,5 @@
 ################################################################################
 
 [jazzer]
-target_class = "DiffUtilsFuzzer"
+target_class = "DiffUtilsFuzzerJZ"
 args = "--cp=/out/:/out/java-diff-utils.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 /corpus"

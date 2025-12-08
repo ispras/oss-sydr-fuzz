@@ -17,8 +17,6 @@
 SRC=/src
 OUT=/out
 
-cd /javafuzz
-mvn install
 cd /java-diff-utils
 
 # Build java-diff-utils
@@ -45,8 +43,6 @@ do
   javac -cp $BUILD_CLASSPATH $fuzzer
   cp $SRC/$fuzzer_basename.class $OUT/
 done
-
-
 
 cd /
 
