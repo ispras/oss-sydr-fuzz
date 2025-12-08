@@ -1,0 +1,136 @@
+diff --git a/pom.xml b/pom.xml
+index 0d7082b..b49145d 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ 
+   <modelVersion>4.0.0</modelVersion>
+ 
+@@ -86,10 +87,96 @@ encoding and make it easier to embed your JSON in HTML and XML.
+           <artifactId>sonar-maven-plugin</artifactId>
+           <version>3.7.0.1746</version>
+         </plugin>
++        <plugin>
++          <groupId>com.gitlab.javafuzz</groupId>
++          <artifactId>javafuzz-maven-plugin</artifactId>
++          <version>1.26</version>
++        </plugin>
+       </plugins>
+     </pluginManagement>
+-
+     <plugins>
++      <plugin>
++        <groupId>org.apache.maven.plugins</groupId>
++        <artifactId>maven-shade-plugin</artifactId>
++        <version>3.6.0</version>
++        <executions>
++          <execution>
++            <id>denylist-fuzzer</id>
++            <phase>package</phase>
++            <goals>
++              <goal>shade</goal>
++            </goals>
++            <configuration>
++              <finalName>denylist-fuzzer</finalName> 
++              <transformers>
++                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
++                  <mainClass>com.google.json.DenylistFuzzerJF</mainClass>
++                </transformer>
++              </transformers>
++              <filters>
++                <filter>
++                  <artifact>*:*</artifact>
++                  <excludes>
++                    <exclude>META-INF/*.SF</exclude>
++                    <exclude>META-INF/*.DSA</exclude>
++                    <exclude>META-INF/*.RSA</exclude>
++                  </excludes>
++                </filter>
++              </filters>
++            </configuration>
++          </execution>
++          <execution>
++            <id>idenpotence-fuzzer</id>
++            <phase>package</phase>
++            <goals>
++              <goal>shade</goal>
++            </goals>
++            <configuration>
++              <finalName>idenpotence-fuzzer</finalName> 
++              <transformers>
++                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
++                  <mainClass>com.google.json.IdempotenceFuzzerJF</mainClass>
++                </transformer>
++              </transformers>
++              <filters>
++                <filter>
++                  <artifact>*:*</artifact>
++                  <excludes>
++                    <exclude>META-INF/*.SF</exclude>
++                    <exclude>META-INF/*.DSA</exclude>
++                    <exclude>META-INF/*.RSA</exclude>
++                  </excludes>
++                </filter>
++              </filters>
++            </configuration>
++          </execution>
++          <execution>
++            <id>valid-json-fuzzer</id>
++            <phase>package</phase>
++            <goals>
++              <goal>shade</goal>
++            </goals>
++            <configuration>
++              <finalName>valid-json-fuzzer</finalName> 
++              <transformers>
++                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
++                  <mainClass>com.google.json.ValidJsonFuzzerJF</mainClass>
++                </transformer>
++              </transformers>
++              <filters>
++                <filter>
++                  <artifact>*:*</artifact>
++                  <excludes>
++                    <exclude>META-INF/*.SF</exclude>
++                    <exclude>META-INF/*.DSA</exclude>
++                    <exclude>META-INF/*.RSA</exclude>
++                  </excludes>
++                </filter>
++              </filters>
++            </configuration>
++          </execution>
++        </executions>          
++      </plugin>
+       <plugin>
+         <groupId>org.sonatype.plugins</groupId>
+         <artifactId>nexus-staging-maven-plugin</artifactId>
+@@ -198,6 +285,25 @@ encoding and make it easier to embed your JSON in HTML and XML.
+   </mailingLists>
+ 
+   <dependencies>
++    <dependency>
++      <groupId>com.gitlab.javafuzz</groupId>
++      <artifactId>javafuzz-maven-plugin</artifactId>
++      <version>1.26</version>
++    </dependency>
++    
++    <dependency>
++      <groupId>com.google.code.gson</groupId>
++      <artifactId>gson</artifactId>
++      <version>2.10.1</version>
++    </dependency>
++
++    <dependency>
++      <groupId>org.jacoco</groupId>
++      <artifactId>org.jacoco.agent</artifactId>
++      <version>0.8.8</version>
++      <scope>runtime</scope>
++    </dependency>   
++
+     <dependency>
+       <groupId>com.google.code.findbugs</groupId>
+       <artifactId>jsr305</artifactId>
