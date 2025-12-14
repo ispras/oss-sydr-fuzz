@@ -18,39 +18,27 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-# Set author of this docker container.
-MAINTAINER Andrey Fedotov
-
-# Install dependencies for build and analysis.
-RUN apt-get update && \
-    apt-get -y install autoconf automake libtool zip
-
 # Clone target from github.
-RUN git clone  https://github.com/Tencent/rapidjson.git rapidjson
-RUN git clone  https://github.com/guidovranken/rapidjson-fuzzers.git rapidjson-fuzzers
-RUN git clone  https://github.com/guidovranken/fuzzing-headers.git
+RUN git clone https://github.com/Tencent/rapidjson.git /rapidjson
+
+WORKDIR /rapidjson
 
 # Fix commit. It could be updated.
-RUN cd rapidjson && git checkout 4d6cb08189cf7336821f04090b612baa2ca6a90d && cd /
-
-RUN mkdir /rapidjson-sydr && mkdir /rapidjson-fuzzer && mkdir /rapidjson-afl && \
-    mkdir /rapidjson-cov && mkdir corpus
-
-WORKDIR rapidjson-fuzzers
-
-# Copy modified build scripts for fuzz targets.
-COPY ./build.sh .
+RUN git checkout 24b5e7a8b27f42fa16b96fc70aade9106cf7102f 
 
 # Copy target for sydr
-COPY ./rapidjson-sydr.cpp .
-
-COPY afl.cc /
+COPY fuzzer.cpp build.sh .
 
 #  Build targets.
 RUN ./build.sh
 
-WORKDIR /corpus
+WORKDIR /
 
-RUN unzip /rapidjson-fuzzers/fuzzer_seed_corpus.zip
+# Prepare corpus
+RUN mkdir /corpus
+RUN git clone https://github.com/dvyukov/go-fuzz-corpus.git && \
+    cp /go-fuzz-corpus/json/corpus/* /corpus/ && \
+    rm -rf /go-fuzz-corpus
+RUN find /rapidjson -name "*.json" | xargs -I {} cp {} /corpus
 
-WORKDIR ..
+

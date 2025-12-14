@@ -1,4 +1,5 @@
-# Copyright 2022 ISP RAS
+# Copyright 2025 Google Inc.
+# Modifications copyright (C) 2022 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +15,23 @@
 #
 ################################################################################
 
-[sydr]
-args = "--wait-jobs -s 90"
-target = "/parser_sydr @@"
-jobs = 2
+ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+FROM $BASE_IMAGE
 
-[aflplusplus]
-args = "-t 60000 -i /corpus"
-target = "/parser_afl @@"
-jobs = 4
+RUN git clone https://github.com/Samsung/rlottie.git
 
-[cov]
-target = "/parser_cov @@"
+WORKDIR /rlottie
+
+RUN git checkout 671c561130ead1c6e44805a7ec1263573a3440fd
+
+COPY build.sh *_fuzz.cpp ./
+
+RUN TARGET="fuzz" ./build.sh
+RUN TARGET="afl" ./build.sh
+RUN TARGET="sydr" ./build.sh
+RUN TARGET="cov" ./build.sh
+
+WORKDIR /
+
+RUN mkdir /corpus && \
+    find /rlottie -name "*.json" -exec cp {} /corpus/ \;

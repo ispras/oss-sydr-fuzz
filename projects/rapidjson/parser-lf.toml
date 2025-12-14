@@ -15,12 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/rapidjson-sydr/rapidjson-sydr @@"
+args = "--wait-jobs -s 90"
+target = "/parser_sydr @@"
+jobs = 2
 
 [libfuzzer]
-path = "/rapidjson-fuzzer/rapidjson-fuzzer"
-args = "-workers=1 -jobs=100000 -ignore_crashes=1 /corpus"
+path = "/parser_fuzz"
+args = "-workers=4 -jobs=100000 -detect_leaks=0 /corpus"
 
 [cov]
-target = "/rapidjson-cov/rapidjson-cov @@"
+target = "/parser_cov @@"

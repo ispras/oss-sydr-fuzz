@@ -15,14 +15,13 @@
 ################################################################################
 
 [sydr]
-args = "--wait-jobs -s 90"
-target = "/parser_sydr @@"
-jobs = 2
+args = "--wait-jobs"
+target = "/load_sydr @@"
+jobs = 8
 
-[aflplusplus]
-args = "-t 60000 -i /corpus"
-target = "/parser_afl @@"
-jobs = 4
-
+[libfuzzer]
+path = "/load_fuzz"
+args = "-detect_leaks=0 -rss_limit_mb=30720 -timeout=300 -report_slow_units=350 /corpus"
+cmin = false
 [cov]
-target = "/parser_cov @@"
+target = "/load_cov @@"
