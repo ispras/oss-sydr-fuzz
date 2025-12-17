@@ -14,15 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/jasper_sydr -f @@ -t mif -F /tmp/out -T jpg"
-jobs = 2
+#[sydr]
+#args = "--wait-jobs -s 90 -j2"
+#target = "/jasper_sydr -f @@ -t mif -F /tmp/out -T jpg"
+#jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/jasper_libafl_target -f @@ -t mif -F /tmp/out -T jpg"
-args = "-j4 --forced -l64 --sync-jobs 2 -i /corpus -e /ets_jasper.toml"
+args = "-j1 -i /corpus -e /ets_jasper.toml"
 casr_bin = "/jasper_casr"
 
 [cov]
