@@ -18,14 +18,14 @@ exit-on-time = 7200
 
 #[sydr]
 #args = "--wait-jobs -s 90 -j2"
-#target = "/load_sydr @@"
+#target = "/save_sydr @@"
 #jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/load_libafl @@"
-args = "-j1 -l64 -i /corpus -e /ets_load.toml"
-casr_bin = "/load_casr"
+target = "/save_libafl @@"
+args = "-j1 --use-mopt -l64 -i /save_corpus -e /ets_save.toml"
+casr_bin = "/save_casr"
 
 [cov]
-target = "/load_cov @@"
+target = "/save_cov @@"
