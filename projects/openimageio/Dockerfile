@@ -17,16 +17,9 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-# Install AFLplusplus v4.21c
-#RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-#    git checkout v4.21c && export CC=clang && export CXX=clang++ && \
-#    export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
-#    PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
-
 # Clone target from GitHub.
 RUN git clone https://github.com/AcademySoftwareFoundation/OpenImageIO.git && cd OpenImageIO && \
     git checkout febafce408199ac5032058189827d08538a5c756 && git submodule update --init --recursive
-#    git checkout e0bc3dd58b3c121e282d122b30f2b779433bc195 && git submodule update --init --recursive
 
 WORKDIR OpenImageIO
 
