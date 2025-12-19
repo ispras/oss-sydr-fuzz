@@ -37,7 +37,7 @@ COPY fuzz_targets build.sh ./
 RUN TARGET="sydr" ./build.sh
 RUN TARGET="fuzzer" ./build.sh
 RUN TARGET="afl" ./build.sh
-#RUN TARGET="hfuzz" ./build.sh
+RUN TARGET="hfuzz" ./build.sh
 RUN TARGET="cov" ./build.sh
 
 # Prepare corpus
