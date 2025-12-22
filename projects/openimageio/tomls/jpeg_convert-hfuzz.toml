@@ -22,7 +22,7 @@ target = "/sydr/jpeg_convert_sydr @@"
 jobs = 3
 
 [honggfuzz]
-args = "-t 20 -i /corpus_jpeg"
+args = "-t 60 -i /corpus_jpeg"
 target = "/hfuzz/jpeg_convert_hfuzz"
 jobs = 4
 

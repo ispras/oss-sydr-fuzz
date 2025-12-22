@@ -22,7 +22,7 @@ target = "/sydr/hdr_convert_sydr @@"
 jobs = 3
 
 [aflplusplus]
-args = "-t 20000 -i /corpus_hdr"
+args = "-t 60000 -i /corpus_hdr"
 target = "/afl/hdr_convert_afl @@"
 jobs = 4
 [aflplusplus.env]

@@ -24,8 +24,10 @@ timeout = 600
 
 [aflplusplus]
 target = "/afl/xmp_decode_afl @@"
-args = "-t 30000 -i /corpus_xmp"
+args = "-t 60000 -i /corpus_xmp"
 jobs = 4
+[aflplusplus.env]
+ASAN_OPTIONS = "hard_rss_limit_mb=32768"
 
 [cov]
 target = "/cov/xmp_decode_cov @@"

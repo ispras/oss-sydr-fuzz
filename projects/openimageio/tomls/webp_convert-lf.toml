@@ -20,11 +20,10 @@ exit-on-time = 7200
 args = "--wait-jobs -s 90 -j2"
 target = "/sydr/webp_convert_sydr @@"
 jobs = 3
-timeout = 600
 
 [libfuzzer]
 path = "/fuzzer/webp_convert_fuzzer"
-args = "-rss_limit_mb=0 -timeout=30 -detect_leaks=0 -jobs=1000 -workers=4 /corpus_webp"
+args = "-rss_limit_mb=0 -timeout=60 -detect_leaks=0 -jobs=1000 -workers=4 /corpus_webp"
 
 [cov]
 target = "/cov/webp_convert_cov @@"

@@ -20,11 +20,10 @@ exit-on-time = 7200
 args = "--wait-jobs -s 90 -j2"
 target = "/sydr/xmp_decode_sydr @@"
 jobs = 3
-timeout = 600
 
 [libfuzzer]
 path = "/fuzzer/xmp_decode_fuzzer"
-args = "-rss_limit_mb=32768 -timeout=30 -jobs=1000 -workers=4 /corpus_xmp"
+args = "-rss_limit_mb=32768 -timeout=60 -jobs=1000 -workers=4 /corpus_xmp"
 
 [cov]
 target = "/cov/xmp_decode_cov @@"

@@ -22,7 +22,7 @@ target = "/sydr/ico_convert_sydr @@"
 jobs = 3
 
 [aflplusplus]
-args = "-t 20000 -i /corpus_ico"
+args = "-t 60000 -i /corpus_ico"
 target = "/afl/ico_convert_afl @@"
 jobs = 4
 [aflplusplus.env]

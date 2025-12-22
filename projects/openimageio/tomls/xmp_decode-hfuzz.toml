@@ -23,7 +23,7 @@ jobs = 3
 
 [honggfuzz]
 target = "/hfuzz/xmp_decode_hfuzz"
-args = "-t 20 -i /corpus_xmp"
+args = "-t 60 -i /corpus_xmp"
 jobs = 4
 
 [cov]

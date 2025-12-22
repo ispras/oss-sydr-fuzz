@@ -23,7 +23,7 @@ jobs = 3
 
 [aflplusplus]
 target = "/afl/png_info_afl @@"
-args = "-t 30000 -i /corpus_png"
+args = "-t 60000 -i /corpus_png"
 jobs = 4
 [aflplusplus.env]
 ASAN_OPTIONS = "hard_rss_limit_mb=0"

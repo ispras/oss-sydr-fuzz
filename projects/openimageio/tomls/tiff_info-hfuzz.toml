@@ -23,7 +23,7 @@ jobs = 3
 
 [honggfuzz]
 target = "/hfuzz/tiff_info_hfuzz"
-args = "-t 20 -i /corpus_tiff"
+args = "-t 60 -i /corpus_tiff"
 jobs = 4
 
 [cov]

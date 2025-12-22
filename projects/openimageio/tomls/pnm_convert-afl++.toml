@@ -22,7 +22,7 @@ target = "/sydr/pnm_convert_sydr @@"
 jobs = 3
 
 [aflplusplus]
-args = "-t 20000 -i /corpus_pnm"
+args = "-t 60000 -i /corpus_pnm"
 target = "/afl/pnm_convert_afl @@"
 jobs = 4
 [aflplusplus.env]

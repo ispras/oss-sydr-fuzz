@@ -22,7 +22,7 @@ target = "/sydr/psd_convert_sydr @@"
 jobs = 3
 
 [aflplusplus]
-args = "-t 20000 -i /corpus_psd"
+args = "-t 60000 -i /corpus_psd"
 target = "/afl/psd_convert_afl @@"
 jobs = 4
 [aflplusplus.env]

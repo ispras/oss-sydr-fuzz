@@ -20,11 +20,10 @@ exit-on-time = 7200
 args = "--wait-jobs -s 90 -j2"
 target = "/sydr/png_info_sydr @@"
 jobs = 3
-timeout = 600
 
 [libfuzzer]
 path = "/fuzzer/png_info_fuzzer"
-args = "-rss_limit_mb=0 -timeout=30 -detect_leaks=0 -jobs=1000 -workers=4 /corpus_png"
+args = "-rss_limit_mb=0 -timeout=60 -detect_leaks=0 -jobs=1000 -workers=4 /corpus_png"
 
 [cov]
 target = "/cov/png_info_cov @@"

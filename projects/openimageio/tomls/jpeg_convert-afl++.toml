@@ -22,7 +22,7 @@ target = "/sydr/jpeg_convert_sydr @@"
 jobs = 3
 
 [aflplusplus]
-args = "-t 20000 -i /corpus_jpeg"
+args = "-t 60000 -i /corpus_jpeg"
 target = "/afl/jpeg_convert_afl @@"
 jobs = 4
 [aflplusplus.env]
