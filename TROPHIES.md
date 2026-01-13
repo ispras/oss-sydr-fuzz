@@ -79,6 +79,12 @@
     * <https://github.com/pytorch/pytorch/issues/74798>
 * msgspec:
     * <https://github.com/jcrist/msgspec/issues/366>
+* ncnn:
+    * <https://github.com/Tencent/ncnn/issues/6211>
+    * <https://github.com/Tencent/ncnn/issues/6212>
+    * <https://github.com/Tencent/ncnn/issues/6213>
+    * <https://github.com/Tencent/ncnn/issues/6214>
+    * <https://github.com/Tencent/ncnn/issues/6216>
 * nDPI:
     * <https://github.com/ntop/nDPI/issues/1803>
     * <https://github.com/ntop/nDPI/pull/1980>
