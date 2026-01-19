@@ -15,11 +15,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-import com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh;
-import com.code_intelligence.jazzer.api.FuzzerSecurityIssueMedium;
+import com.code_intelligence.jazzer.api.FuzzerSecurityIssueLow;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.json.JsonSanitizer;
 
-public class DenylistFuzzer {
+public class ValidJsonFuzzerJZ {
+  private static Gson gson = new Gson();
+
   public static void fuzzerTestOneInput(FuzzedDataProvider data) {
     String input = data.consumeRemainingAsString();
     String output;
@@ -31,19 +35,13 @@ public class DenylistFuzzer {
       return;
     }
 
-    // Check for forbidden substrings. As these would enable Cross-Site
-    // Scripting, treat every finding as a high severity vulnerability.
-    assert !output.contains("</script")
-        : new FuzzerSecurityIssueHigh("Output contains </script");
-    assert !output.contains("]]>")
-        : new FuzzerSecurityIssueHigh("Output contains ]]>");
-
-    // Check for more forbidden substrings. As these would not directly enable
-    // Cross-Site Scripting in general, but may impact script execution on the
-    // embedding page, treat each finding as a medium severity vulnerability.
-    assert !output.contains("<script")
-        : new FuzzerSecurityIssueMedium("Output contains <script");
-    assert !output.contains("<!--")
-        : new FuzzerSecurityIssueMedium("Output contains <!--");
+    // Check that the output is valid JSON. Invalid JSON may crash other parts
+    // of the application that trust the output of the sanitizer.
+    try {
+      Gson gson = new Gson();
+      gson.fromJson(output, JsonElement.class);
+    } catch (Exception e) {
+      throw new FuzzerSecurityIssueLow("Output is invalid JSON", e);
+    }
   }
 }

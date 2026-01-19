@@ -22,12 +22,19 @@ Change directory to `/fuzz`:
 
 Run fuzzing:
 
-    # sydr-fuzz -c DiffUtilsFuzzer.toml run
+    # sydr-fuzz -c DiffUtilsFuzzerJZ.toml run
+    # sydr-fuzz -c DiffUtilsFuzzerJF.toml run
+
+Crash analysis:
+
+    # sydr-fuzz -c DiffUtilsFuzzerJZ.toml casr    
+    # sydr-fuzz -c DiffUtilsFuzzerJF.toml casr
 
 Minimize corpus:
 
-    # sydr-fuzz -c DiffUtilsFuzzer.toml cmin 
+    # sydr-fuzz -c DiffUtilsFuzzerJZ.toml cmin 
 
 Collect and report coverage:
 
-    # sydr-fuzz -c DiffUtilsFuzzer.toml cov-html -s /java-diff-util/java-diff-utils/src/main/java
+    # sydr-fuzz -c DiffUtilsFuzzerJZ.toml cov-html -s /java-diff-util/java-diff-utils/src/main/java
+
