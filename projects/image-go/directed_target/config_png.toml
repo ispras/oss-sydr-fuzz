@@ -20,12 +20,12 @@ line = 174
 
 [[target]]
 file = "/image/png/reader.go"
-line = 610
+line = 611
 
-[[target]]
-file = "/image/png/reader.go"
-line = 875
+# [[target]]
+# file = "/image/png/reader.go"
+# line = 877
 
-[[target]]
-file = "/image/png/reader.go"
-line = 936
+# [[target]]
+# file = "/image/png/reader.go"
+# line = 939

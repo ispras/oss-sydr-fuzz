@@ -14,14 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/parser_parsefile_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/parser_parsefile_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [libfuzzer]
 path = "/parser_parsefile_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
+args = "-jobs=1000 -workers=1 -rss_limit_mb=8192 /corpus/parser/corpus_parsefile"
 
 [cov]
 target = "/parser_parsefile_sydr @@"

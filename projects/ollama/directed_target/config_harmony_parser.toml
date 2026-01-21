@@ -16,20 +16,4 @@
 
 [[target]]
 file = "/ollama/harmony/harmonyparser.go"
-line = 106
-
-[[target]]
-file = "/ollama/harmony/harmonyparser.go"
-line = 198
-
-[[target]]
-file = "/ollama/harmony/harmonyparser.go"
-line = 212
-
-[[target]]
-file = "/ollama/harmony/harmonyparser.go"
-line = 221
-
-[[target]]
-file = "/ollama/harmony/harmonyparser.go"
 line = 228

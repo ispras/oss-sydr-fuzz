@@ -16,12 +16,4 @@
 
 [[target]]
 file = "/ollama/server/manifest.go"
-line = 75
-
-[[target]]
-file = "/ollama/server/manifest.go"
-line = 89
-
-[[target]]
-file = "/ollama/server/manifest.go"
-line = 94
+line = 95

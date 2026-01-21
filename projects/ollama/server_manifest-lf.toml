@@ -14,14 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/server_manifest_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/server_manifest_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [libfuzzer]
 path = "/server_manifest_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/server/corpus_manifest"
+args = "-jobs=1000 -workers=1 -rss_limit_mb=8192 /corpus/server/corpus_manifest"
 
 [cov]
 target = "/server_manifest_sydr @@"

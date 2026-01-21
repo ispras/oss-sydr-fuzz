@@ -14,14 +14,15 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_markdown @@"
-args = "-s 90 --wait-jobs -j2"
+#[sydr]
+#target = "/sydr_from_gdb @@"
+#args = "-s 90 --wait-jobs -j2"
 
-[libfuzzer]
-path = "/fuzz_markdown"
-args = "-jobs=1000 -timeout=2 -workers=4 -rss_limit_mb=8192 /corpus-markdown"
+[difuzz]
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
+target = "/from_gdb_libafl_target @@"
+args = "-j1 --use-grimoire --use-mopt --sync-limit 400 --sync-jobs 2 --panic-analysis rust -l64 -i /corpus -e /ets_from_gdb.toml"
+casr_bin = "/casr_from_gdb"
 
 [cov]
-target = "/cov_markdown @@"
-source = "/fyne"
+target = "/cov_from_gdb @@"

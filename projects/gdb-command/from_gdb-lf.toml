@@ -14,13 +14,13 @@
 #
 ################################################################################
 
-[sydr]
-target = "/sydr_from_gdb @@"
-args = "-s 90 --wait-jobs -j2"
+#[sydr]
+#target = "/sydr_from_gdb @@"
+#args = "-s 90 --wait-jobs -j2"
 
 [libfuzzer]
 path = "/from_gdb"
-args = "-rss_limit_mb=8192"
+args = "-rss_limit_mb=8192 -jobs=1000 -timeout=1000 -workers=1"
 
 [cov]
 target = "/cov_from_gdb @@"

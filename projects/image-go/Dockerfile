@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 MAINTAINER Andrey Fedotov
@@ -48,6 +48,27 @@ COPY sydr_tiff.go cmd/sydr_tiff/main.go
 COPY sydr_png.go cmd/sydr_png/main.go
 COPY sydr_jpeg.go cmd/sydr_jpeg/main.go
 COPY sydr_gif.go cmd/sydr_gif/main.go
+
+# RUN sed -i '238ipanic("reached TP")' /image/gif/reader.go
+# RUN sed -i '350ipanic("reached TP")' /image/gif/reader.go
+RUN sed -i '404ipanic("reached TP")' /image/gif/reader.go
+
+RUN sed -i '228ipanic("reached TP")' /image/jpeg/reader.go
+RUN sed -i '330ipanic("reached TP")' /image/jpeg/reader.go
+RUN sed -i '763ipanic("reached TP")' /image/jpeg/reader.go
+
+RUN sed -i '174ipanic("reached TP")' /image/png/reader.go
+RUN sed -i '611ipanic("reached TP")' /image/png/reader.go
+# RUN sed -i '877ipanic("reached TP")' /image/png/reader.go
+# RUN sed -i '939ipanic("reached TP")' /image/png/reader.go
+
+# RUN sed -i '72ipanic("reached TP")' /image/tiff/reader.go
+RUN sed -i '393ipanic("reached TP")' /image/tiff/reader.go
+# RUN sed -i '486ipanic("reached TP")' /image/tiff/reader.go
+# RUN sed -i '689ipanic("reached TP")' /image/tiff/reader.go
+
+RUN sed -i '175ipanic("reached TP")' /image/webp/decode.go
+RUN sed -i '211ipanic("reached TP")' /image/webp/decode.go
 
 RUN ./build.sh
 

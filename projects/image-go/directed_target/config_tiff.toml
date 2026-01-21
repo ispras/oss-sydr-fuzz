@@ -14,18 +14,18 @@
 #
 ################################################################################
 
-[[target]]
-file = "/image/tiff/reader.go"
-line = 72
+# [[target]]
+# file = "/image/tiff/reader.go"
+# line = 72
 
 [[target]]
 file = "/image/tiff/reader.go"
-line = 392
+line = 393
 
-[[target]]
-file = "/image/tiff/reader.go"
-line = 484
+# [[target]]
+# file = "/image/tiff/reader.go"
+# line = 486
 
-[[target]]
-file = "/image/tiff/reader.go"
-line = 686
+# [[target]]
+# file = "/image/tiff/reader.go"
+# line = 689

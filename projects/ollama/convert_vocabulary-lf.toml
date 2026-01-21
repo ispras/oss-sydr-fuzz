@@ -14,14 +14,14 @@
 #
 ################################################################################
 
-[sydr]
-target = "/convert_vocabulary_sydr @@"
-args = "-s 90 --wait-jobs -j2"
-jobs = 2
+#[sydr]
+#target = "/convert_vocabulary_sydr @@"
+#args = "-s 90 --wait-jobs -j2"
+#jobs = 2
 
 [libfuzzer]
 path = "/convert_vocabulary_fuzz"
-args = "-jobs=1000 -workers=4 -rss_limit_mb=8192 /corpus/convert/corpus_vocabulary"
+args = "-jobs=1000 -workers=1 -rss_limit_mb=8192 /corpus/convert/corpus_vocabulary"
 
 [cov]
 target = "/convert_vocabulary_sydr @@"

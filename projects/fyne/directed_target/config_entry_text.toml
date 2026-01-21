@@ -16,12 +16,4 @@
 
 [[target]]
 file = "/fyne/widget/label.go"
-line = 110
-
-[[target]]
-file = "/fyne/widget/label.go"
-line = 151
-
-[[target]]
-file = "/fyne/widget/selectable.go"
-line = 176
+line = 162

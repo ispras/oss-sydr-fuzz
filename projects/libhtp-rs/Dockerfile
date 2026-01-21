@@ -26,6 +26,8 @@ WORKDIR /libhtp-rs
 
 RUN git checkout 2bef6f30c916fdd057a15434466ea432b0bbf17c
 
+RUN sed -i '252ipanic!("reached TP");' /libhtp-rs/src/test.rs
+
 RUN mkdir /corpus && cp /libhtp-rs/tests/files/*.t /corpus
 
 WORKDIR /
