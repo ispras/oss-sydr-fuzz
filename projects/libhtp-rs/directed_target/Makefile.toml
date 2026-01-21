@@ -24,7 +24,7 @@ RUST_DIR = { value = "${DIFUZZ_DIR_ABS}/rust-difuzz/bin", condition = { env_not_
 RUST_DIR_ABS = { script = ["realpath ${RUST_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
-DIFUZZ_ARGS = { value = "--weights reverse -o difuzz -j8 --analyse-icalls strong --no-check-src", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+DIFUZZ_ARGS = { value = "--weights reverse -o difuzz -j8 --analyse-icalls strong --target-check-mode tp", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
