@@ -19,7 +19,7 @@ FROM $BASE_IMAGE
 
 # Clone target from GitHub.
 RUN git clone https://github.com/AcademySoftwareFoundation/OpenImageIO.git && cd OpenImageIO && \
-    git checkout febafce408199ac5032058189827d08538a5c756 && git submodule update --init --recursive
+    git checkout v3.2.0.0-dev && git submodule update --init --recursive
 
 WORKDIR OpenImageIO
 
@@ -30,7 +30,7 @@ COPY fuzz_targets build.sh ./
 RUN TARGET="sydr" ./build.sh
 RUN TARGET="fuzzer" ./build.sh
 RUN TARGET="afl" ./build.sh
-RUN TARGET="hfuzz" ./build.sh
+#RUN TARGET="hfuzz" ./build.sh
 RUN TARGET="cov" ./build.sh
 
 # Prepare corpus

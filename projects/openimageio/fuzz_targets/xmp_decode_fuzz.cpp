@@ -513,10 +513,10 @@ decode_xmp_node(pugi::xml_node node, ImageSpec& spec, int level = 1,
 
 }  // anonymous namespace
 
+#ifdef VER_3_1
 OIIO_NAMESPACE_END
-
-
 OIIO_NAMESPACE_3_1_BEGIN
+#endif
 
 bool
 decode_xmp(cspan<uint8_t> xml, ImageSpec& spec)
@@ -866,4 +866,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     return 0;
 }
 
+#ifdef VER_3_1
 OIIO_NAMESPACE_3_1_END
+#else
+OIIO_NAMESPACE_END
+#endif
