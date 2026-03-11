@@ -1,0 +1,263 @@
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 1575
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 983
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 878
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 889
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 883
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2534
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 3338
+
+[[target]]
+file = "/xlnt/source/utils/date.cpp"
+line = 38
+
+[[target]]
+file = "/xlnt/source/utils/time.cpp"
+line = 38
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/expat/xmlparse.c"
+line = 5546
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/serializer.cxx"
+line = 279
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/aes.cpp"
+line = 3008
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/aes.cpp"
+line = 3041
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 2688
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 2689
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
+line = 157
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 1517
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/expat/xmltok_impl.c"
+line = 1635
+
+[[target]]
+file = "/xlnt/source/cell/cell.cpp"
+line = 183
+
+[[target]]
+file = "/xlnt/source/detail/number_format/number_formatter.cpp"
+line = 1454
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/expat/xmlparse.c"
+line = 5475
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/sha512.c"
+line = 143
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/sha1.c"
+line = 61
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2220
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2225
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2226
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2231
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2232
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2233
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2219
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2224
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2230
+
+[[target]]
+file = "/xlnt/source/detail/unicode.cpp"
+line = 66
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 3579
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 884
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/expat/xmlparse.c"
+line = 2362
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/expat/xmlparse.c"
+line = 5071
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 1546
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 1549
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 846
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1127
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1735
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2193
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1723
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2181
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1726
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2184
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1729
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2187
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1738
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2196
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 1732
+
+[[target]]
+file = "/xlnt/third-party/libstudxml/libstudxml/details/genx/genx.c"
+line = 2190
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 64
+
+[[target]]
+file = "/xlnt/source/cell/cell_reference.cpp"
+line = 37
+
+[[target]]
+file = "/xlnt/source/worksheet/range.cpp"
+line = 90
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 6116
+
+[[target]]
+file = "/xlnt/third-party/miniz/miniz.c"
+line = 6396
+
+[[target]]
+file = "/xlnt/source/detail/serialization/xlsx_consumer.cpp"
+line = 2981
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
+line = 975
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
+line = 723
+
+[[target]]
+file = "/xlnt/source/detail/cryptography/compound_document.cpp"
+line = 126
+
+[[target]]
+file = "/xlnt/source/detail/serialization/xlsx_consumer.cpp"
+line = 2031
+
+[[target]]
+file = "/xlnt/source/detail/serialization/zstream.cpp"
+line = 269
+
+[[target]]
+file = "/xlnt/source/utils/path.cpp"
+line = 185
+
+[[target]]
+file = "/xlnt/source/worksheet/worksheet.cpp"
+line = 1086
