@@ -22,7 +22,7 @@ DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
-DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j64", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j64 --analyse-icalls weak", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
@@ -111,8 +111,10 @@ python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f /opt/Standalon
 cd ${OUT_DIR_ABS}
 ${PROJECT_DIR}/build_libafl_load.sh
 ${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/load_libafl -e ${OUT_DIR_ABS}/ets_load.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config_load_libafl.toml -b ${EXAMPLE_DIR}/build/load_libafl -e ${OUT_DIR_ABS}/ets_load_big.toml ${DIFUZZ_ARGS}
 ${PROJECT_DIR}/build_libafl_save.sh
 ${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/build/save_libafl -e ${OUT_DIR_ABS}/ets_save.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config_save_libafl.toml -b ${EXAMPLE_DIR}/build/save_libafl -e ${OUT_DIR_ABS}/ets_save_big.toml ${DIFUZZ_ARGS}
 '''
 
 # Harness
@@ -130,21 +132,44 @@ export CXX=${LIBAFL_CXX}
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
 ${ETS_SHARED_MANAGER} -a remove -n xlnt_load
 ${ETS_SHARED_MANAGER} -a remove -n xlnt_save
+${ETS_SHARED_MANAGER} -a remove -n xlnt_load_big
+${ETS_SHARED_MANAGER} -a remove -n xlnt_save_big
 ${ETS_SHARED_MANAGER} -a create -n xlnt_load
 ${ETS_SHARED_MANAGER} -a create -n xlnt_save
+${ETS_SHARED_MANAGER} -a create -n xlnt_load_big
+${ETS_SHARED_MANAGER} -a create -n xlnt_save_big
 ${ETS_SHARED_MANAGER} -a parse -n xlnt_load -i ${OUT_DIR_ABS}/ets_load.toml
 ${ETS_SHARED_MANAGER} -a parse -n xlnt_save -i ${OUT_DIR_ABS}/ets_save.toml
+${ETS_SHARED_MANAGER} -a parse -n xlnt_load_big -i ${OUT_DIR_ABS}/ets_load_big.toml
+${ETS_SHARED_MANAGER} -a parse -n xlnt_save_big -i ${OUT_DIR_ABS}/ets_save_big.toml
+
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f /opt/StandaloneFuzzTargetMain.c
+
 export LIBAFL_SHARED_NAME="xlnt_load"
 ${PROJECT_DIR}/build_libafl_load.sh
 mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR_ABS}/load_libafl
+
+export LIBAFL_SHARED_NAME="xlnt_load_big"
+${PROJECT_DIR}/build_libafl_load.sh
+mv ${EXAMPLE_DIR}/build/load_libafl ${OUT_DIR_ABS}/load_libafl_big
+
 export LIBAFL_SHARED_NAME="xlnt_save"
 ${PROJECT_DIR}/build_libafl_save.sh
 mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR_ABS}/save_libafl
+
+export LIBAFL_SHARED_NAME="xlnt_save_big"
+${PROJECT_DIR}/build_libafl_save.sh
+mv ${EXAMPLE_DIR}/build/save_libafl ${OUT_DIR_ABS}/save_libafl_big
+
 ${ETS_SHARED_MANAGER} -a dump -n xlnt_load -o ${OUT_DIR_ABS}/ets_load.toml
 ${ETS_SHARED_MANAGER} -a dump -n xlnt_save -o ${OUT_DIR_ABS}/ets_save.toml
+${ETS_SHARED_MANAGER} -a dump -n xlnt_load_big -o ${OUT_DIR_ABS}/ets_load_big.toml
+${ETS_SHARED_MANAGER} -a dump -n xlnt_save_big -o ${OUT_DIR_ABS}/ets_save_big.toml
 ${ETS_SHARED_MANAGER} -a remove -n xlnt_load
 ${ETS_SHARED_MANAGER} -a remove -n xlnt_save
+${ETS_SHARED_MANAGER} -a remove -n xlnt_load_big
+${ETS_SHARED_MANAGER} -a remove -n xlnt_save_big
+
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
 '''
 dependencies = ["difuzz"]
