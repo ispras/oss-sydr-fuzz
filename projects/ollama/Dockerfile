@@ -33,18 +33,20 @@ COPY corpus.zip /
 RUN unzip /corpus.zip -d /
 
 # Create directories for fuzz targets.
-RUN mkdir sydr && cd sydr && mkdir -p convert parser server harmony wordpiece
+RUN mkdir sydr && cd sydr && \
+    mkdir -p convert/tokenizer convert/vocabulary \
+    parser/parsefile server/manifest harmony/parser wordpiece/encode
 
 # Move fuzz targets.
 RUN mkdir fuzz
 COPY fuzz.go fuzz
 
-COPY server_manifest_sydr.go sydr/server
-COPY parser_parsefile_sydr.go sydr/parser
-COPY convert_tokenizer_sydr.go sydr/convert
-COPY convert_vocabulary_sydr.go sydr/convert
-COPY harmony_parser_sydr.go /ollama/sydr/harmony
-COPY wordpiece_sydr.go /ollama/sydr/wordpiece
+COPY server_manifest_sydr.go sydr/server/manifest/main.go
+COPY parser_parsefile_sydr.go sydr/parser/parsefile/main.go
+COPY convert_tokenizer_sydr.go sydr/convert/tokenizer/main.go
+COPY convert_vocabulary_sydr.go sydr/convert/vocabulary/main.go
+COPY harmony_parser_sydr.go /ollama/sydr/harmony/parser/main.go
+COPY wordpiece_sydr.go /ollama/sydr/wordpiece/encode/main.go
 
 # Build GGML.
 RUN mkdir -p build && cd build && \

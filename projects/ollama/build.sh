@@ -25,55 +25,55 @@ export CGO_CXXFLAGS=$CFLAGS
 export LDFLAGS="-ldl"
 export CGO_LDFLAGS="-ldl"
 
-# LibFuzzer targets
-LIBFUZZER_TARGETS=(
-    "parser_parsefile_fuzz:/ollama/fuzz:FuzzParseFile"
-    "convert_tokenizer_fuzz:/ollama/fuzz:FuzzParseVocabularyFromTokenizer"
-    "convert_vocabulary_fuzz:/ollama/fuzz:FuzzParseVocabulary"
-    "server_manifest_fuzz:/ollama/fuzz:FuzzParseNamedManifest"
-    "harmony_parser_fuzz:/ollama/fuzz:FuzzHarmonyParser"
-    "wordpiece_fuzz:/ollama/fuzz:FuzzWordPiece"
-)
+# Build libFuzzer
+cd /ollama/fuzz
+go mod download
 
-# Sydr targets
-SYDR_TARGETS=(
-    "parser_parsefile_sydr:/ollama/sydr/parser"
-    "convert_tokenizer_sydr:/ollama/sydr/convert"
-    "convert_vocabulary_sydr:/ollama/sydr/convert"
-    "server_manifest_sydr:/ollama/sydr/server"
-    "harmony_parser_sydr:/ollama/sydr/harmony"
-    "wordpiece_sydr:/ollama/sydr/wordpiece"
-)
+go-fuzz-build -libfuzzer -o parsefile.a -func FuzzParseFile
+$CC -fsanitize=fuzzer parsefile.a -o /parser_parsefile_fuzz $LDFLAGS
 
-build_libfuzzer() {
-    local output_name="$1" pkg_dir="$2" func="$3"
-    local output_path="/${output_name}"
+go-fuzz-build -libfuzzer -o tokenizer.a -func FuzzParseVocabularyFromTokenizer
+$CC -fsanitize=fuzzer tokenizer.a -o /convert_tokenizer_fuzz $LDFLAGS
 
-    echo -e "Building libfuzzer target ${output_name}...\n"
-    cd "$pkg_dir"
-    go mod download
-    go-fuzz-build -libfuzzer -o "${output_path}.a" -func "$func"
-    $CC -fsanitize=fuzzer "${output_path}.a" -o "$output_path" $LDFLAGS
-    rm -f "${output_path}.a"
-}
+go-fuzz-build -libfuzzer -o vocabulary.a -func FuzzParseVocabulary
+$CC -fsanitize=fuzzer vocabulary.a -o /convert_vocabulary_fuzz $LDFLAGS
 
-build_sydr() {
-    local output_name="$1" pkg_dir="$2"
-    local output_path="/${output_name}"
+go-fuzz-build -libfuzzer -o manifest.a -func FuzzParseNamedManifest
+$CC -fsanitize=fuzzer manifest.a -o /server_manifest_fuzz $LDFLAGS
 
-    echo -e "Building sydr target ${output_name}...\n"
-    cd "$pkg_dir"
-    go build -o $output_path "${output_name}.go"
-}
+go-fuzz-build -libfuzzer -o harmony.a -func FuzzHarmonyParser
+$CC -fsanitize=fuzzer harmony.a -o /harmony_parser_fuzz $LDFLAGS
 
-# Build LibFuzzer targets
-for target in "${LIBFUZZER_TARGETS[@]}"; do
-    IFS=':' read -r output_name pkg_dir func <<< "$target"
-    build_libfuzzer "$output_name" "$pkg_dir" "$func"
-done
+go-fuzz-build -libfuzzer -o wordpiece.a -func FuzzWordPiece
+$CC -fsanitize=fuzzer wordpiece.a -o /wordpiece_fuzz $LDFLAGS
 
-# Build Sydr targets
-for target in "${SYDR_TARGETS[@]}"; do
-    IFS=':' read -r output_name pkg_dir <<< "$target"
-    build_sydr "$output_name" "$pkg_dir"
-done
+rm -f *.a
+cd ..
+
+# Build Sydr
+cd /ollama/sydr/parser/parsefile
+go build -o /parser_parsefile_sydr
+
+cd /ollama/sydr/convert/tokenizer
+go build -o /convert_tokenizer_sydr
+
+cd /ollama/sydr/convert/vocabulary
+go build -o /convert_vocabulary_sydr
+
+cd /ollama/sydr/server/manifest
+go build -o /server_manifest_sydr
+
+cd /ollama/sydr/harmony/parser
+go build -o /harmony_parser_sydr
+
+cd /ollama/sydr/wordpiece/encode
+go build -o /wordpiece_sydr
+
+# Build coverage
+cd /ollama
+go build -cover -covermode=atomic -coverpkg=./... -o /parser_parsefile_cov sydr/parser/parsefile/main.go
+go build -cover -covermode=atomic -coverpkg=./... -o /convert_tokenizer_cov sydr/convert/tokenizer/main.go
+go build -cover -covermode=atomic -coverpkg=./... -o /convert_vocabulary_cov sydr/convert/vocabulary/main.go
+go build -cover -covermode=atomic -coverpkg=./... -o /server_manifest_cov sydr/server/manifest/main.go
+go build -cover -covermode=atomic -coverpkg=./... -o /harmony_parser_cov sydr/harmony/parser/main.go
+go build -cover -covermode=atomic -coverpkg=./... -o /wordpiece_cov sydr/wordpiece/encode/main.go
