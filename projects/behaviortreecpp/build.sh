@@ -84,3 +84,28 @@ make -j"$(nproc)"
 for fuzzer in bb_fuzzer bt_fuzzer script_fuzzer; do
     cp "${fuzzer}" "/${fuzzer}_cov"
 done
+cd ../
+
+# ===== Build Sydr targets =====
+mkdir -p build_sydr/ && cd build_sydr/
+
+export CFLAGS="-g"
+export CXXFLAGS="-g -std=c++17 -stdlib=libstdc++"
+
+$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o main_coverage.o
+export LIB_FUZZING_ENGINE="${PWD}/main_coverage.o"
+
+CMAKE_FLAGS=(
+  "-DCMAKE_BUILD_TYPE=Release"
+  "-DENABLE_FUZZING=ON"
+  "-DFORCE_STATIC_LINKING=ON"
+  "-DBUILD_TESTING=OFF"
+)
+
+cmake .. "${CMAKE_FLAGS[@]}"
+make -j"$(nproc)"
+
+for fuzzer in bb_fuzzer bt_fuzzer script_fuzzer; do
+    cp "${fuzzer}" "/${fuzzer}_sydr"
+done
+cd ../
