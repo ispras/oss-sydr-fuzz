@@ -61,3 +61,26 @@ for fuzzer in bt script bb; do
   fi
 done
 cd ../
+
+# ===== Build coverage targets BehaviorTree.CPP =====
+mkdir -p build_cov/ && cd build_cov/
+
+export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17 -stdlib=libstdc++"
+
+$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o main_coverage.o
+export LIB_FUZZING_ENGINE="${PWD}/main_coverage.o"
+
+CMAKE_FLAGS=(
+  "-DCMAKE_BUILD_TYPE=Release"
+  "-DENABLE_FUZZING=ON"
+  "-DFORCE_STATIC_LINKING=ON"
+  "-DBUILD_TESTING=OFF"
+)
+
+cmake .. "${CMAKE_FLAGS[@]}"
+make -j"$(nproc)"
+
+for fuzzer in bb_fuzzer bt_fuzzer script_fuzzer; do
+    cp "${fuzzer}" "/${fuzzer}_cov"
+done

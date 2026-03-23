@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +15,4 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
-FROM $BASE_IMAGE
-
-RUN apt-get update && apt-get install -y make autoconf automake libtool cmake pkg-config wget libsodium-dev libgtest-dev
-
-RUN git clone https://github.com/BehaviorTree/BehaviorTree.CPP.git behaviortreecpp \
-    && cd behaviortreecpp \
-    && git checkout 3ff6a32ba0497a08519c77a1436e3b81eff1bcd6
-
-WORKDIR /behaviortreecpp
-
-COPY run_tests.sh build.sh get_cov.sh /
-
-RUN /build.sh
+ctest --test-dir build
