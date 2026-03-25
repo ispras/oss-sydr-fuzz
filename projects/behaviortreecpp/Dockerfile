@@ -25,8 +25,8 @@ RUN git clone https://github.com/BehaviorTree/BehaviorTree.CPP.git behaviortreec
 
 WORKDIR /behaviortreecpp
 
-COPY run_tests.sh build.sh get_cov.sh /
+COPY build.sh /
 
-RUN TARGET="fuzzer" ./build.sh
-RUN TARGET="sydr"   ./build.sh
-RUN TARGET="cov"    ./build.sh
+RUN TARGET="fuzzer" /build.sh
+RUN TARGET="sydr"   /build.sh
+RUN TARGET="cov"    /build.sh

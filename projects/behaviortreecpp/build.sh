@@ -35,21 +35,23 @@ then
     export CXXFLAGS=$CFLAGS
 fi
 
-TARGET_FLAGS=""
-if [[ $TARGET == "fuzzer" ]]
-then
-    TARGET_FLAGS="-fsanitize=fuzzer,address,bounds,null,float-divide-by-zero"
-else
-    $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /main_$TARGET.o
-    export LIB_FUZZING_ENGINE="${PWD}/main_$TARGET.o"
-    
-    if [[ $TARGET == "cov" ]]
-    then
-        TARGET_FLAGS="-fprofile-instr-generate -fcoverage-mapping"
-    fi
-fi
+# ===== Clean dependencies =====
+cd /behaviortreecpp/${SQLITE_VER}
+make clean
+make uninstall
 
-# ===== BUILD Sqlite =====
+cd /behaviortreecpp/libzmq/build
+make clean
+
+# Use this because there is no make uninstall
+xargs -d '\n' rm -f < install_manifest.txt 
+
+rm -rf /behaviortreecpp/build
+rm -rf /behaviortreecpp/${SQLITE_VER}
+rm -f  /behaviortreecpp/${SQLITE_VER}.tar.gz
+rm -rf /behaviortreecpp/libzmq
+
+# ===== Build Sqlite =====
 SQLITE_VER=sqlite-autoconf-3480000
 
 wget https://www.sqlite.org/2025/${SQLITE_VER}.tar.gz
@@ -60,7 +62,7 @@ make -j"$(nproc)"
 make install
 cd ..
 
-# ===== BUILD zeroMQ =====
+# ===== Build zeroMQ =====
 git clone https://github.com/zeromq/libzmq.git
 cd libzmq
 mkdir build && cd build
@@ -69,8 +71,8 @@ make -j"$(nproc)"
 make install
 cd ../..
 
-# ===== Build  BehaviorTree.CPP =====
-mkdir build_$TARGET && cd build_$TARGET
+# ===== Build BehaviorTree.CPP =====
+mkdir build && cd build
 
 if [[ $TARGET == "sydr" || $TARGET == "cov" ]]
 then
@@ -89,12 +91,12 @@ cmake .. "${CMAKE_FLAGS[@]}"
 make -j"$(nproc)"
 
 for fuzz_target in bb bt script; do
-    cp "${fuzz_target}_fuzzer" "/${fuzzer}_${TARGET}"
+    cp "${fuzz_target}_fuzzer" "/${fuzz_target}_${TARGET}"
 done
 
 if [[ $TARGET == "fuzzer" ]]
 then
-    for fuzz_target in bt script bb; do
+    for fuzz_target in bb bt script; do
       if [ -d "../fuzzing/corpus/${fuzz_target}_corpus" ]; then
         cp -r "../fuzzing/corpus/${fuzz_target}_corpus" "/${fuzz_target}_corpus"
       fi
