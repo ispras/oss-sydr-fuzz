@@ -15,10 +15,39 @@
 #
 ################################################################################
 
-export CC=clang
-export CXX=clang++
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
-export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined -std=c++17 -stdlib=libstdc++"
+if [[ $TARGET == "fuzzer" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,null,float-divide-by-zero"
+    export CXXFLAGS=$CFLAGS
+elif [[ $TARGET == "sydr" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g"
+    export CXXFLAGS=$CFLAGS
+elif [[ $TARGET == "cov" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+    export CXXFLAGS=$CFLAGS
+fi
+
+TARGET_FLAGS=""
+if [[ $TARGET == "fuzzer" ]]
+then
+    TARGET_FLAGS="-fsanitize=fuzzer,address,bounds,null,float-divide-by-zero"
+else
+    $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /main_$TARGET.o
+    export LIB_FUZZING_ENGINE="${PWD}/main_$TARGET.o"
+    
+    if [[ $TARGET == "cov" ]]
+    then
+        TARGET_FLAGS="-fprofile-instr-generate -fcoverage-mapping"
+    fi
+fi
 
 # ===== BUILD Sqlite =====
 SQLITE_VER=sqlite-autoconf-3480000
@@ -40,8 +69,14 @@ make -j"$(nproc)"
 make install
 cd ../..
 
-# ===== Build BehaviorTree.CPP =====
-mkdir build && cd build
+# ===== Build  BehaviorTree.CPP =====
+mkdir build_$TARGET && cd build_$TARGET
+
+if [[ $TARGET == "sydr" || $TARGET == "cov" ]]
+then
+    $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o main_$TARGET.o
+    export LIB_FUZZING_ENGINE="${PWD}/main_$TARGET.o"
+fi
 
 CMAKE_FLAGS=(
   "-DCMAKE_BUILD_TYPE=Release"
@@ -53,59 +88,15 @@ CMAKE_FLAGS=(
 cmake .. "${CMAKE_FLAGS[@]}"
 make -j"$(nproc)"
 
-for fuzzer in bt script bb; do
-  cp "${fuzzer}_fuzzer" "/${fuzzer}_fuzzer"
-
-  if [ -d "../fuzzing/corpus/${fuzzer}_corpus" ]; then
-    cp -r "../fuzzing/corpus/${fuzzer}_corpus" "/${fuzzer}_corpus"
-  fi
+for fuzz_target in bb bt script; do
+    cp "${fuzz_target}_fuzzer" "/${fuzzer}_${TARGET}"
 done
-cd ../
 
-# ===== Build coverage targets BehaviorTree.CPP =====
-mkdir -p build_cov/ && cd build_cov/
-
-export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17 -stdlib=libstdc++"
-
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o main_coverage.o
-export LIB_FUZZING_ENGINE="${PWD}/main_coverage.o"
-
-CMAKE_FLAGS=(
-  "-DCMAKE_BUILD_TYPE=Release"
-  "-DENABLE_FUZZING=ON"
-  "-DFORCE_STATIC_LINKING=ON"
-  "-DBUILD_TESTING=OFF"
-)
-
-cmake .. "${CMAKE_FLAGS[@]}"
-make -j"$(nproc)"
-
-for fuzzer in bb_fuzzer bt_fuzzer script_fuzzer; do
-    cp "${fuzzer}" "/${fuzzer}_cov"
-done
-cd ../
-
-# ===== Build Sydr targets =====
-mkdir -p build_sydr/ && cd build_sydr/
-
-export CFLAGS="-g"
-export CXXFLAGS="-g -std=c++17 -stdlib=libstdc++"
-
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o main_coverage.o
-export LIB_FUZZING_ENGINE="${PWD}/main_coverage.o"
-
-CMAKE_FLAGS=(
-  "-DCMAKE_BUILD_TYPE=Release"
-  "-DENABLE_FUZZING=ON"
-  "-DFORCE_STATIC_LINKING=ON"
-  "-DBUILD_TESTING=OFF"
-)
-
-cmake .. "${CMAKE_FLAGS[@]}"
-make -j"$(nproc)"
-
-for fuzzer in bb_fuzzer bt_fuzzer script_fuzzer; do
-    cp "${fuzzer}" "/${fuzzer}_sydr"
-done
-cd ../
+if [[ $TARGET == "fuzzer" ]]
+then
+    for fuzz_target in bt script bb; do
+      if [ -d "../fuzzing/corpus/${fuzz_target}_corpus" ]; then
+        cp -r "../fuzzing/corpus/${fuzz_target}_corpus" "/${fuzz_target}_corpus"
+      fi
+    done
+fi

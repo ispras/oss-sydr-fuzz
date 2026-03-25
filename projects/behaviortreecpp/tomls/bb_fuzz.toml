@@ -1,10 +1,10 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,19 +14,14 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[sydr]
+args = "--wait-jobs --solving-timeout 30 -j2"
+target = "/bb_fuzzer_sydr @@"
+jobs = 2
 
-RUN apt-get update && apt-get install -y autoconf automake libsodium-dev libgtest-dev
+[fuzzer]
+path = "/bb_fuzzer"
+args = "-rss_limit_mb=0 /bb_corpus"
 
-RUN git clone https://github.com/BehaviorTree/BehaviorTree.CPP.git behaviortreecpp \
-    && cd behaviortreecpp \
-    && git checkout 3ff6a32ba0497a08519c77a1436e3b81eff1bcd6
-
-WORKDIR /behaviortreecpp
-
-COPY run_tests.sh build.sh get_cov.sh /
-
-RUN TARGET="fuzzer" ./build.sh
-RUN TARGET="sydr"   ./build.sh
-RUN TARGET="cov"    ./build.sh
+[cov]
+target = "/bb_fuzzer_cov @@"

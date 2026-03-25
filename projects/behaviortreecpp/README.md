@@ -22,25 +22,24 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c bt-lf.toml run
+    # sydr-fuzz -c tomls/bt_fuzz.toml run
 
 Get LCOV HTML coverage report:
 
-    # sydr-fuzz -c bt-lf.toml cov-export -- -format=lcov > bt.lcov
+    # sydr-fuzz -c tomls/bt_fuzz.toml cov-export -- -format=lcov > bt.lcov
     # genhtml -o bt-html bt.lcov
 
 ## Alternative Fuzz Targets
 
 BehaviorTree.CPP project has 3 fuzz targets.
 
+### bb
+
+    # sydr-fuzz -c tomls/bb_fuzz.toml run
 ### bt
 
-    # sydr-fuzz -c bt-lf.toml run
+    # sydr-fuzz -c tomls/bt_fuzz.toml run
 
 ### script
 
-    # sydr-fuzz -c script-lf.toml run
-
-### bb
-
-    # sydr-fuzz -c bb-lf.toml run
+    # sydr-fuzz -c tomls/script_fuzz.toml run
