@@ -42,6 +42,8 @@ then
     export CXXFLAGS=$CFLAGS
 fi
 
+SQLITE_VER=sqlite-autoconf-3480000
+
 # ===== Clean dependencies =====
 cd /behaviortreecpp/${SQLITE_VER}
 make clean
@@ -59,8 +61,6 @@ rm -f  /behaviortreecpp/${SQLITE_VER}.tar.gz
 rm -rf /behaviortreecpp/libzmq
 
 # ===== Build Sqlite =====
-SQLITE_VER=sqlite-autoconf-3480000
-
 wget https://www.sqlite.org/2025/${SQLITE_VER}.tar.gz
 tar xzf ${SQLITE_VER}.tar.gz
 cd ${SQLITE_VER}
@@ -79,7 +79,7 @@ make install
 cd ../..
 
 # ===== Build BehaviorTree.CPP =====
-mkdir /${TARGET}
+mkdir "/${TARGET}"
 mkdir build && cd build
 
 if [[ $TARGET == "sydr" || $TARGET == "cov" ]]
