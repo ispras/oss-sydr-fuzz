@@ -42,25 +42,8 @@ then
     export CXXFLAGS=$CFLAGS
 fi
 
-SQLITE_VER=sqlite-autoconf-3480000
-
-# ===== Clean dependencies =====
-cd /behaviortreecpp/${SQLITE_VER}
-make clean
-make uninstall
-
-cd /behaviortreecpp/libzmq/build
-make clean
-
-# Use this because there is no make uninstall
-xargs -d '\n' rm -f < install_manifest.txt 
-
-rm -rf /behaviortreecpp/build
-rm -rf /behaviortreecpp/${SQLITE_VER}
-rm -f  /behaviortreecpp/${SQLITE_VER}.tar.gz
-rm -rf /behaviortreecpp/libzmq
-
 # ===== Build Sqlite =====
+SQLITE_VER=sqlite-autoconf-3480000
 wget https://www.sqlite.org/2025/${SQLITE_VER}.tar.gz
 tar xzf ${SQLITE_VER}.tar.gz
 cd ${SQLITE_VER}
@@ -110,3 +93,19 @@ then
       fi
     done
 fi
+
+# ===== Clean dependencies =====
+cd /behaviortreecpp/${SQLITE_VER}
+make clean
+make uninstall
+
+cd /behaviortreecpp/libzmq/build
+make clean
+
+# Use this because there is no make uninstall
+xargs -d '\n' rm -f < install_manifest.txt 
+
+rm -rf /behaviortreecpp/build
+rm -rf /behaviortreecpp/${SQLITE_VER}
+rm -f  /behaviortreecpp/${SQLITE_VER}.tar.gz
+rm -rf /behaviortreecpp/libzmq
