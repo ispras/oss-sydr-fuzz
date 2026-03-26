@@ -1,6 +1,6 @@
-# BehaviorTree.CPP
+# behaviortreecpp
 
-BehaviorTree.CPP is a C++ library for creating, executing, and testing behavior trees.
+behaviortreecpp is a C++ library for creating, executing, and testing behavior trees.
 
 ## Build Docker
 
@@ -31,16 +31,16 @@ Get LCOV HTML coverage report:
 
 ## Alternative Fuzz Targets
 
-BehaviorTree.CPP project has 3 fuzz targets.
+behaviortreecpp project has 3 fuzz targets.
 
-### bb
+### libfuzzer
 
-    # sydr-fuzz -c tomls/bb_fuzz.toml run
+    # sydr-fuzz -c tomls/bb-lf.toml     run
+    # sydr-fuzz -c tomls/bt-lf.toml     run
+    # sydr-fuzz -c tomls/script-lf.toml run
     
-### bt
+### afl++
 
-    # sydr-fuzz -c tomls/bt_fuzz.toml run
-
-### script
-
-    # sydr-fuzz -c tomls/script_fuzz.toml run
+    # sydr-fuzz -c tomls/bb-afl++.toml     run
+    # sydr-fuzz -c tomls/bt-afl++.toml     run
+    # sydr-fuzz -c tomls/script-afl++.toml run
