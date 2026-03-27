@@ -28,13 +28,13 @@ Minimize corpus:
 
     # sydr-fuzz -c tomls/bt-lf.toml cmin
 
-<!-- Check security predicates:
+Check security predicates:
 
     # sydr-fuzz -c tomls/bt-lf.toml security
 
 Crash triage with CASR:
 
-    # sydr-fuzz -c tomls/bt-lf.toml casr -->
+    # sydr-fuzz -c tomls/bt-lf.toml casr
 
 Get LCOV HTML coverage report:
 
