@@ -22,7 +22,7 @@ ARG SYDR_ARCHIVE="./sydr.zip"
 WORKDIR /
 
 COPY directed_target /directed_target
-COPY deep.c /directed_target
+COPY deep.c deep_checksum.c deep_mixed.c /directed_target
 
 WORKDIR /directed_target
 
