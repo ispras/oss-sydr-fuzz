@@ -49,9 +49,9 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
-python3 ${LIBAFL_DIR_ABS}/scripts/difuzz/insert_forkserver.py --sig -a insert -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f deep.c
 $CC -g -fprofile-instr-generate -fcoverage-mapping deep.c -o deep
-python3 ${LIBAFL_DIR_ABS}/scripts/difuzz/insert_forkserver.py --sig -a remove -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f deep.c
 mv ${PROJECT_DIR}/deep ${OUT_DIR_ABS}/coverage_deep
 '''
 
@@ -66,13 +66,12 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
-python3 ${LIBAFL_DIR_ABS}/scripts/difuzz/insert_forkserver.py -a insert -l c -f deep.c
-python3 ${LIBAFL_DIR_ABS}/scripts/difuzz/insert_forkserver.py -a comment -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f deep.c
 $CC -g deep.c -o deep
 cd ${OUT_DIR_ABS}
-${LIBAFL_DIR_ABS}/target/${PROFILE}/difuzz -c ${PROJECT_DIR}/config.toml -b ${PROJECT_DIR}/deep -e ${OUT_DIR_ABS}/ets.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${PROJECT_DIR}/deep -e ${OUT_DIR_ABS}/ets.toml ${DIFUZZ_ARGS}
 '''
-dependencies = ["libs"]
 
 [tasks.target]
 linux_alias = "target_unix"
@@ -89,11 +88,11 @@ export LIBAFL_SHARED_NAME="deep"
 ${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
 ${ETS_SHARED_MANAGER} -a create -n ${LIBAFL_SHARED_NAME}
 ${ETS_SHARED_MANAGER} -a parse -n ${LIBAFL_SHARED_NAME} -i ${OUT_DIR_ABS}/ets.toml
-python3 ${LIBAFL_DIR_ABS}/scripts/difuzz/insert_forkserver.py -a uncomment -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f deep.c
 $CC -g deep.c -o deep
 ${ETS_SHARED_MANAGER} -a dump -n ${LIBAFL_SHARED_NAME} -o ${OUT_DIR_ABS}/ets.toml
 ${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
-python3 ${LIBAFL_DIR_ABS}/scripts/difuzz/insert_forkserver.py -a remove -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f deep.c
 mv ${PROJECT_DIR}/deep ${TARGET}
 '''
 dependencies = ["difuzz"]
