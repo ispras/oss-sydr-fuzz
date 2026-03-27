@@ -35,7 +35,11 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 $CC -g deep.c -o deep
+$CC -g deep_checksum.c -o deep_checksum
+$CC -g deep_mixed.c -o deep_mixed
 mv ${PROJECT_DIR}/deep ${OUT_DIR_ABS}/debug_deep
+mv ${PROJECT_DIR}/deep_checksum ${OUT_DIR_ABS}/debug_deep_checksum
+mv ${PROJECT_DIR}/deep_mixed ${OUT_DIR_ABS}/debug_deep_mixed
 '''
 
 [tasks.coverage]
@@ -49,10 +53,22 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
+
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f deep_checksum.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f deep_mixed.c
+
 $CC -g -fprofile-instr-generate -fcoverage-mapping deep.c -o deep
+$CC -g -fprofile-instr-generate -fcoverage-mapping deep_checksum.c -o deep_checksum
+$CC -g -fprofile-instr-generate -fcoverage-mapping deep_mixed.c -o deep_mixed
+
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f deep_checksum.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f deep_mixed.c
+
 mv ${PROJECT_DIR}/deep ${OUT_DIR_ABS}/coverage_deep
+mv ${PROJECT_DIR}/deep_checksum ${OUT_DIR_ABS}/coverage_deep_checksum
+mv ${PROJECT_DIR}/deep_mixed ${OUT_DIR_ABS}/coverage_deep_mixed
 '''
 
 [tasks.difuzz]
@@ -66,11 +82,22 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
+
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f deep.c
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f deep.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f deep_checksum.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f deep_checksum.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f deep_mixed.c
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f deep_mixed.c
+
 $CC -g deep.c -o deep
+$CC -g deep_checksum.c -o deep_checksum
+$CC -g deep_mixed.c -o deep_mixed
+
 cd ${OUT_DIR_ABS}
 ${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${PROJECT_DIR}/deep -e ${OUT_DIR_ABS}/ets.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config_checksum.toml -b ${PROJECT_DIR}/deep_checksum -e ${OUT_DIR_ABS}/ets_checksum.toml ${DIFUZZ_ARGS}
+${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config_mixed.toml -b ${PROJECT_DIR}/deep_mixed -e ${OUT_DIR_ABS}/ets_mixed.toml ${DIFUZZ_ARGS}
 '''
 
 [tasks.target]
@@ -84,6 +111,7 @@ script = '''
 cd ${PROJECT_DIR}
 export CC=${LIBAFL_CC}
 export CXX=${LIBAFL_CXX}
+
 export LIBAFL_SHARED_NAME="deep"
 ${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
 ${ETS_SHARED_MANAGER} -a create -n ${LIBAFL_SHARED_NAME}
@@ -94,6 +122,28 @@ ${ETS_SHARED_MANAGER} -a dump -n ${LIBAFL_SHARED_NAME} -o ${OUT_DIR_ABS}/ets.tom
 ${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f deep.c
 mv ${PROJECT_DIR}/deep ${TARGET}
+
+export LIBAFL_SHARED_NAME="deep_checksum"
+${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
+${ETS_SHARED_MANAGER} -a create -n ${LIBAFL_SHARED_NAME}
+${ETS_SHARED_MANAGER} -a parse -n ${LIBAFL_SHARED_NAME} -i ${OUT_DIR_ABS}/ets_checksum.toml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f deep_checksum.c
+$CC -g deep_checksum.c -o deep_checksum
+${ETS_SHARED_MANAGER} -a dump -n ${LIBAFL_SHARED_NAME} -o ${OUT_DIR_ABS}/ets_checksum.toml
+${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f deep_checksum.c
+mv ${PROJECT_DIR}/deep_checksum ${TARGET}_checksum
+
+export LIBAFL_SHARED_NAME="deep_mixed"
+${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
+${ETS_SHARED_MANAGER} -a create -n ${LIBAFL_SHARED_NAME}
+${ETS_SHARED_MANAGER} -a parse -n ${LIBAFL_SHARED_NAME} -i ${OUT_DIR_ABS}/ets_mixed.toml
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f deep_mixed.c
+$CC -g deep_mixed.c -o deep_mixed
+${ETS_SHARED_MANAGER} -a dump -n ${LIBAFL_SHARED_NAME} -o ${OUT_DIR_ABS}/ets_mixed.toml
+${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f deep_mixed.c
+mv ${PROJECT_DIR}/deep_mixed ${TARGET}_mixed
 '''
 dependencies = ["difuzz"]
 
@@ -115,8 +165,8 @@ dependencies = ["target"]
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-rm -rf corpus crashes target ${CARGO_TARGET_DIR} difuzz_target_* debug_* coverage_* Cargo.lock ets.toml ETSSharedManager* fuzzer.log target.log .cur_input* difuzz difuzz_fuzzer_* deep
-git restore -- deep.c
+rm -rf corpus crashes target ${CARGO_TARGET_DIR} difuzz_target_* debug_* coverage_* Cargo.lock ets.toml ETSSharedManager* fuzzer.log target.log .cur_input* difuzz difuzz_fuzzer_* deep_checksum deep_mixed deep .deep*
+git restore -- deep.c deep_checksum.c deep_mixed.c
 pkill difuzz_ || true
 '''
 
