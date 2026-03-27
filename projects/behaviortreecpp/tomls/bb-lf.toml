@@ -19,7 +19,7 @@ args = "--wait-jobs --solving-timeout 30 -j2"
 target = "/sydr/bb_sydr @@"
 jobs = 2
 
-[fuzzer]
+[libfuzzer]
 path = "/fuzzer/bb_fuzzer"
 args = "-rss_limit_mb=0 /corpus_bb"
 

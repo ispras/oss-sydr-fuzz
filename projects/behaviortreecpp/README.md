@@ -6,7 +6,7 @@ behaviortreecpp is a C++ library for creating, executing, and testing behavior t
 
     $ sudo docker build -t oss-sydr-fuzz-behaviortreecpp .
 
-## Run Hybrid Fuzzing
+## Run Hybrid Fuzzing with libfuzzer
 
 Unzip Sydr (`sydr.zip`) in `projects/behaviortreecpp` directory:
 
@@ -22,12 +22,32 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c tomls/bt_fuzz.toml run
+    # sydr-fuzz -c tomls/bt-lf.toml run
+
+Minimize corpus:
+
+    # sydr-fuzz -c tomls/bt-lf.toml cmin
+
+<!-- Check security predicates:
+
+    # sydr-fuzz -c tomls/bt-lf.toml security
+
+Crash triage with CASR:
+
+    # sydr-fuzz -c tomls/bt-lf.toml casr -->
 
 Get LCOV HTML coverage report:
 
-    # sydr-fuzz -c tomls/bt_fuzz.toml cov-export -- -format=lcov > bt.lcov
+    # sydr-fuzz -c tomls/bt-lf.toml cov-export -- -format=lcov > bt.lcov
     # genhtml -o bt-html bt.lcov
+
+## Run Hybrid Fuzzing with afl++:
+
+To use afl++ in libfuzzer, you need to extract the file in the same way, run docker, and change the directory.
+
+Run hybrid fuzzing:
+
+    # sydr-fuzz -c tomls/bt-afl++.toml run
 
 ## Alternative Fuzz Targets
 
