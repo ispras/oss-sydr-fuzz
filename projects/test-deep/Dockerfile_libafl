@@ -31,6 +31,8 @@ ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
 RUN OUT_DIR=/ cargo make all
 
+WORKDIR /
+
 # Prepare seed corpus.
 RUN mkdir -p corpus
 RUN printf "" > corpus/empty

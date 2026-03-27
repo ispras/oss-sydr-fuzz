@@ -21,7 +21,7 @@ jobs = 1
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/giflib_libafl_target"
+target = "/difuzz_target_deep"
 args = "-j1 --forced -i /corpus -e /ets.toml"
 casr_bin = "/debug_deep"
 
