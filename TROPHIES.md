@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-184 new bugs in
-33 open source projects.
+203 new bugs in
+34 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -94,6 +94,26 @@
     * <https://github.com/ntop/nDPI/pull/2032>
     * <https://github.com/ntop/nDPI/pull/2033>
     * <https://github.com/ntop/nDPI/pull/2034>
+* OpenImageIO:
+    * [BDU:2025-03723](https://bdu.fstec.ru/vul/2025-03723) (PR: [OpenImageIO/pull/5090](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5090))
+    * [BDU:2025-03724](https://bdu.fstec.ru/vul/2025-03724)
+    * [BDU:2025-03725](https://bdu.fstec.ru/vul/2025-03725) (PR: [OpenImageIO/pull/5086](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5086))
+    * [BDU:2025-03726](https://bdu.fstec.ru/vul/2025-03726) (PR: [OpenImageIO/pull/5086](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5086))
+    * [BDU:2025-03727](https://bdu.fstec.ru/vul/2025-03727) (PR: [OpenImageIO/pull/5086](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5086))
+    * [BDU:2025-03728](https://bdu.fstec.ru/vul/2025-03728) (PR: [OpenImageIO/pull/5086](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5086))
+    * [BDU:2025-03729](https://bdu.fstec.ru/vul/2025-03729) (PR: [OpenImageIO/pull/5086](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5086))
+    * [BDU:2025-03730](https://bdu.fstec.ru/vul/2025-03730) (PR: [OpenImageIO/pull/5082](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5082), [OpenImageIO/pull/5083](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5083), [OpenImageIO/pull/5091](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5091))
+    * [BDU:2025-03731](https://bdu.fstec.ru/vul/2025-03731)
+    * [BDU:2025-04882](https://bdu.fstec.ru/vul/2025-04882) (PR: [OpenImageIO/pull/5082](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5082), [OpenImageIO/pull/5083](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5083), [OpenImageIO/pull/5091](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5091))
+    * [BDU:2025-04883](https://bdu.fstec.ru/vul/2025-04883) (PR: [OpenImageIO/pull/5082](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5082), [OpenImageIO/pull/5083](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5083), [OpenImageIO/pull/5091](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5091))
+    * [BDU:2025-04884](https://bdu.fstec.ru/vul/2025-04884) (PR: [OpenImageIO/pull/5088](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5088))
+    * [BDU:2025-04885](https://bdu.fstec.ru/vul/2025-04885) (PR: [OpenImageIO/pull/5088](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5088))
+    * [BDU:2025-04886](https://bdu.fstec.ru/vul/2025-04886) (PR: [OpenImageIO/pull/5081](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5081))
+    * [BDU:2025-04887](https://bdu.fstec.ru/vul/2025-04887)
+    * [BDU:2025-04888](https://bdu.fstec.ru/vul/2025-04888)
+    * [BDU:2025-04889](https://bdu.fstec.ru/vul/2025-04889) (PR: [OpenImageIO/pull/5089](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5089))
+    * [BDU:2025-04890](https://bdu.fstec.ru/vul/2025-04890) (PR: [OpenImageIO/pull/5089](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5089))
+    * [BDU:2025-04891](https://bdu.fstec.ru/vul/2025-04891) (PR: [OpenImageIO/pull/5089](https://github.com/AcademySoftwareFoundation/OpenImageIO/pull/5089))
 * OpenJPEG (OpenCV 3rdparty):
     * <https://github.com/opencv/opencv/issues/22284>
     * <https://github.com/uclouvain/openjpeg/pull/1488>

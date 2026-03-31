@@ -20,6 +20,11 @@ FROM $BASE_IMAGE
 
 RUN apt-get update && apt-get install -y autoconf automake libsodium-dev libgtest-dev
 
+RUN wget https://www.sqlite.org/2025/sqlite-autoconf-3480000.tar.gz && \
+    tar xzf sqlite-autoconf-3480000.tar.gz && rm sqlite-autoconf-3480000.tar.gz
+
+RUN git clone https://github.com/zeromq/libzmq.git
+
 RUN git clone https://github.com/BehaviorTree/BehaviorTree.CPP.git behaviortreecpp \
     && cd behaviortreecpp \
     && git checkout 3ff6a32ba0497a08519c77a1436e3b81eff1bcd6
@@ -32,3 +37,5 @@ RUN TARGET="fuzzer" /build.sh
 RUN TARGET="sydr"   /build.sh
 RUN TARGET="afl"    /build.sh
 RUN TARGET="cov"    /build.sh
+
+RUN cp -r fuzzing/corpus/*_corpus /

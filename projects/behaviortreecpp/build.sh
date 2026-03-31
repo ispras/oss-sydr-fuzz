@@ -44,25 +44,24 @@ fi
 
 # ===== Build Sqlite =====
 SQLITE_VER=sqlite-autoconf-3480000
-wget https://www.sqlite.org/2025/${SQLITE_VER}.tar.gz
-tar xzf ${SQLITE_VER}.tar.gz
-cd ${SQLITE_VER}
+cd /${SQLITE_VER}
+make clean && make uninstall
 ./configure --enable-static --disable-shared
 make -j"$(nproc)"
 make install
-cd ..
 
 # ===== Build zeroMQ =====
-git clone https://github.com/zeromq/libzmq.git
-cd libzmq
+cd /libzmq
+rm -rf build
 mkdir build && cd build
 cmake .. -DBUILD_SHARED=OFF -DBUILD_STATIC=ON -DZMQ_BUILD_TESTS=OFF
 make -j"$(nproc)"
 make install
-cd ../..
 
 # ===== Build BehaviorTree.CPP =====
 mkdir "/${TARGET}"
+cd /behaviortreecpp
+rm -rf build
 mkdir build && cd build
 
 if [[ $TARGET == "sydr" || $TARGET == "cov" ]]
@@ -84,28 +83,3 @@ make -j"$(nproc)"
 for fuzz_target in bb bt script; do
     cp "${fuzz_target}_fuzzer" "/${TARGET}/${fuzz_target}_${TARGET}"
 done
-
-if [[ $TARGET == "fuzzer" ]]
-then
-    for fuzz_target in bb bt script; do
-      if [ -d "../fuzzing/corpus/${fuzz_target}_corpus" ]; then
-        cp -r "../fuzzing/corpus/${fuzz_target}_corpus" "/corpus_${fuzz_target}"
-      fi
-    done
-fi
-
-# ===== Clean dependencies =====
-cd /behaviortreecpp/${SQLITE_VER}
-make clean
-make uninstall
-
-cd /behaviortreecpp/libzmq/build
-make clean
-
-# Use this because there is no make uninstall
-xargs -d '\n' rm -f < install_manifest.txt 
-
-rm -rf /behaviortreecpp/build
-rm -rf /behaviortreecpp/${SQLITE_VER}
-rm -f  /behaviortreecpp/${SQLITE_VER}.tar.gz
-rm -rf /behaviortreecpp/libzmq

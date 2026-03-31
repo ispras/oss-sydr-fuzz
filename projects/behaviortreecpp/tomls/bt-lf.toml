@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzzer/bt_fuzzer"
-args = "-rss_limit_mb=0 /corpus_bt"
+args = "-rss_limit_mb=0 -workers=4 -jobs=1000 /bt_corpus"
 
 [cov]
 target = "/cov/bt_cov @@"
