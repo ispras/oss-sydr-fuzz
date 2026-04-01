@@ -18,6 +18,9 @@
 
 export CC=clang
 export CXX=clang++
+
+# build target for libFuzzer
+
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 
@@ -34,7 +37,7 @@ cmake \
     -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
     ../
 
-make V=1 -j8
+make V=1 -j"$(nproc)"
 cd ../
 
 export CFLAGS="-g -fsanitize=fuzzer,address,undefined"
@@ -58,3 +61,46 @@ $CXX $CXXFLAGS ./fuzz_model.cc \
     ./build_fuzz/libxnnpack-microkernels-all.a \
     ./build_fuzz/libxnnpack-microkernels-prod.a \
     -o fuzz_model_fuzz
+
+# build target for coverage
+
+export CFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping"
+
+mkdir -p build_cov
+cd build_cov
+
+cmake \
+    -DXNNPACK_BUILD_BENCHMARKS=OFF \
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+    -DXNNPACK_BUILD_TESTS=ON \
+    -DCMAKE_C_COMPILER="$CC" \
+    -DCMAKE_CXX_COMPILER="$CXX" \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    ../
+
+make V=1 -j"$(nproc)"
+cd ../
+
+clang -c /opt/StandaloneFuzzTargetMain.c -o /main.o
+
+$CXX $CXXFLAGS ./fuzz_model.cc /main.o \
+    -lpthread \
+    -DFXDIV_USE_INLINE_ASSEMBLY=0 -DPTHREADPOOL_NO_DEPRECATED_API=1 \
+    -DXNN_ENABLE_ARM_BF16=1 -DXNN_ENABLE_ARM_DOTPROD=1 \
+    -DXNN_ENABLE_ARM_FP16_SCALAR=1 -DXNN_ENABLE_ARM_FP16_VECTOR=1 \
+    -DXNN_ENABLE_ASSEMBLY=1 -DXNN_ENABLE_DWCONV_MULTIPASS=0 \
+    -DXNN_ENABLE_GEMM_M_SPECIALIZATION=1 -DXNN_ENABLE_JIT=0 \
+    -DXNN_ENABLE_MEMOPT=1 -DXNN_ENABLE_RISCV_VECTOR=1 -DXNN_ENABLE_SPARSE=1 \
+    -I/xnnpack/src \
+    -I/xnnpack/build_cov/pthreadpool-source/include \
+    -I/xnnpack/build_cov/FXdiv-source/include \
+    -I/xnnpack/include \
+    -I/xnnpack/build_cov/FP16-source/include \
+    ./build_cov/libXNNPACK.a \
+    ./build_cov/pthreadpool/libpthreadpool.a \
+    ./build_cov/cpuinfo/libcpuinfo.a \
+    ./build_cov/libxnnpack-microkernels-all.a \
+    ./build_cov/libxnnpack-microkernels-prod.a \
+    -o fuzz_model_cov
