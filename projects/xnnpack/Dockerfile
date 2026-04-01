@@ -27,6 +27,6 @@ RUN git clone https://github.com/google/XNNPACK /xnnpack \
 WORKDIR /xnnpack
 
 
-COPY run_tests.sh build.sh *.cc /xnnpack/
+COPY build.sh *.cc /xnnpack/
 
-RUN ./build.sh
+RUN chmod +x /xnnpack/build.sh && /xnnpack/build.sh
