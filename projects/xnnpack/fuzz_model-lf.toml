@@ -1,5 +1,4 @@
-# Copyright 2023 Google LLC
-# Modifications copyright (C) 2026 ISP RAS
+# Copyright 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,21 +14,14 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[sydr]
+args = "--wait-jobs --solving-timeout 30 -j2"
+target = "/xnnpack/fuzz_model_sydr @@"
+jobs = 2
 
-RUN apt-get update && apt-get install -y make autoconf automake libtool libomp-dev libgomp1
+[libfuzzer]
+path = "/xnnpack/fuzz_model_fuzz"
+args = "-rss_limit_mb=0 -workers=4 -jobs=1000 /corpus"
 
-RUN git clone https://github.com/google/XNNPACK /xnnpack \
-    && cd /xnnpack \
-    && git checkout cbd072c2f11237064f77d87f68d1b191dbcb380a
-
-WORKDIR /xnnpack
-
-
-COPY build.sh *.cc /xnnpack/
-
-COPY corpus.zip /
-RUN unzip /corpus.zip -d /
-
-RUN chmod +x /xnnpack/build.sh && /xnnpack/build.sh
+[cov]
+target = "/xnnpack/fuzz_model_cov @@"
