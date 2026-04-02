@@ -52,3 +52,7 @@ xnnpack project has 1 fuzz target.
 ### libfuzzer
 
     # sydr-fuzz -c fuzz_model-lf.toml run
+
+### afl++
+
+    # sydr-fuzz -c fuzz_model-afl++.toml run

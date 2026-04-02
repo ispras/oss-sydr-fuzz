@@ -16,12 +16,12 @@
 
 [sydr]
 args = "--wait-jobs --solving-timeout 30 -j2"
-target = "/xnnpack/fuzz_model_sydr @@"
+target = "/fuzz_model_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/xnnpack/fuzz_model_fuzz"
+path = "/fuzz_model_fuzz"
 args = "-rss_limit_mb=0 -workers=4 -jobs=1000 /corpus"
 
 [cov]
-target = "/xnnpack/fuzz_model_cov @@"
+target = "/fuzz_model_cov @@"

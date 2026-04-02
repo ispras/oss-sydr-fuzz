@@ -26,10 +26,13 @@ RUN git clone https://github.com/google/XNNPACK /xnnpack \
 
 WORKDIR /xnnpack
 
-
 COPY build.sh *.cc /xnnpack/
 
 COPY corpus.zip /
 RUN unzip /corpus.zip -d /
 
-RUN chmod +x /xnnpack/build.sh && /xnnpack/build.sh
+RUN chmod +x        /xnnpack/build.sh
+RUN TARGET=fuzzer   /xnnpack/build.sh
+RUN TARGET=afl      /xnnpack/build.sh
+RUN TARGET=sydr     /xnnpack/build.sh
+RUN TARGET=cov      /xnnpack/build.sh
