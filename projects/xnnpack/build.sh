@@ -23,13 +23,13 @@ if [[ "$TARGET" == "fuzzer" ]]
 then
     export CC=clang
     export CXX=clang++
-    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
 elif [[ "$TARGET" == "afl" ]]
 then
     export CC=afl-clang-fast
     export CXX=afl-clang-fast++
-    export CFLAGS="-g -fsanitize=address,bounds,null,float-divide-by-zero"
+    export CFLAGS="-g -fsanitize=address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
 elif [[ "$TARGET" == "sydr" ]]
 then
@@ -94,44 +94,23 @@ COMMON_LIBS=(
     "${BUILD_DIR}/libxnnpack-microkernels-prod.a"
 )
 
+OUT="/fuzz_model_${TARGET}"
+EXTRAFLAGS=()
+
 if [[ "$TARGET" == "fuzzer" ]]
 then
-    export CFLAGS="-g -fsanitize=fuzzer,address,undefined"
+    export CFLAGS="-g -fsanitize=fuzzer,address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
-
-    $CXX $CXXFLAGS /xnnpack/fuzz_model.cc \
-        "${COMMON_DEFS[@]}" \
-        "${COMMON_INCLUDES[@]}" \
-        "${COMMON_LIBS[@]}" \
-        -o /fuzz_model_fuzz
-elif [[ "$TARGET" == "afl" ]]
+elif [[ "$TARGET" == "afl" || "$TARGET" == "sydr" || "$TARGET" == "cov" ]]
 then
-    $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o /main_afl.o
-
-    $CXX $CXXFLAGS /xnnpack/fuzz_model.cc /main_afl.o \
-        -lpthread \
-        "${COMMON_DEFS[@]}" \
-        "${COMMON_INCLUDES[@]}" \
-        "${COMMON_LIBS[@]}" \
-        -o /fuzz_model_afl
-elif [[ "$TARGET" == "sydr" ]]
-then
-    $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o /main_sydr.o
-
-    $CXX $CXXFLAGS /xnnpack/fuzz_model.cc /main_sydr.o \
-        -lpthread \
-        "${COMMON_DEFS[@]}" \
-        "${COMMON_INCLUDES[@]}" \
-        "${COMMON_LIBS[@]}" \
-        -o /fuzz_model_sydr
-elif [[ "$TARGET" == "cov" ]]
-then
-    $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o /main_cov.o
-
-    $CXX $CXXFLAGS /xnnpack/fuzz_model.cc /main_cov.o \
-        -lpthread \
-        "${COMMON_DEFS[@]}" \
-        "${COMMON_INCLUDES[@]}" \
-        "${COMMON_LIBS[@]}" \
-        -o /fuzz_model_cov
+    MAIN_OBJ="/main_${TARGET}.o"
+    $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o "$MAIN_OBJ"
+    EXTRAFLAGS+=("$MAIN_OBJ" -lpthread)
 fi
+
+$CXX $CXXFLAGS /xnnpack/fuzz_model.cc \
+    "${EXTRAFLAGS[@]}" \
+    "${COMMON_DEFS[@]}" \
+    "${COMMON_INCLUDES[@]}" \
+    "${COMMON_LIBS[@]}" \
+    -o "$OUT"

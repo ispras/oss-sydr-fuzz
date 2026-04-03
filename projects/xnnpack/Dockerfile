@@ -31,8 +31,7 @@ COPY build.sh *.cc /xnnpack/
 COPY corpus.zip /
 RUN unzip /corpus.zip -d /
 
-RUN chmod +x        /xnnpack/build.sh
-RUN TARGET=fuzzer   /xnnpack/build.sh
-RUN TARGET=afl      /xnnpack/build.sh
-RUN TARGET=sydr     /xnnpack/build.sh
-RUN TARGET=cov      /xnnpack/build.sh
+RUN TARGET=fuzzer   ./build.sh
+RUN TARGET=afl      ./build.sh
+RUN TARGET=sydr     ./build.sh
+RUN TARGET=cov      ./build.sh

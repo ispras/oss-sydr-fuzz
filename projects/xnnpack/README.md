@@ -28,6 +28,10 @@ Run hybrid fuzzing with libfuzzer:
 
     # sydr-fuzz -c fuzz_model-lf.toml run
 
+Run hybrid fuzzing with afl++:
+
+    # sydr-fuzz -c fuzz_model-afl++.toml run
+
 Minimize corpus:
 
     # sydr-fuzz -c fuzz_model-lf.toml cmin
@@ -44,15 +48,3 @@ Get LCOV HTML coverage report:
 
     # sydr-fuzz -c fuzz_model-lf.toml cov-export -- -format=lcov > fuzz_model.lcov
     # genhtml -o fuzz_model-html fuzz_model.lcov
-
-## Alternative Fuzz Targets
-
-xnnpack project has 1 fuzz target.
-
-### libfuzzer
-
-    # sydr-fuzz -c fuzz_model-lf.toml run
-
-### afl++
-
-    # sydr-fuzz -c fuzz_model-afl++.toml run
