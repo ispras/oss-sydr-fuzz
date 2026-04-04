@@ -17,4 +17,4 @@
 pip install testresources 
 pip install -U pip setuptools wheel
 
-pip install --ignore-installed .
+pip install .
