@@ -22,7 +22,7 @@ RUN git clone https://github.com/robyoung/dicom-test-files
 RUN mv dicom-test-files/data/pydicom /corpus
 
 COPY build.sh build.sh
-COPY fuzzer-pyafl.py fuzzer-pyafl.py
+COPY fuzzer_pyafl.py fuzzer_pyafl.py
 
 WORKDIR /pydicom
 
