@@ -62,46 +62,14 @@ cmake \
 make V=1 -j"$(nproc)"
 cd "$ROOT"
 
-COMMON_DEFS=(
-    -DFXDIV_USE_INLINE_ASSEMBLY=0
-    -DPTHREADPOOL_NO_DEPRECATED_API=1
-    -DXNN_ENABLE_ARM_BF16=1
-    -DXNN_ENABLE_ARM_DOTPROD=1
-    -DXNN_ENABLE_ARM_FP16_SCALAR=1
-    -DXNN_ENABLE_ARM_FP16_VECTOR=1
-    -DXNN_ENABLE_ASSEMBLY=1
-    -DXNN_ENABLE_DWCONV_MULTIPASS=0
-    -DXNN_ENABLE_GEMM_M_SPECIALIZATION=1
-    -DXNN_ENABLE_JIT=0
-    -DXNN_ENABLE_MEMOPT=1
-    -DXNN_ENABLE_RISCV_VECTOR=1
-    -DXNN_ENABLE_SPARSE=1
-)
-
-COMMON_INCLUDES=(
-    -I/xnnpack/src
-    -I"${BUILD_DIR}/pthreadpool-source/include"
-    -I"${BUILD_DIR}/FXdiv-source/include"
-    -I/xnnpack/include
-    -I"${BUILD_DIR}/FP16-source/include"
-)
-
-COMMON_LIBS=(
-    "${BUILD_DIR}/libXNNPACK.a"
-    "${BUILD_DIR}/pthreadpool/libpthreadpool.a"
-    "${BUILD_DIR}/cpuinfo/libcpuinfo.a"
-    "${BUILD_DIR}/libxnnpack-microkernels-all.a"
-    "${BUILD_DIR}/libxnnpack-microkernels-prod.a"
-)
-
 OUT="/fuzz_model_${TARGET}"
 EXTRAFLAGS=()
 
-if [[ "$TARGET" == "fuzzer" ]]
+if [[ "$TARGET" == "fuzzer" || "$TARGET" == "afl" ]]
 then
     export CFLAGS="-g -fsanitize=fuzzer,address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
-elif [[ "$TARGET" == "afl" || "$TARGET" == "sydr" || "$TARGET" == "cov" ]]
+elif [[ "$TARGET" == "sydr" || "$TARGET" == "cov" ]]
 then
     MAIN_OBJ="/main_${TARGET}.o"
     $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o "$MAIN_OBJ"
@@ -110,7 +78,28 @@ fi
 
 $CXX $CXXFLAGS /xnnpack/fuzz_model.cc \
     "${EXTRAFLAGS[@]}" \
-    "${COMMON_DEFS[@]}" \
-    "${COMMON_INCLUDES[@]}" \
-    "${COMMON_LIBS[@]}" \
+    -DFXDIV_USE_INLINE_ASSEMBLY=0 \
+    -DPTHREADPOOL_NO_DEPRECATED_API=1 \
+    -DXNN_ENABLE_ARM_BF16=1 \
+    -DXNN_ENABLE_ARM_DOTPROD=1 \
+    -DXNN_ENABLE_ARM_FP16_SCALAR=1 \
+    -DXNN_ENABLE_ARM_FP16_VECTOR=1 \
+    -DXNN_ENABLE_ASSEMBLY=1 \
+    -DXNN_ENABLE_DWCONV_MULTIPASS=0 \
+    -DXNN_ENABLE_GEMM_M_SPECIALIZATION=1 \
+    -DXNN_ENABLE_JIT=0 \
+    -DXNN_ENABLE_MEMOPT=1 \
+    -DXNN_ENABLE_RISCV_VECTOR=1 \
+    -DXNN_ENABLE_SPARSE=1 \
+    -I/xnnpack/src \
+    -I"${BUILD_DIR}/pthreadpool-source/include" \
+    -I"${BUILD_DIR}/FXdiv-source/include" \
+    -I/xnnpack/include \
+    -I"${BUILD_DIR}/FP16-source/include" \
+    "${BUILD_DIR}/libXNNPACK.a" \
+    "${BUILD_DIR}/pthreadpool/libpthreadpool.a" \
+    "${BUILD_DIR}/cpuinfo/libcpuinfo.a" \
+    "${BUILD_DIR}/libxnnpack-microkernels-all.a" \
+    "${BUILD_DIR}/libxnnpack-microkernels-prod.a" \
     -o "$OUT"
+

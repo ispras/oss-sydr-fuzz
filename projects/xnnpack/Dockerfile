@@ -18,7 +18,7 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN apt-get update && apt-get install -y make autoconf automake libtool libomp-dev libgomp1
+RUN apt-get update && apt-get install -y libomp-dev libgomp1
 
 RUN git clone https://github.com/google/XNNPACK /xnnpack \
     && cd /xnnpack \
