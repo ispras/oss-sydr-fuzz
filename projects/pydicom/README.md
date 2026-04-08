@@ -22,23 +22,23 @@ Change directory to `/fuzz`:
 
 ## Fuzz tagrets:
 
-  * fuzz_pyafl
+  * dcmread_fuzzer
 
 ## Fuzzing
 
 Run fuzzing:
 
-    # sydr-fuzz -c fuzzer-pyafl.toml run
+    # sydr-fuzz -c dcmread-pyafl.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c fuzzer-pyafl.toml cmin
+    # sydr-fuzz -c dcmread-pyafl.toml cmin
 
 Get HTML coverage report:
 
-    # sydr-fuzz -c fuzzer-pyafl.toml pycov html -- --source=pydicom,fuzz_pyafl
+    # sydr-fuzz -c dcmread-pyafl.toml pycov html -- --source=pydicom,dcmread_fuzzer
 
 Crash triage with Casr:
 
-    # sydr-fuzz -c fuzzer-pyafl.toml casr
+    # sydr-fuzz -c dcmread-pyafl.toml casr
 
