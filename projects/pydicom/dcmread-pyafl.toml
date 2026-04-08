@@ -18,5 +18,5 @@ exit-on-time = 3600
 
 [pyafl]
 args = "-i /corpus -t 6000"
-target = "fuzzer_pyafl.py"
+target = "dcmread_fuzzer.py"
 jobs = 4
