@@ -46,7 +46,7 @@ $CC $CFLAGS -I/vulkan-loader/loader \
     -c /instance_create_advanced_fuzzer.c -o /instance_create_advanced_fuzzer_cov.o
 
 $CXX $CXXFLAGS /main.o /instance_create_advanced_fuzzer_cov.o \
-    -o /instance_create_advanced_fuzzer_cov -lpthread /libvulkan.a
+    -o /instance_create_advanced_fuzzer_cov -lpthread -ldl /libvulkan.a
 
 cp /vulkan-keywords.dict /instance_create_advanced_fuzzer.dict
 
@@ -57,7 +57,7 @@ $CC $CXXFLAGS -I/vulkan-loader/loader \
     -c /instance_enumerate_fuzzer.c -o /instance_enumerate_fuzzer_split_input_cov.o
 
 $CXX $CXXFLAGS /main.o /instance_enumerate_fuzzer_split_input_cov.o \
-    -o /instance_enumerate_fuzzer_split_input_cov -lpthread /libvulkan.a
+    -o /instance_enumerate_fuzzer_split_input_cov -lpthread -ldl /libvulkan.a
 
 cp /vulkan-keywords.dict /instance_enumerate_fuzzer_split_input.dict
 
@@ -69,7 +69,7 @@ for fuzzer in instance_create_fuzzer json_load_fuzzer settings_fuzzer instance_e
         -c /$fuzzer.c -o /${fuzzer}_cov.o
 
     $CXX $CXXFLAGS /main.o /${fuzzer}_cov.o \
-        -o /${fuzzer}_cov -lpthread /libvulkan.a
+        -o /${fuzzer}_cov -lpthread -ldl /libvulkan.a
 
     cp /vulkan-keywords.dict /$fuzzer.dict
 done
