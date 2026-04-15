@@ -48,7 +48,6 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_giflib.sh
@@ -64,7 +63,6 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_giflib.sh
@@ -80,7 +78,6 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-export LLVM_COMPILER=clang
 export CC=clang; export CXX=clang++
 export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"; export CXXFLAGS="$CFLAGS"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/util/gifsponge.c

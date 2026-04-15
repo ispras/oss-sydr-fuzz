@@ -14,27 +14,18 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
-FROM $BASE_IMAGE
+[[target]]
+file = "/llama.cpp/ggml/src/ggml.c"
+line = 6813
 
-RUN git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && \
-    git checkout e39eba26f3921402aca0d2600cf65abdd1fe9e55
+[[target]]
+file = "/llama.cpp/ggml/src/ggml.c"
+line = 6800
 
-WORKDIR llama.cpp
+[[target]]
+file = "/llama.cpp/ggml/src/ggml.c"
+line = 6699
 
-# Copy build script and targets.
-COPY build.sh /
-COPY fuzzers fuzzers
-COPY fuzzers/llama.dict /llama.dict
-
-# Build fuzz targets.
-RUN TARGET="afl" /build.sh
-RUN TARGET="fuzz" /build.sh
-RUN TARGET="sydr" /build.sh
-RUN TARGET="cov" /build.sh
-
-WORKDIR /
-
-# Prepare some dicts and seeds, create corpus dir
-RUN /llama.cpp/build/bin/llama-gguf dummy.gguf w && mkdir -p /corpus && \
-    mv dummy.gguf /corpus/
+[[target]]
+file = "/llama.cpp/src/llama-model-loader.cpp"
+line = 572

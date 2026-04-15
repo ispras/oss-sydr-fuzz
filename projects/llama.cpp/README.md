@@ -9,6 +9,12 @@ even on devices with limited computational power.
 
     $ sudo docker build -t oss-sydr-fuzz-llama.cpp .
 
+## Build LibAFL-DiFuzz Docker
+
+Pass `sydr.zip` as an argument:
+
+    $ sudo docker build --build-arg SYDR_ARCHIVE="sydr.zip" -t oss-sydr-fuzz-libafl-llama.cpp -f ./Dockerfile_libafl .
+
 ## Run Hybrid Fuzzing
 
 Unzip Sydr (`sydr.zip`) in `projects/llama.cpp` directory:
@@ -18,6 +24,10 @@ Unzip Sydr (`sydr.zip`) in `projects/llama.cpp` directory:
 Run docker:
 
     $ sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-llama.cpp /bin/bash
+
+Run docker for LibAFL-DiFuzz:
+
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libafl-llama.cpp /bin/bash
 
 Change directory to `/fuzz`:
 
@@ -34,6 +44,10 @@ Collect and report coverage:
 ## Hybrid Fuzzing with AFL++
 
     # sydr-fuzz -c tomls/fuzz_load_model-afl++.toml run
+
+## Hybrid Fuzzing with LibAFL-DiFuzz
+
+    # sydr-fuzz -c tomls/fuzz_load_model-libafl.toml run
 
 ## Alternative Fuzz Targets
 

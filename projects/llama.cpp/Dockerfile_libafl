@@ -14,27 +14,35 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && \
-    git checkout e39eba26f3921402aca0d2600cf65abdd1fe9e55
-
-WORKDIR llama.cpp
-
-# Copy build script and targets.
-COPY build.sh /
-COPY fuzzers fuzzers
-COPY fuzzers/llama.dict /llama.dict
-
-# Build fuzz targets.
-RUN TARGET="afl" /build.sh
-RUN TARGET="fuzz" /build.sh
-RUN TARGET="sydr" /build.sh
-RUN TARGET="cov" /build.sh
+ARG SYDR_ARCHIVE="./sydr.zip"
 
 WORKDIR /
 
-# Prepare some dicts and seeds, create corpus dir
+# Clone target from GitHub.
+RUN git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && \
+    git checkout e39eba26f3921402aca0d2600cf65abdd1fe9e55
+
+WORKDIR /llama.cpp
+
+# Copy build script and targets.
+COPY fuzzers fuzzers
+COPY fuzzers/llama.dict /llama.dict
+
+# Copy LibAFL-DiFuzz target template.
+COPY directed_target /directed_target
+
+WORKDIR /directed_target
+
+# Build llama.cpp for LibAFL-DiFuzz.
+ADD ${SYDR_ARCHIVE} ./
+RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+RUN OUT_DIR=/out_libafl cargo make all
+
+WORKDIR /
+
+# Prepare seed corpus.
 RUN /llama.cpp/build/bin/llama-gguf dummy.gguf w && mkdir -p /corpus && \
     mv dummy.gguf /corpus/
