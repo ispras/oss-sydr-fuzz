@@ -81,7 +81,7 @@ export CC=clang; export CXX=clang++
 export CFLAGS="-fPIC -g -fprofile-instr-generate -fcoverage-mapping"; export CXXFLAGS="$CFLAGS"
 export OUT="$OUT_DIR/cov"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f /opt/StandaloneFuzzTargetMain.c
-TARGET="coverage" ${PROJECT_DIR}/build.sh
+TARGET="cov" ${PROJECT_DIR}/build.sh
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f /opt/StandaloneFuzzTargetMain.c
 '''
 
@@ -105,7 +105,8 @@ TARGET="difuzz" ${PROJECT_DIR}/build.sh
 
 for file in "$OUT"/*; do
   [ -f "$file" ] || continue
-  filename=$(basename "$file")
+  full_filename=$(basename "$file")
+  filename="${full_filename%_difuzz}"
   ${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b $file -e $OUT/ets_$filename.toml ${DIFUZZ_ARGS}
 done
 '''
@@ -130,20 +131,20 @@ python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f /opt/Standal
 for file in "$OUT_DIR"/difuzz/*; do
   [ -f "$file" ] || continue
   [[ "$file" == *.toml ]] && continue
-  filename=$(basename "$file")
+  full_filename=$(basename "$file")
+  filename="${full_filename%_difuzz}"
   ${ETS_SHARED_MANAGER} -a remove -n llama_$filename
   ${ETS_SHARED_MANAGER} -a create -n llama_$filename
   ${ETS_SHARED_MANAGER} -a parse -n llama_$filename -i ${OUT_DIR_ABS}/ets_$filename.toml
 done
 
-# Переделать в режим цикла при TARGET="libafl"
-export LIBAFL_SHARED_NAME="llama_$filename"
 TARGET="libafl" ${PROJECT_DIR}/build.sh
 
 for file in "$OUT_DIR"/difuzz/*; do
   [ -f "$file" ] || continue
   [[ "$file" == *.toml ]] && continue
-  filename=$(basename "$file")
+  full_filename=$(basename "$file")
+  filename="${full_filename%_difuzz}"
   ${ETS_SHARED_MANAGER} -a dump -n llama_$filename -o ${OUT_DIR_ABS}/ets_$filename.toml
   ${ETS_SHARED_MANAGER} -a remove -n llama_$filename
 done

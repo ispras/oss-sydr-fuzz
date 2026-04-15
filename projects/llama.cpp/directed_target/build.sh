@@ -83,6 +83,7 @@ build_target(){
 
     if [[ "$TARGET" == "libafl" ]]
     then
+        export LIBAFL_SHARED_NAME="llama_${target}"
         cmake -B build -DLLAMA_CURL=OFF -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DBUILD_SHARED_LIBS=OFF -DLLAMA_BUILD_SERVER=OFF
         cmake --build build --config Debug -j16
         $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /StandaloneFuzzTargetMain.o
@@ -114,6 +115,7 @@ build_tokenizer(){
 
     if [[ "$TARGET" == "libafl" ]]
     then
+        export LIBAFL_SHARED_NAME="llama_${target}"
         cmake -B build -DLLAMA_CURL=OFF -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DBUILD_SHARED_LIBS=OFF -DLLAMA_BUILD_SERVER=OFF
         cmake --build build --config Debug -j16
         $CC $CFLAGS /opt/StandaloneFuzzTargetMain.c -c -o /StandaloneFuzzTargetMain.o
