@@ -20,10 +20,8 @@ export CC=clang
 export CXX=clang++
 export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
 export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
-FUZZ_FLAGS="-g -fsanitize=fuzzer,address,undefined"
 
 cd /vulkan-loader
-
 git apply --ignore-space-change --ignore-whitespace /fuzz-patch.diff
 
 mkdir -p build
@@ -43,7 +41,7 @@ $CC $CFLAGS -I/vulkan-loader/loader \
     -DENABLE_FILE_CALLBACK \
     -c /instance_create_advanced_fuzzer.c -o instance_create_advanced_fuzzer.o
 
-$CXX $FUZZ_FLAGS instance_create_advanced_fuzzer.o \
+$CXX -g -fsanitize=fuzzer,address,undefined instance_create_advanced_fuzzer.o \
     -o /instance_create_advanced_fuzzer -lpthread /libvulkan.a
 cp /vulkan-keywords.dict /instance_create_advanced_fuzzer.dict
 
@@ -53,7 +51,7 @@ $CC $CXXFLAGS -I/vulkan-loader/loader \
     -DSPLIT_INPUT \
     -c /instance_enumerate_fuzzer.c -o instance_enumerate_fuzzer_split_input.o
 
-$CXX $FUZZ_FLAGS instance_enumerate_fuzzer_split_input.o \
+$CXX -g -fsanitize=fuzzer,address,undefined instance_enumerate_fuzzer_split_input.o \
     -o /instance_enumerate_fuzzer_split_input -lpthread /libvulkan.a
 cp /vulkan-keywords.dict /instance_enumerate_fuzzer_split_input.dict
 
@@ -64,7 +62,7 @@ for fuzzer in instance_create_fuzzer json_load_fuzzer settings_fuzzer instance_e
         -I/vulkan-headers/include \
         -c /$fuzzer.c -o $fuzzer.o
 
-    $CXX $FUZZ_FLAGS $fuzzer.o \
+    $CXX -g -fsanitize=fuzzer,address,undefined $fuzzer.o \
         -o /$fuzzer -lpthread /libvulkan.a
 
     cp /vulkan-keywords.dict /$fuzzer.dict
