@@ -50,7 +50,7 @@ cd ${PROJECT_DIR}
 export CC=clang; export CXX=clang++
 export CFLAGS="-fPIC -g"; export CXXFLAGS="$CFLAGS"
 export OUT="$OUT_DIR/sydr"
-TARGET="debug" ${PROJECT_DIR}/build.sh
+TARGET="sydr" ${PROJECT_DIR}/build.sh
 '''
 
 [tasks.casr]
