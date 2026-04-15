@@ -98,7 +98,7 @@ script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export CC=wllvm; export CXX=wllvm++
-export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
+export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
 export ASAN_OPTIONS="detect_leaks=0"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/binutils/cxxfilt.c
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/binutils/cxxfilt.c
