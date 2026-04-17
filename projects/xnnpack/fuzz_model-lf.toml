@@ -20,7 +20,7 @@ target = "/fuzz_model_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz_model_fuzz"
+path = "/fuzz_model_fuzzer"
 args = "-rss_limit_mb=0 -workers=4 -jobs=1000 /corpus"
 
 [cov]
