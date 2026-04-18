@@ -28,7 +28,6 @@ RUN apt-get update && \
     libxkbcommon-dev \
     libxrandr-dev
 
-# Vulkan-Loader depends on the header file in Vulkan-Headers
 WORKDIR /
 RUN git clone https://github.com/khronosgroup/Vulkan-Headers vulkan-headers
 RUN git clone https://github.com/khronosgroup/Vulkan-Loader vulkan-loader
@@ -39,8 +38,13 @@ RUN git checkout 1bf213b2a90181553fff35aeb6fa5c468dcfd35d
 WORKDIR /
 COPY fuzzers/*.h fuzzers/*_fuzzer.c *.sh vulkan-keywords.dict *.diff ./
 
+RUN cd /vulkan-loader && git apply --ignore-space-change --ignore-whitespace /fuzz-patch.diff && sed -i 's/fput/\/\/fput/g' /vulkan-loader/loader/log.c || true
+
 RUN chmod +x /build.sh
-RUN /build.sh
+RUN TARGET=libfuzzer /build.sh
+RUN TARGET=coverage /build.sh
+RUN TARGET=sydr /build.sh
+RUN TARGET=afl /build.sh
 
 RUN mkdir /corpus && \
     cp -r /vulkan-loader/tests/corpus/* /corpus/

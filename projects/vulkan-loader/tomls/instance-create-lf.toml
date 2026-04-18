@@ -1,0 +1,12 @@
+[sydr]
+args = "--wait-jobs"
+target = "/instance_create_fuzzer_sydr @@"
+jobs = 2
+
+[libfuzzer]
+path = "/instance_create_fuzzer"
+args = "-close_fd_mask=3 /corpus/"
+cmin = false
+
+[cov]
+target = "/instance_create_fuzzer_cov @@"

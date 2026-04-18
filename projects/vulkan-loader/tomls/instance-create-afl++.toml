@@ -1,0 +1,12 @@
+[sydr]
+args = "--wait-jobs"
+target = "/instance_create_fuzzer_sydr @@"
+jobs = 2
+
+[aflplusplus]
+args = "-i /corpus -t 300000"
+target = "/instance_create_fuzzer_afl @@"
+jobs = 2
+
+[cov]
+target = "/instance_create_fuzzer_cov @@"

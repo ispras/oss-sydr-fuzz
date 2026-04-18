@@ -1,0 +1,12 @@
+[sydr]
+args = "--wait-jobs"
+target = "/json_load_fuzzer_sydr @@"
+jobs = 2
+
+[aflplusplus]
+args = "-i /corpus -t 300000"
+target = "/json_load_fuzzer_afl @@"
+jobs = 2
+
+[cov]
+target = "/json_load_fuzzer_cov @@"

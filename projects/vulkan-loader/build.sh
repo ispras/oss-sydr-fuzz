@@ -1,6 +1,6 @@
 #!/bin/bash -eu
-#
 # Copyright 2023 Google LLC
+# Modifications copyright (C) 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,115 +14,111 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-################################################################################   Fuzzing Build
+################################################################################
 
-export CC=clang
-export CXX=clang++
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
-export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+TARGET="${TARGET:-libfuzzer}"
 
-cd /vulkan-loader
-git apply --ignore-space-change --ignore-whitespace /fuzz-patch.diff
+ROOT=/vulkan-loader
+BUILD_DIR="${ROOT}/build_${TARGET}"
+OUT_DIR=/out
 
-mkdir -p build
-cd build
+case "$TARGET" in
+    libfuzzer)
+        export CC=clang
+        export CXX=clang++
+        export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+        export CXXFLAGS="$CFLAGS"
+        LINK_FLAGS="-fsanitize=fuzzer,address,undefined"
+        OUT_SUFFIX=""
+        USE_MAIN=0
+        ;;
+    afl)
+        export CC=afl-clang-fast
+        export CXX=afl-clang-fast++
+        export CFLAGS="-g -fsanitize=address,undefined"
+        export CXXFLAGS="$CFLAGS"
+        LINK_FLAGS="-fsanitize=address,undefined"
+        OUT_SUFFIX="_afl"
+        USE_MAIN=1
+        ;;
+    sydr)
+        export CC=clang
+        export CXX=clang++
+        export CFLAGS="-g"
+        export CXXFLAGS="$CFLAGS"
+        LINK_FLAGS=""
+        OUT_SUFFIX="_sydr"
+        USE_MAIN=1
+        ;;
+    coverage)
+        export CC=clang
+        export CXX=clang++
+        export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+        export CXXFLAGS="$CFLAGS"
+        LINK_FLAGS="-fprofile-instr-generate -fcoverage-mapping"
+        OUT_SUFFIX="_cov"
+        USE_MAIN=1
+        ;;
+    *)
+        echo "Unknown TARGET: $TARGET"
+        exit 1
+        ;;
+esac
 
-sed -i 's/fput/\/\/fput/g' /vulkan-loader/loader/log.c
+rm -rf "$BUILD_DIR"
+mkdir -p "$BUILD_DIR"
+cp /fuzz_header.h "$BUILD_DIR/fuzz_header.h"
+cd "$BUILD_DIR"
 
-cmake -DUPDATE_DEPS=ON -DCMAKE_BUILD_TYPE=Release ..
-make -j$(nproc)
+cmake \
+    -DCMAKE_C_COMPILER="$CC" \
+    -DCMAKE_CXX_COMPILER="$CXX" \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DUPDATE_DEPS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    "$ROOT"
 
-ar rcs /libvulkan.a /vulkan-loader/build/loader/CMakeFiles/vulkan.dir/*.o
+make -j"$(nproc)"
 
-$CC $CFLAGS -I/vulkan-loader/loader \
-    -I/vulkan-loader/loader/generated \
-    -I/vulkan-headers/include \
-    -I/ \
-    -DENABLE_FILE_CALLBACK \
-    -c /instance_create_advanced_fuzzer.c -o instance_create_advanced_fuzzer.o
+ar rcs /libvulkan.a "$BUILD_DIR"/loader/CMakeFiles/vulkan.dir/*.o
 
-$CXX -g -fsanitize=fuzzer,address,undefined instance_create_advanced_fuzzer.o \
-    -o /instance_create_advanced_fuzzer -lpthread /libvulkan.a
-cp /vulkan-keywords.dict /instance_create_advanced_fuzzer.dict
+MAIN_OBJ=""
+EXTRA_LINK=()
 
-$CC $CXXFLAGS -I/vulkan-loader/loader \
-    -I/vulkan-loader/loader/generated \
-    -I/vulkan-headers/include \
-    -DSPLIT_INPUT \
-    -c /instance_enumerate_fuzzer.c -o instance_enumerate_fuzzer_split_input.o
+if [[ "$USE_MAIN" == "1" ]]; then
+    MAIN_OBJ="/main_${TARGET}.o"
+    $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o "$MAIN_OBJ"
+    EXTRA_LINK+=("$MAIN_OBJ")
+fi
 
-$CXX -g -fsanitize=fuzzer,address,undefined instance_enumerate_fuzzer_split_input.o \
-    -o /instance_enumerate_fuzzer_split_input -lpthread /libvulkan.a
-cp /vulkan-keywords.dict /instance_enumerate_fuzzer_split_input.dict
+build_fuzzer() {
+    local src="$1"
+    local name="$2"
 
-for fuzzer in instance_create_fuzzer json_load_fuzzer settings_fuzzer instance_enumerate_fuzzer; do
-    #fuzz_basename=$(basename -s .c $fuzzers)
-    $CC $CXXFLAGS -I/vulkan-loader/loader \
+    shift 2
+    local obj="/${name}${OUT_SUFFIX}.o"
+    local bin="/${name}${OUT_SUFFIX}"
+
+    $CC $CFLAGS \
+        -I/vulkan-loader/loader \
         -I/vulkan-loader/loader/generated \
         -I/vulkan-headers/include \
-        -c /$fuzzer.c -o $fuzzer.o
+        "$@" \
+        -c "$src" -o "$obj"
 
-    $CXX -g -fsanitize=fuzzer,address,undefined $fuzzer.o \
-        -o /$fuzzer -lpthread /libvulkan.a
+    $CXX $CXXFLAGS \
+        "${EXTRA_LINK[@]}" \
+        "$obj" \
+        /libvulkan.a \
+        -lpthread -ldl \
+        $LINK_FLAGS \
+        -o "$bin"
+}
 
-    cp /vulkan-keywords.dict /$fuzzer.dict
-done
-
-################################################################################# Coverage Build
-
-export CC=clang
-export CXX=clang++
-export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-
-rm -rf /vulkan-loader/build
-mkdir -p /vulkan-loader/build
-cd /vulkan-loader
-
-mkdir -p build
-cd build
-
-sed -i 's/fput/\/\/fput/g' /vulkan-loader/loader/log.c
-
-cmake -DUPDATE_DEPS=ON -DCMAKE_BUILD_TYPE=Release ..
-make -j$(nproc)
-
-ar rcs /libvulkan.a /vulkan-loader/build/loader/CMakeFiles/vulkan.dir/*.o
-
-$CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o /main.o
-
-$CC $CFLAGS -I/vulkan-loader/loader \
-    -I/vulkan-loader/loader/generated \
-    -I/vulkan-headers/include \
-    -I/ \
-    -DENABLE_FILE_CALLBACK \
-    -c /instance_create_advanced_fuzzer.c -o /instance_create_advanced_fuzzer_cov.o
-
-$CXX $CXXFLAGS /main.o /instance_create_advanced_fuzzer_cov.o \
-    -o /instance_create_advanced_fuzzer_cov -lpthread -ldl /libvulkan.a
-
-cp /vulkan-keywords.dict /instance_create_advanced_fuzzer.dict
-
-$CC $CXXFLAGS -I/vulkan-loader/loader \
-    -I/vulkan-loader/loader/generated \
-    -I/vulkan-headers/include \
-    -DSPLIT_INPUT \
-    -c /instance_enumerate_fuzzer.c -o /instance_enumerate_fuzzer_split_input_cov.o
-
-$CXX $CXXFLAGS /main.o /instance_enumerate_fuzzer_split_input_cov.o \
-    -o /instance_enumerate_fuzzer_split_input_cov -lpthread -ldl /libvulkan.a
-
-cp /vulkan-keywords.dict /instance_enumerate_fuzzer_split_input.dict
+build_fuzzer /instance_create_advanced_fuzzer.c instance_create_advanced_fuzzer -I/ -DENABLE_FILE_CALLBACK
+build_fuzzer /instance_enumerate_fuzzer.c instance_enumerate_fuzzer_split_input -DSPLIT_INPUT
 
 for fuzzer in instance_create_fuzzer json_load_fuzzer settings_fuzzer instance_enumerate_fuzzer; do
-    #fuzz_basename=$(basename -s .c $fuzzers)
-    $CC $CXXFLAGS -I/vulkan-loader/loader \
-        -I/vulkan-loader/loader/generated \
-        -I/vulkan-headers/include \
-        -c /$fuzzer.c -o /${fuzzer}_cov.o
-
-    $CXX $CXXFLAGS /main.o /${fuzzer}_cov.o \
-        -o /${fuzzer}_cov -lpthread -ldl /libvulkan.a
-
-    cp /vulkan-keywords.dict /$fuzzer.dict
+    build_fuzzer "/${fuzzer}.c" "$fuzzer"
 done
