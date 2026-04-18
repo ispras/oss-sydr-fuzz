@@ -16,12 +16,27 @@
 #
 ################################################################################
 
-
-export CXX=clang++
-export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined" 
-export CC=clang
-export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined" 
-
+if [[ $TARGET == "fuzzer" ]]; then
+  export CC=clang
+  export CXX=clang++
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+  export CXXFLAGS=$CFLAGS
+elif [[ $TARGET == "afl" ]]; then
+  export CC=afl-clang-fast
+  export CXX=afl-clang-fast++
+  export CFLAGS="-g -fsanitize=address,undefined"
+  export CXXFLAGS=$CFLAGS
+elif [[ $TARGET == "sydr" ]]; then
+  export CC=clang
+  export CXX=clang++
+  export CFLAGS="-g"
+  export CXXFLAGS=$CFLAGS
+elif [[ $TARGET == "cov" ]]; then
+  export CC=clang
+  export CXX=clang++
+  export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+  export CXXFLAGS=$CFLAGS
+fi
 
 build_args=(
   -G Ninja
@@ -36,70 +51,8 @@ build_args=(
   -DJPEGXL_ENABLE_VIEWERS=OFF
   -DCMAKE_BUILD_TYPE=Release
   -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+  -DCXX_NO_RTTI_SUPPORTED=OFF
 )
-
-# Build and generate a fuzzer corpus in release mode without instrumentation.
-# This is done in a subshell since we change the environment.
-(
-  unset CFLAGS
-  unset CXXFLAGS
-  export AFL_NOOPT=1
-
-  rm -rf /tmp/libjxl-corpus
-  mkdir -p /tmp/libjxl-corpus
-  cd /tmp/libjxl-corpus
-  cmake "${build_args[@]}" /libjxl
-  ninja clean
-  ninja djxl_fuzzer_corpus
-
-
-  # Generate fuzzer corpora.
-  fuzzers=(
-    djxl_fuzzer
-  )
-  for fuzzer in "${fuzzers[@]}"; do
-    mkdir -p "${fuzzer}_corpus"
-    "tools/${fuzzer}_corpus" -q -r "${fuzzer}_corpus" || true
-  done
-
-  for fuzzer in "${fuzzers[@]}"; do
-    cp -r "${fuzzer}_corpus" "/corpus_${fuzzer}"
-  done
-
-  # Copy jxl corpus for fuzzers that expect jxl input.
-  cp -r /corpus_djxl_fuzzer /corpus_transforms_fuzzer
-  cp -r /corpus_djxl_fuzzer /corpus_color_encoding_fuzzer
-  cp -r /corpus_djxl_fuzzer /corpus_fields_fuzzer
-  cp -r /corpus_djxl_fuzzer /corpus_icc_codec_fuzzer
-  cp -r /corpus_djxl_fuzzer /corpus_decode_basic_info_fuzzer
-  cp -r /corpus_djxl_fuzzer /corpus_streaming_fuzzer
-
-  # Copy jpeg corpus for cjxl_fuzzer which converts jpeg->jxl.
-  cp -r /seed-corpora/afl-testcases/jpeg /corpus_cjxl_fuzzer
-
-  # Empty corpora for fuzzers that accept any data.
-  mkdir -p /corpus_rans_fuzzer
-  mkdir -p /corpus_set_from_bytes_fuzzer
-)
-
-rm -rf /tmp/libjxl-corpus
-
-
-# Build the fuzzers in release mode but force the inclusion of JXL_DASSERT()
-# checks.
-export CXXFLAGS="${CXXFLAGS} -DJXL_IS_DEBUG_BUILD=1"
-
-
-build_args[${#build_args[@]}]="-DCXX_NO_RTTI_SUPPORTED=OFF"
-
-
-rm -rf /tmp/libjxl-fuzzer
-mkdir -p /tmp/libjxl-fuzzer
-cd /tmp/libjxl-fuzzer
-cmake \
-  "${build_args[@]}" \
-  -DJPEGXL_FUZZER_LINK_FLAGS="/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer-x86_64.a" \
-  /libjxl
 
 fuzzers=(
   cjxl_fuzzer
@@ -114,92 +67,68 @@ fuzzers=(
   transforms_fuzzer
 )
 
-ninja clean
-ninja "${fuzzers[@]}"
+# Build corpus once under fuzzer target.
+if [[ $TARGET == "fuzzer" ]]; then
+  (
+    unset CFLAGS
+    unset CXXFLAGS
+    export AFL_NOOPT=1
 
-mkdir -p /fuzz
-for fuzzer in "${fuzzers[@]}"; do
-  cp "tools/${fuzzer}" /fuzz/
-done
+    rm -rf /tmp/libjxl-corpus
+    mkdir -p /tmp/libjxl-corpus
+    cd /tmp/libjxl-corpus
+    cmake "${build_args[@]}" /libjxl
+    ninja clean
+    ninja djxl_fuzzer_corpus
 
-rm -rf /tmp/libjxl-fuzzer
+    mkdir -p djxl_fuzzer_corpus
+    tools/djxl_fuzzer_corpus -q -r djxl_fuzzer_corpus || true
+    cp -r djxl_fuzzer_corpus /corpus_jxl
 
+    cp -r /seed-corpora/afl-testcases/jpeg /corpus_jxl
+    rm -rf /seed-corpora
+  )
+  rm -rf /tmp/libjxl-corpus
+fi
 
-# Build coverage targets.
+# Set link flags and output dir per target.
+if [[ $TARGET == "fuzzer" ]]; then
+  LINK_FLAGS="/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer-x86_64.a"
+  DESTDIR="/fuzz"
+  SUFFIX=""
+  export CXXFLAGS="$CXXFLAGS -DJXL_IS_DEBUG_BUILD=1"
+elif [[ $TARGET == "afl" ]]; then
+  LINK_FLAGS="-fsanitize=fuzzer"
+  DESTDIR="/afl"
+  SUFFIX="_afl"
+  export CXXFLAGS="$CXXFLAGS -DJXL_IS_DEBUG_BUILD=1"
+elif [[ $TARGET == "sydr" ]]; then
+  clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
+  LINK_FLAGS="/main.o"
+  DESTDIR="/sydr"
+  SUFFIX="_sydr"
+elif [[ $TARGET == "cov" ]]; then
+  clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
+  LINK_FLAGS="/main.o"
+  DESTDIR="/cov"
+  SUFFIX="_cov"
+  export CXXFLAGS="$CXXFLAGS -DJXL_IS_DEBUG_BUILD=1"
+fi
 
-export CXX=clang++
-export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -DJXL_IS_DEBUG_BUILD=1"
-export CC=clang
-export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-
-clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
-
-rm -rf /tmp/libjxl-cov
-mkdir -p /tmp/libjxl-cov
-cd /tmp/libjxl-cov
+rm -rf /tmp/libjxl-build
+mkdir -p /tmp/libjxl-build
+cd /tmp/libjxl-build
 cmake \
   "${build_args[@]}" \
-  -DJPEGXL_FUZZER_LINK_FLAGS="/main.o" \
+  -DJPEGXL_FUZZER_LINK_FLAGS="${LINK_FLAGS}" \
   /libjxl
 
 ninja clean
 ninja "${fuzzers[@]}"
 
-mkdir -p /cov
+mkdir -p "${DESTDIR}"
 for fuzzer in "${fuzzers[@]}"; do
-  cp "tools/${fuzzer}" "/cov/${fuzzer}_cov"
+  cp "tools/${fuzzer}" "${DESTDIR}/${fuzzer}${SUFFIX}"
 done
 
-rm -rf /tmp/libjxl-cov
-
-
-# Build sydr targets.
-
-export CXX=clang++
-export CXXFLAGS="-g"
-export CC=clang
-export CFLAGS="-g"
-
-
-rm -rf /tmp/libjxl-sydr
-mkdir -p /tmp/libjxl-sydr
-cd /tmp/libjxl-sydr
-cmake \
-  "${build_args[@]}" \
-  -DJPEGXL_FUZZER_LINK_FLAGS="/main.o" \
-  /libjxl
-
-ninja clean
-ninja "${fuzzers[@]}"
-
-mkdir -p /sydr
-for fuzzer in "${fuzzers[@]}"; do
-  cp "tools/${fuzzer}" "/sydr/${fuzzer}_sydr"
-done
-
-rm -rf /tmp/libjxl-sydr
-
-
-# Build AFL targets.
-export CXX=afl-clang-fast++
-export CXXFLAGS="-g -fsanitize=address,undefined -DJXL_IS_DEBUG_BUILD=1"
-export CC=afl-clang-fast
-export CFLAGS="-g -fsanitize=address,undefined"
-
-rm -rf /tmp/libjxl-afl
-mkdir -p /tmp/libjxl-afl
-cd /tmp/libjxl-afl
-cmake \
-  "${build_args[@]}" \
-  -DJPEGXL_FUZZER_LINK_FLAGS="-fsanitize=fuzzer" \
-  /libjxl
-
-ninja clean
-ninja "${fuzzers[@]}"
-
-mkdir -p /afl
-for fuzzer in "${fuzzers[@]}"; do
-  cp "tools/${fuzzer}" "/afl/${fuzzer}_afl"
-done
-
-rm -rf /tmp/libjxl-afl
+rm -rf /tmp/libjxl-build

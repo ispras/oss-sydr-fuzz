@@ -39,4 +39,8 @@ RUN git -C libjxl submodule update --init --recommend-shallow \
 RUN git clone --depth 1 https://github.com/libjpeg-turbo/seed-corpora
 
 COPY build.sh /build.sh
-RUN /build.sh
+
+RUN TARGET="fuzzer" /build.sh
+RUN TARGET="afl" /build.sh
+RUN TARGET="sydr" /build.sh
+RUN TARGET="cov" /build.sh

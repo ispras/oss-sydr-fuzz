@@ -16,12 +16,12 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr/decode_basic_info_fuzzer_sydr @@"
+target = "/sydr/cjxl_fuzzer_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz/decode_basic_info_fuzzer"
-args = "-rss_limit_mb=0 /corpus_decode_basic_info_fuzzer"
+path = "/fuzz/cjxl_fuzzer"
+args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]
-target = "/cov/decode_basic_info_fuzzer_cov @@"
+target = "/cov/cjxl_fuzzer_cov @@"

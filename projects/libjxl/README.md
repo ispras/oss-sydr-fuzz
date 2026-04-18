@@ -24,11 +24,11 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c tomls/lf/transforms-lf.toml run
+    # sydr-fuzz -c tomls/transforms-lf.toml run
 
 Get LCOV HTML coverage report:
 
-    # sydr-fuzz -c tomls/lf/transforms-lf.toml cov-export -- -format=lcov > transforms.lcov
+    # sydr-fuzz -c tomls/transforms-lf.toml cov-export -- -format=lcov > transforms.lcov
     # genhtml -o transforms-html transforms.lcov
 
 ## Alternative Fuzz Targets
@@ -37,26 +37,26 @@ libjxl project has 10 fuzz targets.
 
 ### libfuzzer
 
-    # sydr-fuzz -c tomls/lf/transforms-lf.toml run
-    # sydr-fuzz -c tomls/lf/color_encoding-lf.toml run
-    # sydr-fuzz -c tomls/lf/fields-lf.toml run
-    # sydr-fuzz -c tomls/lf/icc_codec-lf.toml run
-    # sydr-fuzz -c tomls/lf/djxl-lf.toml run
-    # sydr-fuzz -c tomls/lf/cjxl-lf.toml run
-    # sydr-fuzz -c tomls/lf/decode_basic_info-lf.toml run
-    # sydr-fuzz -c tomls/lf/rans-lf.toml run
-    # sydr-fuzz -c tomls/lf/set_from_bytes-lf.toml run
-    # sydr-fuzz -c tomls/lf/streaming-lf.toml run
+    # sydr-fuzz -c tomls/transforms-lf.toml run
+    # sydr-fuzz -c tomls/color_encoding-lf.toml run
+    # sydr-fuzz -c tomls/fields-lf.toml run
+    # sydr-fuzz -c tomls/icc_codec-lf.toml run
+    # sydr-fuzz -c tomls/djxl-lf.toml run
+    # sydr-fuzz -c tomls/cjxl-lf.toml run
+    # sydr-fuzz -c tomls/decode_basic_info-lf.toml run
+    # sydr-fuzz -c tomls/rans-lf.toml run
+    # sydr-fuzz -c tomls/set_from_bytes-lf.toml run
+    # sydr-fuzz -c tomls/streaming-lf.toml run
 
 ### afl++
 
-    # sydr-fuzz -c tomls/afl/transforms-afl.toml run
-    # sydr-fuzz -c tomls/afl/color_encoding-afl.toml run
-    # sydr-fuzz -c tomls/afl/fields-afl.toml run
-    # sydr-fuzz -c tomls/afl/icc_codec-afl.toml run
-    # sydr-fuzz -c tomls/afl/djxl-afl.toml run
-    # sydr-fuzz -c tomls/afl/cjxl-afl.toml run
-    # sydr-fuzz -c tomls/afl/decode_basic_info-afl.toml run
-    # sydr-fuzz -c tomls/afl/rans-afl.toml run
-    # sydr-fuzz -c tomls/afl/set_from_bytes-afl.toml run
-    # sydr-fuzz -c tomls/afl/streaming-afl.toml run
+    # sydr-fuzz -c tomls/transforms-afl++.toml run
+    # sydr-fuzz -c tomls/color_encoding-afl++.toml run
+    # sydr-fuzz -c tomls/fields-afl++.toml run
+    # sydr-fuzz -c tomls/icc_codec-afl++.toml run
+    # sydr-fuzz -c tomls/djxl-afl++.toml run
+    # sydr-fuzz -c tomls/cjxl-afl++.toml run
+    # sydr-fuzz -c tomls/decode_basic_info-afl++.toml run
+    # sydr-fuzz -c tomls/rans-afl++.toml run
+    # sydr-fuzz -c tomls/set_from_bytes-afl++.toml run
+    # sydr-fuzz -c tomls/streaming-afl++.toml run

@@ -16,12 +16,12 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr/fields_fuzzer_sydr @@"
+target = "/sydr/streaming_fuzzer_sydr @@"
 jobs = 2
 
-[aflplusplus]
-path = "/afl/fields_fuzzer_afl"
-args = "-rss_limit_mb=0 /corpus_fields_fuzzer"
+[libfuzzer]
+path = "/fuzz/streaming_fuzzer"
+args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]
-target = "/cov/fields_fuzzer_cov @@"
+target = "/cov/streaming_fuzzer_cov @@"
