@@ -20,7 +20,7 @@ target = "/sydr/color_encoding_fuzzer_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz/color_encoding_fuzzer"
+path = "/fuzzer/color_encoding_fuzzer"
 args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]

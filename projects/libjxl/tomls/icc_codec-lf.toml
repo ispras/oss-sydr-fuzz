@@ -20,7 +20,7 @@ target = "/sydr/icc_codec_fuzzer_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz/icc_codec_fuzzer"
+path = "/fuzzer/icc_codec_fuzzer"
 args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]

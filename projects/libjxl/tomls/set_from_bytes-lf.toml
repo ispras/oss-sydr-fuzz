@@ -20,7 +20,7 @@ target = "/sydr/set_from_bytes_fuzzer_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz/set_from_bytes_fuzzer"
+path = "/fuzzer/set_from_bytes_fuzzer"
 args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]

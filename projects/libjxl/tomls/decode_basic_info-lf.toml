@@ -20,7 +20,7 @@ target = "/sydr/decode_basic_info_fuzzer_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz/decode_basic_info_fuzzer"
+path = "/fuzzer/decode_basic_info_fuzzer"
 args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]

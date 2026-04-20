@@ -20,7 +20,7 @@ target = "/sydr/djxl_fuzzer_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/fuzz/djxl_fuzzer"
+path = "/fuzzer/djxl_fuzzer"
 args = "-rss_limit_mb=0 /corpus_jxl"
 
 [cov]

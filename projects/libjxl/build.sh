@@ -19,23 +19,37 @@
 if [[ $TARGET == "fuzzer" ]]; then
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
-  export CXXFLAGS=$CFLAGS
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+  export CXXFLAGS="$CFLAGS -DJXL_IS_DEBUG_BUILD=1"
+  LINK_FLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+  DESTDIR="/fuzzer"
+  SUFFIX=""
 elif [[ $TARGET == "afl" ]]; then
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=address,undefined"
-  export CXXFLAGS=$CFLAGS
+  export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+  export CXXFLAGS="$CFLAGS -DJXL_IS_DEBUG_BUILD=1"
+  LINK_FLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+  DESTDIR="/afl"
+  SUFFIX="_afl"
 elif [[ $TARGET == "sydr" ]]; then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g"
   export CXXFLAGS=$CFLAGS
+  clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
+  LINK_FLAGS="/main.o"
+  DESTDIR="/sydr"
+  SUFFIX="_sydr"
 elif [[ $TARGET == "cov" ]]; then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-  export CXXFLAGS=$CFLAGS
+  export CXXFLAGS="$CFLAGS -DJXL_IS_DEBUG_BUILD=1"
+  clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
+  LINK_FLAGS="/main.o"
+  DESTDIR="/cov"
+  SUFFIX="_cov"
 fi
 
 build_args=(
@@ -89,30 +103,6 @@ if [[ $TARGET == "fuzzer" ]]; then
     rm -rf /seed-corpora
   )
   rm -rf /tmp/libjxl-corpus
-fi
-
-# Set link flags and output dir per target.
-if [[ $TARGET == "fuzzer" ]]; then
-  LINK_FLAGS="/usr/lib/clang/14.0.6/lib/linux/libclang_rt.fuzzer-x86_64.a"
-  DESTDIR="/fuzz"
-  SUFFIX=""
-  export CXXFLAGS="$CXXFLAGS -DJXL_IS_DEBUG_BUILD=1"
-elif [[ $TARGET == "afl" ]]; then
-  LINK_FLAGS="-fsanitize=fuzzer"
-  DESTDIR="/afl"
-  SUFFIX="_afl"
-  export CXXFLAGS="$CXXFLAGS -DJXL_IS_DEBUG_BUILD=1"
-elif [[ $TARGET == "sydr" ]]; then
-  clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
-  LINK_FLAGS="/main.o"
-  DESTDIR="/sydr"
-  SUFFIX="_sydr"
-elif [[ $TARGET == "cov" ]]; then
-  clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
-  LINK_FLAGS="/main.o"
-  DESTDIR="/cov"
-  SUFFIX="_cov"
-  export CXXFLAGS="$CXXFLAGS -DJXL_IS_DEBUG_BUILD=1"
 fi
 
 rm -rf /tmp/libjxl-build
