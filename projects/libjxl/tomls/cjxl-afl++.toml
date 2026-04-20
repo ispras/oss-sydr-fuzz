@@ -21,7 +21,7 @@ jobs = 2
 
 [aflplusplus]
 target = "/afl/cjxl_fuzzer_afl @@"
-args = "-t 60000 -i /corpus_jxl"
+args = "-t 60000 -i /corpus_jpeg"
 jobs = 4
 
 [cov]

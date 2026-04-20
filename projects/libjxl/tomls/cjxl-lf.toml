@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzz/cjxl_fuzzer"
-args = "-rss_limit_mb=0 /corpus_jxl"
+args = "-rss_limit_mb=0 /corpus_jpeg"
 
 [cov]
 target = "/cov/cjxl_fuzzer_cov @@"

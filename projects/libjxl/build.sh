@@ -85,7 +85,7 @@ if [[ $TARGET == "fuzzer" ]]; then
     tools/djxl_fuzzer_corpus -q -r djxl_fuzzer_corpus || true
     cp -r djxl_fuzzer_corpus /corpus_jxl
 
-    cp -r /seed-corpora/afl-testcases/jpeg /corpus_jxl
+    cp -r /seed-corpora/afl-testcases/jpeg /corpus_jpeg
     rm -rf /seed-corpora
   )
   rm -rf /tmp/libjxl-corpus
