@@ -20,24 +20,23 @@ TARGET="${TARGET:-libfuzzer}"
 
 ROOT=/vulkan-loader
 BUILD_DIR="${ROOT}/build_${TARGET}"
-OUT_DIR=/out
 
 case "$TARGET" in
     libfuzzer)
         export CC=clang
         export CXX=clang++
-        export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+        export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
         export CXXFLAGS="$CFLAGS"
-        LINK_FLAGS="-fsanitize=fuzzer,address,undefined"
+        LINK_FLAGS="-fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
         OUT_SUFFIX=""
         USE_MAIN=0
         ;;
     afl)
         export CC=afl-clang-fast
         export CXX=afl-clang-fast++
-        export CFLAGS="-g -fsanitize=address,undefined"
+        export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
         export CXXFLAGS="$CFLAGS"
-        LINK_FLAGS="-fsanitize=address,undefined"
+        LINK_FLAGS="-fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
         OUT_SUFFIX="_afl"
         USE_MAIN=1
         ;;

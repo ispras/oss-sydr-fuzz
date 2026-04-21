@@ -1,4 +1,5 @@
 # Copyright 2023 Google LLC
+# Modifications copyright (C) 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +41,6 @@ COPY fuzzers/*.h fuzzers/*_fuzzer.c *.sh vulkan-keywords.dict *.diff ./
 
 RUN cd /vulkan-loader && git apply --ignore-space-change --ignore-whitespace /fuzz-patch.diff && sed -i 's/fput/\/\/fput/g' /vulkan-loader/loader/log.c || true
 
-RUN chmod +x /build.sh
 RUN TARGET=libfuzzer /build.sh
 RUN TARGET=coverage /build.sh
 RUN TARGET=sydr /build.sh

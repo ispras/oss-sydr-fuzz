@@ -1,7 +1,6 @@
-
 # vulkan-loader
 
-vulkan-loader is a project for fuzzing Vulkan Loader in OSS-Sydr-Fuzz.
+Vulkan is an explicit API, enabling direct control over how GPUs actually work.
 
 ## Build Docker
 
