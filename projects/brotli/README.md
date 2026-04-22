@@ -9,13 +9,33 @@ for HTTP compression.
 
     $ sudo docker build -t oss-sydr-fuzz-brotli .
 
-## Run Hybrid Fuzzing
+## Run Docker
 
-Unzip Sydr (`sydr.zip`) in `projects/brotli` directory:
+    $ sudo docker run --rm -it -v $PWD:/fuzz oss-sydr-fuzz-brotli /bin/bash
 
-    $ unzip sydr.zip
+## Run Fuzzing
 
-Run docker:
+Run libFuzzer:
+
+    # /decode_fuzzer_libfuzzer -close_fd_mask=3 /corpus
+
+Wait for INITED line, then stop with Ctrl+C.
+
+## Collect Coverage
+
+    # mkdir -p /coverage/raw && cd /coverage/raw
+    # for file in /corpus/*; do LLVM_PROFILE_FILE=./$(basename "$file").profraw /decode_fuzzer_coverage "$file"; done
+    # cd .. && find raw/ > cov.lst
+    # llvm-profdata merge --input-files=cov.lst -o cov.profdata
+    # llvm-cov export /decode_fuzzer_coverage -instr-profile cov.profdata -format=lcov > cov.lcov
+    # genhtml -o cov-html cov.lcov
+    # cp -r cov-html /fuzz/
+
+Open `cov-html/index.html` in browser on host.
+
+## Run Hybrid Fuzzing (requires sydr-fuzz)
+
+Run docker with Sydr support:
 
     $ sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-brotli /bin/bash
 

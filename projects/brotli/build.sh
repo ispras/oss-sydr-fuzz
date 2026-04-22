@@ -27,7 +27,7 @@ elif [[ "$TARGET" == "aflplusplus" ]]
 then
     export CC=afl-clang-fast
     export CXX=afl-clang-fast++
-    export CFLAGS="-g -fsanitize=fuzzer,address,undefined"
+    export CFLAGS="-g -fsanitize=address,undefined"
     export CXXFLAGS="$CFLAGS"
 elif [[ "$TARGET" == "sydr" ]]
 then
