@@ -1,5 +1,6 @@
 #!/bin/bash -eu
 # Copyright 2016 Google Inc.
+# Modifications copyright (C) 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +22,13 @@ if [[ "$TARGET" == "libfuzzer" ]]
 then
     export CC=clang
     export CXX=clang++
-    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined"
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
-elif [[ "$TARGET" == "aflplusplus" ]]
+elif [[ "$TARGET" == "afl" ]]
 then
     export CC=afl-clang-fast
     export CXX=afl-clang-fast++
-    export CFLAGS="-g -fsanitize=address,undefined"
+    export CFLAGS="-g -fsanitize=address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
 elif [[ "$TARGET" == "sydr" ]]
 then
@@ -35,7 +36,7 @@ then
     export CXX=clang++
     export CFLAGS="-g"
     export CXXFLAGS="$CFLAGS"
-elif [[ "$TARGET" == "coverage" ]]
+elif [[ "$TARGET" == "cov" ]]
 then
     export CC=clang
     export CXX=clang++
@@ -46,18 +47,22 @@ fi
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
-cmake /brotli -DBUILD_TESTING=ON -DBUILD_SHARED_LIBS=OFF
+cmake /brotli -DBUILD_TESTING=ON -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_C_COMPILER="$CC" \
+    -DCMAKE_CXX_COMPILER="$CXX" \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS"
 make -j$(nproc)
 cd /brotli
 
-OUT="/decode_fuzzer_${TARGET}"
+OUT="/decode_${TARGET}"
 EXTRAFLAGS=()
 
-if [[ "$TARGET" == "libfuzzer" || "$TARGET" == "aflplusplus" ]]
+if [[ "$TARGET" == "libfuzzer" || "$TARGET" == "afl" ]]
 then
-    export CFLAGS="-g -fsanitize=fuzzer,address,undefined"
+    export CFLAGS="-g -fsanitize=fuzzer,address,undefined,bounds,null,float-divide-by-zero"
     export CXXFLAGS="$CFLAGS"
-elif [[ "$TARGET" == "sydr" || "$TARGET" == "coverage" ]]
+elif [[ "$TARGET" == "sydr" || "$TARGET" == "cov" ]]
 then
     MAIN_OBJ="/main_${TARGET}.o"
     $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o "$MAIN_OBJ"

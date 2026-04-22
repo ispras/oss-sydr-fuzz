@@ -1,4 +1,5 @@
 # Copyright 2016 Google Inc.
+# Modifications copyright (C) 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +18,6 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN apt-get update && apt-get install -y cmake make
-
 RUN git clone https://github.com/google/brotli.git /brotli \
     && cd /brotli \
     && git checkout ab685df8343d8046226ece980408e958c10f9085
@@ -29,6 +28,6 @@ COPY build.sh /brotli/
 RUN unzip /brotli/java/org/brotli/integration/fuzz_data.zip -d /corpus
 
 RUN TARGET=libfuzzer ./build.sh
-RUN TARGET=coverage ./build.sh
+RUN TARGET=cov ./build.sh
 RUN TARGET=sydr ./build.sh
-RUN TARGET=aflplusplus ./build.sh
+RUN TARGET=afl ./build.sh

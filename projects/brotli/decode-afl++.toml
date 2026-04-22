@@ -16,12 +16,13 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/decode_fuzzer_sydr @@"
+target = "/decode_sydr @@"
 jobs = 2
 
-[aflplusplus]
-path = "/decode_fuzzer_aflplusplus"
+[afl]
+path = "/decode_afl"
 args = "-i /corpus"
+jobs = 2
 
 [cov]
-target = "/decode_fuzzer_coverage @@"
+target = "/decode_cov @@"
