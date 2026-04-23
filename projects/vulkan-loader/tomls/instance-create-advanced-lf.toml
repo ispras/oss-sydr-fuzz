@@ -16,13 +16,12 @@
 
 [sydr]
 args = "--wait-jobs"
-target = "/instance_create_advanced_fuzzer_sydr @@"
+target = "/instance_create_advanced_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/instance_create_advanced_fuzzer"
-args = "-close_fd_mask=3 /corpus/"
-cmin = false
+args = "-close_fd_mask=3 -workers=4 -jobs=100 /corpus/"
 
 [cov]
-target = "/instance_create_advanced_fuzzer_cov @@"
+target = "/instance_create_advanced_cov @@"

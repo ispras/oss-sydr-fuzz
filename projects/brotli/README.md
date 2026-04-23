@@ -1,6 +1,6 @@
 # brotli
 
-Brotli compression format (https://github.com/google/brotli).
+Brotli compression format
 
 ## Build Docker
 

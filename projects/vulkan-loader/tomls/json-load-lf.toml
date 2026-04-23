@@ -16,13 +16,12 @@
 
 [sydr]
 args = "--wait-jobs"
-target = "/json_load_fuzzer_sydr @@"
+target = "/json_load_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/json_load_fuzzer"
-args = "-close_fd_mask=3 /corpus/"
-cmin = false
+args = "-close_fd_mask=3 -workers=4 -jobs=100 /corpus/"
 
 [cov]
-target = "/json_load_fuzzer_cov @@"
+target = "/json_load_cov @@"

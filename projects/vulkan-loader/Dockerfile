@@ -19,15 +19,7 @@ ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 RUN apt-get update && \
-    apt-get install -y \
-    build-essential \
-    autoconf \
-    automake \
-    libtool \
-    pkg-config \
-    libx11-xcb-dev \
-    libxkbcommon-dev \
-    libxrandr-dev
+    apt-get install -y libx11-xcb-dev libxkbcommon-dev libxrandr-dev
 
 WORKDIR /
 RUN git clone https://github.com/khronosgroup/Vulkan-Headers vulkan-headers
@@ -39,12 +31,14 @@ RUN git checkout 1bf213b2a90181553fff35aeb6fa5c468dcfd35d
 WORKDIR /
 COPY fuzzers/*.h fuzzers/*_fuzzer.c *.sh vulkan-keywords.dict *.diff ./
 
-RUN cd /vulkan-loader && git apply --ignore-space-change --ignore-whitespace /fuzz-patch.diff && sed -i 's/fput/\/\/fput/g' /vulkan-loader/loader/log.c || true
+RUN cd /vulkan-loader && \
+    git apply --ignore-space-change --ignore-whitespace /fuzz-patch.diff && \
+    sed -i 's/fput/\/\/fput/g' /vulkan-loader/loader/log.c || true
 
-RUN TARGET=libfuzzer /build.sh
-RUN TARGET=coverage /build.sh
-RUN TARGET=sydr /build.sh
+RUN TARGET=fuzzer /build.sh
 RUN TARGET=afl /build.sh
+RUN TARGET=sydr /build.sh
+RUN TARGET=cov /build.sh
 
 RUN mkdir /corpus && \
     cp -r /vulkan-loader/tests/corpus/* /corpus/

@@ -21,10 +21,9 @@ FROM $BASE_IMAGE
 
 # Install build dependencies
 RUN apt-get update && \ 
-  apt-get install -y cmake ninja-build pkg-config libjpeg-dev
+  apt-get install -y ninja-build pkg-config libjpeg-dev
 
 # Clone target from GitHub and checkout specific commit, as it can be updated later
-
 RUN git clone https://github.com/libjxl/libjxl.git && \
     cd /libjxl && \
     git checkout 37bbfd09b4fd42554940ac2c0b72a1121cfa6d8a

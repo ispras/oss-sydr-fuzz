@@ -22,16 +22,12 @@ if [[ $TARGET == "fuzzer" ]]; then
   export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
   export CXXFLAGS="$CFLAGS -DJXL_IS_DEBUG_BUILD=1"
   LINK_FLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
-  DESTDIR="/fuzzer"
-  SUFFIX=""
 elif [[ $TARGET == "afl" ]]; then
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
   export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
   export CXXFLAGS="$CFLAGS -DJXL_IS_DEBUG_BUILD=1"
   LINK_FLAGS="-fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
-  DESTDIR="/afl"
-  SUFFIX="_afl"
 elif [[ $TARGET == "sydr" ]]; then
   export CC=clang
   export CXX=clang++
@@ -39,8 +35,6 @@ elif [[ $TARGET == "sydr" ]]; then
   export CXXFLAGS=$CFLAGS
   clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
   LINK_FLAGS="/main.o"
-  DESTDIR="/sydr"
-  SUFFIX="_sydr"
 elif [[ $TARGET == "cov" ]]; then
   export CC=clang
   export CXX=clang++
@@ -48,8 +42,6 @@ elif [[ $TARGET == "cov" ]]; then
   export CXXFLAGS="$CFLAGS -DJXL_IS_DEBUG_BUILD=1"
   clang -fPIE -c /opt/StandaloneFuzzTargetMain.c -o /main.o
   LINK_FLAGS="/main.o"
-  DESTDIR="/cov"
-  SUFFIX="_cov"
 fi
 
 build_args=(
@@ -105,7 +97,6 @@ if [[ $TARGET == "fuzzer" ]]; then
   rm -rf /tmp/libjxl-corpus
 fi
 
-rm -rf /tmp/libjxl-build
 mkdir -p /tmp/libjxl-build
 cd /tmp/libjxl-build
 cmake \
@@ -116,9 +107,9 @@ cmake \
 ninja clean
 ninja "${fuzzers[@]}"
 
-mkdir -p "${DESTDIR}"
+mkdir -p /$TARGET
 for fuzzer in "${fuzzers[@]}"; do
-  cp "tools/${fuzzer}" "${DESTDIR}/${fuzzer}${SUFFIX}"
+  cp "tools/${fuzzer}" /${TARGET}/${fuzzer%_fuzzer}_${TARGET}
 done
 
 rm -rf /tmp/libjxl-build

@@ -20,9 +20,8 @@ target = "/instance_enumerate_fuzzer_split_input_sydr @@"
 jobs = 2
 
 [libfuzzer]
-path = "/instance_enumerate_fuzzer_split_input"
-args = "-close_fd_mask=3 /corpus/"
-cmin = false
+path = "/instance_enumerate_fuzzer_split_input_fuzzer"
+args = "-close_fd_mask=3 -workers=4 -jobs=100 /corpus/"
 
 [cov]
 target = "/instance_enumerate_fuzzer_split_input_cov @@"

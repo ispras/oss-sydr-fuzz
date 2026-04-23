@@ -21,48 +21,32 @@ TARGET="${TARGET:-libfuzzer}"
 ROOT=/vulkan-loader
 BUILD_DIR="${ROOT}/build_${TARGET}"
 
-case "$TARGET" in
-    libfuzzer)
-        export CC=clang
-        export CXX=clang++
-        export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
-        export CXXFLAGS="$CFLAGS"
-        LINK_FLAGS="-fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
-        OUT_SUFFIX=""
-        USE_MAIN=0
-        ;;
-    afl)
-        export CC=afl-clang-fast
-        export CXX=afl-clang-fast++
-        export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
-        export CXXFLAGS="$CFLAGS"
-        LINK_FLAGS="-fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
-        OUT_SUFFIX="_afl"
-        USE_MAIN=1
-        ;;
-    sydr)
-        export CC=clang
-        export CXX=clang++
-        export CFLAGS="-g"
-        export CXXFLAGS="$CFLAGS"
-        LINK_FLAGS=""
-        OUT_SUFFIX="_sydr"
-        USE_MAIN=1
-        ;;
-    coverage)
-        export CC=clang
-        export CXX=clang++
-        export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-        export CXXFLAGS="$CFLAGS"
-        LINK_FLAGS="-fprofile-instr-generate -fcoverage-mapping"
-        OUT_SUFFIX="_cov"
-        USE_MAIN=1
-        ;;
-    *)
-        echo "Unknown TARGET: $TARGET"
-        exit 1
-        ;;
-esac
+
+if [[ $TARGET == "fuzzer" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS="$CFLAGS"
+elif [[ $TARGET == "afl" ]]
+then
+    export CC=afl-clang-fast
+    export CXX=afl-clang-fast++
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS="$CFLAGS"
+elif [[ $TARGET == "sydr" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g"
+    export CXXFLAGS="$CFLAGS"
+elif [[ $TARGET == "cov" ]]
+then
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+    export CXXFLAGS="$CFLAGS"
+fi
 
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
@@ -85,10 +69,14 @@ ar rcs /libvulkan.a "$BUILD_DIR"/loader/CMakeFiles/vulkan.dir/*.o
 MAIN_OBJ=""
 EXTRA_LINK=()
 
-if [[ "$USE_MAIN" == "1" ]]; then
+if [[ $TARGET == "sydr" || $TARGET == "cov" ]]; then
     MAIN_OBJ="/main_${TARGET}.o"
     $CC $CFLAGS -c /opt/StandaloneFuzzTargetMain.c -o "$MAIN_OBJ"
     EXTRA_LINK+=("$MAIN_OBJ")
+fi
+if [[ $TARGET == "fuzzer" || $TARGET == "afl" ]]; then
+    export CFLAGS="-g -fsanitize=fuzzer,address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS="$CFLAGS"
 fi
 
 build_fuzzer() {
@@ -96,8 +84,8 @@ build_fuzzer() {
     local name="$2"
 
     shift 2
-    local obj="/${name}${OUT_SUFFIX}.o"
-    local bin="/${name}${OUT_SUFFIX}"
+    local obj="/${name}_${TARGET}.o"
+    local bin="/${name%_fuzzer}_${TARGET}"
 
     $CC $CFLAGS \
         -I/vulkan-loader/loader \
@@ -111,7 +99,6 @@ build_fuzzer() {
         "$obj" \
         /libvulkan.a \
         -lpthread -ldl \
-        $LINK_FLAGS \
         -o "$bin"
 }
 

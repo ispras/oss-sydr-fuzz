@@ -16,13 +16,13 @@
 
 [sydr]
 args = "--wait-jobs"
-target = "/instance_enumerate_fuzzer_sydr @@"
+target = "/instance_enumerate_sydr @@"
 jobs = 2
 
 [aflplusplus]
 args = "-i /corpus -t 300000"
-target = "/instance_enumerate_fuzzer_afl @@"
+target = "/instance_enumerate_afl @@"
 jobs = 2
 
 [cov]
-target = "/instance_enumerate_fuzzer_cov @@"
+target = "/instance_enumerate_cov @@"

@@ -16,13 +16,12 @@
 
 [sydr]
 args = "--wait-jobs"
-target = "/instance_enumerate_fuzzer_sydr @@"
+target = "/instance_enumerate_sydr @@"
 jobs = 2
 
 [libfuzzer]
 path = "/instance_enumerate_fuzzer"
-args = "-close_fd_mask=3 /corpus/"
-cmin = false
+args = "-close_fd_mask=3 -workers=4 -jobs=100 /corpus/"
 
 [cov]
-target = "/instance_enumerate_fuzzer_cov @@"
+target = "/instance_enumerate_cov @@"
