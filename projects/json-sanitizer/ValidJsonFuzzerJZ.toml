@@ -1,4 +1,4 @@
-# Copyright 2024 ISP RAS
+# Copyright 2023 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,5 +15,5 @@
 ################################################################################
 
 [jazzer]
-target_class = "DiffUtilsFuzzer"
-args = "--cp=/out/:/out/java-diff-utils.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 /corpus"
+target_class = "ValidJsonFuzzerJZ"
+args = "--cp=/out/:/out/gson-2.8.6.jar:/out/json-sanitizer.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 /out/corpus -dict=/out/ValidJsonFuzzerJZ.dict"

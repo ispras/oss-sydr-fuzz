@@ -22,14 +22,28 @@ Change directory to `/fuzz`:
 
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c DenylistFuzzer.toml run
-    # sydr-fuzz -c IdempotenceFuzzer.toml run
-    # sydr-fuzz -c ValidJsonFuzzer.toml run
+    # sydr-fuzz -c DenylistFuzzerJZ.toml run
+    # sydr-fuzz -c IdempotenceFuzzerJZ.toml run
+    # sydr-fuzz -c ValidJsonFuzzerJZ.toml run
 
-Minimize corpus:
+    # sydr-fuzz -c DenylistFuzzerJF.toml run
+    # sydr-fuzz -c IdempotenceFuzzerJF.toml run
+    # sydr-fuzz -c ValidJsonFuzzerJF.toml run
+
+Crash analysis:
+
+    # sydr-fuzz -c DenylistFuzzerJZ.toml casr
+    # sydr-fuzz -c IdempotenceFuzzerJZ.toml casr
+    # sydr-fuzz -c ValidJsonFuzzerJZ.toml casr
+
+    # sydr-fuzz -c DenylistFuzzerJF.toml casr
+    # sydr-fuzz -c IdempotenceFuzzerJF.toml casr
+    # sydr-fuzz -c ValidJsonFuzzerJF.toml casr
+
+Minimize corpus (only for Jazzer):
 
     # sydr-fuzz -c DenylistFuzzer.toml cmin
 
-Collect and report coverage:
+Collect and report coverage (only for Jazzer):
 
     # sydr-fuzz -c DenylistFuzzer.toml cov-html

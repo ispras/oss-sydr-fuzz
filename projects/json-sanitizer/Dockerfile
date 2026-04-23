@@ -17,14 +17,15 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN mkdir /out
+RUN mkdir /src && mkdir /out
+
 RUN git clone --depth 1 https://github.com/google/fuzzing
 RUN cat fuzzing/dictionaries/json.dict \
         fuzzing/dictionaries/html.dict \
         fuzzing/dictionaries/xml.dict \
-      > /out/DenylistFuzzer.dict
-RUN cp fuzzing/dictionaries/json.dict /out/IdempotenceFuzzer.dict
-RUN cp fuzzing/dictionaries/json.dict /out/ValidJsonFuzzer.dict
+      > /out/DenylistFuzzerJZ.dict
+RUN cp fuzzing/dictionaries/json.dict /out/IdempotenceFuzzerJZ.dict
+RUN cp fuzzing/dictionaries/json.dict /out/ValidJsonFuzzerJZ.dict
 RUN rm -rf fuzzing
 
 RUN git clone --depth 1 https://github.com/dvyukov/go-fuzz-corpus && \
@@ -33,10 +34,17 @@ RUN git clone --depth 1 https://github.com/dvyukov/go-fuzz-corpus && \
 RUN git clone https://github.com/OWASP/json-sanitizer /json-sanitizer
 
 COPY build.sh /json-sanitizer
-COPY DenylistFuzzer.java IdempotenceFuzzer.java ValidJsonFuzzer.java /
+COPY DenylistFuzzerJZ.java IdempotenceFuzzerJZ.java ValidJsonFuzzerJZ.java /src
+COPY DenylistFuzzerJF.java IdempotenceFuzzerJF.java ValidJsonFuzzerJF.java /json-sanitizer/src/main/java/com/google/json
+COPY pom.patch /json-sanitizer
 
-ENV CASR_SOURCE_DIRS /json-sanitizer/src/main/java:/out/gson-2.8.6-src/
+ENV CASR_SOURCE_DIRS=/json-sanitizer/src/main/java:/out/gson-2.8.6-src/
 
 WORKDIR /json-sanitizer
 RUN git checkout 6c86f9becc3412167e912384832722a5ebe69b12
+RUN git apply pom.patch
+RUN mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+
+WORKDIR /
+
 RUN /json-sanitizer/build.sh
