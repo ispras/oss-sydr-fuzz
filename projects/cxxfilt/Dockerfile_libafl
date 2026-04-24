@@ -42,7 +42,7 @@ WORKDIR /directed_target
 # Build cxxfilt for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ DIFUZZ_ICACHE=llama.cpp cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=cxxfilt cargo make all
 
 # Prepare seed corpus.
 RUN mkdir /corpus; echo "" > /corpus/in
