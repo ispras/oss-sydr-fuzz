@@ -47,3 +47,6 @@ WORKDIR /
 # Prepare seed corpus.
 RUN /llama.cpp/build/bin/llama-gguf dummy.gguf w && mkdir -p /corpus && \
     mv dummy.gguf /corpus/
+
+# Remove artifacts.
+RUN rm -rf /llama.cpp/build*
