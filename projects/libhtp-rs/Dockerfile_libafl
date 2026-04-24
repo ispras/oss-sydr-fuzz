@@ -40,13 +40,14 @@ COPY sydr_and_cover/Cargo.toml /libhtp-rs/libafl_difuzz
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
+#COPY directed_target/difuzz-icalls-libhtp-rs /tmp
 
 WORKDIR /directed_target
 
 # Build libhtp-rs for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=libhtp-rs cargo make all
 
 WORKDIR /
 

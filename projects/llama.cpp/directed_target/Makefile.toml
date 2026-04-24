@@ -22,7 +22,7 @@ DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
-DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls weak", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
+DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j16 --analyse-icalls strong --icache \"${DIFUZZ_ICACHE}\"", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
 CARGO_TARGET_DIR = { value = "${PROJECT_DIR}/target", condition = { env_not_set = [
   "CARGO_TARGET_DIR",
 ] } }
@@ -130,22 +130,26 @@ python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f /opt/Standal
 
 for file in "$OUT_DIR"/difuzz/*; do
   [ -f "$file" ] || continue
-  [[ "$file" == *.toml ]] && continue
+  case "$file" in
+    *.toml) continue ;;
+  esac
   full_filename=$(basename "$file")
   filename="${full_filename%_difuzz}"
   ${ETS_SHARED_MANAGER} -a remove -n llama_$filename
   ${ETS_SHARED_MANAGER} -a create -n llama_$filename
-  ${ETS_SHARED_MANAGER} -a parse -n llama_$filename -i ${OUT_DIR_ABS}/ets_$filename.toml
+  ${ETS_SHARED_MANAGER} -a parse -n llama_$filename -i ${OUT_DIR_ABS}/difuzz/ets_$filename.toml
 done
 
 TARGET="libafl" ${PROJECT_DIR}/build.sh
 
 for file in "$OUT_DIR"/difuzz/*; do
   [ -f "$file" ] || continue
-  [[ "$file" == *.toml ]] && continue
+  case "$file" in
+    *.toml) continue ;;
+  esac
   full_filename=$(basename "$file")
   filename="${full_filename%_difuzz}"
-  ${ETS_SHARED_MANAGER} -a dump -n llama_$filename -o ${OUT_DIR_ABS}/ets_$filename.toml
+  ${ETS_SHARED_MANAGER} -a dump -n llama_$filename -o ${OUT_DIR_ABS}/difuzz/ets_$filename.toml
   ${ETS_SHARED_MANAGER} -a remove -n llama_$filename
 done
 

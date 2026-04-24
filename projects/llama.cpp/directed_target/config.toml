@@ -15,17 +15,17 @@
 ################################################################################
 
 [[target]]
-file = "/llama.cpp/ggml/src/ggml.c"
-line = 6813
-
-[[target]]
-file = "/llama.cpp/ggml/src/ggml.c"
-line = 6800
-
-[[target]]
-file = "/llama.cpp/ggml/src/ggml.c"
-line = 6699
+file = "/llama.cpp/ggml/src/ggml-backend-meta.cpp"
+line = 594
 
 [[target]]
 file = "/llama.cpp/src/llama-model-loader.cpp"
-line = 572
+line = 574
+
+[[target]]
+file = "/llama.cpp/src/models/kimi-linear.cpp"
+line = 271
+
+[[target]]
+file = "/llama.cpp/src/llama-sampler.cpp"
+line = 610

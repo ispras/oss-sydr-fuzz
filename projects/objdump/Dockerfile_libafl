@@ -33,13 +33,14 @@ RUN git checkout a6c21d4a553de184562fd8409a5bcd3f2cc2561a && git submodule updat
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
+#COPY directed_target/difuzz-icalls-objdump /tmp
 
 WORKDIR /directed_target
 
 # Build objdump for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=objdump cargo make all
 
 # Prepare seed corpus.
 RUN mkdir /corpus; echo "" > /corpus/in
