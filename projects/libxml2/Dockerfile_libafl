@@ -32,7 +32,7 @@ RUN git apply /patch
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
-#COPY directed_target/difuzz-icalls-libxml2 /tmp
+COPY directed_target/difuzz-icalls-libxml2 /tmp
 
 WORKDIR /directed_target
 
