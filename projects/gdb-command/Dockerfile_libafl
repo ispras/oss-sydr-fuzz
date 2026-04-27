@@ -34,7 +34,7 @@ COPY sydr_*.rs fuzz/fuzz_targets/
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
-#COPY directed_target/difuzz-icalls-gdb-command /tmp
+RUN gunzip -c /directed_target/difuzz-icalls-gdb-command.gz > /tmp/difuzz-icalls-gdb-command
 
 WORKDIR /directed_target
 
