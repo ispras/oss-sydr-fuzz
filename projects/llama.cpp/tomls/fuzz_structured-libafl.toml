@@ -21,7 +21,7 @@ target = "/out_libafl/sydr/fuzz_structured_sydr @@"
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/out_libafl/libafl/fuzz_structured_libafl @@"
-args = "-j4 -l64 -i /corpus -e /out_libafl/difuzz/ets_fuzz_structured.toml"
+args = "-j4 -l64 -i /corpus --dict /llama.dict -e /out_libafl/difuzz/ets_fuzz_structured.toml"
 casr_bin = "/out_libafl/casr/fuzz_structured_casr"
 
 [cov]

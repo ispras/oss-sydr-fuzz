@@ -108,38 +108,3 @@ for fuzztarget in ${targets[@]}; do
 done
 
 wait
-
-# Build fuzz_tokenizer target with different flags
-build_tokenizer(){
-    flag=$1
-    target="$(echo ${flag,,})"
-    echo "=========== Build target fuzz_tokenizer_${target}_$TARGET ==========="
-
-    if [[ "$TARGET" == "libafl" ]]
-    then
-        export LIBAFL_SHARED_NAME="llama_fuzz_tokenizer_${target}"
-        build_lib
-    fi
-
-    # Build target
-    $CXX $CXXFLAGS ${FLAGS} fuzzers/fuzz_tokenizer.cpp -c -o ./fuzz_tokenizer_${target}.o
-    $CXX $CXXFLAGS ${FLAGS} -DFUZZ_$flag ./fuzz_tokenizer_$target.o \
-        -Wl,--whole-archive,"/llama.cpp/build$LIBAFL_SHARED_NAME/src/libllama.a" -Wl,--no-whole-archive \
-        -WL,--whole-archive,"/llama.cpp/build$LIBAFL_SHARED_NAME/ggml/src/libggml-cpu.a" -Wl,--no-whole-archive \
-        -ldl -pthread -lm -lrt /llama.cpp/build$LIBAFL_SHARED_NAME/ggml/src/libggml-cpu.a ./build$LIBAFL_SHARED_NAME/ggml/src/libggml-base.a \
-        ./build$LIBAFL_SHARED_NAME/common/libcommon.a ./build$LIBAFL_SHARED_NAME/ggml/src/libggml.a ./build$LIBAFL_SHARED_NAME/common/libcommon.a \
-        /llama.cpp/build$LIBAFL_SHARED_NAME/ggml/src/libggml-cpu.a $LIB_FUZZING_ENGINE \
-        -o $OUT/fuzz_tokenizer_${target}_$TARGET
-}
-
-token_flags=("BGE" "BPE" "SPM" "COMMAND_R" "AQUILA" "QWEN2" "GPT_2" "BAICHUAN" "DEEPSEEK_CODER" "FALCON")
-for fuzztarget in ${token_flags[@]}; do
-    if [[ "$TARGET" == "libafl" ]]
-    then
-        build_tokenizer $fuzztarget
-    else
-        build_tokenizer $fuzztarget &
-    fi
-done
-
-wait
