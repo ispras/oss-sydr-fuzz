@@ -1,4 +1,4 @@
-# Copyright 2025 ISP RAS
+# Copyright 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 RUN git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && \
-    git checkout 28c39da7c645185ade5436767929d7ec33006033
+    git checkout e39eba26f3921402aca0d2600cf65abdd1fe9e55
 
 WORKDIR llama.cpp
 

@@ -34,13 +34,14 @@ COPY sydr_*.rs fuzz/fuzz_targets/
 
 # Copy LibAFL-DiFuzz target template.
 COPY directed_target /directed_target
+#COPY directed_target/difuzz-icalls-gdb-command /tmp
 
 WORKDIR /directed_target
 
 # Build gdb-command for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=gdb-command cargo make all
 
 # Create corpus.
 RUN mkdir /corpus && echo "aaaaaaaaaaaaaaaaaaaa" > /corpus/in
