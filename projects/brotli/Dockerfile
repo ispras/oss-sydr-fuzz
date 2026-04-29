@@ -25,7 +25,8 @@ RUN git clone https://github.com/google/brotli.git /brotli \
 WORKDIR /brotli
 COPY build.sh /brotli/
 
-RUN unzip /brotli/java/org/brotli/integration/fuzz_data.zip -d /corpus
+RUN unzip /brotli/java/org/brotli/integration/fuzz_data.zip -d /corpus && \
+    find /corpus -type f -empty -delete
 
 RUN TARGET=libfuzzer ./build.sh
 RUN TARGET=cov ./build.sh

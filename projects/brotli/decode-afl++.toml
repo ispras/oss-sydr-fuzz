@@ -19,10 +19,10 @@ args = "--wait-jobs -s 90 -j2"
 target = "/decode_sydr @@"
 jobs = 2
 
-[afl]
-path = "/decode_afl"
+[aflplusplus]
+target = "/decode_afl @@"
 args = "-i /corpus"
-jobs = 2
+jobs = 4
 
 [cov]
 target = "/decode_cov @@"

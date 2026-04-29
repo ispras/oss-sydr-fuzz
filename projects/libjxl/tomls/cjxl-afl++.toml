@@ -16,13 +16,13 @@
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr/cjxl_fuzzer_sydr @@"
+target = "/sydr/cjxl_sydr @@"
 jobs = 2
 
 [aflplusplus]
-target = "/afl/cjxl_fuzzer_afl @@"
+target = "/afl/cjxl_afl @@"
 args = "-t 60000 -i /corpus_jpeg"
 jobs = 4
 
 [cov]
-target = "/cov/cjxl_fuzzer_cov @@"
+target = "/cov/cjxl_cov @@"
