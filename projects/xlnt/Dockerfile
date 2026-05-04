@@ -17,15 +17,10 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-MAINTAINER Alexey Vishnyakov
-
 # Clone target from GitHub.
-RUN git clone https://github.com/tfussell/xlnt
+RUN git clone -b fuzz --depth 1 https://github.com/apach301/xlnt
 
 WORKDIR xlnt
-
-# Checkout specified commit. It could be updated later.
-RUN git checkout d88c901faa539f9272a81ba0bab72def70ca18d7 && git submodule update --init --recursive
 
 # Copy build script and targets.
 COPY save.cc load.cc afl.cc build.sh ./
