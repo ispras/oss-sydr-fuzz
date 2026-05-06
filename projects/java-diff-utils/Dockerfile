@@ -21,11 +21,19 @@ RUN mkdir /src && mkdir /out
 
 RUN git clone https://github.com/java-diff-utils/java-diff-utils java-diff-utils
 
-COPY build.sh /java-diff-utils
-COPY DiffUtilsFuzzer.java /src
+ENV CASR_SOURCE_DIRS=/java-diff-utils/java-diff-utils/src/main/java/
 
-ENV CASR_SOURCE_DIRS /java-diff-utils/java-diff-utils/src/main/java/
+COPY pom.patch /java-diff-utils
 
+COPY DiffUtilsFuzzerJF.java /java-diff-utils/java-diff-utils/src/main/java/com/github/difflib
 WORKDIR /java-diff-utils
 RUN git checkout 903982517a747d012639c85bdbe05721f88b86d9
+RUN git apply pom.patch
+RUN mvn clean package -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true
+
+WORKDIR /
+COPY build.sh /java-diff-utils
+COPY DiffUtilsFuzzerJZ.java /src
+
 RUN /java-diff-utils/build.sh
+

@@ -13,12 +13,11 @@
 // limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////////
-
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 
 import com.google.json.JsonSanitizer;
 
-public class IdempotenceFuzzer {
+public class IdempotenceFuzzerJZ {
   public static void fuzzerTestOneInput(FuzzedDataProvider data) {
     String input = data.consumeRemainingAsString();
     String output;

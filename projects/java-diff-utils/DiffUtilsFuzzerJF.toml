@@ -14,6 +14,13 @@
 #
 ################################################################################
 
-[jazzer]
-target_class = "DenylistFuzzer"
-args = "--cp=/out/:/out/gson-2.8.6.jar:/out/json-sanitizer.jar -jobs=1000 -workers=4 -rss_limit_mb=4096 /out/corpus -dict=/out/DenylistFuzzer.dict"
+[javafuzz]
+java = "/usr/lib/jvm/java-17-openjdk-amd64"
+mvn = "/opt/maven/bin/mvn"
+source_dir= "/java-diff-utils/java-diff-utils"
+path = "javafuzz:fuzz"
+args = "-Ddirs=/corpus"
+target_class = "com.github.difflib.DiffUtilsFuzzerJF"
+jacocolib = "/usr/local/lib/jacocoagent.jar"
+casr_bin = "/java-diff-utils/java-diff-utils/target/DiffUtilsFuzzer.jar"
+
