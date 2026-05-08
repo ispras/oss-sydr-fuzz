@@ -89,14 +89,14 @@ RUN git clone https://github.com/google/atheris && cd atheris && \
 
 # Install python-afl
 RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
-    git checkout 6a3fc2d15a02f60e4ea24273f8ed93404c9ffa43 && \
+    git checkout f40524f7c5681528e24c64711681c38cfa7b9355 && \
     pip3 install . && cd .. && rm -rf python-afl
 
 # Install Go
-RUN wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
+RUN wget https://go.dev/dl/go1.26.2.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.26.2.linux-amd64.tar.gz
 ENV GOPATH=/root/go
 ENV PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
-RUN rm go1.25.3.linux-amd64.tar.gz
+RUN rm go1.26.2.linux-amd64.tar.gz
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
@@ -104,7 +104,7 @@ RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-f
 RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && \
     chmod +x /usr/local/bin/bazel
 RUN git clone https://github.com/CodeIntelligenceTesting/jazzer.git && cd jazzer && \
-    git checkout efbc6354e412ce221ad3b18a6fdd32bf12241825 && \
+    git checkout 50a0e8f2c3aa0d28165b860e1c942383ba08d180 && \
     echo "bazel_dep(name = \"rules_python\", version = \"0.23.0\", dev_dependency = True)" >> MODULE.bazel && \
     echo "python = use_extension(\"@rules_python//python/extensions:python.bzl\", \"python\")" >> MODULE.bazel && \
     echo "python.toolchain(is_default = True, python_version = \"3.10\", ignore_root_user_error = True)" >> MODULE.bazel && \
@@ -129,7 +129,9 @@ RUN git clone --depth 1 -b v2.1.0 https://github.com/CodeIntelligenceTesting/jaz
 WORKDIR /jazzer.js
 RUN npm install && \
     npm run build && \
-    npm install --save-dev
+    npm install --save-dev && \
+    mkdir -p packages/fuzzer/prebuilds && \
+    cp packages/fuzzer/build/Release/jazzerjs.node packages/fuzzer/prebuilds/fuzze-linux-x64.node
 WORKDIR /
 
 # Install .NET, Sharpfuzz, minicover, altcover
@@ -175,7 +177,7 @@ ADD https://raw.githubusercontent.com/ispras/oss-sydr-fuzz/master/projects/jsonc
 
 # Install AFLplusplus
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus && \
-    git checkout v4.33c && export CC=clang && export CXX=clang++ && \
+    git checkout v4.40c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
