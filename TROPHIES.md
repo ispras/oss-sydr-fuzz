@@ -1,8 +1,8 @@
 # Trophies
 
 [Sydr-fuzz](https://sydr-fuzz.github.io) discovered
-203 new bugs in
-34 open source projects.
+204 new bugs in
+35 open source projects.
 
 * audk:
     * <https://github.com/acidanthera/audk/commit/7da674d1c923b52013bd108f82211b1561880c55>
@@ -62,6 +62,8 @@
     * <https://github.com/strukturag/libheif/issues/1579>
     * <https://github.com/strukturag/libheif/issues/1578>
     * <https://github.com/strukturag/libheif/issues/1577>
+* libjxl:
+    * <https://github.com/libjxl/libjxl/issues/4760> (PR: <https://github.com/libjxl/libjxl/pull/4761>)
 * libpcap:
     * <https://github.com/the-tcpdump-group/libpcap/issues/1134>
     * <https://github.com/the-tcpdump-group/libpcap/pull/1205>
