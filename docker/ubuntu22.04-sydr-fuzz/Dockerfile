@@ -177,7 +177,7 @@ RUN npm install && \
     npm run build && \
     npm install --save-dev && \
     mkdir -p packages/fuzzer/prebuilds && \
-    cp packages/fuzzer/build/Release/jazzerjs.node packages/fuzzer/prebuilds/fuzze-linux-x64.node
+    cp packages/fuzzer/build/Release/jazzerjs.node packages/fuzzer/prebuilds/fuzzer-linux-x64.node
 WORKDIR /
 
 # Install .NET, Sharpfuzz, minicover, altcover

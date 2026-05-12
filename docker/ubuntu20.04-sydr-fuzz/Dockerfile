@@ -9,7 +9,8 @@ RUN apt-get update && \
                        wget curl unzip clang-11 vim lsb-release zlib1g-dev \
                        lcov pkg-config libglib2.0-dev gcc-10 g++-10 \
                        gcc-10-plugin-dev gcc-10-multilib python3.9 python3.9-dev \
-                       python3-pip libtool gnuplot binutils-dev zip htop psutils openjdk-17-jdk
+                       python3-pip python3.9-venv libtool gnuplot binutils-dev \
+                       zip htop psutils openjdk-17-jdk
 
 RUN dpkg --add-architecture i386 && \
     apt update && apt install -y zlib1g:i386 zlib1g-dev:i386
@@ -22,6 +23,7 @@ RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
     rm -rf gdb-*
 
 RUN python3 -m pip install coverage toml concurrencytest psutil tqdm
+RUN pip3 install meson==0.55.3
 
 RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-linux-x86_64.sh && \
     mkdir /cmake && \
@@ -131,7 +133,7 @@ RUN npm install && \
     npm run build && \
     npm install --save-dev && \
     mkdir -p packages/fuzzer/prebuilds && \
-    cp packages/fuzzer/build/Release/jazzerjs.node packages/fuzzer/prebuilds/fuzze-linux-x64.node
+    cp packages/fuzzer/build/Release/jazzerjs.node packages/fuzzer/prebuilds/fuzzer-linux-x64.node
 WORKDIR /
 
 # Install .NET, Sharpfuzz, minicover, altcover
