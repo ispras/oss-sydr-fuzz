@@ -185,9 +185,13 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
 # Install LLVM-18
+RUN ln -sf /usr/bin/python3.8 /usr/bin/python3 && \
+    /usr/bin/python3 -c "import apt_pkg; print('apt_pkg ok')"
 RUN wget https://apt.llvm.org/llvm.sh
 RUN chmod +x llvm.sh
 RUN ./llvm.sh 18 all
+RUN ln -sf /usr/bin/python3.9 /usr/bin/python3 && \
+    python3 --version
 
 WORKDIR /
 
