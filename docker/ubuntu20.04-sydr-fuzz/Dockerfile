@@ -183,6 +183,11 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
 
+# Install LLVM-18
+RUN wget https://apt.llvm.org/llvm.sh
+RUN chmod +x llvm.sh
+RUN ./llvm.sh 18 all
+
 WORKDIR /
 
 # Install Sentinel driver
