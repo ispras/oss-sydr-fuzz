@@ -73,6 +73,11 @@ RUN wget -q https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-14.0.
     CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . && \
     cmake --install . && cd ../.. && rm -rf llvm-project*
 
+# Install LLVM-18
+RUN ln -sf /usr/bin/python3.8 /usr/bin/python3
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh 18 all
+RUN ln -sf /usr/bin/python3.9 /usr/bin/python3
+
 RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
     ldconfig
 
@@ -183,15 +188,6 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
     git checkout v4.40c && export CC=clang && export CXX=clang++ && \
     export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
     PERFORMANCE=1 make distrib -j $(nproc) && make install -j $(nproc) && make clean && cd .. && rm -rf AFLplusplus
-
-# Install LLVM-18
-RUN ln -sf /usr/bin/python3.8 /usr/bin/python3 && \
-    /usr/bin/python3 -c "import apt_pkg; print('apt_pkg ok')"
-RUN wget https://apt.llvm.org/llvm.sh
-RUN chmod +x llvm.sh
-RUN ./llvm.sh 18 all
-RUN ln -sf /usr/bin/python3.9 /usr/bin/python3 && \
-    python3 --version
 
 WORKDIR /
 
