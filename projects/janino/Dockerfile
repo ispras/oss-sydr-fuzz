@@ -24,7 +24,7 @@ RUN git clone https://github.com/janino-compiler/janino.git janino
 COPY build.sh /janino
 COPY ExpressionEvaluatorFuzzer.java /src/
 
-ENV CASR_SOURCE_DIRS /janino/janino/src/main/java/
+ENV CASR_SOURCE_DIRS=/janino/janino/src/main/java/
 
 WORKDIR /janino
 RUN git checkout 4db1b8117bda36056f4eeab2d29e1f524b21b13c

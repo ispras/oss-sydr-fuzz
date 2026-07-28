@@ -17,13 +17,13 @@
 SRC=/src
 OUT=/out
 
-# Get maven
-wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+MAVEN_VERSION=$(wget -qO- https://dlcdn.apache.org/maven/maven-3/ | grep -oP 'href="\K3\.[0-9]+\.[0-9]+(?=/)' | sort -uV | tail -1)
+wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 tar -xvf apache-maven-*-bin.tar.gz
 rm apache-maven-*-bin.tar.gz
 mv apache-maven-* /opt/
 
-MVN=/opt/apache-maven-3.9.4/bin/mvn
+MVN=$(ls -d /opt/apache-maven-*/bin/mvn)
 $MVN clean package -Dmaven.javadoc.skip=true -DskipTests=true -Dpmd.skip=true \
     -Dencoding=UTF-8 -Dmaven.antrun.skip=true -Dcheckstyle.skip=true \
     -Denforcer.fail=false org.apache.maven.plugins:maven-shade-plugin:3.2.4:shade

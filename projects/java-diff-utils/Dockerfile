@@ -24,7 +24,7 @@ RUN git clone https://github.com/java-diff-utils/java-diff-utils java-diff-utils
 COPY build.sh /java-diff-utils
 COPY DiffUtilsFuzzer.java /src
 
-ENV CASR_SOURCE_DIRS /java-diff-utils/java-diff-utils/src/main/java/
+ENV CASR_SOURCE_DIRS=/java-diff-utils/java-diff-utils/src/main/java/
 
 WORKDIR /java-diff-utils
 RUN git checkout 903982517a747d012639c85bdbe05721f88b86d9

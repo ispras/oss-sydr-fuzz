@@ -16,7 +16,12 @@
 ################################################################################
 SRC=/
 OUT=/out
-ANT=/ant/apache-ant-1.10.14/bin/ant
+ANT_VERSION=$(wget -qO- https://dlcdn.apache.org/ant/binaries/ | grep -oP 'href="apache-ant-\K[0-9]+\.[0-9]+\.[0-9]+(?=-bin\.tar\.gz")' | sort -uV | tail -1)
+wget https://dlcdn.apache.org/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz
+tar -xf apache-ant-*-bin.tar.gz
+rm apache-ant-*-bin.tar.gz
+mv apache-ant-* /opt/
+ANT=$(ls -d /opt/apache-ant-*/bin/ant)
 
 mkdir $OUT
 

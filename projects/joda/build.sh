@@ -17,15 +17,15 @@
 SRC=/src
 OUT=/out
 
-# Get maven
-wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+MAVEN_VERSION=$(wget -qO- https://dlcdn.apache.org/maven/maven-3/ | grep -oP 'href="\K3\.[0-9]+\.[0-9]+(?=/)' | sort -uV | tail -1)
+wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 tar -xvf apache-maven-*-bin.tar.gz
 rm apache-maven-*-bin.tar.gz
 mv apache-maven-* /opt/
 
 sed -i 's/1.5</1.7</g' pom.xml
 
-MVN=/opt/apache-maven-3.9.4/bin/mvn
+MVN=$(ls -d /opt/apache-maven-*/bin/mvn)
 MAVEN_ARGS="-Djavac.src.version=17 -Djavac.target.version=17 -DskipTests"
 $MVN package $MAVEN_ARGS
 CURRENT_VERSION=$($MVN org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate \

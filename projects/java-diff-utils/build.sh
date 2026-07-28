@@ -17,12 +17,12 @@
 SRC=/src
 OUT=/out
 
-# Get maven
-wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+MAVEN_VERSION=$(wget -qO- https://dlcdn.apache.org/maven/maven-3/ | grep -oP 'href="\K3\.[0-9]+\.[0-9]+(?=/)' | sort -uV | tail -1)
+wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 tar -xvf apache-maven-*-bin.tar.gz
 rm apache-maven-*-bin.tar.gz
 mv apache-maven-* /opt/
-export PATH="$PATH:/opt/apache-maven-3.9.4/bin"
+export PATH="$PATH:$(ls -d /opt/apache-maven-*/bin)"
 
 # Build java-diff-utils
 mvn clean package -Dmaven.javadoc.skip=true -DskipTests=true -Dpmd.skip=true \

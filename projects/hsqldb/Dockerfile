@@ -17,10 +17,6 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN curl -L https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.14-bin.zip -o ant.zip && \
-    unzip ant.zip -d /ant && \
-    rm -rf ant.zip
-
 RUN apt install -y subversion
 
 RUN svn checkout https://svn.code.sf.net/p/hsqldb/svn/base/trunk hsqldb-svn
