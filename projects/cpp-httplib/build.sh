@@ -1,24 +1,50 @@
 #!/bin/bash -eu
-# Copyright 2020 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-################################################################################
 
-# Build fuzz targets specified  in test/Makefile.
-cd test/fuzzing && make -j$(nproc) all
+cd test/fuzzing
 
-# Copy the fuzzer executables, zip-ed corpora, option and dictionary files to $OUT.
-find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          # Copy fuzz-target.
-find . -name '*_fuzzer.dict' -exec cp -v '{}' $OUT ';'     # Copy dictionaries.
-find . -name '*_fuzzer_seed_corpus.zip' -exec cp -v '{}' $OUT ';' # Copy seed corpora.
+export CXX=clang++
+
+# libFuzzer build
+export CXXFLAGS='-fsanitize=fuzzer'
+export OUT='/libfuzzer'
+
+make -j$(nproc) server_fuzzer
+mkdir "$OUT"
+find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
+make clean
+
+# Sydr build
+export CXXFLAGS='standalone_fuzz_target_runner.cpp'
+export OUT='/sydr'
+
+make -j$(nproc) server_fuzzer
+mkdir "$OUT"
+find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
+make clean
+
+# coverge build 
+export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping standalone_fuzz_target_runner.cpp"
+export OUT='/cov'
+
+make -j$(nproc) server_fuzzer
+mkdir "$OUT"
+find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
+make clean
+
+# AFL++ build
+export CXX=afl-clang-fast++
+export CXXFLAGS='-fsanitize=fuzzer'
+export OUT='/aflpp'
+
+make -j$(nproc) server_fuzzer
+mkdir "$OUT"
+find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
+
+# copy fuzzing corpus and dict
+export OUT="/dict"
+mkdir "$OUT"
+find . -name '*_fuzzer.dict' -exec cp -v '{}' $OUT ';'    
+
+ln -sr corpus /corpus
+
+make clean
