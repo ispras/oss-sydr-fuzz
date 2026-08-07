@@ -14,7 +14,7 @@ find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'
 make clean
 
 # Sydr build
-export CXXFLAGS='-fsanitize=address,undefined standalone_fuzz_target_runner.cpp'
+export CXXFLAGS='standalone_fuzz_target_runner.cpp'
 export OUT='/sydr'
 
 make -j$(nproc) all
