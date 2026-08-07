@@ -14,6 +14,7 @@ RUN git clone --depth 1 https://github.com/yhirose/cpp-httplib.git cpp-httplib &
     git checkout 2b8658fa99e6be67d1a8ee2a845f221abe4c5ac8
 
 WORKDIR cpp-httplib
+COPY Makefile /cpp-httplib/test/fuzzing
 COPY build.sh /cpp-httplib
 
 RUN ./build.sh

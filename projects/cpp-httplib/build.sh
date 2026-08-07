@@ -5,19 +5,19 @@ cd test/fuzzing
 export CXX=clang++
 
 # libFuzzer build
-export CXXFLAGS='-fsanitize=fuzzer'
+export CXXFLAGS='-fsanitize=fuzzer,address,undefined'
 export OUT='/libfuzzer'
 
-make -j$(nproc) server_fuzzer
+make -j$(nproc) all
 mkdir "$OUT"
 find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
 make clean
 
 # Sydr build
-export CXXFLAGS='standalone_fuzz_target_runner.cpp'
+export CXXFLAGS='-fsanitize=address,undefined standalone_fuzz_target_runner.cpp'
 export OUT='/sydr'
 
-make -j$(nproc) server_fuzzer
+make -j$(nproc) all
 mkdir "$OUT"
 find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
 make clean
@@ -26,17 +26,17 @@ make clean
 export CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping standalone_fuzz_target_runner.cpp"
 export OUT='/cov'
 
-make -j$(nproc) server_fuzzer
+make -j$(nproc) all
 mkdir "$OUT"
 find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
 make clean
 
 # AFL++ build
 export CXX=afl-clang-fast++
-export CXXFLAGS='-fsanitize=fuzzer'
+export CXXFLAGS='-fsanitize=fuzzer,address,undefined'
 export OUT='/aflpp'
 
-make -j$(nproc) server_fuzzer
+make -j$(nproc) all
 mkdir "$OUT"
 find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'          
 
@@ -44,7 +44,7 @@ find . -name '*_fuzzer' -exec cp -v '{}' $OUT ';'
 export OUT="/dict"
 mkdir "$OUT"
 find . -name '*_fuzzer.dict' -exec cp -v '{}' $OUT ';'    
+make clean
 
 ln -sr corpus /corpus
 
-make clean
