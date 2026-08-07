@@ -31,8 +31,7 @@ Minimize corpus:
 
 Collect coverage:
 
-    # sydr-fuzz -c tomls/server-lf.toml cov-export -- -format=lcov > server-cpp-httplib.lcov
-    # genhtml -o server-cpp-httplib server-cpp-httplib.lcov
+    # sydr-fuzz -c tomls/server-lf.toml cov-html
 
 Check security predicates:
 
