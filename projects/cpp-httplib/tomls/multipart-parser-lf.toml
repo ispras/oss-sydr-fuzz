@@ -1,0 +1,13 @@
+exit-on-time = 7200
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/sydr/mutlipart_parser_fuzzer @@"
+jobs = 2
+
+[libfuzzer]
+path = "/libfuzzer/mutlipart_parser_fuzzer"
+args = "-jobs=1000 -workers=4 /corpus"
+
+[cov]
+target = "/cov/mutlipart_parser_fuzzer @@"
