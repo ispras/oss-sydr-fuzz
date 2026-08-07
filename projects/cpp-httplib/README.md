@@ -1,4 +1,4 @@
-# CPython3
+# cpp-httplib
 
 A C++11 single-file header-only cross platform HTTP/HTTPS library.
 
@@ -23,23 +23,35 @@ Change directory to `/fuzz`:
 ### libfuzzer
 Run hybrid fuzzing:
 
-    # sydr-fuzz -c tomls/lf.toml run
+    # sydr-fuzz -c tomls/server-lf.toml run
 
 Minimize corpus:
 
-    # sydr-fuzz -c tomls/lf.toml cmin
+    # sydr-fuzz -c tomls/server-lf.toml cmin
 
 Collect coverage:
 
-    # sydr-fuzz -c tomls/lf.toml cov-export -- -format=lcov > cpp-httplib.lcov
-    # genhtml -o cpp-httplib cpp-httplib.lcov
+    # sydr-fuzz -c tomls/server-lf.toml cov-export -- -format=lcov > server-cpp-httplib.lcov
+    # genhtml -o server-cpp-httplib server-cpp-httplib.lcov
 
 Check security predicates:
 
-    # sydr-fuzz -c tomls/lf.toml security
+    # sydr-fuzz -c tomls/server-lf.toml security
+
+## Alternative Fuzz Targets
+### libfuzzer
+
+    # sydr-fuzz -c tomls/server-lf.toml run
+    # sydr-fuzz -c tomls/client-lf.toml run
+    # sydr-fuzz -c tomls/header-parser-lf.toml run
+    # sydr-fuzz -c tomls/url-parser-lf.toml run
+    # sydr-fuzz -c tomls/multipart-parser-lf.toml run
 
 ### afl++
-Same as in libfuzzer except different TOML
 
-    # sydr-fuzz -c tomls/afl++.toml run
+    # sydr-fuzz -c tomls/server-afl++.toml run
+    # sydr-fuzz -c tomls/client-afl++.toml run
+    # sydr-fuzz -c tomls/header-parser-afl++.toml run
+    # sydr-fuzz -c tomls/url-parser-afl++.toml run
+    # sydr-fuzz -c tomls/multipart-parser-afl++.toml run
 
