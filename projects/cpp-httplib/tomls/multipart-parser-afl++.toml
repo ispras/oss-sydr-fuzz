@@ -1,0 +1,14 @@
+exit-on-time = 7200
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/sydr/mutlipart_parser_fuzzer @@"
+jobs = 2
+
+[aflplusplus]
+target = "/aflpp/mutlipart_parser_fuzzer @@"
+args = "-i /corpus"
+jobs = 4
+
+[cov]
+target = "/cov/mutlipart_parser_fuzzer @@"

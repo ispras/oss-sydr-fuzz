@@ -1,0 +1,14 @@
+exit-on-time = 7200
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/sydr/client_fuzzer @@"
+jobs = 2
+
+[aflplusplus]
+target = "/aflpp/client_fuzzer @@"
+args = "-i /corpus"
+jobs = 4
+
+[cov]
+target = "/cov/client_fuzzer @@"
