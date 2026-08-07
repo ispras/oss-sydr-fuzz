@@ -5,7 +5,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/libfuzzer/server_fuzzer"
-args = "/corpus"
+args = "-jobs=1000 -workers=4 /corpus"
 
 [cov]
 target = "/cov/server_fuzzer @@"
