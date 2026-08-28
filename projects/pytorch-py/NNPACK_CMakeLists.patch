@@ -1,0 +1,67 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5ecd2df..12f37b0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -22,28 +22,16 @@ IF(NNPACK_BUILD_TESTS)
+ ENDIF()
+ 
+ MACRO(NNPACK_TARGET_ENABLE_C99 target)
+-  IF(${CMAKE_VERSION} VERSION_LESS "3.1")
+-    IF(NOT MSVC)
+-      TARGET_COMPILE_OPTIONS(${target} PRIVATE -std=c99)
+-    ENDIF()
+-  ELSE()
+     SET_TARGET_PROPERTIES(${target} PROPERTIES
+       C_STANDARD 99
+       C_EXTENSIONS YES)
+-  ENDIF()
+ ENDMACRO()
+ 
+ MACRO(NNPACK_TARGET_ENABLE_CXX11 target)
+-  IF(${CMAKE_VERSION} VERSION_LESS "3.1")
+-    IF(NOT MSVC)
+-      TARGET_COMPILE_OPTIONS(${target} PRIVATE -std=gnu++11)
+-    ENDIF()
+-  ELSE()
+     SET_TARGET_PROPERTIES(${target} PROPERTIES
+       CXX_STANDARD 11
+       CXX_STANDARD_REQUIRED YES
+       CXX_EXTENSIONS YES)
+-  ENDIF()
+ ENDMACRO()
+ 
+ # --- [ Determine target processor
+@@ -134,18 +122,7 @@ IF(NNPACK_BACKEND STREQUAL "x86-64")
+   ENDIF()
+ 
+   IF(NOT DEFINED PYTHON_ENUM_SOURCE_DIR)
+-    IF(${PYTHON_VERSION_STRING} VERSION_LESS 3.4)
+-      # ---[ Python < 3.4 does not natively support enums, and needs a polyfill
+-      MESSAGE(STATUS "Downloading enum (Python package) to ${CONFU_DEPENDENCIES_SOURCE_DIR}/enum (define PYTHON_ENUM_SOURCE_DIR to avoid it)")
+-      CONFIGURE_FILE(cmake/DownloadEnum.cmake "${CONFU_DEPENDENCIES_BINARY_DIR}/enum-download/CMakeLists.txt")
+-      EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+-        WORKING_DIRECTORY "${CONFU_DEPENDENCIES_BINARY_DIR}/enum-download")
+-      EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+-        WORKING_DIRECTORY "${CONFU_DEPENDENCIES_BINARY_DIR}/enum-download")
+-      SET(PYTHON_ENUM_SOURCE_DIR "${CONFU_DEPENDENCIES_SOURCE_DIR}/enum" CACHE STRING "enum (Python package) source directory")
+-    ELSE()
+-      SET(PYTHON_ENUM_SOURCE_DIR "" CACHE STRING "enum (Python package) source directory")
+-    ENDIF()
++    SET(PYTHON_ENUM_SOURCE_DIR "" CACHE STRING "enum (Python package) source directory")
+   ENDIF()
+ 
+   IF(NOT DEFINED PYTHON_PEACHPY_SOURCE_DIR)
+@@ -169,12 +146,7 @@ IF(NNPACK_BACKEND STREQUAL "x86-64")
+     SET(PYTHON_PEACHPY_SOURCE_DIR "${CONFU_DEPENDENCIES_SOURCE_DIR}/peachpy" CACHE STRING "PeachPy (Python package) source directory")
+   ENDIF()
+ 
+-  IF(${PYTHON_VERSION_STRING} VERSION_LESS 3.4)
+-    # ---[ Python < 3.4 does not natively support enums, and needs a polyfill
+-    SET(PEACHPY_PYTHONPATH "${PYTHON_SIX_SOURCE_DIR}:${PYTHON_ENUM_SOURCE_DIR}:${PYTHON_PEACHPY_SOURCE_DIR}")
+-  ELSE()
+-    SET(PEACHPY_PYTHONPATH "${PYTHON_SIX_SOURCE_DIR}:${PYTHON_PEACHPY_SOURCE_DIR}")
+-  ENDIF()
++  SET(PEACHPY_PYTHONPATH "${PYTHON_SIX_SOURCE_DIR}:${PYTHON_PEACHPY_SOURCE_DIR}")
+ ENDIF()
+ 
+ IF(NOT DEFINED CPUINFO_SOURCE_DIR)

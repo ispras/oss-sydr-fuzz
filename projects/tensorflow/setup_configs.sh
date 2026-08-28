@@ -63,7 +63,7 @@ done
 
 for f in ${SANITIZERS:-}; do
   if [[ ${f} = "undefined" ]]; then
-    echo "build:${CONFIG} --linkopt=$(find $(llvm-config --libdir) -name libclang_rt.ubsan_standalone_cxx-x86_64.a | head -1)"
+    echo "build:${CONFIG} --linkopt=$(find /usr/lib/clang -name libclang_rt.ubsan_standalone_cxx-x86_64.a | head -1)"
   fi
 done
 

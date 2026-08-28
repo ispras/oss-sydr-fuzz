@@ -34,7 +34,7 @@ else
   TARGET_FOLDER=${FUZZTEST_TARGET_FOLDER}
 fi
 
-BUILD_ARGS="--config=${CONFIG}"
+BUILD_ARGS="--config=clang_local --config=${CONFIG}"
 if [[ ${FUZZTEST_EXTRA_ARGS:-"unset"} != "unset" ]];
 then
   BUILD_ARGS="$BUILD_ARGS ${FUZZTEST_EXTRA_ARGS}"

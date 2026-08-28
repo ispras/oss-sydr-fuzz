@@ -19,8 +19,8 @@
 if [[ $CONFIG = "libfuzzer" ]]
 then
   export OUT="/fuzzer"
-  export CC=clang
-  export CXX=clang++
+  export CC=clang-18
+  export CXX=clang++-18
   export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
   export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null"
   export SANITIZERS="address undefined"
@@ -87,7 +87,7 @@ sed -i 's/build:linux --copt=\"-Wno-array-parameter\"/# overwritten/g' ./.bazelr
 sed -i 's/build:linux --copt=\"-Wno-stringop-overflow\"/# overwritten/g' ./.bazelrc
 
 # Force Python3, run configure.py to pick the right build config
-export TF_PYTHON_VERSION=3.9
+export TF_PYTHON_VERSION=3.10
 PYTHON=python3
 yes "" | python3 configure.py
 

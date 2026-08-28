@@ -14,29 +14,39 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-# Install build dependencies.
-RUN pip3 install astunparse numpy ninja pyyaml mkl mkl-include setuptools cffi typing_extensions
+# Install deps
+RUN apt-get update && \
+    apt-get install -y libuv1 libuv1-dev
 
 # Clone target from GitHub.
-RUN git clone https://github.com/pytorch/pytorch/ /pytorch
+RUN git clone -b v2.13.0 https://github.com/pytorch/pytorch /pytorch
+
 RUN cd /pytorch && \
-    git checkout v2.8.0 && \
     git submodule update --init --recursive --jobs 0
 
 # Copy build script and targets.
 COPY *.sh \
      *.py \
      *.zip \
+     *.patch \
      /
 
 # Fix PyTorch build.
 RUN rm /usr/bin/x86_64-linux-gnu-gcc && \
     ln -s /usr/bin/clang /usr/bin/x86_64-linux-gnu-gcc
+RUN cd /pytorch/third_party/NNPACK && git apply /NNPACK_CMakeLists.patch
+ENV PATH "/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/fuzz/sydr:/usr/local/go/bin:/root/go/bin:/root/.dotnet/tools"
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Build PyTorch, torchvision and torchtext.
+# Install deps (without new cmake)
+RUN cd /pytorch && \
+    sed -i '/cmake*/d' requirements-build.txt && \
+    pip3 install --group dev
+
+# Build PyTorch.
 RUN /build_torch.sh
 
 # Prepare initial corporas.

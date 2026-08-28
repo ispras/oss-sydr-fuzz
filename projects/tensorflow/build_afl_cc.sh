@@ -17,8 +17,14 @@
 
 mkdir /custom_afl_cc
 cd custom_afl_cc
-git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus
-git checkout v4.30c && export CC=clang && export CXX=clang++ && \
-	export CFLAGS="-DMAX_PARAMS_NUM=16384 -ldl" && export CXXFLAGS="-DMAX_PARAMS_NUM=16384 -ldl" && \
-	export LD_LIBRARY_PATH="$(llvm-config --libdir)${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" && make clean && \
-	make distrib -j $(nproc)
+git clone https://github.com/AFLplusplus/AFLplusplus.git
+cd AFLplusplus
+git checkout v5.02c
+
+export CC=clang
+export CXX=clang++
+export CFLAGS="-DMAX_PARAMS_NUM=16384 -ldl"
+export CXXFLAGS="-DMAX_PARAMS_NUM=16384 -ldl"
+export LD_LIBRARY_PATH="/usr/lib/clang/14.0.6/lib/linux${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+make clean
+NO_PYTHON=1 NO_NYX=1 make distrib -j $(nproc)

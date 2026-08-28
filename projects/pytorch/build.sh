@@ -21,8 +21,8 @@ then
   export SUFFIX="fuzz"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -fPIC"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17 -fPIC"
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,address -fPIC"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address -std=c++20 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
   export BUILD_RPC_REPRODUCER="OFF"
@@ -33,8 +33,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -fPIC"
-  export CXXFLAGS="-g -fsanitize=null,undefined,address,bounds,integer -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
+  export CFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -fPIC"
+  export CXXFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -std=c++20 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
   export BUILD_RPC_REPRODUCER="OFF"
@@ -46,7 +46,7 @@ then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fPIC"
-  export CXXFLAGS="-g -std=c++17 -fPIC"
+  export CXXFLAGS="-g -std=c++20 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
@@ -59,27 +59,26 @@ then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17 -fPIC"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++20 -fPIC"
   export LDFLAGS="$CFLAGS"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
   export BUILD_RPC_REPRODUCER="OFF"
 fi
 
-
 # Build pytorch
-
 cd /pytorch
 
 # clean artifacts from previous build pytorch
 python3 setup.py clean
 
-CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=100 USE_ITT=0 USE_TENSORPIPE=1 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
-        USE_MPI=0 TP_BUILD_LIBUV=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
-        python3 setup.py build_clib
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=100 \
+    USE_ITT=0 USE_TENSORPIPE=1 USE_FBGEMM=0 BUILD_BINARY=0 USE_MKL=0 USE_DISTRIBUTED=1 \
+    USE_MPI=0 TP_BUILD_LIBUV=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF USE_OPENMP=0 \
+    USE_MKLDNN=0 USE_GLOO=0 USE_CUDA=0 USE_XPU=0 \
+    python3 setup.py build_clib
 
 # Build targets
-
 cd /src
 rm -rf build
 Torch_DIR=/pytorch/ \
@@ -97,5 +96,3 @@ Torch_DIR=/pytorch/ \
 cd build/
 cmake --build . -j$(nproc) --verbose
 cmake --install .
-
-

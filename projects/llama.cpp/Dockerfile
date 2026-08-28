@@ -17,10 +17,9 @@
 ARG BASE_IMAGE="sydr/ubuntu20.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && \
-    git checkout e39eba26f3921402aca0d2600cf65abdd1fe9e55
+RUN git clone -b b10453 https://github.com/ggml-org/llama.cpp
 
-WORKDIR llama.cpp
+WORKDIR /llama.cpp
 
 # Copy build script and targets.
 COPY build.sh /

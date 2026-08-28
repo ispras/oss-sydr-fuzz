@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 ################################################################################
-
-
 set -e
 
 cd /llama.cpp
@@ -33,36 +31,36 @@ fi
 
 if [[ $TARGET == "fuzz" ]]
 then
-    CC=clang
-    CXX=clang++
-    CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
-    CXXFLAGS=$CFLAGS
-    OUT="/out_fuzz"
-    ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fsanitize=fuzzer-no-link,address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS=$CFLAGS
+    export OUT="/out_fuzz"
+    export ENGINE="$(find /usr/lib/clang -name libclang_rt.fuzzer-x86_64.a | head -1)"
 elif [[ $TARGET == "afl" ]]
 then
-    CC=afl-clang-fast
-    CXX=afl-clang-fast++
-    CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
-    CXXFLAGS=$CFLAGS
-    OUT="/out_afl"
-    ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
+    export CC=afl-clang-fast
+    export CXX=afl-clang-fast++
+    export CFLAGS="-g -fsanitize=address,bounds,integer,undefined,null,float-divide-by-zero"
+    export CXXFLAGS=$CFLAGS
+    export OUT="/out_afl"
+    export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
 elif [[ $TARGET == "sydr" ]]
 then
-    CC=clang
-    CXX=clang++
-    CFLAGS="-fPIC -g"
-    CXXFLAGS=$CFLAGS
-    OUT="/out_sydr"
-    ENGINE="/StandaloneFuzzTargetMain.o"
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-fPIC -g"
+    export CXXFLAGS=$CFLAGS
+    export OUT="/out_sydr"
+    export ENGINE="/StandaloneFuzzTargetMain.o"
 elif [[ $TARGET == "cov" ]]
 then
-    CC=clang
-    CXX=clang++
-    CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
-    CXXFLAGS=$CFLAGS
-    OUT="/out_cov"
-    ENGINE="/StandaloneFuzzTargetMain.o"
+    export CC=clang
+    export CXX=clang++
+    export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"
+    export CXXFLAGS=$CFLAGS
+    export OUT="/out_cov"
+    export ENGINE="/StandaloneFuzzTargetMain.o"
 fi
 
 export GGML_NO_OPENMP=1
@@ -83,8 +81,8 @@ sed -i 's/ok = ok \&\& (info->n_dims <= GGML_MAX_DIMS);/ok = ok \&\& (info->n_di
 rm -rf $OUT
 mkdir $OUT
 
-cmake -B build -DLLAMA_CURL=OFF -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=OFF
-cmake --build build --config Release
+cmake -B build -DLLAMA_CURL=OFF -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" -DBUILD_SHARED_LIBS=OFF
+cmake --build build --config Release -j $(nproc)
 MAIN=""
 if [[ $TARGET == "sydr" || $TARGET == "cov" ]]
 then
@@ -122,7 +120,7 @@ build_target(){
         -Wl,--whole-archive,"/llama.cpp/build/src/libllama.a" -Wl,--no-whole-archive \
         -WL,--whole-archive,"/llama.cpp/build/ggml/src/libggml-cpu.a" -Wl,--no-whole-archive \
         -ldl -pthread -lm -lrt /llama.cpp/build/ggml/src/libggml-cpu.a ./build/ggml/src/libggml-base.a \
-        ./build/ggml/src/libggml.a ./build/common/libcommon.a \
+        ./build/ggml/src/libggml.a ./build/common/libllama-common.a ./build/common/libllama-common-base.a \
         /llama.cpp/build/ggml/src/libggml-cpu.a $LIB_FUZZING_ENGINE \
         -o $OUT/${target}_$TARGET
 }
@@ -149,7 +147,7 @@ build_tokenizer(){
         -Wl,--whole-archive,"/llama.cpp/build/src/libllama.a" -Wl,--no-whole-archive \
         -WL,--whole-archive,"/llama.cpp/build/ggml/src/libggml-cpu.a" -Wl,--no-whole-archive \
         -ldl -pthread -lm -lrt /llama.cpp/build/ggml/src/libggml-cpu.a ./build/ggml/src/libggml-base.a \
-        ./build/common/libcommon.a ./build/ggml/src/libggml.a ./build/common/libcommon.a \
+        ./build/ggml/src/libggml.a ./build/common/libllama-common.a ./build/common/libllama-common-base.a \
         /llama.cpp/build/ggml/src/libggml-cpu.a $LIB_FUZZING_ENGINE \
         -o $OUT/fuzz_tokenizer_${target}_$TARGET
 }

@@ -21,8 +21,8 @@ export CFLAGS="-fsanitize=fuzzer-no-link,address -g -shared-libasan"
 export CXX="clang++" 
 export CXXFLAGS="-fsanitize=fuzzer-no-link,address -g -shared-libasan"
 
-export LD_LIBRARY_PATH="$(dirname $(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1))"
-export TF_PYTHON_VERSION=3.9
+export LD_LIBRARY_PATH="$(dirname /usr/lib/clang -name libclang_rt.asan-x86_64.so | head -1))"
+export TF_PYTHON_VERSION=3.10
 
 declare EXTRA_FLAGS="\
 $(
@@ -45,6 +45,7 @@ sed -i 's/build:linux --copt=\"-Wno-stringop-overflow\"/# overwritten/g' ./.baze
 
 bazel clean --expunge
 bazel build \
+  --config=clang_local
   --define=xnn_enable_avxvnniint8=false \
   --verbose_failures \
   --jobs=$(( $(nproc) / 2 )) \
@@ -53,9 +54,9 @@ bazel build \
   --strip=never \
   --copt="-DADDRESS_SANITIZER" \
   --action_env="ASAN_OPTIONS=detect_leaks=0,detect_odr_violation=0" \
-  --action_env="LD_PRELOAD=$(find $(llvm-config --libdir) -name libclang_rt.asan-x86_64.so | head -1)" \
+  --action_env="LD_PRELOAD=$(find /usr/lib/clang -name libclang_rt.asan-x86_64.so | head -1)" \
   ${EXTRA_FLAGS} \
   --remote_timeout=3600 --action_env=CppCompileTimeout=3600 \
   -- //tensorflow/tools/pip_package:wheel
 
-python3 -m pip install bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.20.0*.whl
+python3 -m pip install bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.21.0*.whl

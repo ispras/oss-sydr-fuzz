@@ -1,24 +1,26 @@
 diff --git a/tensorflow/workspace2.bzl b/tensorflow/workspace2.bzl
-index 9e49ab40b25..996729446cc 100644
+index 94151996..e65b17f5 100644
 --- a/tensorflow/workspace2.bzl
 +++ b/tensorflow/workspace2.bzl
-@@ -459,6 +459,7 @@ def _tf_repositories():
+@@ -473,6 +473,7 @@ def _tf_repositories():
          system_build_file = "//third_party/systemlibs:grpc.BUILD",
          patch_file = [
-             "@local_xla//third_party/grpc:grpc.patch",
-+            "@local_xla//third_party/grpc:fix_grpc_build.patch",
+             "@xla//third_party/grpc:grpc.patch",
++            "@xla//third_party/grpc:fix_grpc_build.patch",
          ],
-         urls = tf_mirror_urls("https://github.com/grpc/grpc/archive/refs/tags/v1.68.2.tar.gz"),
+         urls = tf_mirror_urls("https://github.com/grpc/grpc/archive/refs/tags/v1.74.0.tar.gz"),
      )
 diff --git a/third_party/xla/workspace2.bzl b/third_party/xla/workspace2.bzl
-index 9e4166034d0..f6c0d462ef9 100644
+index 3f9041ed..41cefe5b 100644
 --- a/third_party/xla/workspace2.bzl
 +++ b/third_party/xla/workspace2.bzl
-@@ -370,6 +370,7 @@ def _tf_repositories():
-         strip_prefix = "grpc-1.68.2",
-         patch_file = [
-             "//third_party/grpc:grpc.patch",
-+            "//third_patry/grpc:fix_grpc_build.patch",
-         ],
-         urls = tf_mirror_urls("https://github.com/grpc/grpc/archive/refs/tags/v1.68.2.tar.gz"),
+@@ -371,7 +371,8 @@ def _tf_repositories():
+         name = "com_github_grpc_grpc",
+         sha256 = "dd6a2fa311ba8441bbefd2764c55b99136ff10f7ea42954be96006a2723d33fc",
+         strip_prefix = "grpc-1.74.0",
+-        patch_file = ["//third_party/grpc:grpc.patch"],
++        patch_file = ["//third_party/grpc:grpc.patch",
++                      "//third_patry/grpc:fix_grpc_build.patch",],
+         urls = tf_mirror_urls("https://github.com/grpc/grpc/archive/refs/tags/v1.74.0.tar.gz"),
      )
+ 
