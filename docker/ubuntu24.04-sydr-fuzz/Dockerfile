@@ -12,14 +12,10 @@ RUN apt-get update && \
                        python3-pip libtool gnuplot binutils-dev zip htop psutils \
                        openjdk-17-jdk file libssl-dev lua5.1 liblua5.1-dev \
                        automake autoconf libpixman-1-dev bison flex meson texinfo \
-                       software-properties-common gnupg gpg
+                       software-properties-common gnupg gpg gdb
 
 RUN dpkg --add-architecture i386 && \
     apt update && apt install -y zlib1g:i386 zlib1g-dev:i386
-
-RUN wget https://ftp.gnu.org/gnu/gdb/gdb-17.2.tar.xz && tar xf gdb-*.tar.xz && \
-    cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
-    rm -rf gdb-*
 
 # Install Boost 1.71
 RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb \
@@ -86,8 +82,6 @@ RUN update-alternatives \
     --slave   /usr/bin/lldb                  lldb                  /usr/bin/lldb-${version} \
     --slave   /usr/bin/lldb-server           lldb-server           /usr/bin/lldb-server-${version} \
     --slave   /usr/bin/clangd                clangd                /usr/bin/clangd-${version}
-
-RUN llvm-config --version
 
 RUN python3 -m pip install coverage toml concurrencytest psutil wllvm watchdog scipy numpy
 
