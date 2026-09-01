@@ -22,5 +22,6 @@ rm -rf build && mkdir -p build/temp
 
 export ADDITIONAL="-D_FORTIFY_SOURCE=2 -fstack-protector-all -fno-omit-frame-pointer -g -Wno-error"
 
-cd build; CFLAGS="$ADDITIONAL $CFLAGS" CXXFLAGS="$ADDITIONAL $CXXFLAGS" LDFLAGS="-ldl -lutil" ../configure --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-ld
-make clean; make
+cd build; CFLAGS="$ADDITIONAL $CFLAGS" CXXFLAGS="$ADDITIONAL $CXXFLAGS" LDFLAGS="-ldl -lutil" ../configure --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-ld --disable-gas --disable-gprof --disable-nls
+make -j"$(( ($(nproc) + 1) / 2 ))" all-bfd all-opcodes configure-binutils
+make -C binutils -j"$(( ($(nproc) + 1) / 2 ))" objdump
