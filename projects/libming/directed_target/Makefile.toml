@@ -20,6 +20,8 @@ PROJECT_DIR = { script = ["pwd"] }
 EXAMPLE_DIR = { value = "/libming-CVE-2018-8807" }
 DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
+DIFUZZ_LLVM_VERSION = { script = ['version="$(LC_ALL=C readelf -d "${DIFUZZ_DIR_ABS}/difuzz" 2>/dev/null | sed -nE "s/.*NEEDED.*\[libLLVM(-|\.so\.)([0-9]+)[^]]*\].*/\2/p" | sort -u)"; case "${version}" in 18|21) printf "%s\n" "${version}" ;; *) echo "Cannot detect a supported LLVM version from ${DIFUZZ_DIR_ABS}/difuzz" >&2; exit 1 ;; esac'] }
+DIFUZZ_LLVM_BINDIR = { script = ["llvm-config-${DIFUZZ_LLVM_VERSION} --bindir"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
 OUT_DIR_ABS = { script = ["realpath ${OUT_DIR}"] }
 DIFUZZ_ARGS = { value = "-r main --weights reverse -o difuzz -j8 --analyse-icalls strong", condition = { env_not_set = ["DIFUZZ_ARGS"] } }
@@ -48,7 +50,8 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-export CC=clang; export CXX=clang++
+export CC=${DIFUZZ_LLVM_BINDIR}/clang
+export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
 export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_libming.sh
 mv ${EXAMPLE_DIR}/build/util/swftophp ${OUT_DIR_ABS}/libming_sydr
@@ -63,7 +66,8 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-export CC=clang; export CXX=clang++
+export CC=${DIFUZZ_LLVM_BINDIR}/clang
+export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
 export CFLAGS="-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"; export CXXFLAGS="$CFLAGS"
 ${PROJECT_DIR}/build_libafl_libming.sh
 mv ${EXAMPLE_DIR}/build/util/swftophp ${OUT_DIR_ABS}/libming_casr
@@ -78,7 +82,8 @@ windows_alias = "unsupported"
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-export CC=clang; export CXX=clang++
+export CC=${DIFUZZ_LLVM_BINDIR}/clang
+export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
 export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping"; export CXXFLAGS="$CFLAGS"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/util/main.c
 ${PROJECT_DIR}/build_libafl_libming.sh
@@ -96,6 +101,7 @@ script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
+export LLVM_COMPILER_PATH=${DIFUZZ_LLVM_BINDIR}
 export CC=wllvm; export CXX=wllvm++
 export CFLAGS="-g"; export CXXFLAGS="$CFLAGS"
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/util/main.c
