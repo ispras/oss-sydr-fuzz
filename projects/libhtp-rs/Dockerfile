@@ -17,8 +17,8 @@
 ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
-RUN rustup override set nightly-2025-05-01
-RUN cargo afl config --build
+RUN rustup override set nightly-2025-05-01 && \
+    cargo +nightly-2025-05-01 afl config --update --build
 
 RUN git clone https://github.com/cccs-rtmorti/libhtp-rs.git
 

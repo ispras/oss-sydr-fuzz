@@ -20,6 +20,7 @@ PROJECT_DIR = { script = ["pwd"], condition = { env_not_set = ["PROJECT_DIR"] } 
 EXAMPLE_DIR = { value = "/libhtp-rs/libafl_difuzz" }
 DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
+DIFUZZ_LLVM_VERSION = { script = ['version="$(LC_ALL=C readelf -d "${DIFUZZ_DIR_ABS}/difuzz" 2>/dev/null | sed -nE "s/.*NEEDED.*\[libLLVM(-|\.so\.)([0-9]+)[^]]*\].*/\2/p" | sort -u)"; case "${version}" in 18|21) printf "%s\n" "${version}" ;; *) echo "Cannot detect a supported LLVM version from ${DIFUZZ_DIR_ABS}/difuzz" >&2; exit 1 ;; esac'] }
 RUST_DIR = { value = "${DIFUZZ_DIR_ABS}/rust-difuzz/bin", condition = { env_not_set = ["RUST_DIR"] } }
 RUST_DIR_ABS = { script = ["realpath ${RUST_DIR}"] }
 OUT_DIR = { value = "${PROJECT_DIR}", condition = { env_not_set = ["OUT_DIR"] } }
@@ -105,7 +106,7 @@ export CARGO_TARGET_DIR="${EXAMPLE_DIR}/target"
 cargo clean
 export RUSTC=${RUST_DIR_ABS}/libafl_rustc
 RUSTFLAGS="--emit=llvm-bc -C debuginfo=2 -C debug-assertions=yes -C opt-level=0 -C target-cpu=native" cargo build --bin sydr_htp_rs
-llvm-link-18 -o=${EXAMPLE_DIR}/target/debug/sydr_htp_rs.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
+llvm-link-${DIFUZZ_LLVM_VERSION} -o=${EXAMPLE_DIR}/target/debug/sydr_htp_rs.bc ${EXAMPLE_DIR}/target/debug/deps/*.bc
 ${DIFUZZ_DIR_ABS}/difuzz-rust -r sydr_htp::main -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/target/debug/sydr_htp_rs.bc -e ${OUT_DIR_ABS}/ets_htp.toml ${DIFUZZ_ARGS}
 '''
 

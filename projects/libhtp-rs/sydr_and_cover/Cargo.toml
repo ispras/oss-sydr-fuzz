@@ -9,6 +9,7 @@ path = ".."
 
 [dependencies]
 chrono = "0.4.19"
+crc32fast = "=1.4.2"
 
 # Prevent this from interfering with workspaces
 [workspace]

@@ -1,26 +1,21 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+
 RUN apt-get update && \
-    apt-get -y install build-essential gcc-11 g++-11 gcc-11-multilib g++-11-multilib \
-                       wget curl unzip clang-11 vim lsb-release zlib1g-dev \
-                       lcov pkg-config libglib2.0-dev gcc-11-plugin-dev git \
-                       python3.10 python3.10-dev libglib2.0-dev lld llvm-dev \
+    apt-get -y install build-essential gcc-14 g++-14 gcc-14-multilib g++-14-multilib \
+                       wget curl unzip vim lsb-release zlib1g-dev \
+                       lcov pkg-config libglib2.0-dev gcc-14-plugin-dev git \
+                       python3.12 python3.12-dev libglib2.0-dev \
                        python3-pip libtool gnuplot binutils-dev zip htop psutils \
                        openjdk-17-jdk file libssl-dev lua5.1 liblua5.1-dev \
                        automake autoconf libpixman-1-dev bison flex meson texinfo \
-                       software-properties-common gnupg gpg libtbb-dev
+                       software-properties-common gnupg gpg gdb
 
 RUN dpkg --add-architecture i386 && \
     apt update && apt install -y zlib1g:i386 zlib1g-dev:i386
-
-RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.10 /usr/bin/python3
-RUN pip3 install --upgrade pip
-
-RUN wget https://ftp.gnu.org/gnu/gdb/gdb-12.1.tar.xz && tar xf gdb-*.tar.xz && \
-    cd gdb-* && ./configure && make -j$(nproc) && make install && cd .. && \
-    rm -rf gdb-*
 
 # Install Boost 1.71
 RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb \
@@ -33,11 +28,11 @@ RUN wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-progra
     && apt install -y ./libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb
 RUN rm ./libboost-*.deb
 
-# Install LLVM-18
+# Install LLVM-21
 RUN wget https://apt.llvm.org/llvm.sh
 RUN chmod +x llvm.sh
-RUN ./llvm.sh 18 all
-ARG version=18
+RUN ./llvm.sh 21 all
+ARG version=21
 ARG priority=1
 RUN update-alternatives \
     --verbose \
@@ -88,11 +83,9 @@ RUN update-alternatives \
     --slave   /usr/bin/lldb-server           lldb-server           /usr/bin/lldb-server-${version} \
     --slave   /usr/bin/clangd                clangd                /usr/bin/clangd-${version}
 
-RUN llvm-config --version
+RUN python3 -m pip install coverage toml concurrencytest psutil wllvm watchdog scipy numpy
 
-RUN python3 -m pip install coverage toml concurrencytest psutil wllvm
-
-RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-linux-x86_64.sh && \
+RUN curl -L -O https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3-linux-x86_64.sh && \
     mkdir /cmake && \
     bash cmake-*.sh --prefix=/cmake --exclude-subdir --skip-license && \
     ln -s /cmake/bin/cmake /bin/cmake && \
@@ -113,7 +106,7 @@ RUN rustup component add rust-src --toolchain nightly
 
 RUN rustup component add rustfmt clippy
 
-RUN wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip \
+RUN wget https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-linux.zip \
     && unzip ninja-linux.zip && mv ninja /usr/bin && rm ninja-linux.zip
 
 RUN echo /usr/lib/x86_64-unknown-linux-gnu > /etc/ld.so.conf.d/libc++.conf && \
@@ -130,7 +123,7 @@ ENV PATH=$PATH:/fuzz/sydr
 
 # Install Atheris
 RUN git clone https://github.com/google/atheris && cd atheris && \
-    git checkout cbf4ad989dcb4d3ef42152990ed89cfceb50e059 && \
+    git checkout e36da74cf42b5834c4e31d7cabb58d796695d29f && \
     pip3 install . && cd .. && rm -rf atheris
 
 # Install python-afl
@@ -139,10 +132,10 @@ RUN git clone https://github.com/jwilk/python-afl && cd python-afl && \
     pip3 install . && cd .. && rm -rf python-afl
 
 # Install Go
-RUN wget https://go.dev/dl/go1.26.2.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.26.2.linux-amd64.tar.gz
+RUN wget https://go.dev/dl/go1.27.0.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.27.0.linux-amd64.tar.gz
 ENV GOPATH=/root/go
 ENV PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
-RUN rm go1.26.2.linux-amd64.tar.gz
+RUN rm go1.27.0.linux-amd64.tar.gz
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
 
@@ -181,7 +174,7 @@ RUN npm install && \
 WORKDIR /
 
 # Install .NET, Sharpfuzz, minicover, altcover
-RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+RUN wget -q https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
     && apt-get update \
@@ -214,7 +207,7 @@ RUN luarocks install cluacov
 
 WORKDIR /
 
-#Install luzer
+# Install luzer
 RUN git clone https://github.com/azanegin/luzer.git && cd luzer && \
     git checkout 77642ba37430eded66d171a68d7e9c3f6347d625 && luarocks build
 RUN rm -rf /luzer /luarocks-3.11.1
@@ -232,21 +225,7 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git && cd AFLplusplus &
 
 # Install LibAFL-DiFuzz dependencies
 RUN cargo install cargo-make
-
-ENV HOME=/root
-RUN curl -fsSL https://pyenv.run | bash
-ENV PYENV_ROOT="$HOME/.pyenv"
-ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
-RUN pyenv install 3.11 && pyenv install 3.8
-RUN eval "$(pyenv init - bash)"
-RUN pyenv exec python3 -m pip install wllvm watchdog scipy numpy concurrencytest psutil toml coverage
-
 ENV PATH=$PATH:/fuzz/sydr/difuzz
-
-RUN apt-get install -y libtbb2-dev
-
-# Install LLVM-20 to support new profraw formats (Rust has LLVM-20 now)
-RUN ./llvm.sh 20 all
 
 # Install Sentinel driver
 RUN wget --user="xrtSXt8rMydRiFf" --password="" --content-disposition https://nextcloud.ispras.ru/public.php/webdav/Linux/aksusbd_10.11-1_amd64.deb && \
