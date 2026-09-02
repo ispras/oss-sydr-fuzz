@@ -1,0 +1,156 @@
+cmake_minimum_required(VERSION 3.18)
+project(TorchCodec)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(PYBIND11_FINDPYTHON ON)
+find_package(pybind11 REQUIRED)
+find_package(Torch REQUIRED)
+find_package(Python3 COMPONENTS Development Interpreter)
+
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/sources.bzl
+    ${CMAKE_CURRENT_BINARY_DIR}/sources.bzl
+    COPYONLY)
+
+function(read_sources_from_bzl output_var list_name)
+    execute_process(
+        COMMAND "${Python3_EXECUTABLE}" -c
+            "exec(open('${CMAKE_CURRENT_SOURCE_DIR}/sources.bzl').read()); print(';'.join(${list_name}))"
+        OUTPUT_VARIABLE _sources
+        RESULT_VARIABLE _retval
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(NOT _retval EQUAL 0)
+        message(FATAL_ERROR "Failed to read '${list_name}' from sources.bzl")
+    endif()
+    set(${output_var} ${_sources} PARENT_SCOPE)
+endfunction()
+
+read_sources_from_bzl(TORCHCODEC_DECODER_CORE_SOURCES decoder_core_sources)
+read_sources_from_bzl(TORCHCODEC_FFMPEG_COMMON_SOURCES ffmpeg_common_sources)
+read_sources_from_bzl(TORCHCODEC_IO_SOURCES io_sources)
+read_sources_from_bzl(TORCHCODEC_DECODER_CORE_CUDA_SOURCES decoder_core_cuda_sources)
+read_sources_from_bzl(TORCHCODEC_FILE_LIKE_CONTEXT_SOURCES file_like_context_sources)
+read_sources_from_bzl(TORCHCODEC_CUSTOM_OPS_SOURCES custom_ops_sources)
+read_sources_from_bzl(TORCHCODEC_PYBIND_OPS_SOURCES pybind_ops_sources)
+read_sources_from_bzl(TORCHCODEC_IMAGE_SOURCES image_sources)
+read_sources_from_bzl(TORCHCODEC_IMAGE_OPS_SOURCES image_ops_sources)
+read_sources_from_bzl(TORCHCODEC_GIFLIB_SOURCES giflib_sources)
+read_sources_from_bzl(TORCHCODEC_HEIC_SOURCES heic_sources)
+read_sources_from_bzl(TORCHCODEC_HEIC_OPS_SOURCES heic_ops_sources)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ${TORCH_CXX_FLAGS}")
+
+function(make_torchcodec_image_library)
+    set(image_library_sources
+        ${TORCHCODEC_IMAGE_SOURCES}
+        ${TORCHCODEC_IMAGE_OPS_SOURCES}
+        ${TORCHCODEC_IO_SOURCES}
+    )
+    list(APPEND image_library_sources ${TORCHCODEC_GIFLIB_SOURCES})
+    list(APPEND image_library_sources ${TORCHCODEC_HEIC_SOURCES})
+    list(APPEND image_library_sources ${TORCHCODEC_HEIC_OPS_SOURCES})
+
+    add_library(libtorchcodec_image STATIC ${image_library_sources})
+    set_target_properties(libtorchcodec_image PROPERTIES CXX_STANDARD 20)
+    target_include_directories(libtorchcodec_image
+        PRIVATE
+        ./../../../
+        "${TORCH_INSTALL_PREFIX}/include"
+        ${Python3_INCLUDE_DIRS}
+    )
+    target_compile_definitions(libtorchcodec_image PRIVATE FMT_HEADER_ONLY)
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCH_TARGET_VERSION=0x020b000000000000)
+    set_target_properties(libtorchcodec_image PROPERTIES PREFIX "")
+    target_link_libraries(
+        libtorchcodec_image
+        PUBLIC
+        "${TORCH_LIBRARIES}"
+    )
+
+    # Jpeg
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCHCODEC_ENABLE_JPEG=1)
+    target_link_libraries(libtorchcodec_image PRIVATE /libjpeg-turbo/build_${SUFFIX}/libjpeg.a)
+    target_include_directories(libtorchcodec_image
+        PRIVATE
+           /libjpeg-turbo/src
+           /libjpeg-turbo/build_${SUFFIX}
+    )
+
+    # PNG
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCHCODEC_ENABLE_PNG=1)
+    target_link_libraries(libtorchcodec_image
+        PRIVATE
+            /libpng/build_${SUFFIX}/libpng16.a
+            /zlib/build_${SUFFIX}/libz.a
+    )
+    target_include_directories(libtorchcodec_image
+        PRIVATE
+            /libpng
+            /libpng/build_${SUFFIX}
+    )
+
+    # WebP
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCHCODEC_ENABLE_WEBP=1)
+    target_link_libraries(libtorchcodec_image
+        PRIVATE
+            /libwebp/build_${SUFFIX}/libwebp.a
+            /libwebp/build_${SUFFIX}/libwebpdemux.a
+    )
+    target_include_directories(libtorchcodec_image PRIVATE /libwebp/src)
+
+    # Avif
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCHCODEC_ENABLE_AVIF=1)
+    target_link_libraries(libtorchcodec_image
+        PRIVATE
+            /libavif/build_${SUFFIX}/libavif.a
+            /libavif/build_${SUFFIX}/libavif_internal.a
+            /libavif/build_${SUFFIX}/_deps/libyuv-build/libyuv.a
+    )
+    target_include_directories(libtorchcodec_image PRIVATE /libavif/include)
+
+    # GIF
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCHCODEC_ENABLE_GIF=1)
+
+    # Heic
+    target_compile_definitions(libtorchcodec_image PRIVATE TORCHCODEC_ENABLE_HEIC=1)
+    target_link_libraries(libtorchcodec_image PRIVATE /libheif/build_${SUFFIX}/libheif/libheif.a)
+    target_include_directories(libtorchcodec_image PRIVATE /libheif/libheif/api /libheif/build_${SUFFIX})
+
+    # Link onnx deps
+    target_link_libraries(libtorchcodec_image
+        PRIVATE
+        /pytorch/build/lib/libonnx.a
+        /pytorch/build/lib/libonnx_proto.a
+    )
+    target_compile_options(libtorchcodec_image PRIVATE "-fvisibility=hidden")
+endfunction()
+
+make_torchcodec_image_library()
+
+set(FORMATS
+    JPEG
+    PNG
+    WEBP
+    GIF
+    HEIC
+    AVIF
+)
+foreach(FMT IN LISTS FORMATS)
+    string(TOLOWER "${FMT}" format)
+    set(fuzz_target "decode_${format}_${SUFFIX}")
+    add_executable(${fuzz_target} ${CMAKE_SOURCE_DIR}/image_decoders.cc)
+    target_compile_definitions(${fuzz_target} PRIVATE ${FMT})
+    target_include_directories(${fuzz_target}
+        PUBLIC
+            ${TORCH_INCLUDE_DIRS}
+            ${CMAKE_SOURCE_DIR}
+    )
+    target_link_libraries(${fuzz_target}
+            PUBLIC
+            libtorchcodec_image
+            ${ENGINE}
+    )
+    add_dependencies(${fuzz_target} libtorchcodec_image)
+    install(TARGETS ${fuzz_target} DESTINATION /${SUFFIX})
+endforeach()

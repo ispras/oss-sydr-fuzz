@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2025 ISP RAS
+# Copyright 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,16 +16,14 @@
 #
 ################################################################################
 
-if [[ $TARGET = "libfuzzer" ]]
+if [[ $TARGET = "fuzzer" ]]
 then
-  export SUFFIX="fuzz"
+  export SUFFIX="fuzzer"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -fPIC"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,undefined,address,bounds,integer,null -std=c++17 -fPIC"
-  export LDFLAGS="$CFLAGS"
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,address -fPIC"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address -std=c++20 -fPIC"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
-  export BUILD_SAVERS="OFF"
 fi
 
 if [[ $TARGET = "afl" ]]
@@ -34,10 +32,8 @@ then
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
   export CFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -fPIC"
-  export CXXFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -std=c++17 -fPIC"
-  export LDFLAGS="$CFLAGS"
+  export CXXFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -std=c++20 -fPIC"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
-  export BUILD_SAVERS="OFF"
 fi
 
 if [[ $TARGET = "sydr" ]]
@@ -46,101 +42,78 @@ then
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fPIC"
-  export CXXFLAGS="-g -std=c++17 -fPIC"
-  export LDFLAGS="$CFLAGS"
+  export CXXFLAGS="-g -std=c++20 -fPIC"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
-  export BUILD_SAVERS="ON"
 fi
 
-if [[ $TARGET = "coverage" ]]
+if [[ $TARGET = "cov" ]]
 then
   export SUFFIX="cov"
   export CC=clang
   export CXX=clang++
   export CFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -fPIC"
-  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++17 -fPIC"
-  export LDFLAGS="$CFLAGS"
+  export CXXFLAGS="-g -fprofile-instr-generate -fcoverage-mapping -std=c++20 -fPIC"
   export ENGINE="/StandaloneFuzzTargetMain.o"
   $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
-  export BUILD_SAVERS="OFF"
 fi
 
-# Build pytorch
+# Build libjpeg
+cd /libjpeg-turbo
+mkdir build_$SUFFIX && cd build_$SUFFIX
+cmake -G"Unix Makefiles" -DCMAKE_C_COMPILER=$CC -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DENABLE_STATIC=ON -DENABLE_SHARED=OFF -DWITH_TOOLS=OFF -DWITH_TESTS=OFF ..
+make -j
 
-cd /pytorch
-
-# clean artifacts from previous build pytorch
-python3 setup.py clean
-
-CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) USE_ITT=0 USE_FBGEMM=0 BUILD_BINARY=1 USE_STATIC_MKL=1 USE_DISTRIBUTED=1 \
-        USE_MPI=0 TP_BUILD_LIBUV=0 USE_TENSORPIPE=0 BUILD_CAFFE2_OPS=0 BUILD_CAFFE2=0 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF BUILD_BINARY=OFF USE_OPENMP=0 USE_MKLDNN=0 USE_GLOO=0 \
-        python3 setup.py build_clib
-
+# Build libpng
+cd /libpng
+mkdir build_$SUFFIX && cd build_$SUFFIX
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DPNG_SHARED=OFF -DPNG_STATIC=ON -DPNG_TOOLS=OFF -DPNG_HARDWARE_OPTIMIZATIONS=OFF ..
+make -j
 
 # Build zlib
 cd /zlib
-make clean
-CC=$CC CXX=$CXX \
-CFLAGS="$CFLAGS" \
-CXXFLAGS="$CXXFLAGS" \
-./configure --prefix=/zlib/install
-make -j$(nproc)
-make install
+mkdir build_$SUFFIX && cd build_$SUFFIX
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DZLIB_BUILD_SHARED=OFF -DZLIB_INSTALL=OFF ..
+make -j
 
-# Build ffmpeg
-cd /ffmpeg
-make clean
+# Build libwebp
+cd /libwebp
+mkdir build_$SUFFIX && cd build_$SUFFIX
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON ..
+make -j
 
-./configure \
-  --prefix=/ffmpeg/install \
-  --cc=$CC \
-  --cxx=$CXX \
-  --disable-shared \
-  --enable-static \
-  --enable-zlib \
-  --extra-cflags="-I/zlib/install/include" \
-  --extra-ldflags="-L/zlib/install/lib -lz"
+# Build libheif
+cd /libheif
+mkdir build_$SUFFIX && cd build_$SUFFIX
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DBUILD_SHARED_LIBS=OFF -DWITH_EXAMPLES=OFF -DWITH_EXAMPLE_HEIF_THUMB=OFF \
+    -DWITH_EXAMPLE_HEIF_VIEW=OFF -DWITH_GDK_PIXBUF=OFF ..
+make -j
 
-make -j$(nproc)
-make install
+# Build libavif
+cd /libavif
+mkdir build_$SUFFIX && cd build_$SUFFIX
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DBUILD_SHARED_LIBS=OFF -DAVIF_LIBYUV=LOCAL ..
+make -j
 
+# Build PyTorch
+cd /pytorch
+python3 setup.py clean
+CC=$CC CXX=$CXX CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS MAX_JOBS=$(nproc) \
+    USE_ITT=0 USE_TENSORPIPE=0 USE_FBGEMM=0 BUILD_BINARY=0 USE_MKL=0 USE_DISTRIBUTED=1 \
+    USE_MPI=0 TP_BUILD_LIBUV=1 BUILD_TEST=0 BUILD_SHARED_LIBS=OFF USE_OPENMP=0 \
+    USE_MKLDNN=0 USE_GLOO=0 USE_CUDA=0 USE_XPU=0 \
+    python3 setup.py build_clib
 
-# Build torccodec
-cd /codec
-rm -rf build
-Torch_DIR=/pytorch/ \
-      cmake \
-      -DCMAKE_C_COMPILER=$CC \
-      -DCMAKE_CXX_COMPILER=$CXX \
-      -DCMAKE_C_FLAGS="$CFLAGS" \
-      -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-      -DBUILD_SAVERS=${BUILD_SAVERS:-} \
-      -DENGINE=$ENGINE \
-      -DSUFFIX=$SUFFIX \
-      -S . -B build/
-
-cd build/
-cmake --build . -j$(nproc)
-cmake --install .
-
-if [[ $TARGET = "sydr" ]]; 
-then
-  # Generate tensors from corpus
-  cd /
-
-  for filename in /wav_corpus/*.wav; do 
-      if ./save_tensor "$filename"; then
-          mv /wav_corpus/*.tensor /tensor_corpus/
-      fi
-  done
-fi
-
-if [[ $TARGET = "sydr" ]]; 
-then
-  # Clean artifacts
-  cd /pytorch
-
-  python3 setup.py clean
-
-fi
+# Build TorchCodec
+mkdir /$SUFFIX
+cd /torchcodec/src/torchcodec/_core
+cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_PREFIX_PATH="/pytorch" -DSUFFIX="$SUFFIX" -DENGINE="${ENGINE}" -B build_$SUFFIX -S .
+cmake --build build_$SUFFIX -j$(nproc)
+cmake --install build_$SUFFIX
