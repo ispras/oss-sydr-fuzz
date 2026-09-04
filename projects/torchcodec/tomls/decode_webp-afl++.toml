@@ -20,7 +20,7 @@ target = "/sydr/decode_webp_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 30000 -i /corpus_webp"
+args = "-t 90000 -i /corpus_webp"
 target = "/afl/decode_webp_afl @@"
 jobs = 4
 

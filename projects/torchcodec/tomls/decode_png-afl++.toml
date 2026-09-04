@@ -20,7 +20,7 @@ target = "/sydr/decode_png_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 30000 -i /corpus_png"
+args = "-t 90000 -i /corpus_png"
 target = "/afl/decode_png_afl @@"
 jobs = 4
 

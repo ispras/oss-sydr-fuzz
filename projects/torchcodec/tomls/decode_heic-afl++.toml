@@ -20,7 +20,7 @@ target = "/sydr/decode_heic_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 30000 -i /corpus_heic"
+args = "-t 90000 -i /corpus_heic"
 target = "/afl/decode_heic_afl @@"
 jobs = 4
 

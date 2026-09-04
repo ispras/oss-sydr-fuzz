@@ -20,7 +20,7 @@ target = "/sydr/decode_avif_sydr @@"
 jobs = 2
 
 [aflplusplus]
-args = "-t 30000 -i /corpus_avif"
+args = "-t 90000 -i /corpus_avif"
 target = "/afl/decode_avif_afl @@"
 jobs = 4
 

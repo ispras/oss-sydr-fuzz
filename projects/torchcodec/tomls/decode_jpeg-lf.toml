@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzzer/decode_jpeg_fuzzer"
-args = "-rss_limit_mb=16384 -timeout=300 -jobs=1000 -workers=4 /corpus_jpeg"
+args = "-rss_limit_mb=24384 -timeout=300 -jobs=1000 -workers=4 /corpus_jpeg"
 
 [cov]
 target = "/cov/decode_jpeg_cov @@"

@@ -21,8 +21,8 @@ then
   export SUFFIX="fuzzer"
   export CC=clang
   export CXX=clang++
-  export CFLAGS="-g -fsanitize=fuzzer-no-link,address -fPIC"
-  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address -std=c++20 -fPIC"
+  export CFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined,bounds,null,float-divide-by-zero -fPIC"
+  export CXXFLAGS="-g -fsanitize=fuzzer-no-link,address,undefined,bounds,null,float-divide-by-zero -std=c++20 -fPIC"
   export ENGINE="$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"
 fi
 
@@ -31,8 +31,8 @@ then
   export SUFFIX="afl"
   export CC=afl-clang-fast
   export CXX=afl-clang-fast++
-  export CFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -fPIC"
-  export CXXFLAGS="-g -fsanitize=address -fno-sanitize=pointer-overflow -std=c++20 -fPIC"
+  export CFLAGS="-g -fsanitize=address,undefined,bounds,null,float-divide-by-zero -fPIC"
+  export CXXFLAGS="-g -fsanitize=address,undefined,bounds,null,float-divide-by-zero -std=c++20 -fPIC"
   export ENGINE="$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"
 fi
 
