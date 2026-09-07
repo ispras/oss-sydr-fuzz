@@ -1,0 +1,13 @@
+exit-on-time = 7200
+
+[sydr]
+args = "--wait-jobs -s 90 -j2"
+target = "/sydr/fuzz-libelf @@"
+jobs = 2
+
+[libfuzzer]
+path = "/libfuzzer/fuzz-libelf"
+args = "-jobs=1000 -workers=4 /corpus"
+
+[cov]
+target = "/cov/fuzz-libelf @@"
