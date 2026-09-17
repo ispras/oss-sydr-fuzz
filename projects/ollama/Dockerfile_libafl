@@ -14,7 +14,7 @@
 #
 ################################################################################
 
-ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
+ARG BASE_IMAGE="sydr/ubuntu24.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 ARG SYDR_ARCHIVE="./sydr.zip"
@@ -53,7 +53,7 @@ COPY wordpiece_sydr.go sydr/wordpiece/encode/main.go
 
 # Build GGML.
 RUN mkdir -p build && cd build && \
-    CC=clang-18 CXX=clang++-18 cmake --preset 'CPU' -DGGML_AVX_VNNI=OFF .. && \
+    CC=clang-21 CXX=clang++-21 cmake --preset 'CPU' -DGGML_AVX_VNNI=OFF .. && \
     make -j
 
 # Copy LibAFL-DiFuzz target template.
