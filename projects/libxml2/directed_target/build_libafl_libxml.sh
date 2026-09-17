@@ -23,10 +23,10 @@ rm -rf build && mkdir -p build/temp
 export LLVM_BINDIR="/usr/bin"
 export ADDITIONAL="-g"
 
-pyenv global 3.8
+#pyenv global 3.8
 
 ./autogen.sh; make distclean
 cd build; CFLAGS="$ADDITIONAL $CFLAGS" CXXFLAGS="$ADDITIONAL $CXXFLAGS" ../configure --with-valid --disable-shared --prefix=`pwd`
 make clean; make -j4
 
-pyenv global 3.11
+#pyenv global 3.11
