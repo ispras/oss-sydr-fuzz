@@ -26,22 +26,6 @@ script = '''
 echo "Cargo-make not integrated yet on this"
 '''
 
-[tasks.debug]
-linux_alias = "debug_unix"
-mac_alias = "debug_unix"
-windows_alias = "unsupported"
-
-[tasks.debug_unix]
-script_runner = "@shell"
-script = '''
-cd ${PROJECT_DIR}
-export CC=${DIFUZZ_LLVM_BINDIR}/clang
-export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
-
-${PROJECT_DIR}/build-libafl-libdwfl.sh
-mv ${EXAMPLE_DIR}/./fuzz-libdwfl ${OUT_DIR_ABS}/debug_libdwfl
-'''
-
 [tasks.casr]
 linux_alias = "casr_unix"
 mac_alias = "casr_unix"
@@ -57,25 +41,6 @@ export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
 
 ${PROJECT_DIR}/build-libafl-libdwfl.sh
 mv ${EXAMPLE_DIR}/./fuzz-libdwfl ${OUT_DIR_ABS}/casr_libdwfl
-'''
-
-[tasks.coverage]
-linux_alias = "coverage_unix"
-mac_alias = "coverage_unix"
-windows_alias = "unsupported"
-
-[tasks.coverage_unix]
-script_runner = "@shell"
-script = '''
-cd ${PROJECT_DIR}
-export CC=${DIFUZZ_LLVM_BINDIR}/clang
-export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
-
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/fuzz-main.c
-# Pass "-g -fprofile-instr-generate -fcoverage-mapping" to CFLAGS and CXXFLAGS to collect coverage
-${PROJECT_DIR}/build-libafl-libdwfl.sh
-python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f ${EXAMPLE_DIR}/fuzz-main.c
-mv ${EXAMPLE_DIR}/./fuzz-libdwfl ${OUT_DIR_ABS}/coverage_libdwfl
 '''
 
 [tasks.difuzz]
@@ -141,7 +106,7 @@ dependencies = ["target"]
 script_runner = "@shell"
 script = '''
 cd ${PROJECT_DIR}
-rm -rf corpus crashes target ${CARGO_TARGET_DIR} difuzz difuzz_target_* debug_* coverage_* Cargo.lock ets.toml fuzzer.log target.log .cur_input* /difuzz/libdwfl
+rm -rf corpus crashes target ${CARGO_TARGET_DIR} difuzz difuzz_target_* Cargo.lock ets.toml fuzzer.log target.log .cur_input* /difuzz/libdwfl
 pkill difuzz_ || true
 '''
 
@@ -151,4 +116,4 @@ mac_alias = "all_unix"
 windows_alias = "unsupported"
 
 [tasks.all_unix]
-dependencies = ["target", "debug", "coverage", "casr"]
+dependencies = ["target", "casr"]
