@@ -2,12 +2,12 @@ exit-on-time = 7200
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/sydr/fuzz-dwfl-core @@"
+target = "/result/fuzz/sydr/fuzz-dwfl-core @@"
 jobs = 2
 
 [libfuzzer]
-path = "/libfuzzer/fuzz-dwfl-core"
-args = "-jobs=1000 -workers=4 /corpus"
+path = "/result/fuzz/libfuzzer/fuzz-dwfl-core"
+args = "-jobs=1000 -workers=4 /result/fuzz/corpus"
 
 [cov]
-target = "/cov/fuzz-dwfl-core @@"
+target = "/result/fuzz/cov/fuzz-dwfl-core @@"
