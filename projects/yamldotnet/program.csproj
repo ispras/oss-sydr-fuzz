@@ -24,7 +24,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <ItemGroup>
