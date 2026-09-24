@@ -1,3 +1,5 @@
+#!/bin/bash -eu
+
 # Copyright 2025 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +16,14 @@
 #
 ################################################################################
 
-#!/bin/bash -eu
-
 # Build LibAFL-DiFuzz save target.
 cd /xlnt
 rm -rf build && mkdir build && cd build
 
 cmake -DSTATIC=ON -DTESTS=OFF \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DCMAKE_CXX_COMPILER="$CXX" \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -include cstdint" \
     ..
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
