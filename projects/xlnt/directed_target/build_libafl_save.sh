@@ -23,7 +23,7 @@ rm -rf build && mkdir build && cd build
 cmake -DSTATIC=ON -DTESTS=OFF \
     -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DCMAKE_CXX_COMPILER="$CXX" \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -include cstdint" \
     ..
 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build .
 
