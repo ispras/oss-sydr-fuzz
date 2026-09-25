@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+# Copyright 2021 Google LLC
+# Modifications copyright (C) 2026 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
 set -eux
 
 # fuzz-dwfl-core is kind of a systemd fuzz target in the sense that it resembles the
@@ -42,7 +59,7 @@ function libdwfl() {
 export CFLAGS=${CFLAGS:-""}
 export CXXFLAGS=${CXXFLAGS:-""}
 export RESET=${RESET:-1}
-export SRC=${SRC:-$2}
+export SRC=${SRC:-/result/elfutils}
 export CC=${CC:-clang}
 export CXX=${CXX:-clang++}
 export OUT=${OUT:-"$RESULT_FUZZ_DIR/$2"}

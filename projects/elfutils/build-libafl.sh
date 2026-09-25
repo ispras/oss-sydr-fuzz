@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +16,18 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+set -eux
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/result/fuzz/sydr/fuzz-dwfl-core @@"
-jobs = 2
+function libafl_build() {
+    cd $FUZZ_DIR/directed_target/"$1"
 
-[aflplusplus]
-target = "/result/fuzz/aflpp/fuzz-dwfl-core @@"
-args = "-i /result/fuzz/corpus"
-jobs = 4
+    local out_dir=$RESULT_FUZZ_DIR/"$1"
+    mkdir -p $out_dir
 
-[cov]
-target = "/result/fuzz/cov/fuzz-dwfl-core @@"
+    OUT_DIR=$out_dir cargo make all
+}
+
+libafl_build dwfl-core
+libafl_build libdwfl
+libafl_build libelf
+

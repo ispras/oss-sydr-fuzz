@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright 2026 ISP RAS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +16,29 @@
 #
 ################################################################################
 
-exit-on-time = 7200
+set -eux
 
-[sydr]
-args = "--wait-jobs -s 90 -j2"
-target = "/result/fuzz/sydr/fuzz-dwfl-core @@"
-jobs = 2
+function aflpp() {
+    local cc='afl-clang-fast'
 
-[aflplusplus]
-target = "/result/fuzz/aflpp/fuzz-dwfl-core @@"
-args = "-i /result/fuzz/corpus"
-jobs = 4
+    CC=$cc CXX="${cc}++" $BUILD_SH all /aflpp 1
+}
 
-[cov]
-target = "/result/fuzz/cov/fuzz-dwfl-core @@"
+function lf() {
+    $BUILD_SH all /libfuzzer 1 
+}
+
+function cov() {
+    local flags="-fprofile-instr-generate -fcoverage-mapping"
+
+    CFLAGS=$flags CXXFLAGS=$flags $BUILD_SH all /cov 0
+}
+
+function sydr() {
+    $BUILD_SH all /sydr 0 
+}
+
+aflpp
+lf
+cov
+sydr

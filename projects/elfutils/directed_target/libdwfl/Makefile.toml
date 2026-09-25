@@ -1,7 +1,23 @@
+# Copyright 2026 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
 # Variables
 [env]
 PROJECT_DIR = { script = ["pwd"], condition = { env_not_set = ["PROJECT_DIR"] } }
-EXAMPLE_DIR = { value = "/difuzz/libdwfl" }
+EXAMPLE_DIR = { value = "/result/elfutils" }
 DIFUZZ_DIR = { value = "/directed_target/sydr/difuzz", condition = { env_not_set = ["DIFUZZ_DIR"] } }
 DIFUZZ_DIR_ABS = { script = ["realpath ${DIFUZZ_DIR}"] }
 DIFUZZ_LLVM_VERSION = { script = ['version="$(LC_ALL=C readelf -d "${DIFUZZ_DIR_ABS}/difuzz" 2>/dev/null | sed -nE "s/.*NEEDED.*\[libLLVM(-|\.so\.)([0-9]+)[^]]*\].*/\2/p" | sort -u)"; case "${version}" in 18|21) printf "%s\n" "${version}" ;; *) echo "Cannot detect a supported LLVM version from ${DIFUZZ_DIR_ABS}/difuzz" >&2; exit 1 ;; esac'] }
@@ -26,6 +42,21 @@ script = '''
 echo "Cargo-make not integrated yet on this"
 '''
 
+[tasks.debug]
+linux_alias = "debug_unix"
+mac_alias = "debug_unix"
+windows_alias = "unsupported"
+
+[tasks.debug_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export CC=${DIFUZZ_LLVM_BINDIR}/clang
+export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
+OUT=$EXAMPLE_DIR $BUILD_SH libdwfl $EXAMPLE_DIR 0
+mv ${EXAMPLE_DIR}/fuzz-libdwfl ${OUT_DIR_ABS}/debug_libdwfl
+'''
+
 [tasks.casr]
 linux_alias = "casr_unix"
 mac_alias = "casr_unix"
@@ -37,11 +68,37 @@ script = '''
 cd ${PROJECT_DIR}
 export CC=${DIFUZZ_LLVM_BINDIR}/clang
 export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
-# Pass "-g -fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero" to CFLAGS and CXXFLAGS for casr
+append_flags="-fsanitize=address,integer,bounds,null,undefined,float-divide-by-zero"
+export CFLAGS="$CFLAGS $append_flags"
+export CXXFLAGS="$CXXFLAGS $append_flags"
 
-${PROJECT_DIR}/build-libafl-libdwfl.sh
+OUT=$EXAMPLE_DIR $BUILD_SH libdwfl $EXAMPLE_DIR 0
 mv ${EXAMPLE_DIR}/./fuzz-libdwfl ${OUT_DIR_ABS}/casr_libdwfl
 '''
+
+[tasks.coverage]
+linux_alias = "coverage_unix"
+mac_alias = "coverage_unix"
+windows_alias = "unsupported"
+
+[tasks.coverage_unix]
+script_runner = "@shell"
+script = '''
+cd ${PROJECT_DIR}
+export CC=${DIFUZZ_LLVM_BINDIR}/clang
+export CXX=${DIFUZZ_LLVM_BINDIR}/clang++
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a insert -l c -f ${EXAMPLE_DIR}/fuzz-main.c
+
+append_flags="-g -fprofile-instr-generate -fcoverage-mapping"
+export CFLAGS="$CFLAGS $append_flags"
+export CXXFLAGS="$CXXLAGS $append_flags"
+
+OUT=$EXAMPLE_DIR $BUILD_SH libdwfl $EXAMPLE_DIR 0
+
+python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py --sig -a remove -l c -f ${EXAMPLE_DIR}/fuzz-main.c
+mv ${EXAMPLE_DIR}/./fuzz-libdwfl ${OUT_DIR_ABS}/coverage_libdwfl
+'''
+
 
 [tasks.difuzz]
 linux_alias = "difuzz_unix"
@@ -55,11 +112,10 @@ cd ${PROJECT_DIR}
 export LLVM_COMPILER=clang
 export LLVM_COMPILER_PATH=${DIFUZZ_LLVM_BINDIR}
 export CC=wllvm; export CXX=wllvm++
-# Pass "-g" to CFLAGS and CXXFLAGS for difuzz
 
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a insert -l c -f ${EXAMPLE_DIR}/fuzz-main.c
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a comment -l c -f ${EXAMPLE_DIR}/fuzz-main.c
-${PROJECT_DIR}/build-libafl-libdwfl.sh
+OUT=$EXAMPLE_DIR $BUILD_SH libdwfl $EXAMPLE_DIR 0
 cd ${OUT_DIR_ABS}
 ${DIFUZZ_DIR_ABS}/difuzz -c ${PROJECT_DIR}/config.toml -b ${EXAMPLE_DIR}/./fuzz-libdwfl -e ${OUT_DIR_ABS}/ets.toml ${DIFUZZ_ARGS}
 '''
@@ -80,7 +136,7 @@ ${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
 ${ETS_SHARED_MANAGER} -a create -n ${LIBAFL_SHARED_NAME}
 ${ETS_SHARED_MANAGER} -a parse -n ${LIBAFL_SHARED_NAME} -i ${OUT_DIR_ABS}/ets.toml
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a uncomment -l c -f ${EXAMPLE_DIR}/fuzz-main.c
-${PROJECT_DIR}/build-libafl-libdwfl.sh
+OUT=$EXAMPLE_DIR $BUILD_SH libdwfl $EXAMPLE_DIR 0
 ${ETS_SHARED_MANAGER} -a dump -n ${LIBAFL_SHARED_NAME} -o ${OUT_DIR_ABS}/ets.toml
 ${ETS_SHARED_MANAGER} -a remove -n ${LIBAFL_SHARED_NAME}
 python3 ${DIFUZZ_DIR_ABS}/insert_forkserver.py -a remove -l c -f ${EXAMPLE_DIR}/fuzz-main.c
@@ -116,4 +172,4 @@ mac_alias = "all_unix"
 windows_alias = "unsupported"
 
 [tasks.all_unix]
-dependencies = ["target", "casr"]
+dependencies = ["target", "casr", "coverage", "debug"]

@@ -18,13 +18,14 @@ exit-on-time = 7200
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/result/fuzz/sydr/fuzz-dwfl-core @@"
+target = "/result/difuzz/dwfl-core/debug_dwfl-core @@"
 jobs = 2
 
-[aflplusplus]
-target = "/result/fuzz/aflpp/fuzz-dwfl-core @@"
-args = "-i /result/fuzz/corpus"
-jobs = 4
+[difuzz]
+path = "/sydr-fuzz/sydr/difuzz/libafl_difuzz"
+target = "/result/difuzz/dwfl-core/difuzz_target_dwfl-core @@"
+args = "-j4 -l64 -i /result/difuzz/corpus -e /result/difuzz/dwfl-core/ets.toml"
+casr_bin = "/result/difuzz/dwfl-core/casr_dwfl-core"
 
 [cov]
-target = "/result/fuzz/cov/fuzz-dwfl-core @@"
+target = "/result/difuzz/dwfl-core/coverage_dwfl-core @@"
