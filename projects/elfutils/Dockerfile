@@ -19,19 +19,14 @@ FROM ${BASE_IMAGE}
 
 ENV RESULT_DIR="/result"
 
-SHELL [ "/bin/bash", "-c" ]
-
 RUN apt-get update && \
     apt-get install -y autopoint gawk  
 
 ENV RESULT_SRC_DIR="${RESULT_DIR}/elfutils"
 ENV RESULT_FUZZ_DIR="${RESULT_DIR}/fuzz"
 ENV RESULT_CORPUS_DIR="${RESULT_FUZZ_DIR}/corpus"
-ENV RESULT_DIFUZZ_DIR="${RESULT_FUZZ_DIR}/difuzz"
 ENV FUZZ_DIR="/oss-sydr-fuzz"
 
-ENV SYDR_FUZZ_DIR="/sydr-fuzz/"
-ENV DIFUZZ_DIR="${SYDR_FUZZ_DIR}/sydr/difuzz/"
 ENV BUILD_SH="${FUZZ_DIR}/build-single.sh"
 ENV FUZZ_MAIN_C="${FUZZ_DIR}/fuzz-main.c"
 
@@ -40,7 +35,7 @@ RUN mkdir -p ${RESULT_DIR}
 #
 # corpus
 #
-ADD --keep-git-dir=true https://github.com/DavidKorczynski/binary-samples.git /binary-samples
+RUN git clone https://github.com/DavidKorczynski/binary-samples.git /binary-samples
 RUN mkdir -p $RESULT_CORPUS_DIR && \
     find /binary-samples -maxdepth 1 -type f -name 'elf-*' \
         -exec cp '{}' $RESULT_CORPUS_DIR \; 
@@ -48,22 +43,15 @@ RUN mkdir -p $RESULT_CORPUS_DIR && \
 #
 # build utils
 #
-RUN mkdir ${FUZZ_DIR}
-
-COPY sydr.zip ${FUZZ_DIR}
-# sydr.zip must be present in the directory
-RUN unzip ${FUZZ_DIR}/sydr.zip -d ${SYDR_FUZZ_DIR} || if (( $? == 2 )); then true; else false; fi
-
-COPY --exclude=sydr.zip . ${FUZZ_DIR}
+COPY . ${FUZZ_DIR}
 
 #
 # src
 #
-ADD --keep-git-dir=true https://sourceware.org/git/elfutils.git#fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a ${RESULT_SRC_DIR}
+RUN git clone https://sourceware.org/git/elfutils.git ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
 RUN cp $FUZZ_MAIN_C $RESULT_SRC_DIR
 
 #
 # build
 #
-RUN /oss-sydr-fuzz/build-default.sh 
-
+RUN ${FUZZ_DIR}/build-default.sh 

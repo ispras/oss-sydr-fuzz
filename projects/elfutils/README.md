@@ -1,4 +1,7 @@
 # elfutils
+
+elfutils is a collection of libraries and command-line tools for inspecting, analyzing, and manipulating ELF binaries and DWARF debugging information.
+
 ## Build Docker
 
     $ sudo docker build -t oss-sydr-fuzz-elfutils .
@@ -18,6 +21,7 @@ Change directory to `/fuzz`:
     # cd /fuzz
 
 ### libfuzzer
+
 Run hybrid fuzzing:
 
     # sydr-fuzz -c tomls/dwfl-core-lf.toml run
@@ -34,7 +38,16 @@ Check security predicates:
 
     # sydr-fuzz -c tomls/dwfl-core-lf.toml security
 
+## Hybrid Fuzzing with AFL++
+
+    # sydr-fuzz -c tomls/dwfl-core-afl++.toml run
+
+## Hybrid Fuzzing with LibAFL-DiFuzz
+
+    # sydr-fuzz -c tomls/dwfl-core-libafl.toml run
+
 ## Alternative Fuzz Targets
+
 ### libfuzzer
 
     # sydr-fuzz -c tomls/dwfl-core-lf.toml run
@@ -47,8 +60,8 @@ Check security predicates:
     # sydr-fuzz -c tomls/libdwfl-afl++.toml run
     # sydr-fuzz -c tomls/libelf-lf.toml run
 
-  ### difuzz
+  ### LibAFL-DiFuzz
 
-    # sydr-fuzz -c tomls/dwfl-core-difuzz.toml run
-    # sydr-fuzz -c tomls/libdwfl-difuzz.toml run
-    # sydr-fuzz -c tomls/libelf-difuzz.toml run
+    # sydr-fuzz -c tomls/dwfl-core-libafl.toml run
+    # sydr-fuzz -c tomls/libdwfl-libafl.toml run
+    # sydr-fuzz -c tomls/libelf-libafl.toml run
