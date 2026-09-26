@@ -1,0 +1,57 @@
+# Copyright 2026 ISP RAS
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
+FROM ${BASE_IMAGE}
+
+ENV RESULT_DIR="/result"
+
+RUN apt-get update && \
+    apt-get install -y autopoint gawk  
+
+ENV RESULT_SRC_DIR="${RESULT_DIR}/elfutils"
+ENV RESULT_FUZZ_DIR="${RESULT_DIR}/fuzz"
+ENV RESULT_CORPUS_DIR="${RESULT_FUZZ_DIR}/corpus"
+ENV FUZZ_DIR="/oss-sydr-fuzz"
+
+ENV BUILD_SH="${FUZZ_DIR}/build-single.sh"
+ENV FUZZ_MAIN_C="${FUZZ_DIR}/fuzz-main.c"
+
+RUN mkdir -p ${RESULT_DIR} 
+
+#
+# corpus
+#
+RUN git clone https://github.com/DavidKorczynski/binary-samples.git /binary-samples
+RUN mkdir -p $RESULT_CORPUS_DIR && \
+    find /binary-samples -maxdepth 1 -type f -name 'elf-*' \
+        -exec cp '{}' $RESULT_CORPUS_DIR \; 
+
+#
+# build utils
+#
+COPY . ${FUZZ_DIR}
+
+#
+# src
+#
+RUN git clone https://sourceware.org/git/elfutils.git ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
+RUN cp $FUZZ_MAIN_C $RESULT_SRC_DIR
+
+#
+# build
+#
+RUN ${FUZZ_DIR}/build-default.sh 
