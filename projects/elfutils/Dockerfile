@@ -48,7 +48,7 @@ COPY . ${FUZZ_DIR}
 #
 # src
 #
-RUN git clone https://sourceware.org/git/elfutils.git ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
+RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
 RUN cp $FUZZ_MAIN_C $RESULT_SRC_DIR
 
 #
