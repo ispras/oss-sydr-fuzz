@@ -22,6 +22,10 @@ Run docker:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-elfutils /bin/bash
 
+Run docker for LibAFL-DiFuzz:
+
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined -v /etc/localtime:/etc/localtime:ro --rm -it -v $PWD:/fuzz oss-sydr-fuzz-libafl-elfutils /bin/bash
+
 Change directory to `/fuzz`:
 
     # cd /fuzz
