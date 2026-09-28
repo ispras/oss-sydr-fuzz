@@ -22,7 +22,7 @@ target = "/result/difuzz/libdwfl/debug_libdwfl @@"
 jobs = 2
 
 [difuzz]
-path = "/sydr-fuzz/sydr/difuzz/libafl_difuzz"
+path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/result/difuzz/libdwfl/difuzz_target_libdwfl @@"
 args = "-j4 -l64 -i /result/difuzz/corpus -e /result/difuzz/libdwfl/ets.toml"
 casr_bin = "/result/difuzz/libdwfl/casr_libdwfl"
