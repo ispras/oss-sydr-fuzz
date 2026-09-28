@@ -6,6 +6,12 @@ elfutils is a collection of libraries and command-line tools for inspecting, ana
 
     $ sudo docker build -t oss-sydr-fuzz-elfutils .
 
+## Build LibAFL-DiFuzz Docker
+
+Pass `sydr.zip` as an argument:
+
+    $ sudo docker build --build-arg SYDR_ARCHIVE="sydr.zip" -t oss-sydr-fuzz-libafl-elfutils -f ./Dockerfile_libafl .
+
 ## Run Hybrid Fuzzing
 
 Unzip Sydr (`sydr.zip`) in `projects/elfutils` directory:
