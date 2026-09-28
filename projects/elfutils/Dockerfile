@@ -25,7 +25,7 @@ RUN apt-get update && \
 ENV RESULT_SRC_DIR="${RESULT_DIR}/elfutils"
 ENV RESULT_FUZZ_DIR="${RESULT_DIR}/fuzz"
 ENV RESULT_CORPUS_DIR="${RESULT_FUZZ_DIR}/corpus"
-ENV FUZZ_DIR="/oss-sydr-fuzz"
+ENV FUZZ_DIR="/fuzz"
 
 ENV BUILD_SH="${FUZZ_DIR}/build-single.sh"
 ENV FUZZ_MAIN_C="${FUZZ_DIR}/fuzz-main.c"
