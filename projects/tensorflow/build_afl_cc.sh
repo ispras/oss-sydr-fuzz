@@ -16,7 +16,7 @@
 ################################################################################
 
 mkdir /custom_afl_cc
-cd custom_afl_cc
+cd /custom_afl_cc
 git clone https://github.com/AFLplusplus/AFLplusplus.git
 cd AFLplusplus
 git checkout v5.02c
@@ -27,4 +27,4 @@ export CFLAGS="-DMAX_PARAMS_NUM=16384 -ldl"
 export CXXFLAGS="-DMAX_PARAMS_NUM=16384 -ldl"
 export LD_LIBRARY_PATH="/usr/lib/clang/14.0.6/lib/linux${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 make clean
-NO_PYTHON=1 NO_NYX=1 make distrib -j $(nproc)
+NO_PYTHON=1 NO_NYX=1 NO_QEMU=1 NO_FRIDA=1 NO_UNICORN=1 make all -j $(nproc)

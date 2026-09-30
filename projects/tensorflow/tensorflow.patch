@@ -251,4 +251,16 @@ index 2aacb4cfc2c..e98363ffbf1 100644
  #include "tensorflow/core/kernels/fuzzing/fuzz_session.h"
  
  namespace tensorflow {
+diff --git a/tensorflow/core/kernels/fuzzing/tf_ops_fuzz_target_lib.bzl b/tensorflow/core/kernels/fuzzing/tf_ops_fuzz_target_lib.bzl
+index 899149b0f44..d016de0a6a9 100644
+--- a/tensorflow/core/kernels/fuzzing/tf_ops_fuzz_target_lib.bzl
++++ b/tensorflow/core/kernels/fuzzing/tf_ops_fuzz_target_lib.bzl
+@@ -29,7 +29,6 @@ def tf_ops_fuzz_target_lib(name):
+             "//tensorflow/core:framework",
+             "//tensorflow/core:lib",
+             "//tensorflow/core:protos_all_cc",
+-            "//third_party/absl/log",
+         ],
+         tags = [
+             "manual",
 
