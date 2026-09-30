@@ -54,9 +54,13 @@ ENV JAVA_HOME /usr/lib/jvm/java-15-openjdk-amd64
 # Setup the environment.
 ENV TF_CPP_MIN_LOG_LEVEL=3
 
+# Build custom afl-cc to increase MAX_PARAMS_NUM.
+RUN /build_afl_cc.sh
+
 # Prepare sources
 WORKDIR /
-RUN git clone -b v2.21.0 https://github.com/tensorflow/tensorflow tensorflow_afl
+RUN git clone https://github.com/tensorflow/tensorflow tensorflow_afl
+RUN cd /tensorflow_afl && git checkout 749b510b796664a0016c76aec36cefd8281f34a6
 
 # Revert 4642e0b57f172c88172578b74ed9019c4d346a07 that brokes fuzzing
 RUN cd /tensorflow_afl && git apply /tensorflow.patch
@@ -66,9 +70,6 @@ RUN cp -r /tensorflow_afl /tensorflow_fuzz && \
     cp -r /tensorflow_afl /tensorflow_cov
 COPY fuzz_session.h /tensorflow_sydr/tensorflow/core/kernels/fuzzing/fuzz_session.h
 COPY fuzz_session.h /tensorflow_cov/tensorflow/core/kernels/fuzzing/fuzz_session.h
-
-# Build custom afl-cc to increase MAX_PARAMS_NUM.
-RUN /build_afl_cc.sh
 
 RUN cd /tensorflow_fuzz && CONFIG=libfuzzer /build.sh
 RUN cd /tensorflow_sydr && CONFIG=sydr /build.sh
