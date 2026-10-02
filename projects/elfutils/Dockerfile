@@ -55,4 +55,3 @@ RUN TARGET=libfuzzer ${BUILD_SH} all
 RUN TARGET=afl ${BUILD_SH} all
 RUN TARGET=sydr ${BUILD_SH} all
 RUN TARGET=cov ${BUILD_SH} all
-
