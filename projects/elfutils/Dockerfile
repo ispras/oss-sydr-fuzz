@@ -17,18 +17,17 @@
 ARG BASE_IMAGE="sydr/ubuntu22.04-sydr-fuzz"
 FROM ${BASE_IMAGE}
 
-ENV RESULT_DIR="/result"
+ENV RESULT_DIR="/"
 
 RUN apt-get update && \
     apt-get install -y autopoint gawk  
 
 ENV RESULT_SRC_DIR="${RESULT_DIR}/elfutils"
-ENV RESULT_FUZZ_DIR="${RESULT_DIR}/fuzz"
+ENV RESULT_FUZZ_DIR="${RESULT_DIR}/"
 ENV RESULT_CORPUS_DIR="${RESULT_FUZZ_DIR}/corpus"
 ENV FUZZ_DIR="/fuzz"
 
 ENV BUILD_SH="${FUZZ_DIR}/build-single.sh"
-ENV FUZZ_MAIN_C="${FUZZ_DIR}/fuzz-main.c"
 
 RUN mkdir -p ${RESULT_DIR} 
 
@@ -49,7 +48,6 @@ COPY . ${FUZZ_DIR}
 # src
 #
 RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
-RUN cp $FUZZ_MAIN_C $RESULT_SRC_DIR
 
 #
 # build

@@ -30,7 +30,6 @@ ENV RESULT_CORPUS_DIR="${RESULT_FUZZ_DIR}/corpus"
 ENV FUZZ_DIR="/directed_target"
 
 ENV BUILD_SH="${FUZZ_DIR}/build-single.sh"
-ENV FUZZ_MAIN_C="${FUZZ_DIR}/fuzz-main.c"
 
 RUN mkdir -p ${RESULT_DIR} 
 
@@ -53,7 +52,6 @@ RUN unzip -o ${FUZZ_DIR}/${SYDR_ARCHIVE} -d ${FUZZ_DIR} && rm ${FUZZ_DIR}/${SYDR
 # src
 #
 RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
-RUN cp $FUZZ_MAIN_C $RESULT_SRC_DIR
 
 #
 # build

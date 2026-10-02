@@ -151,7 +151,7 @@ popd
 zlib=zlib/libz.a
 
 if ! [[ -n "${LIB_FUZZING_ENGINE:-}" ]]; then
-    $CC $CFLAGS -c "$SRC/fuzz-main.c" -o "$OUT/fuzz-main.o"
+    $CC $CFLAGS -c "/opt/StandaloneFuzzTargetMain.c" -o "$OUT/fuzz-main.o"
     export LIB_FUZZING_ENGINE="$OUT/fuzz-main.o -pthread"
 fi
 
