@@ -48,7 +48,7 @@ RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C
 #
 # build utils
 #
-COPY . ${FUZZ_DIR}
+COPY directed_target/ *.c build.sh build-libafl.sh ${FUZZ_DIR}
 ADD ${SYDR_ARCHIVE} ${FUZZ_DIR}
 RUN unzip -o ${FUZZ_DIR}/${SYDR_ARCHIVE} -d ${FUZZ_DIR} && rm ${FUZZ_DIR}/${SYDR_ARCHIVE} || true
 

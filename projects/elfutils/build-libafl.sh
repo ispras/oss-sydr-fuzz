@@ -19,7 +19,7 @@
 set -eux
 
 function libafl_build() {
-    cd $FUZZ_DIR/directed_target/"$1"
+    cd $FUZZ_DIR/"$1"
 
     local out_dir=$RESULT_FUZZ_DIR/"$1"
     mkdir -p $out_dir

@@ -46,7 +46,7 @@ RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C
 #
 # build utils
 #
-COPY . ${FUZZ_DIR}
+COPY build.sh *.c ${FUZZ_DIR}
 
 #
 # build
@@ -55,3 +55,4 @@ RUN TARGET=libfuzzer ${BUILD_SH} all
 RUN TARGET=afl ${BUILD_SH} all
 RUN TARGET=sydr ${BUILD_SH} all
 RUN TARGET=cov ${BUILD_SH} all
+
