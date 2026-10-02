@@ -56,31 +56,56 @@ function libdwfl() {
 # 
 # SET FLAGS
 #
-export CFLAGS=${CFLAGS:-""}
-export CXXFLAGS=${CXXFLAGS:-""}
-export RESET=${RESET:-1}
-export SRC=${SRC:-/result/elfutils}
-export CC=${CC:-clang}
-export CXX=${CXX:-clang++}
-export OUT=${OUT:-"$RESULT_FUZZ_DIR/$2"}
-mkdir -p "$OUT"
-
-if (( $3 )); then
-    flags=" -fsanitize=address,undefined -fsanitize=fuzzer-no-link"
-    export LIB_FUZZING_ENGINE=${LIB_FUZZING_ENGINE:--fsanitize=fuzzer}
-
-    additional_ubsan_checks=alignment
-    UBSAN_FLAGS="-fsanitize=$additional_ubsan_checks -fno-sanitize-recover=$additional_ubsan_checks"
-    flags+=" $UBSAN_FLAGS"
+if [[ $TARGET = "libfuzzer" ]]
+then
+  export SUFFIX=${SUFFIX:-"libfuzzer"}
+  export CC=${CC:-clang}
+  export CXX=${CXX:-clang++}
+  export CFLAGS+=" -g -fsanitize=fuzzer-no-link,address,undefined,bounds,null,float-divide-by-zero -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export CXXFLAGS+=" -g -fsanitize=fuzzer-no-link,address,undefined,bounds,null,float-divide-by-zero -std=c++20 -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export ENGINE=${ENGINE:-"$(find $(llvm-config --libdir) -name libclang_rt.fuzzer-x86_64.a | head -1)"}
 fi
 
-export CFLAGS+=" -g -O1 -fno-omit-frame-pointer -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION ${flags:-}"
-export CXXFLAGS+=" -g -O1 -fno-omit-frame-pointer -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION ${flags:-}"
+if [[ $TARGET = "aflpp" ]]
+then
+  export SUFFIX=${SUFFIX:-"aflpp"}
+  export CC=${CC:-afl-clang-fast}
+  export CXX=${CXX:-afl-clang-fast++}
+  export CFLAGS+=" -g -fsanitize=address,undefined,bounds,null,float-divide-by-zero -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export CXXFLAGS+=" -g -fsanitize=address,undefined,bounds,null,float-divide-by-zero -std=c++20 -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export ENGINE=${ENGINE:-"$(find /usr/local/ -name 'libAFLDriver.a' | head -1)"}
+fi
+
+if [[ $TARGET = "sydr" ]]
+then
+  export SUFFIX=${SUFFIX:-"sydr"}
+  export CC=${CC:-clang}
+  export CXX=${CXX:-clang++}
+  export CFLAGS+=" -g -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export CXXFLAGS+=" -g -std=c++20 -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export ENGINE=${ENGINE:-"/StandaloneFuzzTargetMain.o"}
+  $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
+fi
+
+if [[ $TARGET = "cov" ]]
+then
+  export SUFFIX=${SUFFIX:-"cov"}
+  export CC=${CC:-clang}
+  export CXX=${CXX:-clang++}
+  export CFLAGS+=" -g -fprofile-instr-generate -fcoverage-mapping -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export CXXFLAGS+=" -g -fprofile-instr-generate -fcoverage-mapping -std=c++20 -fPIC -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION"
+  export ENGINE=${ENGINE:-"/StandaloneFuzzTargetMain.o"}
+  $CC $CFLAGS -c -o $ENGINE /opt/StandaloneFuzzTargetMain.c
+fi
+export RESET=${RESET:-1}
+export SRC=${SRC:-"$RESULT_DIR/elfutils"}
+export OUT=${OUT:-"$RESULT_FUZZ_DIR/$SUFFIX"}
 
 #
 # STARTING 
 #
 cd $SRC
+mkdir -p "$OUT"
 
 #
 # RESET
@@ -110,11 +135,9 @@ if (( $RESET )); then
     sed -i '/^i386_parse\.o: i386_parse\.c i386\.mnemonics$/a\
     i386_parse.o: CFLAGS += -fno-sanitize=undefined' libcpu/Makefile.am
 
-    if (( $3 )); then
-        # That's basicaly what --enable-sanitize-undefined does to turn off unaligned access
-        # elfutils heavily relies on on i386/x86_64 but without changing compiler flags along the way
-        sed -i 's/\(check_undefined_val\)=[0-9]/\1=1/' configure.ac
-    fi
+    # That's basicaly what --enable-sanitize-undefined does to turn off unaligned access
+    # elfutils heavily relies on on i386/x86_64 but without changing compiler flags along the way
+    sed -i 's/\(check_undefined_val\)=[0-9]/\1=1/' configure.ac
 
     if ! [[ -d "zlib" ]]; then
         git clone https://github.com/madler/zlib
@@ -150,10 +173,7 @@ make -j$(nproc) V=1
 popd
 zlib=zlib/libz.a
 
-if ! [[ -n "${LIB_FUZZING_ENGINE:-}" ]]; then
-    $CC $CFLAGS -c "/opt/StandaloneFuzzTargetMain.c" -o "$OUT/fuzz-main.o"
-    export LIB_FUZZING_ENGINE="$OUT/fuzz-main.o -pthread"
-fi
+export LIB_FUZZING_ENGINE="$ENGINE -pthread"
 
 case "$1" in
     all)

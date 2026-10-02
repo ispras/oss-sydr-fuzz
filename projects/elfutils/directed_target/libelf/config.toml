@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/result/elfutils/libelf/elf_compress.c"
+file = "/elfutils/libelf/elf_compress.c"
 line = 335

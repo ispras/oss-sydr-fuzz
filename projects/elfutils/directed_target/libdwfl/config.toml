@@ -15,5 +15,5 @@
 ################################################################################
 
 [[target]]
-file = "/result/elfutils/libdw/dwarf_getabbrev.c"
+file = "/elfutils/libdw/dwarf_getabbrev.c"
 line = 159

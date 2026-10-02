@@ -18,14 +18,14 @@ exit-on-time = 7200
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/result/difuzz/dwfl-core/debug_dwfl-core @@"
+target = "/dwfl-core/debug_dwfl-core @@"
 jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/result/difuzz/dwfl-core/difuzz_target_dwfl-core @@"
-args = "-j4 -l64 -i /result/difuzz/corpus -e /result/difuzz/dwfl-core/ets.toml"
-casr_bin = "/result/difuzz/dwfl-core/casr_dwfl-core"
+target = "/dwfl-core/difuzz_target_dwfl-core @@"
+args = "-j4 -l64 -i /corpus -e /dwfl-core/ets.toml"
+casr_bin = "/dwfl-core/casr_dwfl-core"
 
 [cov]
-target = "/result/difuzz/dwfl-core/coverage_dwfl-core @@"
+target = "/dwfl-core/coverage_dwfl-core @@"

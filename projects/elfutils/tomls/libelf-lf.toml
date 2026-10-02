@@ -18,12 +18,12 @@ exit-on-time = 7200
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/result/fuzz/sydr/fuzz-libelf @@"
+target = "/sydr/fuzz-libelf @@"
 jobs = 2
 
 [libfuzzer]
-path = "/result/fuzz/libfuzzer/fuzz-libelf"
-args = "-jobs=1000 -workers=4 /result/fuzz/corpus"
+path = "/libfuzzer/fuzz-libelf"
+args = "-jobs=1000 -workers=4 /corpus"
 
 [cov]
-target = "/result/fuzz/cov/fuzz-libelf @@"
+target = "/cov/fuzz-libelf @@"

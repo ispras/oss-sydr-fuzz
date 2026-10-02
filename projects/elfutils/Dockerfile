@@ -25,9 +25,9 @@ RUN apt-get update && \
 ENV RESULT_SRC_DIR="${RESULT_DIR}/elfutils"
 ENV RESULT_FUZZ_DIR="${RESULT_DIR}/"
 ENV RESULT_CORPUS_DIR="${RESULT_FUZZ_DIR}/corpus"
-ENV FUZZ_DIR="/fuzz"
+ENV FUZZ_DIR="/"
 
-ENV BUILD_SH="${FUZZ_DIR}/build-single.sh"
+ENV BUILD_SH="${FUZZ_DIR}/build.sh"
 
 RUN mkdir -p ${RESULT_DIR} 
 
@@ -38,6 +38,10 @@ RUN git clone https://github.com/DavidKorczynski/binary-samples.git /binary-samp
 RUN mkdir -p $RESULT_CORPUS_DIR && \
     find /binary-samples -maxdepth 1 -type f -name 'elf-*' \
         -exec cp '{}' $RESULT_CORPUS_DIR \; 
+#
+# src
+#
+RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
 
 #
 # build utils
@@ -45,11 +49,10 @@ RUN mkdir -p $RESULT_CORPUS_DIR && \
 COPY . ${FUZZ_DIR}
 
 #
-# src
-#
-RUN git clone https://git.sr.ht/~sourceware/elfutils ${RESULT_SRC_DIR} && git -C ${RESULT_SRC_DIR} checkout fb232b56ca4dc37a70fd4e581a0fc2c56dda5e0a 
-
-#
 # build
 #
-RUN ${FUZZ_DIR}/build-default.sh 
+RUN TARGET=libfuzzer ${BUILD_SH} all
+RUN TARGET=afl ${BUILD_SH} all
+RUN TARGET=sydr ${BUILD_SH} all
+RUN TARGET=cov ${BUILD_SH} all
+

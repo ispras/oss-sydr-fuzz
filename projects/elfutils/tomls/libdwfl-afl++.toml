@@ -18,13 +18,13 @@ exit-on-time = 7200
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/result/fuzz/sydr/fuzz-libdwfl @@"
+target = "/sydr/fuzz-libdwfl @@"
 jobs = 2
 
 [aflplusplus]
-target = "/result/fuzz/aflpp/fuzz-libdwfl @@"
-args = "-i /result/fuzz/corpus"
+target = "/aflpp/fuzz-libdwfl @@"
+args = "-i /corpus"
 jobs = 4
 
 [cov]
-target = "/result/fuzz/cov/fuzz-libdwfl @@"
+target = "/cov/fuzz-libdwfl @@"

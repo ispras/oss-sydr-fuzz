@@ -18,14 +18,14 @@ exit-on-time = 7200
 
 [sydr]
 args = "--wait-jobs -s 90 -j2"
-target = "/result/difuzz/libelf/debug_libelf @@"
+target = "/libelf/debug_libelf @@"
 jobs = 2
 
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
-target = "/result/difuzz/libelf/difuzz_target_libelf @@"
-args = "-j4 -l64 -i /result/difuzz/corpus -e /result/difuzz/libelf/ets.toml"
-casr_bin = "/result/difuzz/libelf/casr_libelf"
+target = "/libelf/difuzz_target_libelf @@"
+args = "-j4 -l64 -i /corpus -e /libelf/ets.toml"
+casr_bin = "/libelf/casr_libelf"
 
 [cov]
-target = "/result/difuzz/libelf/coverage_libelf @@"
+target = "/libelf/coverage_libelf @@"
