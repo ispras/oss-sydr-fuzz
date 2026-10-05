@@ -24,7 +24,7 @@ jobs = 2
 [difuzz]
 path = "/directed_target/sydr/difuzz/libafl_difuzz"
 target = "/libdwfl/difuzz_target_libdwfl @@"
-args = "-j4 -l64 -i /corpus -e /libdwfl/ets.toml"
+args = "-j4 -i /corpus -e /libdwfl/ets.toml"
 casr_bin = "/libdwfl/casr_libdwfl"
 
 [cov]
