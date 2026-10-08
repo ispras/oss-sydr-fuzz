@@ -27,7 +27,7 @@ RUN cd /pytorch && git checkout v2.13.0 && git submodule sync && \
     git submodule update --init --recursive
 
 # Get TorchCodec
-RUN git clone -b v0.16.0 https://github.com/meta-pytorch/torchcodec
+RUN git clone -b main https://github.com/meta-pytorch/torchcodec
 
 # Get image libraries: libjpeg, libpng, libwebp, libheif, libavif
 RUN git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git && \
