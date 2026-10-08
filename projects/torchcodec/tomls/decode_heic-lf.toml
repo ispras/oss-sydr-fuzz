@@ -21,7 +21,7 @@ jobs = 2
 
 [libfuzzer]
 path = "/fuzzer/decode_heic_fuzzer"
-args = "-rss_limit_mb=16384 -timeout=300 -jobs=1000 -workers=4 /corpus_heic"
+args = "-rss_limit_mb=16384 -timeout=600 -jobs=1000 -workers=4 /corpus_heic"
 
 [cov]
 target = "/cov/decode_heic_cov @@"

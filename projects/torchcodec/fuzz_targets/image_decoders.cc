@@ -14,9 +14,9 @@ const uint8_t header[] = {0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 
 
 void decode(torch::stable::Tensor input) {
     // ImageReadMode 0-4
-    //facebook::torchcodec::decode_jpeg(input, 0);
+    facebook::torchcodec::decode_jpeg(input, 0);
     facebook::torchcodec::decode_jpeg(input, 1);
-    //facebook::torchcodec::decode_jpeg(input, 2);
+    facebook::torchcodec::decode_jpeg(input, 2);
     facebook::torchcodec::decode_jpeg(input, 3);
     facebook::torchcodec::decode_jpeg(input, 4);
 }
@@ -30,10 +30,10 @@ const uint8_t header[] = {0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a};
 
 void decode(torch::stable::Tensor input) {
     // ImageReadMode, OutputDType
-    //facebook::torchcodec::decode_png(input, 0, 2);
-    facebook::torchcodec::decode_png(input, 1, 2);
-    //facebook::torchcodec::decode_png(input, 2, 2);
-    facebook::torchcodec::decode_png(input, 3, 2);
+    facebook::torchcodec::decode_png(input, 0, 0);
+    facebook::torchcodec::decode_png(input, 1, 1);
+    facebook::torchcodec::decode_png(input, 2, 2);
+    facebook::torchcodec::decode_png(input, 3, 0);
     facebook::torchcodec::decode_png(input, 4, 2);
 }
 
@@ -49,9 +49,9 @@ const uint8_t header[] = {
     };
 void decode(torch::stable::Tensor input) {
     // ImageReadMode
-    //facebook::torchcodec::decode_webp(input, 0);
+    facebook::torchcodec::decode_webp(input, 0);
     facebook::torchcodec::decode_webp(input, 1);
-    //facebook::torchcodec::decode_webp(input, 2);
+    facebook::torchcodec::decode_webp(input, 2);
     facebook::torchcodec::decode_webp(input, 3);
     facebook::torchcodec::decode_webp(input, 4);
 }
@@ -65,7 +65,7 @@ const uint8_t header[] = {0x47, 0x49, 0x46, 0x38, 0x39, 0x61};
 
 void decode(torch::stable::Tensor input) {
     // ImageReadMode 0, 3, 4
-    //facebook::torchcodec::decode_gif(input, 0);
+    facebook::torchcodec::decode_gif(input, 0);
     facebook::torchcodec::decode_gif(input, 3);
     facebook::torchcodec::decode_gif(input, 4);
 }
@@ -80,9 +80,9 @@ const uint8_t header2[] = {0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x78, 0x00,
 
 void decode(torch::stable::Tensor input) {
     // ImageReadMode, OutoutDType
-    //facebook::torchcodec::decode_heic(input, 0, 2);
+    facebook::torchcodec::decode_heic(input, 0, 2);
     facebook::torchcodec::decode_heic(input, 1, 2);
-    //facebook::torchcodec::decode_heic(input, 2, 2);
+    facebook::torchcodec::decode_heic(input, 2, 2);
     facebook::torchcodec::decode_heic(input, 3, 2);
     facebook::torchcodec::decode_heic(input, 4, 2);
 }
@@ -99,6 +99,8 @@ const uint8_t header3[] = {0x66, 0x74, 0x79, 0x70, 0x6d, 0x69, 0x66, 0x33, 0x61,
 void decode(torch::stable::Tensor input) {
     // ImageReadMode, OutoutDType, NumThreads
     facebook::torchcodec::decode_avif(input, 0, 2, 1);
+    facebook::torchcodec::decode_avif(input, 1, 2, 1);
+    facebook::torchcodec::decode_avif(input, 2, 2, 1);
 }
 
 #endif
