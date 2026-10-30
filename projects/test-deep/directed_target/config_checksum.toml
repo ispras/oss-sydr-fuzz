@@ -1,0 +1,24 @@
+# The checksum functions form a difficulty ladder analogous to deep1..deep4.
+[[target]]
+file = "deep_checksum.c"
+line = 39
+
+[[target]]
+file = "deep_checksum.c"
+line = 33
+
+[[target]]
+file = "deep_checksum.c"
+line = 27
+
+[[target]]
+file = "deep_checksum.c"
+line = 21
+
+[[target]]
+file = "deep_checksum.c"
+line = 15
+
+[[target]]
+file = "deep_checksum.c"
+line = 8
