@@ -1,0 +1,23 @@
+# The intermediate points form a difficulty ladder.  Their hit counts should
+# diverge as fuzzing progresses, giving the reached-target energy decay
+# something meaningful to redistribute while the final crash is still missing.
+[[target]]
+file = "deep.c"
+line = 51
+
+[[target]]
+file = "deep.c"
+line = 45
+
+[[target]]
+file = "deep.c"
+line = 38
+
+[[target]]
+file = "deep.c"
+line = 17
+
+# Final crash.
+[[target]]
+file = "deep.c"
+line = 25

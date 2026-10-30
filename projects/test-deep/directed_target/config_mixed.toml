@@ -1,0 +1,21 @@
+# Successful transitions through the mixed state-machine and arithmetic gates.
+[[target]]
+file = "deep_mixed.c"
+line = 58
+
+[[target]]
+file = "deep_mixed.c"
+line = 44
+
+[[target]]
+file = "deep_mixed.c"
+line = 48
+
+[[target]]
+file = "deep_mixed.c"
+line = 11
+
+# Final crash.
+[[target]]
+file = "deep_mixed.c"
+line = 13
