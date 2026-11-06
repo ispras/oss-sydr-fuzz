@@ -39,7 +39,7 @@ WORKDIR /directed_target
 # Build libxml for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ DIFUZZ_ICACHE=libxml2 cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=libxml2 cargo make all --makefile Makefile.extended.toml
 
 # Prepare seed corpus.
 RUN mkdir /corpus; cp -r /libxml2_ef709ce2/test/dtd* /corpus; cp -r /libxml2_ef709ce2/test/dtds/* /corpus; rm /corpus/dtd1

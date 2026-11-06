@@ -41,7 +41,7 @@ WORKDIR /directed_target
 # Build xlnt for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ DIFUZZ_ICACHE=xlnt cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=xlnt cargo make all --makefile Makefile.extended.toml
 
 # Prepare seed corpus.
 RUN mkdir /corpus && find /xlnt -name "*.xlsx" | xargs -I {} cp {} /corpus

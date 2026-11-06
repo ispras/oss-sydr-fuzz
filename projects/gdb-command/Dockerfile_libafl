@@ -41,7 +41,7 @@ WORKDIR /directed_target
 # Build gdb-command for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ DIFUZZ_ICACHE=gdb-command cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=gdb-command cargo make all --makefile Makefile.extended.toml
 
 # Create corpus.
 RUN mkdir /corpus && echo "aaaaaaaaaaaaaaaaaaaa" > /corpus/in
