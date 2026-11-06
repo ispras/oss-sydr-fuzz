@@ -29,7 +29,7 @@ WORKDIR /directed_target
 # Build giflib for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ cargo make all
+RUN OUT_DIR=/ cargo make all --makefile Makefile.extended.toml
 
 WORKDIR /
 

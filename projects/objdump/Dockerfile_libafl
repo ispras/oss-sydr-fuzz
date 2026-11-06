@@ -40,7 +40,7 @@ WORKDIR /directed_target
 # Build objdump for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ DIFUZZ_ICACHE=objdump cargo make all
+RUN OUT_DIR=/ DIFUZZ_ICACHE=objdump cargo make all --makefile Makefile.extended.toml
 
 # Prepare seed corpus.
 RUN mkdir /corpus; echo "" > /corpus/in

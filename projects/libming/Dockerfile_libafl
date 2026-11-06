@@ -39,7 +39,7 @@ WORKDIR /directed_target
 # Build libming for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
-RUN OUT_DIR=/ cargo make all
+RUN OUT_DIR=/ cargo make all --makefile Makefile.extended.toml
 
 # Prepare seed corpus.
 RUN mkdir /corpus; wget -P /corpus http://condor.depaul.edu/sjost/hci430/flash-examples/swf/bumble-bee1.swf
