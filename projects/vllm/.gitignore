@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.coverage*
+coverage.json
+htmlcov/
+work-corpus/
+crashes/
+*.log
