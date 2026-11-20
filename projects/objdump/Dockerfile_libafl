@@ -18,7 +18,6 @@ ARG BASE_IMAGE="sydr/ubuntu24.04-sydr-fuzz"
 FROM $BASE_IMAGE
 
 ARG SYDR_ARCHIVE="./sydr.zip"
-ARG MAKEFILE="Makefile.toml"
 
 WORKDIR /
 
@@ -41,6 +40,8 @@ WORKDIR /directed_target
 # Build objdump for LibAFL-DiFuzz.
 ADD ${SYDR_ARCHIVE} ./
 RUN unzip -o ${SYDR_ARCHIVE} && rm ${SYDR_ARCHIVE}
+
+ARG MAKEFILE="Makefile.toml"
 RUN OUT_DIR=/ DIFUZZ_ICACHE=objdump cargo make all --makefile ${MAKEFILE}
 
 # Prepare seed corpus.
